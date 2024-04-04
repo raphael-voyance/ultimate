@@ -1,0 +1,500 @@
+<?php
+
+namespace App\Livewire;
+
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Invoice;
+use Livewire\Component;
+use App\Models\TimeSlotDay;
+use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Validation\Rules\Password;
+use App\Concern\Invoice as ConcernInvoice;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Builder;
+
+class AppointmentModal extends Component
+{
+    public bool $hasError = false;
+    public string $errorMessage = "";
+    public bool $appointmentModal = false;
+    public array $appointment = [];
+    public string|null $appointmentType = null;
+    public int $totalStep = 5;
+    public int $activeStep = 1;
+    public $timeSlotDays;
+    public int|null $timeSlotDayId = null;
+    public int|null $timeSlotId = null;
+    public int $offsetTimeSlot = 0;
+    public $totalOffsetTimeSlot;
+    public array $writingConsultation = [];
+    public string|null $writingConsultationQuestion = null;
+    public string $currentValidationForm = 'formQuestion';
+
+    //Login && Registration User Datas
+    public $userProfile = null;
+    public $birthday;
+    public $time_of_birth;
+    public $native_country;
+    public $city_of_birth;
+    public $email;
+    public $password;
+    public $remember;
+    public $first_name;
+    public $last_name;
+    public $password_confirmation;
+
+    // Services / Payment
+    public $services;
+    private array $amounts = [
+        'writing' => 3000,
+        'live' => 5000,
+    ];
+    public int $amount;
+    public int $totalPrice;
+    public string $priceForHuman;
+
+    // Validation Forms
+    // Rules
+    protected function rules()
+    {
+        if ($this->currentValidationForm === 'formQuestion') {
+            return [
+                'writingConsultationQuestion' => ['required', 'min:50'],
+            ];
+        } else if($this->currentValidationForm === 'formBirthDate') {
+            return [
+                'birthday' => ['required', 'date']
+            ];
+        } else if($this->currentValidationForm === 'formInformationOfBirth') {
+            return [
+                'time_of_birth' => ['required'],
+                'city_of_birth' => ['string', 'required'],
+                'native_country' => ['string', 'required'],
+            ];
+        } else {
+            return [];
+        }
+    }
+    // Messages
+    protected function messages()
+    {
+        if ($this->currentValidationForm === 'formQuestion') {
+            return [
+                'writingConsultationQuestion.required' => 'Votre question est requise pour continuer.',
+                'writingConsultationQuestion.min' => 'Votre question doit comporter au moins :min caractères.',
+            ];
+        } else if($this->currentValidationForm === 'formBirthDate') {
+            return [
+                'birthday.required' => 'Merci de saisir votre date de naissance.',
+                'birthday.date' => 'Votre date de naissance doit être au format valide.',
+            ];
+        } else if($this->currentValidationForm === 'formInformationOfBirth') {
+            return [
+                'time_of_birth.required' => 'Merci de saisir une heure de naissance valide.',
+                'city_of_birth.string' => 'Merci de saisir une chaîne de caractères valides.',
+                'city_of_birth.required' => 'Merci de saisir le nom d\'une ville.',
+                'native_country.string' => 'Merci de saisir une chaîne de caractères valides.',
+                'native_country.required' => 'Merci de saisir le nom d\'un pays.',
+            ];
+        } else {
+            return [];
+        }
+    }
+
+    // Mount
+    public function mount()
+    {
+        // Visibility For Modal
+        $appointmentModalIsVisible = session('appointmentModalShow');
+        if ($appointmentModalIsVisible !== null) {
+            $this->appointmentModal = $appointmentModalIsVisible;
+        }
+
+        // Get all services
+        $this->services = Product::where('type', 'SERVICE_PRODUCT')
+            ->where('available', true)
+            ->get();
+
+        // Get User Informations if Exist
+        if (Auth::user()) {
+            $userProfileData = collect(Auth::user()->profile->toArray())
+                ->only(['birthday', 'astrology'])
+                ->toArray();
+
+            // Décoder la chaîne JSON de la clé 'astrology'
+            $astrologyData = json_decode($userProfileData['astrology']);
+
+            // Recréer un nouvel objet avec 'birthday' et 'astrology' comme propriétés
+            $this->userProfile = (object)[
+                'birthday' => $userProfileData['birthday'],
+                'astrology' => $astrologyData,
+            ];
+
+            if($userProfileData['birthday']) {
+                $this->birthday = $userProfileData['birthday'];
+            }
+            if(isset($astrologyData->time_of_birth)) {
+                $this->time_of_birth = $astrologyData->time_of_birth;
+            }
+            if(isset($astrologyData->city_of_birth)) {
+                $this->city_of_birth = $astrologyData->city_of_birth;
+            }
+            if(isset($astrologyData->native_country)) {
+                $this->native_country = $astrologyData->native_country;
+            }
+
+        }
+
+        // Hydrate $this->appointment = [] if Appointment exist in UserSession;
+        if (session()->has('appointment_form')) {
+            $this->appointment = session('appointment_form');
+            $this->appointmentType = session('appointment_form.type');
+            $this->activeStep = session('appointment_form.active_step') ? session('appointment_form.active_step') : 1;
+            $this->writingConsultation = session('appointment_form.writing_consultation') ? session('appointment_form.writing_consultation') : [];
+            $this->writingConsultationQuestion = isset(session('appointment_form.writing_consultation')['question']) ? session('appointment_form.writing_consultation')['question'] : null;
+            $this->timeSlotDayId = session('appointment_form.time_slot_day');
+            $this->timeSlotId = session('appointment_form.time_slot');
+        }
+
+        // Initialize SlotDays
+        // Déplacer ces fonction pour charger les timeslots dans la step concernée
+        $totalSlotDays = TimeSlotDay::all()->count();
+
+        $this->totalOffsetTimeSlot = ceil($totalSlotDays / 5);
+
+        $this->loadTimeSlotDays();
+    }
+
+    //Listener for event save-birthday
+    #[On('save-birthday')]
+    public function updateUserProfileData()
+    {
+        $userProfileData = collect(Auth::user()->profile->toArray())
+                ->only(['birthday', 'astrology'])
+                ->toArray();
+
+            $this->userProfile = (object)$userProfileData;
+            $this->userProfile;
+    }
+
+    // # PRIVATE METHODS #
+    //Load All TimeSlotDays to Array
+    private function loadTimeSlotDays()
+    {
+        $this->timeSlotDays = TimeSlotDay::with('time_slots')
+            ->whereHas('time_slots', function(Builder $query) {
+                return $query->where('available', true);
+            })
+            ->orderBy('day')
+            ->skip($this->offsetTimeSlot)
+            ->limit(5)
+            ->get()
+            ->map(function ($timeSlotDay) {
+                // Formater le timestamp 'day' pour chaque créneau horaire
+                $timeSlotDay->dayFormatte = Carbon::parse($timeSlotDay->day)->translatedFormat('l j F Y');
+
+                // creer une fonction qui retourne vrai ou faux en fonction de si un timeslotday possède au moins 1 timeslot actif
+
+                return $timeSlotDay;
+            })->toArray();
+    }
+
+    // Save Question For writing Consultation
+    private function savewritingConsultationQuestion(): void
+    {
+        $this->currentValidationForm = 'formQuestion';
+
+        $validatedData = $this->validate($this->rules(), $this->messages());
+
+        $this->writingConsultationQuestion = $validatedData['writingConsultationQuestion'];
+        $this->writingConsultation["question"] = $this->writingConsultationQuestion;
+        $this->appointment["writing_consultation"] = $this->writingConsultation;
+
+        $this->saveAppointmentInSession();
+    }
+
+    //Save Appointment in user session
+    private function saveAppointmentInSession()
+    {
+        session(['appointment_form' => $this->appointment]);
+    }
+    //Delete Appointment in user session
+    private function deleteAppointmentInSession()
+    {
+        session()->forget('appointment_form');
+    }
+
+    // # PUBLICS METHODS #
+    //Open AppointmentModal
+    public function openModal() :void
+    {
+        $this->appointmentModal = true;
+
+        session(['appointmentModalShow' => $this->appointmentModal]);
+    }
+
+    //Close AppointmentModal
+    public function closeModal() :void
+    {
+        $this->appointmentModal = false;
+        session(['appointmentModalShow' => $this->appointmentModal]);
+    }
+
+    //Cancel AppointmentModal && Reinitializing datas
+    public function resetModal() :void
+    {
+        $this->appointment = [
+            "type" => null,
+            "time_slot_day" => null,
+            "time_slot" => null,
+            "writing_consultation" => [],
+            "active_step" => 1
+        ];
+        $this->activeStep = 1;
+        $this->timeSlotDayId = null;
+        $this->timeSlotId = null;
+        $this->offsetTimeSlot = 0;
+        $this->appointmentType = null;
+        $this->writingConsultationQuestion = null;
+        $this->closeModal();
+        $this->deleteAppointmentInSession();
+    }
+
+    //Login User
+    public function userLogin()
+    {
+
+        $credentials = $this->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials, $this->remember)) {
+            session()->regenerate();
+            $this->saveAppointmentInSession();
+            return redirect('/');
+        }
+
+        //dd(session('status'));
+        session()->flash('error', 'Vos informations de connexion ne correspondent pas. Merci de réessayer.');
+        return back()->onlyInput('email');
+    }
+
+    //Register User
+    public function registerUser()
+    {
+        $validatedData = $this->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+            'password' => [
+                'required', Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(3)
+            ],
+            'password_confirmation' => 'same:password',
+        ]);
+
+        $user = User::create([
+            'first_name' => $validatedData['first_name'],
+            'last_name' => $validatedData['last_name'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password'],),
+        ]);
+
+        $user->roles()->attach(2);
+        $user->profile()->create();
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return redirect(RouteServiceProvider::HOME);
+    }
+
+    // Steps && Appointment
+
+    //Navigate Steps -NEXT-
+    public function nextStep(?int $step = null)
+    {
+
+        if ($this->activeStep === 3 && $this->appointmentType == 'writing') {
+            $this->savewritingConsultationQuestion();
+        }
+
+        if($step === $this->totalStep) {
+            //1 - Créer un token unique Invoice
+            $user_id = Auth::user()->id;
+            $create_invoice_token = new ConcernInvoice($user_id);
+            $invoice_token = $create_invoice_token->get_token();
+
+            //2 - Créer une invoice en bdd avec les valeurs : 
+            //== total_price payment_invoice_token appointment_id ref
+
+            // $this->validate([
+            //     'total_price' => ['required', 'numeric'],
+            //     'payment_invoice_token' => ['required', 'string', 'unique:' . Invoice::class],
+            //     'appointment_id' => ['nullable', 'numeric', 'unique:' . Invoice::class],
+            //     'user_id' => ['required', 'numeric', 'unique:' . Invoice::class],
+            // ]);
+            //== liée au user connecté == user_id
+            //== liée à un appointment == appointment_id
+
+            $invoice = Invoice::create([
+                'total_price' => $this->appointmentType === 'writing' ? $this->amounts['writing'] : $this->amounts['live'],
+                'payment_invoice_token' => $invoice_token,
+                'appointment_id' => 1,
+                'user_id' => $user_id,
+                'ref' => $create_invoice_token->get_ref(),
+            ]);
+            //== liée à un product == attach(product_id)
+
+            //3 - Rediriger l'utilisateur sur la page de paiement en passant le payment_invoice_token en paramètre d'url
+
+            // in work
+            if($invoice) {
+                $this->resetModal();
+                
+                $this->redirectRoute('payment.create', [
+                    'payment_invoice_token' => $invoice->payment_invoice_token
+                ]);
+
+                return;
+            }
+            
+        }
+
+        $this->activeStep++;
+
+        $this->appointment = [
+            "type" => $this->appointmentType,
+            "time_slot_day" => $this->timeSlotDayId,
+            "time_slot" => $this->timeSlotId,
+            "writing_consultation" => $this->writingConsultation,
+            "active_step" => $this->activeStep
+        ];
+
+        $this->saveAppointmentInSession();
+    }
+    //Navigate Steps -PREV-
+    public function prevStep(): void
+    {
+        $this->activeStep--;
+        $this->appointment = [
+            "type" => $this->appointmentType,
+            "time_slot_day" => $this->timeSlotDayId,
+            "time_slot" => $this->timeSlotId,
+            "writing_consultation" => $this->writingConsultation,
+            "active_step" => $this->activeStep
+        ];
+        $this->saveAppointmentInSession();
+    }
+
+    // Save Appointment Type In array Appointment
+    public function selectAppointmentType(string $appointmentType): void
+    {
+        if($appointmentType == 'writing') {
+            $this->timeSlotDayId = null;
+            $this->timeSlotId = null;
+            $this->appointment["time_slot_day"] = null;
+            $this->appointment["time_slot"] = null;
+        }
+        $this->appointmentType = $appointmentType;
+
+        $this->appointment["type"] = $this->appointmentType;
+    }
+
+    // Consultations >>>>>>
+
+    // Edit User Profile
+    //Save Birthday
+    public function saveBirthday() {
+
+        // Changer le currentValidationForm
+        $this->currentValidationForm = 'formBirthDate';
+
+        //Valider l'entrée date
+        $validatedData = $this->validate($this->rules(), $this->messages());
+
+        //enregistrer dans le profil utilisateur la date de naissance validée et transformée SB
+        $userProfile = Auth::user()->profile;
+
+        $updateData = $userProfile->update([
+            'birthday' => $validatedData['birthday']
+        ]);
+
+        if($updateData) {
+            $this->dispatch('refreshPage');
+        }
+
+    }
+
+    public function saveNativeInformation() {
+
+        // Changer le currentValidationForm
+        $this->currentValidationForm = 'formInformationOfBirth';
+
+        //Valider l'entrée date
+        $validatedData = $this->validate($this->rules(), $this->messages());
+
+        //enregistrer dans le profil utilisateur la date de naissance validée et transformée SB
+        $userProfile = Auth::user()->profile;
+
+        // Construire la structure JSON
+        $astrologyData = [
+            'time_of_birth' => $this->time_of_birth,
+            'city_of_birth' => $this->city_of_birth,
+            'native_country' => $this->native_country,
+        ];
+
+        $updateData = $userProfile->update([
+            'astrology' => $astrologyData
+        ]);
+
+        if($updateData) {
+            $this->dispatch('refreshPage');
+        }
+
+    }
+
+    // Consultation Tchat Or Phone >>>>>>
+    //Select Timeslot
+    public function selectTimeSlot(int $timeSlotDayId, int $timeSlotId): void
+    {
+        $this->timeSlotDayId = $timeSlotDayId;
+        $this->timeSlotId = $timeSlotId;
+
+        $this->appointment["time_slot_day"] = $this->timeSlotDayId;
+        $this->appointment["time_slot"] = $this->timeSlotId;
+    }
+
+    //Navigate Timeslot -NEXT-
+    public function nextTimeSlots(): void
+    {
+        $this->offsetTimeSlot += 5;
+        $this->loadTimeSlotDays();
+    }
+    //Navigate Timeslot -PREV-
+    public function prevTimeSlots(): void
+    {
+        if ($this->offsetTimeSlot == 0) {
+            $this->offsetTimeSlot = 0;
+        } else {
+            $this->offsetTimeSlot -= 5;
+        }
+        $this->loadTimeSlotDays();
+    }
+
+    public function render()
+    {
+        return view('livewire.appointment-modal');
+    }
+}

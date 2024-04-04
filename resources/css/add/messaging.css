@@ -1,0 +1,8 @@
+#container_messages_navigation::-webkit-scrollbar {
+    width: 0.3rem; /* Largeur de la barre de défilement, ajustez-la selon vos préférences */
+    background: rgba(184, 184, 184, 0.5); /* Fond transparent */
+  }
+
+#container_messages_navigation::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.7);; /* Couleur de fond transparente */
+  }

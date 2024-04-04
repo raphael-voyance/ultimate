@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+[x-cloak] {
+    display: none !important;
+}
+
+@layer base {
+    h1 {
+        @apply text-3xl;
+    }
+
+    h2 {
+        @apply text-2xl;
+    }
+
+    h3 {
+        @apply text-xl;
+    }
+
+    h4 {
+        @apply text-lg;
+    }
+
+    h5 {
+        @apply text-base;
+    }
+
+    h6 {
+        @apply text-sm;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-sans;
+        @apply font-semibold;
+    }
+
+    a {
+        @apply text-primary/75;
+    }
+
+    a:hover,
+    a:focus,
+    a:active {
+        @apply text-primary/100;
+        @apply transition-all;
+    }
+
+    input[type="time"]::-webkit-calendar-picker-indicator {
+        filter: invert(100%);
+    }
+}
+
+@layer utilities {
+    .text-error {
+        @apply text-xs;
+    }
+
+    .text-info {
+        @apply text-xs;
+    }
+}
+
+@layer components {
+
+    /* Navigation */
+    #container-main-navivation nav>a.active::before {
+        @apply w-full;
+        @apply h-full;
+        @apply bg-white;
+        @apply bg-opacity-30;
+        @apply absolute;
+        @apply skew-y-6;
+        @apply scale-x-125;
+        @apply scale-y-150;
+        @apply origin-center;
+        @apply cursor-default;
+    }
+
+    .loader {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: inline-block;
+        border-top: 4px solid #FFF;
+        border-right: 4px solid transparent;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+      }
+      .loader::after {
+        content: '';  
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border-left: 4px solid #c670e0;
+        border-bottom: 4px solid transparent;
+        animation: rotation 0.5s linear infinite reverse;
+      }
+      @keyframes rotation {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      } 
+
+    .alert {
+        @apply text-white;
+      }
+
+      .alert > i {
+        @apply animate-pulse;
+        @apply -rotate-12;
+      }
+
+}
