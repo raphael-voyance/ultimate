@@ -88,7 +88,15 @@
                 {{-- Début Step 2 --}}
                 <section x-show="$wire.activeStep == 2">
 
-                    <h4 class="mb-4">2 - @guest S'enregistrer @else Vos informations de naissance @endguest</h4>
+                    <h4 class="mb-4">2 - 
+                        @guest S'enregistrer 
+                        @else 
+                            @if ($appointmentType == 'writing')
+                                Vos informations de naissance
+                            @else
+                                Confirmation de votre identité
+                            @endif 
+                        @endguest</h4>
 
                     {{-- Début Si l'utilisateur n'est pas connecté ou inscrit : Connexion ou inscription --}}
                     @guest
@@ -138,7 +146,7 @@
                                         <div class="block mt-4">
                                             <label for="remember" class="inline-flex items-center">
                                                 <x-checkbox wire:model="remember" name="remember"
-                                                    label="{{ __('Remember') }}"
+                                                    label="Se souvenir de moi"
                                                     class="focus:ring-primary-focus  checkbox-sm" />
                                             </label>
                                         </div>
@@ -147,7 +155,7 @@
                                             @if (Route::has('password.request'))
                                                 <a class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-xs font-medium leading-5 text-gray-400 hover:text-gray-200 hover:border-gray-300 focus:outline-none focus:text-gray-200 focus:border-gray-300 transition duration-150 ease-in-out"
                                                     href="{{ route('password.request') }}">
-                                                    {{ __('Forgot') }}
+                                                    Mot de passe oublié
                                                 </a>
                                             @endif
 
@@ -400,11 +408,10 @@
                         {{-- Début Si le mode de consultation est par téléphone ou par tchat //phone - tchat --}}
                         @else
                         <section class="py-6 px-4 mt-2 rounded bg-base-300/75">
-                            <p>
-                                Avant de poursuivre, merci de confirmer votre identité :
-                                <br>
-                                Vous êtes connecté(e) en tant que : {{ Auth::user()->fullName() }}
-                            </p>
+                            <div class="mx-auto w-80 max-w-full break-all">
+                            <p class="mb-4"> Vous êtes connecté(e) en tant que : </p>
+                            <x-avatar :image="Auth::user()->profile->avatar" :title="Auth::user()->fullName()" :subtitle="Auth::user()->email" class="!w-12" />
+                            </div>
                         </section>
                             
                         @endif
@@ -413,7 +420,13 @@
                         {{-- Début NextStep --}}
 
                         @if ($userProfile->birthday || $appointmentType != 'writing')
-                            <x-ui.primary-button class="btn-sm mt-4 float-right" @click="$wire.nextStep()">Suivant</x-ui.primary-button>
+                            <x-ui.primary-button class="btn-sm mt-4 float-right" @click="$wire.nextStep()">
+                                @if($appointmentType != 'writing')
+                                    Confirmer
+                                @else
+                                    Suivant
+                                @endif
+                            </x-ui.primary-button>
                         @endif
                         {{-- Fin NextStep --}}
                     @endauth
@@ -442,20 +455,16 @@
                                     </div>
                                     <div class="hours grid grid-cols-3 gap-3">
 
-                                        {{-- Ajouter une propriété ActiveTimeSlot sur le composant --}}
-                                        {{-- Au clic sur le bouton, rajouter l'id du timeslot cliqué --}}
-                                        {{-- Dans la vue si l'id correspond au bouton cliqué lui ajouter la classe active --}}
-                                        {{--  --}}
-
                                         @if (collect($timeSlotDay['time_slots'])->isNotEmpty())
                                             @foreach ($timeSlotDay['time_slots'] as $slotTime)
+
+                                            
                                                 <button
                                                     wire:click="selectTimeSlot({{ $timeSlotDay['id'] }}, {{ $slotTime['id'] }})"
                                                     @class([
                                                         'hour btn btn-primary btn-sm',
-                                                        'hidden' => !$slotTime[
-                                                            'pivot'
-                                                        ]['available'],
+                                                        'hidden' => !$slotTime['pivot']['available'],
+                                                        'btn-active ring-primary/50 ring-offset-4 ring-offset-base-300 ring-2 cursor-default' => $timeSlotDay['id'] == $appointment['time_slot_day'] && $slotTime['id'] == $appointment['time_slot']
                                                     ])>{{ Carbon\Carbon::parse($slotTime['start_time'])->format('H\hi') }}</button>
                                             @endforeach
                                         @else
@@ -473,12 +482,12 @@
                         <div class="grid grid-cols-2 gap-2">
                             @if ($offsetTimeSlot >= 5)
                                 <button wire:click="prevTimeSlots()"
-                                    class="block mx-auto mt-8 w-64 max-w-full btn btn-sm btn-secondary btn-outline col-start-1 col-end-2">Créneaux
+                                    class="block mx-auto w-64 max-w-full btn btn-sm btn-primary btn-outline col-start-1 col-end-2">Créneaux
                                     précédents</button>
                             @endif
                             @if ($offsetTimeSlot <= $totalOffsetTimeSlot - 1)
                                 <button wire:click="nextTimeSlots()"
-                                    class="block mx-auto mt-8 w-64 max-w-full btn btn-sm btn-secondary btn-outline col-start-2 col-end-3">Créneaux
+                                    class="block mx-auto w-64 max-w-full btn btn-sm btn-primary btn-outline col-start-2 col-end-3">Créneaux
                                     suivants</button>
                             @endif
                         </div>
@@ -509,10 +518,7 @@
 
                     @auth
                         @if ($appointmentType)
-                            @if ($timeSlotDayId && $timeSlotId)
-                                <x-ui.primary-button class="btn-sm mt-4 float-right"
-                                    @click="$wire.nextStep()">Suivant</x-ui.primary-button>
-                            @elseif ($appointmentType == 'writing')
+                            @if ($timeSlotDayId && $timeSlotId || $appointmentType == 'writing')
                                 <x-ui.primary-button class="btn-sm mt-4 float-right"
                                     @click="$wire.nextStep()">Suivant</x-ui.primary-button>
                             @endif
@@ -528,61 +534,57 @@
                 {{-- Début Step 4 : Récapitulatif de la question si demande écrite sinon récapitulatif du moment --}}
                 <section x-show="$wire.activeStep == 4">
 
-                    <h4 class="mb-4">4 - Confirmation de votre demande</h4>
+                    <h4 class="mb-4">
+                        4 - Confirmation de votre demande par 
+                        @if($appointmentType == 'writing')
+                            écrit
+                        @elseif ($appointmentType == 'tchat')
+                            par tchat
+                        @elseif ($appointmentType == 'phone')
+                            par téléphone
+                        @endif
+                    </h4>
 
-                    @if (isset($writingConsultation['question']) && $appointmentType == 'writing')
-                        <div class="alert mb-4">Merci de confirmer votre demande de consultation par écrit :</div>
-                        <div class="max-w-full break-words alert mb-4">
-                            <div>
-                                <span class="block mb-2 text-secondary">Votre question : </span>
-                                <p>"{{ $writingConsultation['question'] }}"</p>
+                    @if(!$hasError)
+
+                        @if (isset($writingConsultation['question']) && $appointmentType == 'writing')
+                            <div class="max-w-full break-words alert mb-4">
+                                <div>
+                                    <span class="block mb-2 text-secondary">Votre question : </span>
+                                    <p>"{{ $writingConsultation['question'] }}"</p>
+                                </div>
+
                             </div>
+                        @else
 
-                        </div>
-                    @else {
-                        Merci de confirmer votre demande rendez-vous :
+                            <p class="alert mt-4">
+                                Vous avez demandé un rendez-vous pour le {{ $timeSlotDayForHuman }} à {{ $timeSlotForHuman }}
+                            </p>
+                        
+                        @endif
 
-                        <ul>
-                            <li>Date : </li>
-                            <li>Moment : de à </li>
-                        </ul>
-                    }
+                        <p class="alert mt-4">
+                            Montant à payer : {{ $priceForHuman }}
+                        </p>
+
+                    @else
+                        Merci de corriger les erreurs pour pouvoir continuer.
                     @endif
+
+
 
                     @auth
                         @if ($appointmentType)
                             <x-ui.secondary-button class="btn-sm btn-outline mt-4 float-left"
                                     @click="$wire.prevStep()">Modifier</x-ui.secondary-button>
                             <x-ui.primary-button class="btn-sm mt-4 float-right"
-                                @click="$wire.nextStep()">Confirmer</x-ui.primary-button>
+                                    @click="$wire.nextStep({{ $totalStep }})">Valider ma demande et accéder au paiement</x-ui.primary-button>
                         @endif
                     @endauth
 
 
                 </section>
                 {{-- Fin Step 4 --}}
-
-                {{-- Début Step 5 : Paiement --}}
-                <section x-show="$wire.activeStep == 5">
-
-                    <h4 class="mb-4">5 - Paiement</h4>
-
-                    @if(!$hasError)
-                        Votre demande : Question par email
-                        Montant à payer : {{ $priceForHuman }}
-                    @else
-                        Merci de corriger les erreurs pour continuer.
-                    @endif
-
-                    @auth
-                        @if ($appointmentType)
-                            <x-ui.primary-button class="btn-sm mt-4 float-right"
-                                @click="$wire.nextStep({{ $totalStep }})">Valider ma demande et accéder au paiement</x-ui.primary-button>
-                        @endif
-                    @endauth
-
-                </section>
-                {{-- Fin Step 5 --}}
 
             </div>
         </div>

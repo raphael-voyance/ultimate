@@ -5,17 +5,18 @@ namespace App\Livewire;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Invoice;
+use App\Models\Product;
 use Livewire\Component;
+use App\Models\TimeSlot;
 use App\Models\TimeSlotDay;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rules\Password;
 use App\Concern\Invoice as ConcernInvoice;
-use App\Models\Product;
-use Illuminate\Database\Eloquent\Builder;
 
 class AppointmentModal extends Component
 {
@@ -24,11 +25,13 @@ class AppointmentModal extends Component
     public bool $appointmentModal = false;
     public array $appointment = [];
     public string|null $appointmentType = null;
-    public int $totalStep = 5;
+    public int $totalStep = 4;
     public int $activeStep = 1;
     public $timeSlotDays;
     public int|null $timeSlotDayId = null;
     public int|null $timeSlotId = null;
+    public string|null $timeSlotForHuman = null;
+    public string|null $timeSlotDayForHuman = null;
     public int $offsetTimeSlot = 0;
     public $totalOffsetTimeSlot;
     public array $writingConsultation = [];
@@ -50,12 +53,8 @@ class AppointmentModal extends Component
 
     // Services / Payment
     public $services;
-    private array $amounts = [
-        'writing' => 3000,
-        'live' => 5000,
-    ];
-    public int $amount;
-    public int $totalPrice;
+    //A faire : reccupérer les montant depuis la bdd
+    public $amounts;
     public string $priceForHuman;
 
     // Validation Forms
@@ -115,10 +114,35 @@ class AppointmentModal extends Component
             $this->appointmentModal = $appointmentModalIsVisible;
         }
 
+        // Hydrate $this->appointment = [] if Appointment exist in UserSession;
+        if (session()->has('appointment_form')) {
+            $this->appointment = session('appointment_form');
+            $this->appointmentType = session('appointment_form.type');
+            $this->activeStep = session('appointment_form.active_step') ? session('appointment_form.active_step') : 1;
+            $this->writingConsultation = session('appointment_form.writing_consultation') ? session('appointment_form.writing_consultation') : [];
+            $this->writingConsultationQuestion = isset(session('appointment_form.writing_consultation')['question']) ? session('appointment_form.writing_consultation')['question'] : null;
+            $this->timeSlotDayId = session('appointment_form.time_slot_day');
+            $this->timeSlotId = session('appointment_form.time_slot');
+            $this->timeSlotForHuman = session('appointment_form.time_slot_for_human');
+            $this->timeSlotDayForHuman = session('appointment_form.time_slot_day_for_human');
+        }else {
+            $this->appointment['time_slot_day'] = null;
+            $this->appointment['type'] = null;
+        }
+
         // Get all services
         $this->services = Product::where('type', 'SERVICE_PRODUCT')
             ->where('available', true)
             ->get();
+
+        // Get Amounts Services from bdd
+        foreach($this->services as $p) {
+            $this->amounts[$p->slug] = $p->price;
+        }
+
+        if($this->appointmentType != null) {
+            $this->priceForHuman = $this->setAmountPriceForHuman($this->amounts[$this->appointment['type']]);
+        }
 
         // Get User Informations if Exist
         if (Auth::user()) {
@@ -150,19 +174,8 @@ class AppointmentModal extends Component
 
         }
 
-        // Hydrate $this->appointment = [] if Appointment exist in UserSession;
-        if (session()->has('appointment_form')) {
-            $this->appointment = session('appointment_form');
-            $this->appointmentType = session('appointment_form.type');
-            $this->activeStep = session('appointment_form.active_step') ? session('appointment_form.active_step') : 1;
-            $this->writingConsultation = session('appointment_form.writing_consultation') ? session('appointment_form.writing_consultation') : [];
-            $this->writingConsultationQuestion = isset(session('appointment_form.writing_consultation')['question']) ? session('appointment_form.writing_consultation')['question'] : null;
-            $this->timeSlotDayId = session('appointment_form.time_slot_day');
-            $this->timeSlotId = session('appointment_form.time_slot');
-        }
-
         // Initialize SlotDays
-        // Déplacer ces fonction pour charger les timeslots dans la step concernée
+        // A faire : Déplacer ces fonction pour charger les timeslots dans la step concernée
         $totalSlotDays = TimeSlotDay::all()->count();
 
         $this->totalOffsetTimeSlot = ceil($totalSlotDays / 5);
@@ -252,12 +265,16 @@ class AppointmentModal extends Component
             "type" => null,
             "time_slot_day" => null,
             "time_slot" => null,
+            "time_slot_day_for_human" => null,
+            "time_slot_for_human" => null,
             "writing_consultation" => [],
             "active_step" => 1
         ];
         $this->activeStep = 1;
         $this->timeSlotDayId = null;
         $this->timeSlotId = null;
+        $this->timeSlotForHuman = null;
+        $this->timeSlotDayForHuman = null;
         $this->offsetTimeSlot = 0;
         $this->appointmentType = null;
         $this->writingConsultationQuestion = null;
@@ -325,11 +342,11 @@ class AppointmentModal extends Component
     //Navigate Steps -NEXT-
     public function nextStep(?int $step = null)
     {
-
         if ($this->activeStep === 3 && $this->appointmentType == 'writing') {
             $this->savewritingConsultationQuestion();
         }
 
+        // A la dernière step
         if($step === $this->totalStep) {
             //1 - Créer un token unique Invoice
             $user_id = Auth::user()->id;
@@ -349,7 +366,7 @@ class AppointmentModal extends Component
             //== liée à un appointment == appointment_id
 
             $invoice = Invoice::create([
-                'total_price' => $this->appointmentType === 'writing' ? $this->amounts['writing'] : $this->amounts['live'],
+                'total_price' => $this->amounts[$this->appointmentType],
                 'payment_invoice_token' => $invoice_token,
                 'appointment_id' => 1,
                 'user_id' => $user_id,
@@ -378,6 +395,8 @@ class AppointmentModal extends Component
             "type" => $this->appointmentType,
             "time_slot_day" => $this->timeSlotDayId,
             "time_slot" => $this->timeSlotId,
+            "time_slot_day_for_human" => $this->timeSlotDayForHuman,
+            "time_slot_for_human" => $this->timeSlotForHuman,
             "writing_consultation" => $this->writingConsultation,
             "active_step" => $this->activeStep
         ];
@@ -392,6 +411,8 @@ class AppointmentModal extends Component
             "type" => $this->appointmentType,
             "time_slot_day" => $this->timeSlotDayId,
             "time_slot" => $this->timeSlotId,
+            "time_slot_day_for_human" => $this->timeSlotDayForHuman,
+            "time_slot_for_human" => $this->timeSlotForHuman,
             "writing_consultation" => $this->writingConsultation,
             "active_step" => $this->activeStep
         ];
@@ -404,12 +425,28 @@ class AppointmentModal extends Component
         if($appointmentType == 'writing') {
             $this->timeSlotDayId = null;
             $this->timeSlotId = null;
+            $this->timeSlotDayForHuman = null;
+            $this->timeSlotForHuman = null;
             $this->appointment["time_slot_day"] = null;
             $this->appointment["time_slot"] = null;
+            $this->appointment["time_slot_day_for_human"] = null;
+            $this->appointment["time_slot_for_human"] = null;
         }
+
+        $this->priceForHuman = $this->setAmountPriceForHuman($this->amounts[$appointmentType]);
+
         $this->appointmentType = $appointmentType;
 
         $this->appointment["type"] = $this->appointmentType;
+
+    }
+
+    // Set Amount for human $this->priceForHuman
+    public function setAmountPriceForHuman($amount) {
+        $amount = $amount / 100;
+        $amount .= '.00 €';
+
+        return $amount;
     }
 
     // Consultations >>>>>>
@@ -472,8 +509,16 @@ class AppointmentModal extends Component
         $this->timeSlotDayId = $timeSlotDayId;
         $this->timeSlotId = $timeSlotId;
 
+        $this->timeSlotDayForHuman = Carbon::parse(TimeSlotDay::where('id', $timeSlotDayId)->firstOrFail()->day)->translatedFormat('l j F Y');
+        
+        $this->timeSlotForHuman = Carbon::parse(TimeSlot::where('id', $timeSlotId)->firstOrFail()->start_time)->format('H\hi');
+
         $this->appointment["time_slot_day"] = $this->timeSlotDayId;
         $this->appointment["time_slot"] = $this->timeSlotId;
+
+        $this->appointment["time_slot_day_for_human"] = $this->timeSlotDayForHuman;
+        $this->appointment["time_slot_for_human"] = $this->timeSlotForHuman;
+
     }
 
     //Navigate Timeslot -NEXT-

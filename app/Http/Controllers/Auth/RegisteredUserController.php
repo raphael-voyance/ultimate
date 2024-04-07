@@ -52,12 +52,20 @@ class RegisteredUserController extends Controller
         ]);
 
         $user->roles()->attach(2);
-        $user->profile()->create();
+        $user->profile()->create([
+            'avatar' => $this->createAvatar($user)
+        ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    private function createAvatar($user) {
+        $firstLetter = substr($user->first_name, 0, 1);
+        $secondLetter = substr($user->last_name, 0, 1);
+        return "https://via.placeholder.com/480x480.png/00bb99?text=$firstLetter$secondLetter";
     }
 }
