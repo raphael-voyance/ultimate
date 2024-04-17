@@ -13,9 +13,13 @@ class UserProfile extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['birthday', 'avatar', 'sexe', 'numerology', 'astrology', 'tarology'];
+    protected $fillable = ['birthday', 'avatar', 'sexe', 'numerology', 'astrology', 'tarology', 'contact'];
 
     public $timestamps = false;
+
+    protected $casts = [
+        'contact' => 'json',
+    ];
 
     public function user() :BelongsTo {
         return $this->belongsTo(User::class);

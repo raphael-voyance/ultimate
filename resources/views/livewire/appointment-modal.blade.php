@@ -31,21 +31,14 @@
         <div class="flex flex-wrap gap-2 py-4 px-5 mx-auto">
             <div x-data class="w-full">
 
-                @php
+                {{-- @php
                     dump('appointment //array ', $appointment);
                     dump('session appointment //array ', session('appointment_form'));
-                    
-                    
-                    
-                    
                     
                     dump('writingConsultationQuestion ', $writingConsultationQuestion);
                     
                     dump('session(appointment_form.writing_consultation) ', session('appointment_form.writing_consultation'));
-                @endphp
-                <br>
-                <br>
-                <br>
+                @endphp --}}
 
                 {{-- Début Step 1 : Selection du mode de consultation --}}
                 <section x-show="$wire.activeStep == 1">
@@ -535,13 +528,13 @@
                 <section x-show="$wire.activeStep == 4">
 
                     <h4 class="mb-4">
-                        4 - Confirmation de votre demande par 
+                        4 - Confirmation de votre demande 
                         @if($appointmentType == 'writing')
-                            écrit
+                            par écrit
                         @elseif ($appointmentType == 'tchat')
-                            par tchat
+                            de rendez-vous par tchat
                         @elseif ($appointmentType == 'phone')
-                            par téléphone
+                            de rendez-vous téléphone
                         @endif
                     </h4>
 

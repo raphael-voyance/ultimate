@@ -14,15 +14,14 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
 
-            $table->enum('appointment_type',['pay', 'barter', 'free'])->default('pay');
-            $table->enum('session_type', ['phone', 'tchat', 'writing'])->default('phone');
+            $table->enum('status',['pending', 'approved', 'confirmed', 'passed', 'concelled'])->default('pending');
+            $table->enum('appointment_type', ['phone', 'tchat', 'writing'])->default('phone');
 
             $table->text('request_reason')->nullable();
             $table->text('request_message')->nullable();
-            $table->boolean('request_approved')->default(false);
             $table->text('request_reply')->nullable();
 
-            $table->json('appointment_message')->nullable();
+            $table->text('appointment_message')->nullable();
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
@@ -30,6 +29,9 @@ return new class extends Migration
             $table->foreign('invoice_id')->references('id')->on('invoices');
             $table->unsignedBigInteger('time_slot_day_id')->nullable();
             $table->foreign('time_slot_day_id')->references('id')->on('time_slot_days');
+
+            $table->unsignedBigInteger('time_slot_id')->nullable();
+            $table->foreign('time_slot_id')->references('id')->on('time_slots');
 
             $table->timestamps();
         });

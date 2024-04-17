@@ -20,6 +20,7 @@ return new class extends Migration
             $table->json('tarology')->nullable();
             $table->string('sexe', 255)->nullable();
             $table->integer('age')->nullable();
+            $table->json('contact')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
     }

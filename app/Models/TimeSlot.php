@@ -22,6 +22,6 @@ class TimeSlot extends Model
 
     public function time_slot_days()
     {
-        return $this->belongsToMany(TimeSlotDay::class, 'time_slot_day_time_slot', 'time_slot_id', 'time_slot_day_id');
+        return $this->belongsToMany(TimeSlotDay::class, 'time_slot_day_time_slot', 'time_slot_id', 'time_slot_day_id')->withPivot('available');
     }
 }

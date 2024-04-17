@@ -175,6 +175,7 @@ class DatabaseSeeder extends Seeder
             Appointment::factory()->create([
                 'invoice_id' => $invoice->id,
                 'time_slot_day_id' => TimeSlotDay::factory()->create()->id,
+                'time_slot_id' => TimeSlot::factory()->create()->id,
             ]);
         }
 

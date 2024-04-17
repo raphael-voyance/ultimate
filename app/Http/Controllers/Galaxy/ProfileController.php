@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Http\Controllers\Controller;
+use App\Models\Invoice;
 
 class ProfileController extends Controller
 {
@@ -22,8 +23,11 @@ class ProfileController extends Controller
             $user->load('profile');
         }
 
+        $invoices = $user->invoices()->latest()->limit(5)->get();
+
         return view('galaxy.dashboard', [
             'user' => $user,
+            'invoices' => $invoices,
         ]);
     }
 

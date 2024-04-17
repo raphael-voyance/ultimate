@@ -12,11 +12,11 @@ class Invoice extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['total_price', 'payment_invoice_token', 'appointment_id', 'user_id', 'ref'];
+    protected $fillable = ['total_price', 'payment_invoice_token', 'appointment_id', 'user_id', 'ref', 'invoice_informations'];
 
-    public function appointment(): BelongsTo {
-        return $this->belongsTo(Appointment::class);
-    }
+    protected $casts = [
+        'invoice_informations' => 'json',
+    ];
 
     public function user(): HasOne {
         return $this->hasOne(User::class);

@@ -61,7 +61,7 @@
         <x-slot:content>
             <!-- Début Page Heading -->
             @if (isset($header))
-            <header class="w-full max-w-6xl mx-auto mb-6 bg-neutral text-neutral-100 shadow-md rounded-md sm:px-6 lg:px-8">
+            <header class="w-full max-w-6xl mx-auto mb-6 bg-neutral text-neutral-100 shadow-md rounded-md">
                 <div class="mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>

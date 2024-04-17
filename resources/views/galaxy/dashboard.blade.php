@@ -21,18 +21,19 @@
             </x-slot:actions>
         </x-ui.card>
 
-        <x-ui.card title="Vos séances passées">
+        <x-ui.card title="Vos rendez-vous">
+            <div class="text-xl font-bold">
+                Séances passées :
+            </div>
             <ul>
                 <li>le : 18/05/2023</li>
                 <li>le : 08/03/2023</li>
                 <li>le : 02/12/2022</li>
             </ul>
-            <x-slot:actions>
-                <x-ui.link label="Voir toutes les séances" href="{{ route('home') }}" />
-            </x-slot:actions>
-        </x-ui.card>
 
-        <x-ui.card title="Vos séances à venir">
+            <div class="text-xl font-bold">
+                Séances à venir :
+            </div>
             <ul>
                 <li>le : 27/10/2023</li>
                 <li>le : 30/12/2023</li>
@@ -42,7 +43,43 @@
             </x-slot:actions>
         </x-ui.card>
 
-        <x-ui.card title="Vos prédictions">
+        <x-ui.card title="Paiements">
+            <ul>
+                @foreach ($invoices as $invoice)
+                <li class="flex flex-row justify-between">
+                    <a href="{{ route('invoice.view', $invoice->payment_invoice_token) }}">{{ Str::limit($invoice->ref, 15) }}</a>
+                    @php
+                        $status = '';
+                        if($invoice->status == 'PENDING') {
+                            $status = 'En attente';
+                        }elseif ($invoice->status == 'PAID') {
+                            $status = 'Payé';
+                        }elseif ($invoice->status == 'REFUNDED') {
+                            $status = 'Remboursé';
+                        }elseif ($invoice->status == 'CANCELLED') {
+                            $status = 'Annulé';
+                        }elseif ($invoice->status == 'FREE') {
+                            $status = 'Gratuit';
+                        }
+                    @endphp
+                    <x-badge value="{{ $status }}"
+                    @class([
+                        'badge-success' => $invoice->status == 'PAID',
+                        'badge-warning' => $invoice->status == 'PENDING',
+                        'badge-secondary' => $invoice->status == 'REFUNDED',
+                        'badge-error' => $invoice->status == 'CANCELLED',
+                        'badge-primary' => $invoice->status == 'FREE']) 
+                        />
+                </li>    
+                @endforeach
+                
+            </ul>
+            <x-slot:actions>
+                <x-ui.link label="Voir tous les paiements" href="{{ route('home') }}" />
+            </x-slot:actions>
+        </x-ui.card>
+
+        <x-ui.card title="Prévisions">
             <ul>
                 <li>Votre chemin de vie : 9</li>
                 <li>Votre année personnelle</li>

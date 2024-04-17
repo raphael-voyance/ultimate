@@ -17,6 +17,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rules\Password;
 use App\Concern\Invoice as ConcernInvoice;
+use App\Models\Appointment;
 
 class AppointmentModal extends Component
 {
@@ -350,8 +351,8 @@ class AppointmentModal extends Component
         if($step === $this->totalStep) {
             //1 - Créer un token unique Invoice
             $user_id = Auth::user()->id;
-            $create_invoice_token = new ConcernInvoice($user_id);
-            $invoice_token = $create_invoice_token->get_token();
+            $create_invoice = new ConcernInvoice($user_id);
+            $invoice_token = $create_invoice->get_token();
 
             //2 - Créer une invoice en bdd avec les valeurs : 
             //== total_price payment_invoice_token appointment_id ref
@@ -365,15 +366,64 @@ class AppointmentModal extends Component
             //== liée au user connecté == user_id
             //== liée à un appointment == appointment_id
 
+            $appointmentInformations = [
+                "type" => $this->appointmentType,
+                "time_slot_day" => $this->timeSlotDayId,
+                "time_slot" => $this->timeSlotId,
+                "time_slot_day_for_human" => $this->timeSlotDayForHuman,
+                "time_slot_for_human" => $this->timeSlotForHuman,
+                "writing_consultation"  => $this->writingConsultation,
+            ];
+
             $invoice = Invoice::create([
                 'total_price' => $this->amounts[$this->appointmentType],
                 'payment_invoice_token' => $invoice_token,
-                'appointment_id' => 1,
+                'invoice_informations' => json_encode($appointmentInformations),
                 'user_id' => $user_id,
-                'ref' => $create_invoice_token->get_ref(),
+                'ref' => $create_invoice->get_ref(),
             ]);
-            //== liée à un product == attach(product_id)
 
+            //dd(Product::where('slug', $this->appointmentType)->first()->id);
+            $invoice->products()->attach(Product::where('slug', $this->appointmentType)->first()->id);
+            //== lié à un product == attach(product_id)
+
+            //dd($invoice);
+
+            $appointment = Appointment::create([
+                'user_id' => $user_id,
+                'time_slot_day_id' => $this->timeSlotDayId, 
+                'time_slot_id' => $this->timeSlotId,
+                'invoice_id' => $invoice->id,
+                
+                'appointment_message' => $this->writingConsultationQuestion ? $this->writingConsultationQuestion : null,
+
+                'appointment_type' => $this->appointmentType,
+            ]);
+
+
+            if($this->appointmentType != 'writing' && $appointment) {
+                $timeSlot = TimeSlot::where('id', $this->timeSlotId)
+                ->with(['time_slot_days' => function ($query) {
+                    $query->where('time_slot_day_id', $this->timeSlotDayId);
+                }])
+                ->firstOrFail();
+
+                $available = $timeSlot->time_slot_days->first()->pivot->available;
+
+                if($available) {
+                    $timeSlot->time_slot_days()->updateExistingPivot($this->timeSlotDayId, ['available' => false]);
+                }else {
+                    $this->activeStep = 3;
+                    session(['appointment_form.active_step' => $this->activeStep]);
+                    $this->dispatch('refreshPage');
+                    return;
+                }
+
+                
+            }
+
+            //dd($invoice, $appointment);
+            
             //3 - Rediriger l'utilisateur sur la page de paiement en passant le payment_invoice_token en paramètre d'url
 
             // in work

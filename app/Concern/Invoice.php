@@ -36,4 +36,12 @@ class Invoice
 
         return $reference;
     }
+
+    // Set Amount for human
+    public function setAmountPriceForHuman($amount) {
+        $amount = $amount / 100;
+        $amount .= '.00 €';
+
+        return $amount;
+    }
 }

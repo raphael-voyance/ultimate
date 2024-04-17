@@ -77,6 +77,10 @@ class User extends Authenticatable implements Searchable, MustVerifyEmail
         return $this->hasOne(UserProfile::class);
     }
 
+    public function invoices() :HasMany {
+        return $this->hasMany(Invoice::class);
+    }
+
     public function roles() :BelongsToMany {
         return $this->belongsToMany(Role::class);
     }
