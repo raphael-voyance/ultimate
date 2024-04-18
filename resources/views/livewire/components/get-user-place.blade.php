@@ -1,17 +1,27 @@
-<div>
+<div x-data="{
+    checkRequest: {{ $checkRequest }}
+}">
+    @if (isset($userContact->address->facturation))
+        <p>{{ $user->fullName() }}</p>
+        <p>
+            {{ isset($userContact->address->facturation->number_of_way) ? $userContact->address->facturation->number_of_way . ', ' : '' }}
 
-    {{ isset($userContact->address->facturation->number_of_way) ? $userContact->address->facturation->number_of_way . ', ' : '' }}
+            {{ isset($userContact->address->facturation->type_of_way) ? $userContact->address->facturation->type_of_way : '' }}
+            
+            {{ isset($userContact->address->facturation->name_of_way) ? $userContact->address->facturation->name_of_way : '' }}
+        </p>
 
-    {{ isset($userContact->address->facturation->type_of_way) ? $userContact->address->facturation->type_of_way : '' }}
+        <p>
+            {{ isset($userContact->address->facturation->postal_code) ? $userContact->address->facturation->postal_code : '' }} 
     
-    {{ isset($userContact->address->facturation->name_of_way) ? $userContact->address->facturation->name_of_way : '' }} <br>
-
-    {{ isset($userContact->address->facturation->postal_code) ? $userContact->address->facturation->postal_code : '' }} 
+            {{ isset($userContact->address->facturation->city) ? $userContact->address->facturation->city : '' }} - 
+            
+            {{ isset($userContact->address->facturation->country) ? $userContact->address->facturation->country : '' }}
+        </p>
+        @elseif(json_decode($checkRequest)->errors->facturation_adress)
+            {{ json_decode($checkRequest)->errors->facturation_adress }}
+        @endif
     
-    {{ isset($userContact->address->facturation->city) ? $userContact->address->facturation->city : '' }} - 
-    
-    {{ isset($userContact->address->facturation->country) ? $userContact->address->facturation->country : '' }}
-
     {{-- si il y a des produits physiques --}}
     @if($hasPhysicalsProducts)
     <br>
@@ -20,10 +30,10 @@
     Code postal - Ville - Pays<br>
     @endif
 
-    @if($invoice_status == 'PENDING')
-    <button class="btn btn-sm btn-accent">
-        Modifier mes coordonnées
-    </button>
+    @if ($invoice_status == 'PENDING')
+    <div class="mt-4">
+        <button x-text="checkRequest.errors.facturation_adress ? 'Ajouter votre adresse de facturation' : 'Modifier  votre adresse de facturation'" class="btn btn-sm btn-accent"></button>
+    </div>
     @endif
     
 </div>

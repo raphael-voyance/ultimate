@@ -16,6 +16,8 @@ export default defineConfig({
 
                 'resources/js/add/hero_home.js',
                 'resources/css/add/hero_home.css',
+
+                'resources/js/add/payment.js',
             ],
             refresh: true,
         }),

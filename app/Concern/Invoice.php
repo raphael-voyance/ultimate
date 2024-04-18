@@ -2,6 +2,7 @@
 
 namespace App\Concern;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class Invoice
@@ -43,5 +44,11 @@ class Invoice
         $amount .= '.00 €';
 
         return $amount;
+    }
+
+    // Get invoiceDate for Human
+    public function getInvoiceDateForHuman($invoiceDate) {
+        $dt = Carbon::parse($invoiceDate)->locale('fr');
+        return $dt->isoFormat('dddd D MMMM YYYY');
     }
 }

@@ -10,6 +10,7 @@ class GetUserPlace extends Component
     public $userContact;
     public $hasPhysicalsProducts;
     public $invoice_status;
+    public $checkRequest;
 
     public function render()
     {
