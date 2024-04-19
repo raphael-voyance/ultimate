@@ -5,8 +5,8 @@
         </h2>
     </x-slot>
 
-            <article class="p-4 sm:p-8 bg-neutral sm:rounded-lg">
-                Astrologie
-            </article>
+    <article class="p-4 sm:p-8 bg-neutral sm:rounded-lg">
+        Astrologie
+    </article>
 
 </x-app-layout>

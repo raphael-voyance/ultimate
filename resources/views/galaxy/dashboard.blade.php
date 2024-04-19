@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
-            <span class="">Bonjour {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
+            <span class="">Bonjour {{ Auth::user()->fullName() }} </span>
             <span>Tableau de bord</span>
         </h2>
     </x-slot>
@@ -10,14 +10,18 @@
 
         <x-ui.card title="Informations personnelles">
             <ul>
-                <li>Nom : </li>
-                <li>Prénom : </li>
-                <li>Date de naissance : </li>
-                <li>Numéro de téléphone : </li>
-                <li>Adresse email : </li>
+                <li>Nom : {{ Auth::user()->last_name }}</li>
+                <li>Prénom : {{ Auth::user()->first_name }}</li>
+                <li>Adresse email : {{ Auth::user()->email }}</li>
+                @if(Auth::user()->phone())
+                <li>Numéro de téléphone : {{ Auth::user()->phone() }}</li>
+                @endif
+                @if(Auth::user()->birthday())
+                <li>Date de naissance : {{ Auth::user()->birthday() }}</li>
+                @endif
             </ul>
             <x-slot:actions>
-                <x-ui.link label="Modifier mes informations" href="{{ route('home') }}" />
+                <x-ui.link label="Modifier mes informations" href="{{ route('my_space.profile.edit') }}" />
             </x-slot:actions>
         </x-ui.card>
 
@@ -43,7 +47,8 @@
             </x-slot:actions>
         </x-ui.card>
 
-        <x-ui.card title="Paiements">
+        @if($invoices->count() >= 1)
+        <x-ui.card title="Paiements & facturations">
             <ul>
                 @foreach ($invoices as $invoice)
                 <li class="flex flex-row justify-between">
@@ -78,6 +83,7 @@
                 <x-ui.link label="Voir tous les paiements" href="{{ route('home') }}" />
             </x-slot:actions>
         </x-ui.card>
+        @endif
 
         <x-ui.card title="Prévisions">
             <ul>

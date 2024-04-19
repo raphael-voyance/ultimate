@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Searchable\Searchable;
@@ -62,8 +63,61 @@ class User extends Authenticatable implements Searchable, MustVerifyEmail
         'password' => 'hashed',
     ];
 
+    public function registeredAt() {
+        $dt = Carbon::parse($this->created_at)->locale('fr');
+        return $dt->isoFormat('DD/MM/YYYY');
+    }
+
     public function fullName() {
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function sexe() {
+        if($this->profile->sexe == 'M') {
+            return 'Homme';
+        }
+        if($this->profile->sexe == 'F') {
+            return 'Femme';
+        }
+        if($this->profile->sexe == 'NB') {
+            return 'Non binaire';
+        }
+        return false;
+    }
+
+    public function facturateAddress() {
+        $contact = json_decode($this->profile->contact);
+
+        if(isset($contact->address->facturation)) {
+            $a = $contact->address->facturation->number_of_way . ', ';
+            $a .= $contact->address->facturation->type_of_way . ' ';
+            $a .= $contact->address->facturation->name_of_way;
+            $a .= '<br>';
+            $a .= $contact->address->facturation->postal_code . ' ';
+            $a .= $contact->address->facturation->city;
+            $a .= '<br>';
+            $a .= $contact->address->facturation->country;
+
+            return $a;
+        }
+        
+        return false;
+    }
+
+    public function birthday() {
+        if(!$this->profile->birthday) {
+            return false;
+        }
+        $dt = Carbon::parse($this->profile->birthday)->locale('fr');
+        return $dt->isoFormat('dddd D MMMM YYYY');
+    }
+
+    public function phone() {
+        $contact = json_decode($this->profile->contact);
+        if(isset($contact->phone)) {
+            return $contact->phone;
+        }
+        return false;
     }
 
     public function hasRole(string $role) {
