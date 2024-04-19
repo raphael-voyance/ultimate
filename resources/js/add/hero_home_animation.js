@@ -1,5 +1,4 @@
 //Imports
-import { wrapElements } from '../helpers/utils.js';
 import { gsap } from "gsap";
 import "splitting/dist/splitting.css";
 import "splitting/dist/splitting-cells.css";

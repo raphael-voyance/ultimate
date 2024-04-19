@@ -198,7 +198,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'writing',
                 'description' => 'Voyance détaillée par écrit.',
                 'price' => 3500,
-                'stripe_price_id' => 'price_1OjKamLzRFCnOVo7ZUMaJAPa',
+                'stripe_price_id' => 'price_1P6P6yLzRFCnOVo7AjQe5c4R',
                 'type' => 'SERVICE_PRODUCT'],
             )
             ->create();

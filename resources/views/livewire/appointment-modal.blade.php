@@ -48,25 +48,11 @@
 
                     <div class="flex flex-col gap-4 justify-start content-start align-middle">
                         @foreach ($services as $service)
-                            @if($service->stripe_price_id == 'price_1OjKbnLzRFCnOVo763YXK88S')
-                                <button wire:click="selectAppointmentType('phone')" @class([
+                                <button wire:click="selectAppointmentType('{{ $service->slug }}')" @class([
                                     'consultation_type text-left px-4 py-2 border border-solid border-white/30 transition-all hover:border-primary/50 focus:border-primary/50 hover:text-primary focus:text-primary',
                                     '!border-primary/50 shadow-sm shadow-primary/50 !text-primary cursor-default' =>
-                                        $appointmentType == 'phone',
+                                        $appointmentType == $service->slug,
                                 ])>{{ $service->name }}</button>
-                            @elseif($service->stripe_price_id == 'price_1OjX7aLzRFCnOVo7IgNnkDO0')
-                                <button wire:click="selectAppointmentType('tchat')" @class([
-                                    'consultation_type text-left px-4 py-2 border border-solid border-white/30 transition-all hover:border-primary/50 focus:border-primary/50 hover:text-primary focus:text-primary',
-                                    '!border-primary/50 shadow-sm shadow-primary/50 !text-primary cursor-default' =>
-                                        $appointmentType == 'tchat',
-                                ])>{{ $service->name }}</button>
-                            @elseif($service->stripe_price_id == 'price_1OjKamLzRFCnOVo7ZUMaJAPa')
-                                <button wire:click="selectAppointmentType('writing')" @class([
-                                    'consultation_type text-left px-4 py-2 border border-solid border-white/30 transition-all hover:border-primary/50 focus:border-primary/50 hover:text-primary focus:text-primary',
-                                    '!border-primary/50 shadow-sm shadow-primary/50 !text-primary cursor-default' =>
-                                        $appointmentType == 'writing',
-                                ])>{{ $service->name }}</button>
-                            @endif
                         @endforeach 
                     </div>
 
@@ -568,8 +554,8 @@
 
                     @auth
                         @if ($appointmentType)
-                            <x-ui.secondary-button class="btn-sm btn-outline mt-4 float-left"
-                                    @click="$wire.prevStep()">Modifier</x-ui.secondary-button>
+                            <button class="btn btn-sm btn-secondary btn-outline mt-4 float-left"
+                                    @click="$wire.prevStep()">Modifier</button>
                             <x-ui.primary-button class="btn-sm mt-4 float-right"
                                     @click="$wire.nextStep({{ $totalStep }})">Valider ma demande et accéder au paiement</x-ui.primary-button>
                         @endif

@@ -15,6 +15,7 @@ Route::middleware(['auth'])->prefix('payment')->as('payment.')->group(function()
 
     Route::get('/{payment_invoice_token}', [PaymentController::class, 'create'])->name('create');
     Route::post('/{payment_invoice_token}', [PaymentController::class, 'store'])->name('store');
+    Route::delete('/delete/{payment_invoice_token}', [PaymentController::class, 'delete'])->name('delete');
     
 });
 

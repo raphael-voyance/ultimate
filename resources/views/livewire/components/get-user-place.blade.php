@@ -18,8 +18,8 @@
             
             {{ isset($userContact->address->facturation->country) ? $userContact->address->facturation->country : '' }}
         </p>
-        @elseif(json_decode($checkRequest)->errors->facturation_adress)
-            {{ json_decode($checkRequest)->errors->facturation_adress }}
+        @elseif(json_decode($checkRequest)->errors->facturation_address)
+            {{ json_decode($checkRequest)->errors->facturation_address }}
         @endif
     
     {{-- si il y a des produits physiques --}}
@@ -32,7 +32,11 @@
 
     @if ($invoice_status == 'PENDING')
     <div class="mt-4">
-        <button x-text="checkRequest.errors.facturation_adress ? 'Ajouter votre adresse de facturation' : 'Modifier  votre adresse de facturation'" class="btn btn-sm btn-accent"></button>
+        @php
+            $cr = json_decode($checkRequest);
+            $btnText = $cr && isset($cr->facturation_address) ? 'Ajouter votre adresse de facturation' : 'Modifier  votre adresse de facturation';
+        @endphp
+        @livewire('modal-user-profile-address-form', ['btnText' => $btnText])
     </div>
     @endif
     

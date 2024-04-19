@@ -75,17 +75,23 @@
                     <h3 class="mb-2">Contact : </h3>
                     <div>
                     Tel :
-                    @if(json_decode($checkRequest)->errors->phone)
+                    @if(isset(json_decode($checkRequest)->errors->phone))
                         {{ json_decode($checkRequest)->errors->phone }}
                     @endif
+                    {{ isset($userContact->phone) ? $userContact->phone : '' }}
                     </div>
-                    <div>
+                    <div class="break-words">
                         Email : {{ $user->email }}
                     </div>
                     
                     @if ($invoice->status == 'PENDING')
+                    
                     <div class="mt-4">
-                        <button x-text="checkRequest.errors.phone ? 'Ajouter un numéro de téléphone' : 'Modifier vos coordonnées'" class="btn btn-sm btn-accent"></button>
+                        @php
+                            $cr = json_decode($checkRequest);
+                            $btnText = $cr && isset($cr->phone) ? 'Ajouter votre numéro de téléphone' : 'Modifier vos coordonnées';
+                        @endphp
+                        @livewire('modal-user-profile-contact-form', ['btnText' => $btnText])
                     </div>
                     @endif
 
@@ -103,6 +109,7 @@
 
         @if ($invoice->status == 'PENDING')
 
+        @if (json_decode($checkRequest)->hasErrors == true)
             <div class="alert mb-4">
                 <div>
                     <p>
@@ -117,6 +124,7 @@
                 
                 
             </div>
+        @endif
             {{-- @if ($checkRequest['hasErrors'] == true)
          @foreach ($checkRequest['errors'] as $e)
 
@@ -128,8 +136,9 @@
             <form method="POST"
                 action="{{ route('payment.store', ['payment_invoice_token' => $invoice->payment_invoice_token]) }}">
                 @csrf
+                <input type="hidden" id="payment_delete_route" value="{{ route('payment.delete', ['payment_invoice_token' => $invoice->payment_invoice_token ]) }}" />
                 <div class="flex flex-row gap-4 justify-end">
-                    <button class="btn btn-error">
+                    <button id="cancel_request" class="btn btn-error">
                         Annuler ma demande
                     </button>
                     <template x-if="!checkRequest.hasErrors">
