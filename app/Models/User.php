@@ -112,6 +112,28 @@ class User extends Authenticatable implements Searchable, MustVerifyEmail
         return $dt->isoFormat('dddd D MMMM YYYY');
     }
 
+    public function birthDateInformations() {
+        $birthDateInformations = json_decode($this->profile->astrology);
+        
+        if(!$birthDateInformations) {
+            return false;
+        }
+
+        $a = [];
+        
+        if(isset($birthDateInformations->city_of_birth)) {
+           $a['city_of_birth'] = $birthDateInformations->city_of_birth;
+        }
+        if(isset($birthDateInformations->time_of_birth)) {
+            $a['time_of_birth'] = $birthDateInformations->time_of_birth;
+        }
+        if(isset($birthDateInformations->native_country)) {
+            $a['native_country'] = $birthDateInformations->native_country;
+        }
+
+        return $a;
+    }
+
     public function phone() {
         $contact = json_decode($this->profile->contact);
         if(isset($contact->phone)) {

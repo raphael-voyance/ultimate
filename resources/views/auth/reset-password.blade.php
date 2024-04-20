@@ -5,8 +5,12 @@
             Pour réinitialiser votre mot de passe, remplissez le formulaire suivant :
             </div>
 
+            @if(Session::has('status'))
+            {{Session::has('status')}}
+            @endif
+
             <div class="mt-4 flex items-center justify-between">
-                <form method="POST" action="{{ route('password.email') }}" class="w-full">
+                <form method="POST" action="{{ route('password.store') }}" class="w-full">
                     @csrf
 
                     <!-- Email Address -->

@@ -19,6 +19,16 @@
                         <img class="h-auto w-full mx-auto"
                             src="{{ $user->profile->avatar }}"
                             alt="{{ Auth::user()->fullName() }}" />
+
+                            @if(Auth::user()->sexe())
+                                @if (Auth::user()->sexe() == 'Homme')
+                                <i class="fa-duotone fa-mars"></i>
+                                @elseif (Auth::user()->sexe() == 'Femme')
+                                <i class="fa-duotone fa-venus"></i>
+                                @else
+                                <i class="fa-duotone fa-mars-and-venus"></i>
+                                @endif
+                            @endif
                     </div>
                     <h2 class="text-gray-900 font-bold text-lg leading-8 my-1">{{ Auth::user()->fullName() }}</h2>
                     
@@ -53,45 +63,63 @@
                         <span class="tracking-wide">A propos de vous :</span>
                     </div>
                     <div class="text-gray-700">
+
                         <div class="grid md:grid-cols-2 text-sm">
-                            <div class="grid grid-cols-2">
-                                <div class="px-4 py-2 font-semibold">Prénom</div>
-                                <div class="px-4 py-2">{{ Auth::user()->first_name }}</div>
-                            </div>
-                            <div class="grid grid-cols-2">
-                                <div class="px-4 py-2 font-semibold">Nom</div>
-                                <div class="px-4 py-2">{{ Auth::user()->last_name }}</div>
-                            </div>
-                            @if(Auth::user()->sexe())
-                            <div class="grid grid-cols-2">
-                                <div class="px-4 py-2 font-semibold">Sexe</div>
-                                <div class="px-4 py-2">{{ Auth::user()->sexe() }}</div>
-                            </div>
-                            @endif
                             @if(Auth::user()->phone())
                             <div class="grid grid-cols-2">
                                 <div class="px-4 py-2 font-semibold">Téléphone</div>
                                 <div class="px-4 py-2">{{ Auth::user()->phone() }}</div>
                             </div>
                             @endif
-                            @if(Auth::user()->facturateAddress())
-                            <div class="grid grid-cols-2">
-                                <div class="px-4 py-2 font-semibold">Adresse de facturation</div>
-                                <div class="px-4 py-2">{!! Auth::user()->facturateAddress() !!}</div>
-                            </div>
-                            @endif
-                            
+
                             <div class="grid grid-cols-2">
                                 <div class="px-4 py-2 font-semibold">Email</div>
                                 <div class="px-4 py-2 break-words">
                                     <a class="text-blue-800" href="mailto:jane@example.com">{{ Auth::user()->email }}</a>
                                 </div>
                             </div>
+                        </div>
 
+                        <hr>
+
+                        <div class="grid md:grid-cols-2 text-sm">
+                            @if(Auth::user()->facturateAddress())
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Adresse de facturation</div>
+                                <div class="px-4 py-2">{!! Auth::user()->facturateAddress() !!}</div>
+                            </div>
+                            @endif
+                        </div>
+
+                        <hr>
+
+                        <div class="grid md:grid-cols-2 text-sm">
                             @if(Auth::user()->birthday())
                             <div class="grid grid-cols-2">
                                 <div class="px-4 py-2 font-semibold">Date de naissance</div>
                                 <div class="px-4 py-2">{{ Auth::user()->birthday() }}</div>
+                            </div>
+                            @endif
+
+                            @if(Auth::user()->birthDateInformations())
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Informations de naissance</div>
+                                <div class="px-4 py-2">
+                                    {{-- {{ dd(Auth::user()->birthDateInformations())}} --}}
+                                    <ul>
+                                        @if(isset(Auth::user()->birthDateInformations()['time_of_birth']))
+                                        <li>Heure : {{ Auth::user()->birthDateInformations()['time_of_birth'] }}</li>
+                                        @endif
+
+                                        @if(isset(Auth::user()->birthDateInformations()['city_of_birth']))
+                                        <li>Ville : {{ Auth::user()->birthDateInformations()['city_of_birth'] }}</li>
+                                        @endif
+                                        
+                                        @if(isset(Auth::user()->birthDateInformations()['native_country']))
+                                        <li>Pays : {{ Auth::user()->birthDateInformations()['native_country'] }}</li>
+                                        @endif
+                                    </ul>
+                                </div>
                             </div>
                             @endif
                         </div>

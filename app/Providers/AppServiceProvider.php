@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Invoice;
-use App\Policies\InvoicePolicy;
 use App\Policies\AuthorizationRoles;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
