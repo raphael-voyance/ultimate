@@ -32,24 +32,21 @@
                 <div class="grid md:grid-cols-6 grid-cols-1 gap-4 my-8 justify-center items-baseline">
 
                     <div class="md:col-span-3 h-full">
-                        <div class="relative p-4 pt-10 bg-primary w-full h-full m-auto border-t-2">
-                            <div class="life_path absolute -top-7 left-[50%] -translate-x-[50%] w-16 h-16 bg-primary pt-5 text-xl text-center rounded-full"></div>
+                        <div class="relative p-4 pt-10 bg-indigo-400 w-full h-full m-auto border-t-2">
+                            <div class="life_path absolute -top-7 left-[50%] -translate-x-[50%] w-16 h-16 bg-indigo-400 pt-5 text-xl text-center rounded-full"></div>
     
                             <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis unde quaerat quasi iusto veniam commodi omnis voluptate deserunt, quis corporis quibusdam, nihil recusandae ut autem distinctio obcaecati libero nobis minima.</p>
-                            
+                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis unde quaerat quasi iusto veniam commodi omnis voluptate deserunt, quis corporis quibusdam, nihil recusandae ut autem distinctio obcaecati libero nobis minima.</p>
                         </div>
                     </div>
 
                     <div class="md:col-span-3 h-full">
-                        <div class="bg-accent border-t-2 my-8 h-full">
-                            <div class="relative p-4 pt-10 max-w-lg w-full m-auto mt-6 md:mt-0">
-                                <div class="annual_path absolute -top-7 left-[50%] -translate-x-[50%] w-16 h-16 bg-accent pt-5 text-xl text-center rounded-full"></div>
-        
-                                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis unde quaerat quasi iusto veniam commodi omnis voluptate deserunt, quis corporis quibusdam, nihil recusandae ut autem distinctio obcaecati libero nobis minima.</p>
-                                <div class="container_arcane_annual_path grid md:grid-cols-2 items-center mt-8 text-center"></div>
-                            </div>
-        
-                            
+                        <div class="relative p-4 pt-10 bg-amber-500 w-full h-full m-auto border-t-2">
+                            <div class="annual_path absolute -top-7 left-[50%] -translate-x-[50%] w-16 h-16 bg-amber-500 pt-5 text-xl text-center rounded-full"></div>
+    
+                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis unde quaerat quasi iusto veniam commodi omnis voluptate deserunt, quis corporis quibusdam, nihil recusandae ut autem distinctio obcaecati libero nobis minima.</p>
+
+                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis unde quaerat quasi iusto veniam commodi omnis voluptate deserunt, quis corporis quibusdam, nihil recusandae ut autem distinctio obcaecati libero nobis minima.</p>
                         </div>
                     </div>
                 </div>
@@ -57,20 +54,20 @@
                     <div class="md:col-span-2 h-full">
                         <div class="relative p-4 pt-10 max-w-lg w-full m-auto mt-6 md:mt-0">
         
-                            <div class="container_arcane_life_path mt-8 text-center"></div>
+                            <div class="container_arcane_life_path mt-8 text-center bg-sky-600 px-4 py-5"></div>
             
                         </div>
                     </div>
                     <div class="md:col-span-2 h-full">
                         <div class="relative p-4 pt-10 max-w-lg w-full m-auto mt-6 md:mt-0">
         
-                            <div class="container_arcane_annual_path mt-8 text-center"></div>
+                            <div class="container_arcane_annual_path mt-8 text-center bg-rose-500 px-4 py-5"></div>
                         </div>
                     </div>
                     <div class="md:col-span-2 h-full">
                         <div class="relative p-4 pt-10 max-w-lg w-full m-auto mt-6 md:mt-0">
         
-                            <div class="container_arcane_sum_path mt-8 text-center"></div>
+                            <div class="container_arcane_sum_path mt-8 text-center bg-teal-500 px-4 py-5"></div>
                         </div>
                     </div>
                 </div>

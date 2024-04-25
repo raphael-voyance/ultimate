@@ -89,7 +89,7 @@ window.addEventListener("load", () => {
                 $arcaneSumPathImg = response.data.tarology.arcaneSumPath;
 
                 $arcaneLifePathDescEl.innerText = $arcaneLifePathImg.description;
-                $arcaneLifePathDescEl.classList = 'text-sm mt-2 md:mt-0 text-center';
+                $arcaneLifePathDescEl.classList = 'text-sm mt-3 text-center';
                 $arcaneLifePathImgEl.classList = 'max-w-[110px] m-auto';
                 $arcaneLifePathImgEl.setAttribute('src', $arcaneLifePathImg.imgPath);
                 $arcaneLifePathImgEl.setAttribute('alt', $arcaneLifePathImg.name);
@@ -100,7 +100,7 @@ window.addEventListener("load", () => {
                 });
 
                 $arcaneAnnualPathDescEl.innerText = $arcaneAnnualPathImg.description;
-                $arcaneAnnualPathDescEl.classList = 'text-sm mt-2 md:mt-0 text-center';
+                $arcaneAnnualPathDescEl.classList = 'text-sm mt-3 text-center';
                 $arcaneAnnualPathImgEl.classList = 'max-w-[110px] m-auto';
                 $arcaneAnnualPathImgEl.setAttribute('src', $arcaneAnnualPathImg.imgPath);
                 $arcaneAnnualPathImgEl.setAttribute('alt', $arcaneAnnualPathImg.name);
@@ -111,7 +111,7 @@ window.addEventListener("load", () => {
                 });
 
                 $arcaneSumPathDescEl.innerText = $arcaneSumPathImg.description;
-                $arcaneSumPathDescEl.classList = 'text-sm mt-2 md:mt-0 text-center';
+                $arcaneSumPathDescEl.classList = 'text-sm mt-3 text-center';
                 $arcaneSumPathImgEl.classList = 'max-w-[110px] m-auto';
                 $arcaneSumPathImgEl.setAttribute('src', $arcaneSumPathImg.imgPath);
                 $arcaneSumPathImgEl.setAttribute('alt', $arcaneSumPathImg.name);
