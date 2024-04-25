@@ -86,11 +86,24 @@
         @endif
 
         <x-ui.card title="Prévisions">
+            
+
+            
+
+            
             <ul>
-                <li>Votre chemin de vie : 9</li>
-                <li>Votre année personnelle</li>
-                <li>Faire un tirage de Tarot</li>
+                @if(!$numerology)
+                <li>Pour calculer votre chemin de vie merci de renseigner votre date de naissance depuis la page des prévisions. Pour cela cliquer sur "En découvrir plus".</li>
+                @else
+                <li>Votre date de naissance : {{ $numerology->birthdate }}</li>
+                <li>Votre chemin de vie : {{ $numerology->lifePath }}</li>
+                <li>Votre année personnelle : {{ $numerology->annualPath }}</li>
+                @endif
+                <li><a href="{{ route('my_space.previsions') }}">Faire un tirage de Tarot</a></li>
             </ul>
+            <x-slot:actions>
+                <x-ui.link label="En découvrir plus" href="{{ route('my_space.previsions') }}" />
+            </x-slot:actions>
         </x-ui.card>
 
         <x-ui.card title="Articles enregistrés">

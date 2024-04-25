@@ -40,17 +40,17 @@
                         </li>
 
                         <li
-                            class="overflow-hidden group border border-secondary/40 rounded-md w-28 text-center px-2 py-6 h-32 flex flex-col justify-center shadow-md shadow-secondary/50 @if(request()->routeIs('my_space.predictions')) border-primary/40 shadow-primary/50 @endif">
-                            <div class="mb-2 @if(request()->routeIs('my_space.predictions')) opacity-0 @endif group-hover:opacity-0">
+                            class="overflow-hidden group border border-secondary/40 rounded-md w-28 text-center px-2 py-6 h-32 flex flex-col justify-center shadow-md shadow-secondary/50 @if(request()->routeIs('my_space.previsions')) border-primary/40 shadow-primary/50 @endif">
+                            <div class="mb-2 @if(request()->routeIs('my_space.previsions')) opacity-0 @endif group-hover:opacity-0">
                                 <i class="fa-solid fa-broom-ball text-3xl"></i>
                             </div>
                             <x-ui.link
                                 @class([
                                     'm-auto text-xs',
-                                    'group-hover:py-[50px] group-hover:-translate-y-4 group-hover:text-gray-200 group-hover:scale-110' => !request()->routeIs('my_space.predictions'),
-                                    'py-1 -translate-y-4 scale-110' => request()->routeIs('my_space.predictions')
+                                    'group-hover:py-[50px] group-hover:-translate-y-4 group-hover:text-gray-200 group-hover:scale-110' => !request()->routeIs('my_space.previsions'),
+                                    'py-1 -translate-y-4 scale-110' => request()->routeIs('my_space.previsions')
                                 ])
-                                :href="route('my_space.predictions')" label="Prédictions" :active="request()->routeIs('my_space.predictions')" />
+                                :href="route('my_space.previsions')" label="Prévisions" :active="request()->routeIs('my_space.previsions')" />
                         </li>
 
                         <li

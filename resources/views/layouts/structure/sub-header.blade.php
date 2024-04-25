@@ -38,8 +38,8 @@
                 <a href="{{ route('my_space.appointments.index') }}" class="block w-full px-4 py-2 text-left text-sm leading-5 text-white hover:text-white active:text-white focus:text-white bg-secondary hover:bg-[#3b76a0] active:bg-[#3b76a0] focus:bg-[#3b76a0] last:rounded-bl-md">
                     <i class="fa-thin fa-broom-ball"></i> Mes rendez-vous
                 </a>
-                <a href="{{ route('my_space.predictions') }}" class="block w-full px-4 py-2 text-left text-sm leading-5 text-white hover:text-white active:text-white focus:text-white bg-secondary hover:bg-[#3b76a0] active:bg-[#3b76a0] focus:bg-[#3b76a0] last:rounded-bl-md">
-                    <i class="fa-thin fa-broom-ball"></i> Prédictions
+                <a href="{{ route('my_space.previsions') }}" class="block w-full px-4 py-2 text-left text-sm leading-5 text-white hover:text-white active:text-white focus:text-white bg-secondary hover:bg-[#3b76a0] active:bg-[#3b76a0] focus:bg-[#3b76a0] last:rounded-bl-md">
+                    <i class="fa-thin fa-broom-ball"></i> Prévisions
                 </a>
                 <a href="{{ route('my_space.profile.edit') }}" class="block w-full px-4 py-2 text-left text-sm leading-5 text-white hover:text-white active:text-white focus:text-white bg-secondary hover:bg-[#3b76a0] active:bg-[#3b76a0] focus:bg-[#3b76a0] last:rounded-bl-md">
                     <i class="fa-thin fa-broom-ball"></i> Mon profil

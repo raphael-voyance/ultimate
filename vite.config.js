@@ -18,6 +18,8 @@ export default defineConfig({
                 'resources/css/add/hero_home.css',
 
                 'resources/js/add/payment.js',
+                'resources/js/add/lunar.js',
+                'resources/js/add/numerology.js',
             ],
             refresh: true,
         }),

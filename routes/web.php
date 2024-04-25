@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\Galaxy\ProfileController;
-use App\Http\Controllers\Galaxy\PredictionsController;
+use App\Http\Controllers\Galaxy\PrevisionsController;
 use App\Http\Controllers\Galaxy\AppointmentsController;
 use App\Http\Middleware\ComingSoon;
 
@@ -43,7 +43,9 @@ Route::middleware(['auth', 'verified', ComingSoon::class])->prefix('mon-espace')
     Route::patch('/profil', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/predictions', [PredictionsController::class, 'index'])->name('predictions');
+    Route::get('/previsions', [PrevisionsController::class, 'index'])->name('previsions');
+    Route::get('/get-previsions', [PrevisionsController::class, 'getPrevisions']);
+    Route::post('/post-birthdate', [PrevisionsController::class, 'postBirthdate']);
 
     Route::get('/mes-rendez-vous', [AppointmentsController::class, 'index'])->name('appointments.index');
 

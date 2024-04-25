@@ -8,6 +8,8 @@ use App\Models\Invoice;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\TimeSlot;
+use App\Concern\Numerology;
+use App\Models\Appointment;
 use App\Models\TimeSlotDay;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +19,6 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rules\Password;
 use App\Concern\Invoice as ConcernInvoice;
-use App\Models\Appointment;
 
 class AppointmentModal extends Component
 {
@@ -518,12 +519,25 @@ class AppointmentModal extends Component
 
         //enregistrer dans le profil utilisateur la date de naissance validée et transformée SB
         $userProfile = Auth::user()->profile;
+        $dateWithoutTime = substr($validatedData['birthday'], 0, 10);
 
         $updateData = $userProfile->update([
             'birthday' => $validatedData['birthday']
         ]);
 
-        if($updateData) {
+        // Si la mise à jour réussit, calculer et enregistrer le chemin de vie
+        if ($updateData) {
+            // Calculer le chemin de vie
+            //dump($validatedData['birthday']);
+            // $date = Carbon::createFromFormat('Y-m-d H:i:s', $validatedData['birthday'])->format('d/m/Y');
+            $numerology = (new Numerology())->calculatePath($dateWithoutTime);
+            
+            // Mettre à jour le chemin de vie dans le profil utilisateur
+            $userProfile->update([
+                'numerology' => $numerology
+            ]);
+
+            // Actualiser la page si nécessaire
             $this->dispatch('refreshPage');
         }
 

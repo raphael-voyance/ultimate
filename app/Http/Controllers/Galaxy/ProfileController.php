@@ -25,9 +25,12 @@ class ProfileController extends Controller
 
         $invoices = $user->invoices()->latest()->limit(5)->get();
 
+        $numerology = json_decode($user->profile->numerology);
+
         return view('galaxy.dashboard', [
             'user' => $user,
             'invoices' => $invoices,
+            'numerology' => $numerology
         ]);
     }
 

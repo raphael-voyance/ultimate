@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Concern\Tarot;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Invoice;
@@ -13,6 +14,7 @@ use App\Models\Interess;
 use App\Models\TimeSlot;
 use App\Models\Appointment;
 use App\Models\Product;
+use App\Models\TarotCard;
 use App\Models\TimeSlotDay;
 use App\Models\UserProfile;
 use Illuminate\Database\Seeder;
@@ -202,5 +204,14 @@ class DatabaseSeeder extends Seeder
                 'type' => 'SERVICE_PRODUCT'],
             )
             ->create();
+
+            $tarot = new Tarot;
+            $tarotCards = $tarot->arrayCards;
+
+            foreach($tarotCards as $tarotCard) {
+                $tarotCard['interpretationsForTirages'] = json_encode($tarotCard['interpretationsForTirages']);
+                $tarotCard['arcanePath'] = json_encode($tarotCard['arcanePath']);
+                TarotCard::create($tarotCard);
+            }
     }
 }

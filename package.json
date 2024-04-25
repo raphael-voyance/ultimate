@@ -20,7 +20,9 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "flatpickr": "^4.6.13",
         "gsap": "^3.12.5",
+        "lunarphase-js": "^2.0.3",
         "splitting": "^1.0.6",
         "theme-change": "^2.5.0"
     }
