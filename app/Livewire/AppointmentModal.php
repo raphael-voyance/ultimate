@@ -19,6 +19,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rules\Password;
 use App\Concern\Invoice as ConcernInvoice;
+use App\Concern\Tarot;
 
 class AppointmentModal extends Component
 {
@@ -531,10 +532,12 @@ class AppointmentModal extends Component
             //dump($validatedData['birthday']);
             // $date = Carbon::createFromFormat('Y-m-d H:i:s', $validatedData['birthday'])->format('d/m/Y');
             $numerology = (new Numerology())->calculatePath($dateWithoutTime);
+            $tarology = (new Tarot())->calculatePath($dateWithoutTime);
             
             // Mettre à jour le chemin de vie dans le profil utilisateur
             $userProfile->update([
-                'numerology' => $numerology
+                'numerology' => $numerology,
+                'tarology' => $tarology
             ]);
 
             // Actualiser la page si nécessaire

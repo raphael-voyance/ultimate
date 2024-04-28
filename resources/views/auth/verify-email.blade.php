@@ -4,7 +4,7 @@
         <div class="relative m-auto max-w-full w-96 bg-neutral p-4 rounded-lg">
             @if (session('status') == 'verification-link-sent')
                 <div class="mb-4 font-medium text-sm text-success">
-                    Un nouveau lien de vérification vous a été envoyé sur l'adresse email utilisée lors de la création de votre compte, s'il n'apparaît pas dans votre boîte de réception, vérifiez vos spams.
+                    Un nouveau lien de vérification vous a été envoyé sur l'adresse email enregistrée sur votre compte, s'il n'apparaît pas dans votre boîte de réception, vérifiez vos spams.
                 </div>
             @endif
 

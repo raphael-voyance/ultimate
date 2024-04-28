@@ -37,6 +37,8 @@ class PrevisionsController extends Controller
         unset($tarologyArray->arcaneSumPath->interpretationsForTirages);
         unset($tarologyArray->arcaneLifePath->interpretationsForTirages);
         unset($tarologyArray->arcaneAnnualPath->interpretationsForTirages);
+
+        //dd($tarologyArray);
             
         return response()->json([
             'numerology' => $numerology,

@@ -2,6 +2,7 @@
 
 namespace App\Concern;
 
+use App\Models\TarotCard;
 use Illuminate\Support\Str;
 
 class Tarot
@@ -495,7 +496,7 @@ class Tarot
     }
 
     public function getCard($numberOfCard) {
-        $card = $this->arrayCards[$numberOfCard];
+        $card = TarotCard::where('numberArcane', $numberOfCard)->first();
         return $card;
     }
 

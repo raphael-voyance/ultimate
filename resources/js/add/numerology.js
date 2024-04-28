@@ -60,7 +60,7 @@ window.addEventListener("load", () => {
                 $createFormBirthdateBtnEl.addEventListener('click', () => {
                     let $FormBirthdateEl = document.querySelector('[data="FormBirthdate"]')
                     if(!createFormBirthdateIsOpen) {
-                        createFormBirthDate(submitForm, $birthDate);
+                        createFormBirthDate(submitForm, $birthDate, $birthDate);
                     }else {
                         createFormBirthdateIsOpen = false;
                         $FormBirthdateEl.remove()
@@ -83,7 +83,7 @@ window.addEventListener("load", () => {
                 $sumPathEls.forEach(function($sumPathEl) {
                     $sumPathEl.innerText = $sumPath;
                 });
-
+                
                 $arcaneAnnualPathImg = response.data.tarology.arcaneAnnualPath;
                 $arcaneLifePathImg = response.data.tarology.arcaneLifePath;
                 $arcaneSumPathImg = response.data.tarology.arcaneSumPath;
@@ -131,7 +131,7 @@ window.addEventListener("load", () => {
             });
     }
 
-    function createFormBirthDate($submitFn, $DateValue) {
+    function createFormBirthDate($submitFn, $DateValue, $defaultDate) {
         const $formContainer = document.createElement("form");
         const $inputContainer = document.createElement("div");
         const $input = document.createElement("input");
@@ -145,6 +145,7 @@ window.addEventListener("load", () => {
         flatpickr($input, {
             locale: French,
             dateFormat: "d/m/Y",
+            defaultDate: $defaultDate ? $defaultDate : ""
         });
         $input.classList =
             "input input-primary pl-12 w-full peer focus:border-none focus:ring-primary-focus";
