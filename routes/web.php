@@ -44,6 +44,7 @@ Route::middleware(['auth', 'verified', ComingSoon::class])->prefix('mon-espace')
     Route::delete('/profil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/previsions', [PrevisionsController::class, 'index'])->name('previsions');
+    Route::get('/previsions/tarot', [PrevisionsController::class, 'tarot'])->name('previsions.tarot');
     Route::get('/get-previsions', [PrevisionsController::class, 'getPrevisions']);
     Route::post('/post-birthdate', [PrevisionsController::class, 'postBirthdate']);
 

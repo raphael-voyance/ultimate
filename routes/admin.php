@@ -13,9 +13,17 @@ use App\Http\Controllers\Universe\MessagingController;
 |
 */
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(function() {
+Route::middleware(['auth', 'admin'])->prefix('test')->as('test.')->group(function() {
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
+});
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(function() {
+
+    Route::get('/', function() {
+        dd('salut');
+    });
+    //Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::get('/messagerie', [MessagingController::class, 'index'])->name('messaging');
 
     //--------------TIPS--------------

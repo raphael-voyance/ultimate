@@ -23,6 +23,17 @@ class PrevisionsController extends Controller
         ]);
     }
 
+    public function tarot(Request $request): View {
+        $user = $request->user();
+        if($user) {
+            $user->load('profile');
+        }
+
+        return view('galaxy.tarot', [
+            'user' => $user
+        ]);
+    }
+
     public function getPrevisions() {
         
         $user = Auth::user();
