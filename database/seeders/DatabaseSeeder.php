@@ -13,6 +13,7 @@ use App\Models\Activity;
 use App\Models\Interess;
 use App\Models\TimeSlot;
 use App\Models\Appointment;
+use App\Models\DrawCard;
 use App\Models\Product;
 use App\Models\TarotCard;
 use App\Models\TimeSlotDay;
@@ -213,5 +214,23 @@ class DatabaseSeeder extends Seeder
                 $tarotCard['arcanePath'] = json_encode($tarotCard['arcanePath']);
                 TarotCard::create($tarotCard);
             }
+
+            $tirageUn = DrawCard::create([
+                'name' => 'Tirage en croix', 
+                'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
+                'totalSelectedCards' => 4
+            ]);
+
+            $tirageDeux = DrawCard::create([
+                'name' => 'Tirage de la semaine', 
+                'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
+                'totalSelectedCards' => 7
+            ]);
+
+            $tirageTrois = DrawCard::create([
+                'name' => 'Tirage de la journée', 
+                'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
+                'totalSelectedCards' => 1
+            ]);
     }
 }

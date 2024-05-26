@@ -1,7 +1,4 @@
 <x-app-layout>
-    @section('js')
-        @vite(['resources/js/add/tarot.js'])
-    @endsection
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight">
@@ -13,7 +10,7 @@
 
         <section class="mb-4">
             
-            @livewire('tarot')
+            <x-tarot.drawing-card/>
 
         </section>
 

@@ -2,6 +2,7 @@
 
 namespace App\Concern;
 
+use App\Models\DrawCard;
 use App\Models\TarotCard;
 use Illuminate\Support\Str;
 
@@ -9,9 +10,13 @@ class Tarot
 {
 
     public $cards = [];
+    public $arrayCards = [];
+
+    public $drawingCards = [];
 
     public function __construct() {
         $this->cards = TarotCard::all();
+        $this->drawingCards = DrawCard::all();
         // $this->arrayCards = [
         //     1 => [
         //         'name' => 'Le Bateleur',
