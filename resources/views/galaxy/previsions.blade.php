@@ -87,9 +87,9 @@
 
         <h3 class="mt-6">Tirages de Tarot : </h3>
         <ul>
-            <li>Energie du jour</li>
-            <li>Energie de la semaine à venir</li>
-            <li>Répondre à une question</li>
+            @foreach ($drawCards as $draw)
+                <li><a href="{{ route('my_space.previsions.tarot') }}#{{ $draw->slug }}">{{ $draw->name }}</a></li>
+            @endforeach
         </ul>
 
     </article>

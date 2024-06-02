@@ -4,20 +4,21 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Concern\Tarot;
 use App\Models\Role;
 use App\Models\User;
+use App\Concern\Tarot;
 use App\Models\Invoice;
 use App\Models\Message;
+use App\Models\Product;
 use App\Models\Activity;
+use App\Models\DrawCard;
 use App\Models\Interess;
 use App\Models\TimeSlot;
-use App\Models\Appointment;
-use App\Models\DrawCard;
-use App\Models\Product;
 use App\Models\TarotCard;
+use App\Models\Appointment;
 use App\Models\TimeSlotDay;
 use App\Models\UserProfile;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -216,19 +217,22 @@ class DatabaseSeeder extends Seeder
             }
 
             $tirageUn = DrawCard::create([
-                'name' => 'Tirage en croix', 
+                'name' => 'Tirage en croix',
+                'slug' => Str::of('Tirage en croix')->slug('-'), 
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
                 'totalSelectedCards' => 4
             ]);
 
             $tirageDeux = DrawCard::create([
-                'name' => 'Tirage de la semaine', 
+                'name' => 'Tirage de la semaine',
+                'slug' => Str::of('Tirage de la semaine')->slug('-'),
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
                 'totalSelectedCards' => 7
             ]);
 
             $tirageTrois = DrawCard::create([
-                'name' => 'Tirage de la journée', 
+                'name' => 'Tirage de la journée',
+                'slug' => Str::of('Tirage de la journée')->slug('-'),
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
                 'totalSelectedCards' => 1
             ]);

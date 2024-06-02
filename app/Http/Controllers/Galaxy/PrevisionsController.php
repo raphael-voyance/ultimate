@@ -8,18 +8,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Concern\Numerology;
 use App\Concern\Tarot;
+use App\Models\DrawCard;
 use Carbon\Carbon;
 
 class PrevisionsController extends Controller
 {
     public function index(Request $request): View {
         $user = $request->user();
+        $drawCards = DrawCard::all();
         if($user) {
             $user->load('profile');
         }
 
         return view('galaxy.previsions', [
-            'user' => $user
+            'user' => $user,
+            'drawCards' => $drawCards
         ]);
     }
 
