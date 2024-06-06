@@ -10,7 +10,7 @@ class TarotCard extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'slug', 'description', 'numberArcane', 'interpretationsForTirages', 'arcanePath'
+        'name', 'slug', 'description', 'numberArcane', 'interpretationsForDrawingCard', 'arcanePath'
     ];
 
     public $timestamps = false;

@@ -28,6 +28,7 @@ window.addEventListener("load", () => {
 
     function translateLunarPhase() {
         const $expr = Moon.lunarPhase();
+        console.log($expr)
         switch ($expr) {
             case 'Waxing Crescent':
                 return 'Lune croissante';
@@ -50,9 +51,12 @@ window.addEventListener("load", () => {
             case 'Waning Crescent':
                 return 'Lune décroissante';
                 break;
+            case 'New':
+                return 'Nouvelle lune';
+                break;
 
             default:
-                console.log(`Sorry, we are out of ${expr}.`);
+                console.log(`Sorry, we are out of $expr.`);
         }
     }
 

@@ -18,7 +18,8 @@ class DrawingCard extends Component
     public function __construct()
     {
         $this->tc = new TarotCard;
-        $this->cards = $this->tc->cards;
+        //$this->cards = $this->tc->cards;
+        $this->cards = $this->tc->loadDeck(null, ['id', 'name', 'slug', 'numberArcane', 'imgPath']);
         $this->drawCards = $this->tc->drawingCards;
     }
 

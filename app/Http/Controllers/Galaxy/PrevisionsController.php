@@ -26,7 +26,7 @@ class PrevisionsController extends Controller
         ]);
     }
 
-    public function tarot(Request $request): View {
+    public function tarotPage(Request $request): View {
         $user = $request->user();
         if($user) {
             $user->load('profile');
@@ -35,6 +35,11 @@ class PrevisionsController extends Controller
         return view('galaxy.tarot', [
             'user' => $user
         ]);
+    }
+
+    public function getDrawInterpretation(Request $request) {
+        $i_creator = new Tarot();
+        return $i_creator->loadInterpretations($request->drawCards, $request->drawSlug);
     }
 
     public function getPrevisions() {
@@ -48,11 +53,9 @@ class PrevisionsController extends Controller
         $numerology = json_decode($user->profile->numerology);
         $tarologyArray = json_decode($user->profile->tarology);
 
-        unset($tarologyArray->arcaneSumPath->interpretationsForTirages);
-        unset($tarologyArray->arcaneLifePath->interpretationsForTirages);
-        unset($tarologyArray->arcaneAnnualPath->interpretationsForTirages);
-
-        //dd($tarologyArray);
+        unset($tarologyArray->arcaneSumPath->interpretationsForDrawingCard);
+        unset($tarologyArray->arcaneLifePath->interpretationsForDrawingCard);
+        unset($tarologyArray->arcaneAnnualPath->interpretationsForDrawingCard);
             
         return response()->json([
             'numerology' => $numerology,

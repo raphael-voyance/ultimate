@@ -211,7 +211,7 @@ class DatabaseSeeder extends Seeder
             $tarotCards = $tarot->arrayCards;
 
             foreach($tarotCards as $tarotCard) {
-                $tarotCard['interpretationsForTirages'] = json_encode($tarotCard['interpretationsForTirages']);
+                $tarotCard['interpretationsForDrawingCard'] = json_encode($tarotCard['interpretationsForDrawingCard']);
                 $tarotCard['arcanePath'] = json_encode($tarotCard['arcanePath']);
                 TarotCard::create($tarotCard);
             }

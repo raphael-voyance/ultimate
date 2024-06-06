@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->integer('numberArcane', false, true);
             $table->string('imgPath');
-            $table->json('interpretationsForTirages')->nullable();
+            $table->json('interpretationsForDrawingCard')->nullable();
             $table->json('arcanePath')->nullable();
         });
     }

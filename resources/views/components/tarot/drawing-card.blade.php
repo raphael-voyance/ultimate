@@ -5,7 +5,7 @@
 
             <h3 class="mb-2 md:mb-auto" id="name-of-drawing-cards"></h3>
 
-            <div>
+            <div class="hidden">
                 <span id="total-cards-for-drawing-cards"></span>
             </div>
 
@@ -47,26 +47,13 @@
                     <button class="hidden btn btn-sm bg-secondary" id="cut-btn">Couper</button>
                     <button class="hidden btn btn-sm bg-secondary" id="spread-btn">Etaler</button>
 
-                    <button class="hidden btn btn-sm bg-primary" id="btn-finaly-step" data-to-step="FINALY_STEP">Poursuivre</button>
+                    <button class="hidden btn btn-sm bg-primary" id="interpretation_drawing_card">Interpréter mon tirage</button>
                 </div>
 
 
             </div>
 
-            <div data-step="FINALY_STEP" class="m-auto w-full h-full min-h-96 hidden">
-                <button data-to-step="INTERPRETATION_DRAWING_CARD">Interpréter mon tirage</button>
-            </div>
-
         </div>
-
-        {{-- <div>
-            Changer de tirage :
-            <ul>
-                <li>Tirage en croix</li>
-                <li>Tirage de la semaine</li>
-                <li>Carte du jour</li>
-            </ul>
-        </div> --}}
 
     </section>
 </div>
