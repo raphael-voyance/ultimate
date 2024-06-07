@@ -35,10 +35,10 @@
                 data-to-step="DRAWING_CARD">Passer au tirage</button>
             </div>
 
-            <div data-step="DRAWING_CARD" class="m-auto w-full h-full min-h-96 relative hidden">
+            <div id="card_mat" data-step="DRAWING_CARD" class="m-auto w-full h-full min-h-96 relative hidden">
 
                 <ul id="tarot-cards"
-                    class="relative -translate-y-7 m-auto flex flex-row items-center flex-nowrap p-4 w-full h-full min-h-[30em]"
+                    class="relative -translate-y-7 m-auto flex flex-row items-center flex-nowrap p-4 w-full h-full min-h-[30em] overflow-hidden overscroll-none"
                     data-cards="{{ $cards }}" data-games="{{ $drawCards }}"></ul>
 
                 <div class="absolute flex flex-col justify-center items-center bottom-0 w-full h-20 bg-gradient-to-t from-violet-900 to-violet-700">

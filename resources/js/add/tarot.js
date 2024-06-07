@@ -18,6 +18,7 @@ document.addEventListener("livewire:init", () => {
         const selectDrawingCardEl = document.getElementById(
             "select-drawing-card-el"
         );
+        const cardMap = document.getElementById('card_mat');
 
         const btnsTo = document.querySelectorAll("[data-to-step]");
 
@@ -229,6 +230,7 @@ document.addEventListener("livewire:init", () => {
                     "id",
                     "tarot-card-" + card.slug + "-" + card.id
                 );
+                li.setAttribute("data-number", card.numberArcane);
                 // li.innerHTML = `<img class="w-full h-full object-contain" src="http://ultimate.test/imgs/tarot/back-card.png"/>`;
                 li.innerHTML = `<img class="w-full h-full object-contain" src="${card.imgPath}"/>`;
 
@@ -236,7 +238,7 @@ document.addEventListener("livewire:init", () => {
                 li.style.height = cardHeight + "px";
 
                 li.classList =
-                    "tarot-card flex-none cursor-pointer absolute left-[50%] -translate-x-[50%]";
+                    "tarot-card flex-none cursor-pointer absolute transition-all left-[50%] -translate-x-[50%]";
                 $container.appendChild(li);
 
                 selectCard(li);
@@ -252,6 +254,19 @@ document.addEventListener("livewire:init", () => {
             totalCardsForDrawingCardsEl.parentElement.classList.remove(
                 "hidden"
             );
+            
+            if(isMobile) {
+                // Animation de mélange
+                gsap.to(tarotCardsEl, {
+                    duration: 1, // Durée de l'animation en secondes
+                    x: () => gsap.utils.random(-100, 100), // Déplacement aléatoire en x
+                    y: () => gsap.utils.random(-100, 100), // Déplacement aléatoire en y
+                    rotation: () => gsap.utils.random(-360, 360), // Rotation aléatoire
+                    stagger: 0.1, // Délai entre chaque animation
+                    ease: "power3.inOut", // Type de courbe d'animation
+                });
+                return;
+            }
 
             for (let $i = 0; $i < tarotCardsEl.length; $i++) {
                 let cardHeight = tarotCardsEl[$i].style.height;
@@ -276,6 +291,7 @@ document.addEventListener("livewire:init", () => {
                     // }
                 }, 100);
             }
+            return;
         };
 
         const shuffleDeck = function () {
@@ -301,7 +317,7 @@ document.addEventListener("livewire:init", () => {
                 y: () => gsap.utils.random(-100, 100), // Déplacement aléatoire en y
                 rotation: () => gsap.utils.random(-360, 360), // Rotation aléatoire
                 stagger: 0.1, // Délai entre chaque animation
-                ease: "power1.inOut", // Type de courbe d'animation
+                ease: "power3.inOut", // Type de courbe d'animation
                 onComplete: () => {
                     // Réinitialiser la position et la rotation après le mélange
                     gsap.to(tarotCardsEl, {
@@ -310,7 +326,7 @@ document.addEventListener("livewire:init", () => {
                         y: 0,
                         rotation: 0,
                         stagger: 0.1,
-                        ease: "power1.inOut",
+                        ease: "power3.inOut",
                     });
 
                     shuffleBtn.classList.add("hidden");
@@ -357,7 +373,12 @@ document.addEventListener("livewire:init", () => {
 
                 if (selectIsOpen) {
                     el.classList.add("selected");
-                    el.classList.add("-mt-4");
+                    if(isMobile) {
+                        el.classList.add("ring-offset-2", "ring-2", "ring-primary");
+                    }else {
+                        el.classList.add("-mt-4");
+                    }
+                    
                     cardsSelected.push(parseInt(numberArcane));
                 }
 
@@ -365,8 +386,7 @@ document.addEventListener("livewire:init", () => {
                     el.classList.contains("selected") &&
                     found == numberArcane
                 ) {
-                    el.classList.remove("selected");
-                    el.classList.remove("-mt-4");
+                    el.classList.remove("selected", "-mt-4", "ring-offset-2", "ring-2", "ring-primary");
                     cardsSelected = cardsSelected.filter(
                         (item) => item != numberArcane
                     );
@@ -447,39 +467,109 @@ document.addEventListener("livewire:init", () => {
             launchGetDrawInterpretation(cardsSelected);
         });
 
-        const duplicateCardDraw = () => {
+        const duplicateCardDraw = (draw) => {
             let tarotCardsEl = document.querySelectorAll(".tarot-card");
+            let duplicatedCardsEl = {};
+            let duplicatedCardsDraw = [];
+            let duplicatedCardsCut = [];
 
-            console.log(tarotCardsEl);
+            // Duplication des cartes du tirage en fonction de l'attribut data-number
+            draw.draw.cards.forEach((c) => {
+                let cardToDuplicate = Array.from(tarotCardsEl).find((item) => item.dataset.number == c);
+                if (cardToDuplicate) {
+                    let clone = cardToDuplicate.cloneNode(true);
+                    clone.removeAttribute('class');
+                    clone.removeAttribute('style');
+                    duplicatedCardsDraw.push(clone);
+                }
+            });
 
-            //tarotCardsEl = all elementCard selected
+            // Duplication des cartes de la coupe en fonction de l'attribut data-number
+            draw.cut.cards.forEach((c) => {
+                let cardToDuplicate = Array.from(tarotCardsEl).find((item) => item.dataset.number == c);
+                if (cardToDuplicate) {
+                    let clone = cardToDuplicate.cloneNode(true);
+                    clone.removeAttribute('class');
+                    clone.removeAttribute('style');
+                    duplicatedCardsCut.push(clone);
+                }
+            });
 
             tarotCardsEl.forEach((card) => {
-                card.style.transform = `translateX(0%)`;
-                setTimeout(() => {
-                    card.classList.remove('-mt-4')
-                    card.classList.add('left-[50%]');
-                    card.style.transform = `translateX(-50%)`;
-                }, 500);
-                
-            })
+                card.classList.remove('-mt-4', 'hover:-mt-4');
+                if(isMobile) {
+                    gsap.to(card, {
+                        duration: 1, 
+                        x: () => 0, 
+                        y: () => 0,
+                        opacity: 0,
+                        rotation: () => 0, 
+                        stagger: 0.1, 
+                        ease: "power3.inOut", 
+                        onComplete: () => {
+                            tarotCardsContainer.style.zIndex = -1;
+                        }
+                    });
+                }else {
+                    gsap.to(card, {
+                        duration: 0.7,
+                        x: 50,
+                        opacity: 0,
+                        stagger: 0.3,
+                        ease: "power3.inOut",
+                        onComplete: () => {
+                            tarotCardsContainer.style.zIndex = -1;
+                        }
+                    });
+                }
+            });
 
-            return tarotCardsEl;
+            duplicatedCardsEl.cut = duplicatedCardsCut;
+            duplicatedCardsEl.draw = duplicatedCardsDraw;
+
+            return duplicatedCardsEl;
+
+        };
+
+        const drawCut = function(cutCards) {
+            console.log('cards cut', cutCards);
+
+            const containerCutEl = document.createElement('ul');
+
+            cutCards.forEach((c) => {
+                c.style.width = "65px";
+                containerCutEl.append(c);
+            })
+            cardMap.append(containerCutEl);
         }
 
         const drawCross = function(finalDraw) {
-            duplicateCardDraw();
-            console.log('duplicatedCards');
-            console.log('draw', finalDraw);
+            const drawCardsAllEl = duplicateCardDraw(finalDraw);
+
+            const cutCardsEl = drawCardsAllEl.cut;
+            const drawCardsEl = drawCardsAllEl.draw;
+
+            const containerDrawEl = document.createElement('ul');
+            
+            drawCut(cutCardsEl);
+
+            drawCardsEl.forEach((c) => {
+                c.style.width = "65px";
+                containerDrawEl.append(c);
+            });
+            cardMap.appendChild(containerDrawEl);
+
+            console.log('duplicatedCards in data cross', drawCardsAllEl);
+            console.log('cards draw', drawCardsEl);
         }
 
         const drawWeeck = function(finalDraw) {
-            duplicateCardDraw();
+            duplicateCardDraw(finalDraw);
             console.log('draw', finalDraw);
         }
 
         const drawDay = function(finalDraw) {
-            duplicateCardDraw();
+            duplicateCardDraw(finalDraw);
             console.log('draw', finalDraw);
         }
 

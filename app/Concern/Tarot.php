@@ -867,7 +867,7 @@ class Tarot
         if($drawSlug == 'tirage_en_croix') {
             $sum = array_sum($cards);
             $sum = $this->reduceNumberBetweenOneToTwentyOne($sum);
-            $cards[] = $sum;
+            $cards[] = str($sum);
         }
         foreach($cards as $k=>$card) {
             $card = $this->getCard($card);
