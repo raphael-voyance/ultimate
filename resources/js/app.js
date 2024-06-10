@@ -12,8 +12,6 @@ import './loadingPage';
 import './appointmentCalendar';
 import './refreshPage';
 
-import './add/tarot.js';
-
 Alpine.plugin(ToastComponent);
 Livewire.start();
 

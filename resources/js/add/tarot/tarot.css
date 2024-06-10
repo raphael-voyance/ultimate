@@ -1,0 +1,55 @@
+.tarot-cards-container {
+    position: relative;
+    width: 100%; height: 100%;
+    margin: auto;
+}
+
+.tarot-cards-container .tarot-card {
+    position: absolute;
+    transition: all .5s ease;
+    cursor: pointer;
+}
+
+.tarot-cards-container .tarot-card .front-card,
+.tarot-cards-container .tarot-card .back-card {
+    position: absolute;
+    top: 0;
+    width: 100%; height: 100%;
+}
+
+.tarot-cards-container .tarot-card .front-card {
+    display: none;
+}
+
+/* .draw-cut */
+.tarot-cards-container.tarot-cards-container-cut li .back-card {
+    display: none;
+}
+
+.tarot-cards-container.tarot-cards-container-cut li .front-card {
+    display: block;
+}
+
+.tarot-cards-container.tarot-cards-container-cut li:first-of-type {
+    transform: translateX(-100%);
+}
+.tarot-cards-container.tarot-cards-container-cut li:last-of-type {
+    transform: translateX(100%);
+}
+
+/* .draw-day */
+.draw-day .tarot-cards-container.tarot-cards-container-draw li .front-card {
+    display: block;
+}
+
+/* .draw-weeck */
+.draw-week .tarot-cards-container.tarot-cards-container-draw li .front-card {
+    display: block;
+}
+
+/* .draw-cross */
+.draw-cross .tarot-cards-container.tarot-cards-container-draw li .front-card {
+    display: block;
+}
+
+/* .tarot-cards-container-draw */

@@ -1,12 +1,9 @@
-<x-app-layout>
+<x-fullscreen-layout>
+    @section('js')
+        @vite(['resources/js/add/tarot/tarot.js'])
+    @endsection
 
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl leading-tight">
-            Tirage de tarot
-        </h2>
-    </x-slot>
-
-    <article class="p-4 sm:p-8 bg-neutral sm:rounded-lg">
+    <article class="relative -top-8">
 
         <section class="mb-4">
             
@@ -16,4 +13,4 @@
 
     </article>
 
-</x-app-layout>
+</x-fullscreen-layout>

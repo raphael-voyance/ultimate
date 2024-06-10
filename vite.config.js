@@ -20,6 +20,7 @@ export default defineConfig({
                 'resources/js/add/payment.js',
                 'resources/js/add/lunar.js',
                 'resources/js/add/numerology.js',
+                'resources/js/add/tarot/tarot.js',
             ],
             refresh: true,
         }),

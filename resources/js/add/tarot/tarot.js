@@ -1,13 +1,15 @@
 import gsap from "gsap";
 import axios from "axios";
+import "./tarot.css";
 
-document.addEventListener("livewire:init", () => {
+document.addEventListener("DOMContentLoaded", () => {
     // VARIABLES
     const drawingCardsPage = document.getElementById("drawing-cards");
     if (drawingCardsPage) {
         let anchor = window.location.hash;
 
         const header = document.getElementById("header-drawing-cards");
+        const footer = document.getElementById("footer-drawing-cards");
         const nameOfDrawingCardsEl = document.getElementById(
             "name-of-drawing-cards"
         );
@@ -18,7 +20,7 @@ document.addEventListener("livewire:init", () => {
         const selectDrawingCardEl = document.getElementById(
             "select-drawing-card-el"
         );
-        const cardMap = document.getElementById('card_mat');
+        const cardMap = document.getElementById('card_map');
 
         const btnsTo = document.querySelectorAll("[data-to-step]");
 
@@ -39,15 +41,6 @@ document.addEventListener("livewire:init", () => {
             tarotCardsContainer.getAttribute("data-games")
         );
 
-        let hasDeck = false;
-        let totalCards;
-        let restCards = 0;
-        let nameOfDrawingCards;
-        let drawSlug;
-        let selectIsOpen = false;
-        let cardsSelected = [];
-        let cardsCutSelected = [];
-
         let isMobile;
         if (
             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -58,6 +51,25 @@ document.addEventListener("livewire:init", () => {
         else isMobile = false;
 
         let screenSize = window.innerWidth;
+
+        let cardWidth;
+        let cardHeight;
+        if(isMobile) {
+            cardWidth = 63.08;
+            cardHeight = 120;
+        }else {
+            cardWidth = 114;
+            cardHeight = 216.83;
+        }
+
+        let hasDeck = false;
+        let totalCards;
+        let restCards = 0;
+        let nameOfDrawingCards;
+        let drawSlug;
+        let selectIsOpen = false;
+        let cardsSelected = [];
+        let cardsCutSelected = [];
 
         // FONCTIONS GLOBALES
         const createDrawingCardsList = function () {
@@ -152,6 +164,7 @@ document.addEventListener("livewire:init", () => {
 
             if (activeStep == "DRAWING_CARD") {
                 header.classList.remove("hidden");
+                footer.classList.remove("hidden");
                 if (!hasDeck) {
                     createDeck(tarotCards, tarotCardsContainer);
                 }
@@ -217,87 +230,76 @@ document.addEventListener("livewire:init", () => {
         const createDeck = function ($tarotCards, $container) {
             hasDeck = true;
             restCards = 0;
-            let cardsContainerWidth = $container.offsetWidth;
-            let cardWidth = Math.floor(
-                (cardsContainerWidth / $tarotCards.length) * 2.2
-            );
-            let cardHeight = cardWidth * 1.85;
 
-            $tarotCards.forEach((card) => {
+            $tarotCards.forEach((card, i) => {
                 let li = document.createElement("li");
+                let frontCardEl = document.createElement("div");
+                let backCardEl = document.createElement("div");
 
                 li.setAttribute(
                     "id",
                     "tarot-card-" + card.slug + "-" + card.id
                 );
+
                 li.setAttribute("data-number", card.numberArcane);
-                // li.innerHTML = `<img class="w-full h-full object-contain" src="http://ultimate.test/imgs/tarot/back-card.png"/>`;
-                li.innerHTML = `<img class="w-full h-full object-contain" src="${card.imgPath}"/>`;
+
+                li.classList.add('tarot-card');
+                frontCardEl.classList.add('front-card');
+                backCardEl.classList.add('back-card');
 
                 li.style.width = cardWidth + "px";
                 li.style.height = cardHeight + "px";
 
-                li.classList =
-                    "tarot-card flex-none cursor-pointer absolute transition-all left-[50%] -translate-x-[50%]";
+                $container.style.width = cardWidth + "px";
+                $container.style.height = cardHeight + "px";
+
+                frontCardEl.innerHTML = `<img class="w-full h-full object-contain" src="${card.imgPath}"/>`;
+                backCardEl.innerHTML = `<img class="w-full h-full object-contain" src="http://ultimate.test/imgs/tarot/back-card.png"/>`;
+
+                li.appendChild(backCardEl);
+                li.appendChild(frontCardEl);
+
                 $container.appendChild(li);
 
                 selectCard(li);
             });
+
         };
 
         const spreadDeck = function () {
-            let tarotCardsEl = document.querySelectorAll(".tarot-card");
             
-            selectIsOpen = true;
+            const cards = tarotCardsContainer.getElementsByClassName('tarot-card');
+            const cardCount = cards.length;
+            const angleStep = 360 / cardCount;
+            const radius = isMobile ? 100 : 180;
 
-            spreadBtn.classList.add("hidden");
-            totalCardsForDrawingCardsEl.parentElement.classList.remove(
-                "hidden"
-            );
-            
-            if(isMobile) {
-                // Animation de mélange
-                gsap.to(tarotCardsEl, {
-                    duration: 1, // Durée de l'animation en secondes
-                    x: () => gsap.utils.random(-100, 100), // Déplacement aléatoire en x
-                    y: () => gsap.utils.random(-100, 100), // Déplacement aléatoire en y
-                    rotation: () => gsap.utils.random(-360, 360), // Rotation aléatoire
-                    stagger: 0.1, // Délai entre chaque animation
-                    ease: "power3.inOut", // Type de courbe d'animation
+            for (let i = 0; i < cardCount; i++) {
+                const angle = i * angleStep;
+                const x = radius * Math.cos(angle * (Math.PI / 180));
+                const y = radius * Math.sin(angle * (Math.PI / 180));
+                    
+                cards[i].style.transform = `translate(${x}px, ${y}px) rotate(${angle + i*2 }deg)`;
+
+                cards[i].addEventListener('mouseenter', () => {
+                    cards[i].style.transform = `translate(${x}px, ${y}px) rotate(${angle + i*2 }deg) scale(1.10)`;
                 });
-                return;
+                cards[i].addEventListener('mouseleave', () => {
+                    cards[i].style.transform = `translate(${x}px, ${y}px) rotate(${angle + i*2 }deg) scale(1)`;
+                });
             }
 
-            for (let $i = 0; $i < tarotCardsEl.length; $i++) {
-                let cardHeight = tarotCardsEl[$i].style.height;
-                let cardWidth = tarotCardsEl[$i].style.width;
+            tarotCardsContainer.classList.toggle('spread');
 
-                tarotCardsEl[$i].classList.add("hover:-mt-4");
-                tarotCardsEl[$i].classList.remove("-translate-x-[50%]");
-                tarotCardsEl[$i].classList.remove("left-[50%]");
-                tarotCardsEl[$i].classList.remove("left-auto");
-
-                tarotCardsEl[$i].style.cssText = "";
-                tarotCardsEl[$i].style.width = cardWidth;
-                tarotCardsEl[$i].style.height = cardHeight;
-
-                setTimeout(() => {
-                    // if($i > 0) {
-                    const translateXValue = 30 * $i;
-                    tarotCardsEl[$i].classList.add("transition-all");
-                    tarotCardsEl[
-                        $i
-                    ].style.transform = `translateX(${translateXValue}%)`;
-                    // }
-                }, 100);
-            }
+            selectIsOpen = true;
+            spreadBtn.classList.add("hidden");
+            totalCardsForDrawingCardsEl.parentElement.classList.remove("hidden");
             return;
+
         };
 
         const shuffleDeck = function () {
             tarotCardsContainer.innerHTML = "";
 
-            selectIsOpen = false;
             restCards = 0;
 
             tarotCards = gsap.utils.shuffle(tarotCards);
@@ -310,30 +312,31 @@ document.addEventListener("livewire:init", () => {
 
             let tarotCardsEl = document.querySelectorAll(".tarot-card");
 
-            // Animation de mélange
-            gsap.to(tarotCardsEl, {
-                duration: 1, // Durée de l'animation en secondes
-                x: () => gsap.utils.random(-100, 100), // Déplacement aléatoire en x
-                y: () => gsap.utils.random(-100, 100), // Déplacement aléatoire en y
-                rotation: () => gsap.utils.random(-360, 360), // Rotation aléatoire
-                stagger: 0.1, // Délai entre chaque animation
-                ease: "power3.inOut", // Type de courbe d'animation
-                onComplete: () => {
-                    // Réinitialiser la position et la rotation après le mélange
-                    gsap.to(tarotCardsEl, {
-                        duration: 0.5,
-                        x: 0,
-                        y: 0,
-                        rotation: 0,
-                        stagger: 0.1,
-                        ease: "power3.inOut",
-                    });
-
-                    shuffleBtn.classList.add("hidden");
-                    cutBtn.classList.remove("hidden");
-                    cutBtn.addEventListener("click", cutDeck);
-                },
-            });
+            tarotCardsEl.forEach((card, i) => {
+                gsap.to(card, {
+                    duration: 1.3,
+                    x: () => gsap.utils.random(-60, 60),
+                    y: () => gsap.utils.random(-60, 60),
+                    rotation: () => gsap.utils.random(-120, 120),
+                    stagger: .08,
+                    ease: "power1-inOut",
+                    onComplete: () => {
+                        gsap.to(tarotCardsEl, {
+                            duration: 0.8,
+                            y: 0,
+                            x: 0,
+                            rotation: 0,
+                            stagger: 0.1,
+                            ease: "power1.inOut",
+                        });
+    
+                        shuffleBtn.classList.add("hidden");
+                        cutBtn.classList.remove("hidden");
+                        cutBtn.addEventListener("click", cutDeck);
+                    },
+                });
+            })
+            
         };
 
         const cutDeck = function () {
@@ -342,19 +345,21 @@ document.addEventListener("livewire:init", () => {
 
             let random = Math.floor(Math.random() * 22);
 
-            cardsCutSelected = ["cut", tarotCards[random].id, tarotCards[0].id];
+            if(tarotCards[random].id == tarotCards[0].id) {
+                random = Math.floor(Math.random() * 22);
+            }
 
-            //console.log(cardsCutSelected)
+            cardsCutSelected = ["cut", tarotCards[random].id, tarotCards[0].id];
 
             const originalClass = Array.from(card.classList).find((cls) =>
                 cls.startsWith("-translate-x-")
             );
 
             card.classList.add("transition-all");
-            card.classList.add("!translate-x-20");
+            card.classList.add("!translate-x-[105%]");
             card.classList.add("z-10");
             setTimeout(function (callback) {
-                card.classList.remove("!translate-x-20");
+                card.classList.remove("!translate-x-[105%]");
                 card.classList.remove("z-10");
                 setTimeout(function () {
                     card.classList.remove("transition-all");
@@ -366,19 +371,28 @@ document.addEventListener("livewire:init", () => {
             spreadBtn.addEventListener("click", spreadDeck);
         };
 
+        const closeDeck = function () {
+            let tarotCardsEl = document.querySelectorAll(".tarot-card");
+
+            tarotCardsEl.forEach((card) => {
+                gsap.to(card, {
+                    duration: 1, 
+                    x: () => 0, 
+                    y: () => 0,
+                    rotation: () => 0,
+                    stagger: 0.2, 
+                    ease: "power1.inOut",
+                });
+            });
+        }
+
         const selectCard = function (el) {
             el.addEventListener("click", function () {
                 let numberArcane = el.getAttribute("id").split("-").pop();
                 let found = cardsSelected.find((item) => item == numberArcane);
 
                 if (selectIsOpen) {
-                    el.classList.add("selected");
-                    if(isMobile) {
-                        el.classList.add("ring-offset-2", "ring-2", "ring-primary");
-                    }else {
-                        el.classList.add("-mt-4");
-                    }
-                    
+                    el.classList.add("selected", "ring-2", "ring-primary");
                     cardsSelected.push(parseInt(numberArcane));
                 }
 
@@ -386,7 +400,7 @@ document.addEventListener("livewire:init", () => {
                     el.classList.contains("selected") &&
                     found == numberArcane
                 ) {
-                    el.classList.remove("selected", "-mt-4", "ring-offset-2", "ring-2", "ring-primary");
+                    el.classList.remove("selected", "ring-2", "ring-primary");
                     cardsSelected = cardsSelected.filter(
                         (item) => item != numberArcane
                     );
@@ -399,13 +413,9 @@ document.addEventListener("livewire:init", () => {
         const afterSelectCard = function () {
             if (cardsSelected.length == totalCards) {
                 selectIsOpen = false;
-
-                console.log('totalCards', totalCards, 'cardsSelected', cardsSelected)
-
                 interpretationDrawingCardBtn.classList.remove('hidden');
             } else {
                 interpretationDrawingCardBtn.classList.add("hidden");
-                selectIsOpen = true;
             }
             restCards = cardsSelected.length;
             totalCardsForDrawingCardsEl.innerText = `Vous avez sélectionné ${restCards} carte${
@@ -416,7 +426,6 @@ document.addEventListener("livewire:init", () => {
 
         const launchGetDrawInterpretation = async () => {
             try{
-                console.log('before execute function await', cardsSelected)
                 const responseDraw = await getDrawInterpretation(cardsSelected, drawSlug);
                 const responseCut = await getDrawInterpretation(cardsCutSelected, 'cut');
                 const interpretationCardDraw = responseDraw.data;
@@ -427,11 +436,15 @@ document.addEventListener("livewire:init", () => {
                     draw: interpretationCardDraw
                 }
 
+                interpretationDrawingCardBtn.classList.add('hidden');
+
+                closeDeck();
+
                 let drawS = interpretationCardDraw.drawSlug;
                 if(drawS == 'tirage_de_la_journee') {
                     drawDay(finalDraw);
                 }else if(drawS == 'tirage_de_la_semaine') {
-                    drawWeeck(finalDraw);
+                    drawWeek(finalDraw);
                 }else if(drawS == 'tirage_en_croix') {
                     drawCross(finalDraw);
                 }
@@ -470,17 +483,32 @@ document.addEventListener("livewire:init", () => {
         const duplicateCardDraw = (draw) => {
             let tarotCardsEl = document.querySelectorAll(".tarot-card");
             let duplicatedCardsEl = {};
-            let duplicatedCardsDraw = [];
-            let duplicatedCardsCut = [];
+
+            const containerDrawEl = document.createElement('ul');
+            containerDrawEl.classList.add('tarot-cards-container', 'tarot-cards-container-draw');
+            containerDrawEl.style.width = cardWidth + "px";
+            containerDrawEl.style.height = cardHeight + "px";
+
+            const containerCutEl = document.createElement('ul');
+            containerCutEl.classList.add('tarot-cards-container', 'tarot-cards-container-cut');
+            containerCutEl.style.width = cardWidth + "px";
+            containerCutEl.style.height = cardHeight + "px";
 
             // Duplication des cartes du tirage en fonction de l'attribut data-number
             draw.draw.cards.forEach((c) => {
                 let cardToDuplicate = Array.from(tarotCardsEl).find((item) => item.dataset.number == c);
                 if (cardToDuplicate) {
                     let clone = cardToDuplicate.cloneNode(true);
-                    clone.removeAttribute('class');
-                    clone.removeAttribute('style');
-                    duplicatedCardsDraw.push(clone);
+                    clone.classList = '';
+                    clone.style = '';
+
+                    clone.classList.add('tarot-card');
+
+                    clone.style.width = cardWidth + "px";
+                    clone.style.height = cardHeight + "px";
+
+                    containerDrawEl.appendChild(clone);
+                    
                 }
             });
 
@@ -488,89 +516,138 @@ document.addEventListener("livewire:init", () => {
             draw.cut.cards.forEach((c) => {
                 let cardToDuplicate = Array.from(tarotCardsEl).find((item) => item.dataset.number == c);
                 if (cardToDuplicate) {
+
                     let clone = cardToDuplicate.cloneNode(true);
-                    clone.removeAttribute('class');
-                    clone.removeAttribute('style');
-                    duplicatedCardsCut.push(clone);
+                    clone.classList = '';
+                    clone.style = '';
+
+                    clone.classList.add('tarot-card');
+
+                    clone.style.width = cardWidth + "px";
+                    clone.style.height = cardHeight + "px";
+
+                    containerCutEl.appendChild(clone);
                 }
             });
 
-            tarotCardsEl.forEach((card) => {
-                card.classList.remove('-mt-4', 'hover:-mt-4');
-                if(isMobile) {
-                    gsap.to(card, {
-                        duration: 1, 
-                        x: () => 0, 
-                        y: () => 0,
-                        opacity: 0,
-                        rotation: () => 0, 
-                        stagger: 0.1, 
-                        ease: "power3.inOut", 
-                        onComplete: () => {
-                            tarotCardsContainer.style.zIndex = -1;
-                        }
-                    });
-                }else {
-                    gsap.to(card, {
-                        duration: 0.7,
-                        x: 50,
-                        opacity: 0,
-                        stagger: 0.3,
-                        ease: "power3.inOut",
-                        onComplete: () => {
-                            tarotCardsContainer.style.zIndex = -1;
-                        }
-                    });
-                }
-            });
-
-            duplicatedCardsEl.cut = duplicatedCardsCut;
-            duplicatedCardsEl.draw = duplicatedCardsDraw;
+            duplicatedCardsEl.cut = containerCutEl;
+            duplicatedCardsEl.draw = containerDrawEl;
 
             return duplicatedCardsEl;
 
         };
 
-        const drawCut = function(cutCards) {
-            console.log('cards cut', cutCards);
-
-            const containerCutEl = document.createElement('ul');
-
-            cutCards.forEach((c) => {
-                c.style.width = "65px";
-                containerCutEl.append(c);
-            })
-            cardMap.append(containerCutEl);
-        }
-
         const drawCross = function(finalDraw) {
+            console.log('drawcross', finalDraw);
             const drawCardsAllEl = duplicateCardDraw(finalDraw);
 
             const cutCardsEl = drawCardsAllEl.cut;
             const drawCardsEl = drawCardsAllEl.draw;
-
-            const containerDrawEl = document.createElement('ul');
             
-            drawCut(cutCardsEl);
+            gsap.to(tarotCardsContainer, {
+                duration: 1,
+                scale: .8,
+                opacity: 0,
+                ease: "power1.out",
+                onComplete: () => {
+                    setTimeout(() => {
+                        tarotCardsContainer.remove();
+                        cardMap.classList.add('draw-cross');
+                        cardMap.firstElementChild.appendChild(cutCardsEl);
+                        cardMap.firstElementChild.appendChild(drawCardsEl);
 
-            drawCardsEl.forEach((c) => {
-                c.style.width = "65px";
-                containerDrawEl.append(c);
+                        requestAnimationFrame(() => {
+                            let dc = document.querySelectorAll(".draw-cross .tarot-cards-container.tarot-cards-container-draw li");
+                            let dcc = document.querySelector(".draw-cross .tarot-cards-container.tarot-cards-container-draw");
+                            console.log(dc);
+
+                            dcc.style.transform = 'translateX(-100%)';
+                            dcc.style.minHeight = `${cardHeight * 3}px`;
+                            dcc.style.marginTop = '3em';
+                            dc.forEach((el, i) => {
+                                if(i == 0) {
+                                    el.style.transform = `translateY(100%)`;
+                                }
+                                if(i == 1) {
+                                    el.style.transform = `translateX(200%) translateY(100%)`;
+                                }
+                                if(i == 2) {
+                                    el.style.transform = `translateX(100%)`;
+                                }
+                                if(i == 3) {
+                                    el.style.transform = `translateX(100%) translateY(200%)`;
+                                }
+                                if(i == 4) {
+                                    el.style.transform = `translateX(100%) translateY(100%)`;
+                                }
+                            })
+
+                        });
+
+                    }, 500)
+                }
             });
-            cardMap.appendChild(containerDrawEl);
 
-            console.log('duplicatedCards in data cross', drawCardsAllEl);
-            console.log('cards draw', drawCardsEl);
         }
 
-        const drawWeeck = function(finalDraw) {
-            duplicateCardDraw(finalDraw);
-            console.log('draw', finalDraw);
+        const drawWeek = function(finalDraw) {
+            console.log('drawWeek', finalDraw);
+
+            const drawCardsAllEl = duplicateCardDraw(finalDraw);
+
+            const cutCardsEl = drawCardsAllEl.cut;
+            const drawCardsEl = drawCardsAllEl.draw;
+            
+            gsap.to(tarotCardsContainer, {
+                duration: 1,
+                scale: .8,
+                opacity: 0,
+                ease: "power1.out",
+                onComplete: () => {
+                    setTimeout(() => {
+                        tarotCardsContainer.remove();
+                        cardMap.classList.add('draw-week');
+                        cardMap.firstElementChild.appendChild(cutCardsEl);
+                        cardMap.firstElementChild.appendChild(drawCardsEl);
+
+                        requestAnimationFrame(() => {
+                            let dc = document.querySelectorAll(".draw-week .tarot-cards-container.tarot-cards-container-draw li");
+                            let dcc = document.querySelector(".draw-week .tarot-cards-container.tarot-cards-container-draw");
+                            console.log(dc);
+
+                            dcc.style.marginLeft = '1.5em';
+                            dc.forEach((el, i) => {
+                                el.style.transform = `translateX(${100 * i}%)`;
+                            })
+
+                        });
+
+                    }, 500)
+                }
+            });
         }
 
         const drawDay = function(finalDraw) {
-            duplicateCardDraw(finalDraw);
-            console.log('draw', finalDraw);
+            console.log('drawday', finalDraw);
+            const drawCardsAllEl = duplicateCardDraw(finalDraw);
+
+            const cutCardsEl = drawCardsAllEl.cut;
+            const drawCardsEl = drawCardsAllEl.draw;
+            
+            gsap.to(tarotCardsContainer, {
+                duration: 1,
+                scale: .8,
+                opacity: 0,
+                ease: "power1.out",
+                onComplete: () => {
+                    setTimeout(() => {
+                        tarotCardsContainer.remove();
+                        cardMap.classList.add('draw-day');
+                        cardMap.firstElementChild.appendChild(cutCardsEl);
+                        cardMap.firstElementChild.appendChild(drawCardsEl);
+                    }, 500)
+                }
+            });
         }
 
         // CONSTRUCTION DU TIRAGE
@@ -604,5 +681,6 @@ document.addEventListener("livewire:init", () => {
         });
 
         shuffleBtn.addEventListener("click", shuffleDeck);
+
     }
 });
