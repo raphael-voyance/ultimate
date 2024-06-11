@@ -538,7 +538,6 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         const drawCross = function(finalDraw) {
-            console.log('drawcross', finalDraw);
             const drawCardsAllEl = duplicateCardDraw(finalDraw);
 
             const cutCardsEl = drawCardsAllEl.cut;
@@ -553,13 +552,56 @@ document.addEventListener("DOMContentLoaded", () => {
                     setTimeout(() => {
                         tarotCardsContainer.remove();
                         cardMap.classList.add('draw-cross');
+
+                        console.log('final draw : ', finalDraw)
+
+                        const interpretationCutEl = document.createElement('div');
+                        const interpretationCut = finalDraw.cut;
+                        const drawCut = interpretationCut.draw;
+
+                        console.log('finalDraw.cut : ', interpretationCut)
+                        console.log('finalDraw.cut.draw : ', drawCut)
+
+                        
+
+                        Object.entries(drawCut).forEach(([k, c]) => {
+                            let cardName = c.name;
+                            let cardPath = c.path;
+                            let cardNb = c.nbArcane;
+                            let cardInterpretation = c.interpretation;
+
+                            let cardNameEl = document.createElement('h4');
+                            let cardImgEl = document.createElement('img');
+                            let cardNbEl = document.createElement('span');
+                            let cardInterpretationEl = document.createElement('p');
+
+                            cardNameEl.innerText = cardName;
+                            cardImgEl.setAttribute('src', cardPath);
+                            cardNbEl.innerText = cardNb + ' - ';
+                            cardInterpretationEl.innerText = cardInterpretation;
+                            
+                            interpretationCutEl.appendChild(cardImgEl);
+                            interpretationCutEl.appendChild(cardNbEl);
+                            interpretationCutEl.appendChild(cardNameEl);
+                            interpretationCutEl.appendChild(cardInterpretationEl);
+
+                            console.log('frfffff', interpretationCutEl)
+                            cardMap.firstElementChild.appendChild(interpretationCutEl);
+
+                        });
+
+
                         cardMap.firstElementChild.appendChild(cutCardsEl);
+
+
+
                         cardMap.firstElementChild.appendChild(drawCardsEl);
+
+                        
 
                         requestAnimationFrame(() => {
                             let dc = document.querySelectorAll(".draw-cross .tarot-cards-container.tarot-cards-container-draw li");
                             let dcc = document.querySelector(".draw-cross .tarot-cards-container.tarot-cards-container-draw");
-                            console.log(dc);
 
                             dcc.style.transform = 'translateX(-100%)';
                             dcc.style.minHeight = `${cardHeight * 3}px`;
