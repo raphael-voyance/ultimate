@@ -12,7 +12,7 @@
         </header>
 
         <section>
-            tableau des tirages
+            @livewire('data-table')
             @dump($draws)
         </section>
 
