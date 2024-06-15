@@ -1,6 +1,6 @@
 <section>
 
-        <x-modal wire:model="birthdayModal">
+        <x-mary-modal wire:model="birthdayModal">
 
             <button
                 @click="$wire.birthdayModal = false"
@@ -53,7 +53,7 @@
                 <x-ui.primary-button wire:click="saveBirthday" class="block">{{ $btnText }}</x-ui.primary-button>
                 </div>
             </div>
-        </x-modal>
+        </x-mary-modal>
 
     @if (!$birthdayIsEmpty)
         <div>

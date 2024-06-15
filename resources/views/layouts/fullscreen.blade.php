@@ -71,7 +71,7 @@
             <!-- Fin Page Heading -->
 
             <!-- Début Page Content -->
-            <div class="w-full py-8 mx-auto bg-neutral text-neutral-100">
+            <div class="w-full -mt-8 py-8 mx-auto bg-neutral text-neutral-100">
                 {{ $slot }}
             </div>
             <!-- Fin Page Content -->

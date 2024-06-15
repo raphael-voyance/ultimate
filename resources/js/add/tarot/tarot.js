@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 changeGameBlocTitle.innerText = "Changer de tirage :";
 
-                changeGameBtnsContainer.classList.add("p-4", "bg-base-100");
+                changeGameBtnsContainer.classList.add("p-4", "bg-base-100", "relative", "-top-20");
                 changeGameBlocTitle.classList.add(
                     "text-xl",
                     "mb-3",
@@ -267,6 +267,8 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         const spreadDeck = function () {
+
+            totalCardsForDrawingCardsEl.classList.remove('hidden');
             
             const cards = tarotCardsContainer.getElementsByClassName('tarot-card');
             const cardCount = cards.length;
@@ -440,11 +442,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 closeDeck();
 
+                console.log(finalDraw, interpretationCardDraw.drawSlug);
+
                 let drawS = interpretationCardDraw.drawSlug;
                 if(drawS == 'tirage_de_la_journee') {
                     drawDay(finalDraw);
-                }else if(drawS == 'tirage_de_la_semaine') {
-                    drawWeek(finalDraw);
+                }else if(drawS == 'tirage_de_lannee') {
+                    drawYear(finalDraw);
                 }else if(drawS == 'tirage_en_croix') {
                     drawCross(finalDraw);
                 }
@@ -477,71 +481,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // TIRAGES
         interpretationDrawingCardBtn.addEventListener("click", () => {
+            totalCardsForDrawingCardsEl.style.display = 'none';
+            console.log(cardsSelected)
             launchGetDrawInterpretation(cardsSelected);
         });
 
-        const duplicateCardDraw = (draw) => {
-            let tarotCardsEl = document.querySelectorAll(".tarot-card");
-            let duplicatedCardsEl = {};
+        //CUT
+        const getDrawCut = function(cut) {
+            // CUT
+            const finalDrawCutCards = cut.draw;
+            // console.log('finalDraw.cut : ', finalDrawCut)
+            // console.log('finalDrawCutCards > finalDraw.cut.draw : ', finalDrawCutCards)
 
-            const containerDrawEl = document.createElement('ul');
-            containerDrawEl.classList.add('tarot-cards-container', 'tarot-cards-container-draw');
-            containerDrawEl.style.width = cardWidth + "px";
-            containerDrawEl.style.height = cardHeight + "px";
+            const blockTemplateCut = document.getElementById('draw-interpretation-block-cut').content;
+            const cardTemplateCut = document.getElementById('cut-interpretation-card').content;
+            let blockCloneCut = document.importNode(blockTemplateCut, true);
+            let blockContainerCut = blockCloneCut.querySelector('.tarot-cards-container');
+            let blockInterprationCut = blockContainerCut.querySelector('.block-interpretation');
 
-            const containerCutEl = document.createElement('ul');
-            containerCutEl.classList.add('tarot-cards-container', 'tarot-cards-container-cut');
-            containerCutEl.style.width = cardWidth + "px";
-            containerCutEl.style.height = cardHeight + "px";
+            let containerCards = document.createElement('div');
 
-            // Duplication des cartes du tirage en fonction de l'attribut data-number
-            draw.draw.cards.forEach((c) => {
-                let cardToDuplicate = Array.from(tarotCardsEl).find((item) => item.dataset.number == c);
-                if (cardToDuplicate) {
-                    let clone = cardToDuplicate.cloneNode(true);
-                    clone.classList = '';
-                    clone.style = '';
+            console.log(blockInterprationCut)
 
-                    clone.classList.add('tarot-card');
+            Object.entries(finalDrawCutCards).forEach(([k, c]) => {
+                if(!c.name) return;
 
-                    clone.style.width = cardWidth + "px";
-                    clone.style.height = cardHeight + "px";
+                let cardClone = document.importNode(cardTemplateCut, true);
+                let interpretationBlock = document.createElement('div');
+                let interpretationBlockCardTitle = document.createElement('h4');
+                let interpretationBlockCardName = document.createElement('span');
+                let interpretationBlockCardNumber = document.createElement('span');
+                let interpretationBlockCardText = document.createElement('p');
 
-                    containerDrawEl.appendChild(clone);
-                    
-                }
+                cardClone.querySelector('.card-img').setAttribute('src', c.path);
+
+                cardClone.querySelector('.tarot-card').style.width = cardWidth + "px";
+                cardClone.querySelector('.tarot-card').style.height = cardHeight + "px";
+
+                interpretationBlockCardNumber.innerText = c.nbArcane + ' - ';
+                interpretationBlockCardName.innerText = c.name;
+                interpretationBlockCardTitle.appendChild(interpretationBlockCardNumber);
+                interpretationBlockCardTitle.appendChild(interpretationBlockCardName);
+                interpretationBlockCardText.innerText = c.interpretation;
+
+                interpretationBlock.appendChild(interpretationBlockCardTitle);
+                interpretationBlock.appendChild(interpretationBlockCardText);
+
+                blockInterprationCut.appendChild(interpretationBlock);
+                containerCards.appendChild(cardClone);
+
             });
 
-            // Duplication des cartes de la coupe en fonction de l'attribut data-number
-            draw.cut.cards.forEach((c) => {
-                let cardToDuplicate = Array.from(tarotCardsEl).find((item) => item.dataset.number == c);
-                if (cardToDuplicate) {
+            containerCards.classList.add('block-cards-cut');
 
-                    let clone = cardToDuplicate.cloneNode(true);
-                    clone.classList = '';
-                    clone.style = '';
+            blockContainerCut.appendChild(containerCards);
+            cardMap.firstElementChild.appendChild(blockContainerCut);
+        }
 
-                    clone.classList.add('tarot-card');
-
-                    clone.style.width = cardWidth + "px";
-                    clone.style.height = cardHeight + "px";
-
-                    containerCutEl.appendChild(clone);
-                }
-            });
-
-            duplicatedCardsEl.cut = containerCutEl;
-            duplicatedCardsEl.draw = containerDrawEl;
-
-            return duplicatedCardsEl;
-
-        };
-
+        //DRAW CROSS
         const drawCross = function(finalDraw) {
-            const drawCardsAllEl = duplicateCardDraw(finalDraw);
 
-            const cutCardsEl = drawCardsAllEl.cut;
-            const drawCardsEl = drawCardsAllEl.draw;
+            console.log(finalDraw)
             
             gsap.to(tarotCardsContainer, {
                 duration: 1,
@@ -553,93 +553,63 @@ document.addEventListener("DOMContentLoaded", () => {
                         tarotCardsContainer.remove();
                         cardMap.classList.add('draw-cross');
 
-                        console.log('final draw : ', finalDraw)
+                        // CUT
+                        getDrawCut(finalDraw.cut);
 
-                        const interpretationCutEl = document.createElement('div');
-                        const interpretationCut = finalDraw.cut;
-                        const drawCut = interpretationCut.draw;
+                        // DRAW
+                        const theFinalDraw = finalDraw.draw;
+                        const theFinalDrawCards = theFinalDraw.draw;
 
-                        console.log('finalDraw.cut : ', interpretationCut)
-                        console.log('finalDraw.cut.draw : ', drawCut)
+                        const blockTemplateDraw = document.getElementById('draw-interpretation-block-draw-cross').content;
+                        const cardTemplateDraw = document.getElementById('draw-interpretation-card-draw-cross').content;
+                        let blockCloneDraw = document.importNode(blockTemplateDraw, true);
+                        let blockContainerDraw = blockCloneDraw.querySelector('.tarot-cards-container');
 
-                        
+                        let blockInterpration = blockContainerDraw.querySelector('.block-interpretation');
+                        let containerCards = document.createElement('div');
 
-                        Object.entries(drawCut).forEach(([k, c]) => {
-                            let cardName = c.name;
-                            let cardPath = c.path;
-                            let cardNb = c.nbArcane;
-                            let cardInterpretation = c.interpretation;
+                        Object.entries(theFinalDrawCards).forEach(([k, c]) => {
+                            if(!c.name) return;
 
-                            let cardNameEl = document.createElement('h4');
-                            let cardImgEl = document.createElement('img');
-                            let cardNbEl = document.createElement('span');
-                            let cardInterpretationEl = document.createElement('p');
+                            let cardClone = document.importNode(cardTemplateDraw, true);
+                            let interpretationBlock = document.createElement('div');
+                            let interpretationBlockCardTitle = document.createElement('h4');
+                            let interpretationBlockCardName = document.createElement('span');
+                            let interpretationBlockCardNumber = document.createElement('span');
+                            let interpretationBlockCardText = document.createElement('p');
 
-                            cardNameEl.innerText = cardName;
-                            cardImgEl.setAttribute('src', cardPath);
-                            cardNbEl.innerText = cardNb + ' - ';
-                            cardInterpretationEl.innerText = cardInterpretation;
-                            
-                            interpretationCutEl.appendChild(cardImgEl);
-                            interpretationCutEl.appendChild(cardNbEl);
-                            interpretationCutEl.appendChild(cardNameEl);
-                            interpretationCutEl.appendChild(cardInterpretationEl);
+                            cardClone.querySelector('.card-img').setAttribute('src', c.path);
 
-                            console.log('frfffff', interpretationCutEl)
-                            cardMap.firstElementChild.appendChild(interpretationCutEl);
+                            cardClone.querySelector('.tarot-card').style.width = cardWidth + "px";
+                            cardClone.querySelector('.tarot-card').style.height = cardHeight + "px";
 
-                        });
+                            interpretationBlockCardNumber.innerText = c.nbArcane + ' - ';
+                            interpretationBlockCardName.innerText = c.name;
+                            interpretationBlockCardTitle.appendChild(interpretationBlockCardNumber);
+                            interpretationBlockCardTitle.appendChild(interpretationBlockCardName);
+                            interpretationBlockCardText.innerText = c.interpretation;
 
+                            interpretationBlock.appendChild(interpretationBlockCardTitle);
+                            interpretationBlock.appendChild(interpretationBlockCardText);
 
-                        cardMap.firstElementChild.appendChild(cutCardsEl);
-
-
-
-                        cardMap.firstElementChild.appendChild(drawCardsEl);
-
-                        
-
-                        requestAnimationFrame(() => {
-                            let dc = document.querySelectorAll(".draw-cross .tarot-cards-container.tarot-cards-container-draw li");
-                            let dcc = document.querySelector(".draw-cross .tarot-cards-container.tarot-cards-container-draw");
-
-                            dcc.style.transform = 'translateX(-100%)';
-                            dcc.style.minHeight = `${cardHeight * 3}px`;
-                            dcc.style.marginTop = '3em';
-                            dc.forEach((el, i) => {
-                                if(i == 0) {
-                                    el.style.transform = `translateY(100%)`;
-                                }
-                                if(i == 1) {
-                                    el.style.transform = `translateX(200%) translateY(100%)`;
-                                }
-                                if(i == 2) {
-                                    el.style.transform = `translateX(100%)`;
-                                }
-                                if(i == 3) {
-                                    el.style.transform = `translateX(100%) translateY(200%)`;
-                                }
-                                if(i == 4) {
-                                    el.style.transform = `translateX(100%) translateY(100%)`;
-                                }
-                            })
+                            blockInterpration.appendChild(interpretationBlock);
+                            containerCards.appendChild(cardClone);
 
                         });
+
+                        containerCards.style.minHeight = cardHeight * 3 + "px";
+                        containerCards.classList.add('block-cards-draw');
+                        blockContainerDraw.appendChild(containerCards);
+                        cardMap.firstElementChild.appendChild(blockContainerDraw);
 
                     }, 500)
                 }
             });
 
-        }
+        };
 
-        const drawWeek = function(finalDraw) {
-            console.log('drawWeek', finalDraw);
-
-            const drawCardsAllEl = duplicateCardDraw(finalDraw);
-
-            const cutCardsEl = drawCardsAllEl.cut;
-            const drawCardsEl = drawCardsAllEl.draw;
-            
+        //DRAW year
+        const drawYear = function(finalDraw) {
             gsap.to(tarotCardsContainer, {
                 duration: 1,
                 scale: .8,
@@ -648,34 +618,100 @@ document.addEventListener("DOMContentLoaded", () => {
                 onComplete: () => {
                     setTimeout(() => {
                         tarotCardsContainer.remove();
-                        cardMap.classList.add('draw-week');
-                        cardMap.firstElementChild.appendChild(cutCardsEl);
-                        cardMap.firstElementChild.appendChild(drawCardsEl);
+                        cardMap.classList.add('draw-year');
 
-                        requestAnimationFrame(() => {
-                            let dc = document.querySelectorAll(".draw-week .tarot-cards-container.tarot-cards-container-draw li");
-                            let dcc = document.querySelector(".draw-week .tarot-cards-container.tarot-cards-container-draw");
-                            console.log(dc);
+                        // CUT
+                        getDrawCut(finalDraw.cut);
 
-                            dcc.style.marginLeft = '1.5em';
-                            dc.forEach((el, i) => {
-                                el.style.transform = `translateX(${100 * i}%)`;
-                            })
+                        // DRAW
+                        const theFinalDraw = finalDraw.draw;
+                        const theFinalDrawCards = theFinalDraw.draw;
+
+                        const blockTemplateDraw = document.getElementById('draw-interpretation-block-draw-year').content;
+                        const cardTemplateDraw = document.getElementById('draw-interpretation-card-draw-year').content;
+                        let blockCloneDraw = document.importNode(blockTemplateDraw, true);
+                        let blockContainerDraw = blockCloneDraw.querySelector('.tarot-cards-container');
+
+                        Object.entries(theFinalDrawCards).forEach(([k, c]) => {
+                            if(!c.name) return;
+
+                            let cardClone = document.importNode(cardTemplateDraw, true);
+
+                            cardClone.querySelector('.block-card-year .card-img').setAttribute('src', c.path);
+
+                            cardClone.querySelector('.card-nb').innerText = c.nbArcane + ' - ';
+                            cardClone.querySelector('.card-name').innerText = c.name;
+                            cardClone.querySelector('.card-interpretation-text').innerText = c.interpretation;
+
+                            switch (k) {
+                                case '0':
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-user"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Vous';
+                                  break;
+                                case '1':
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-money-bill"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Votre argent';
+                                  break;
+                                  case '2':
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-thin fa-comments"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Votre entourage / Votre communication';
+                                  break;
+                                  case '3':
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-house"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Votre fammile / votre foyer';
+                                  break;
+                                  case '4':
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-heart"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Vos enfants / Vos amours / Vos créations';
+                                  break;
+                                  case '5':
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-briefcase"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Votre vie quotidienne / Votre travail';
+                                  break;
+                                  case '6':
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-user-group-simple"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Votre conjoint / L\'autre / Vos partenaires';
+                                  break;
+                                  case '7':
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-sack-dollar"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Vos dépenses / Vos transformations';
+                                  break;
+                                  case '8':
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-earth-americas"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Les voyages / Vos aspirations';
+                                  break;
+                                  case '9':
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-user-crown"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Votre réussite sociale / Votre carrière';
+                                  break;
+                                  case '10':
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-users"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Vos projets / Vos amis / Vos espoirs';
+                                  break;
+                                  case '11':
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-dragon"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Les épreuves / Vos forces secrètes';
+                                  break;
+                                
+                                default:
+                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-t-rex"></i>';
+                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Général';
+                            }
+
+                            blockContainerDraw.appendChild(cardClone);
 
                         });
+                        
+                        cardMap.firstElementChild.appendChild(blockContainerDraw);
+
 
                     }, 500)
                 }
             });
         }
 
+        //DRAW DAY
         const drawDay = function(finalDraw) {
-            console.log('drawday', finalDraw);
-            const drawCardsAllEl = duplicateCardDraw(finalDraw);
-
-            const cutCardsEl = drawCardsAllEl.cut;
-            const drawCardsEl = drawCardsAllEl.draw;
-            
             gsap.to(tarotCardsContainer, {
                 duration: 1,
                 scale: .8,
@@ -685,8 +721,55 @@ document.addEventListener("DOMContentLoaded", () => {
                     setTimeout(() => {
                         tarotCardsContainer.remove();
                         cardMap.classList.add('draw-day');
-                        cardMap.firstElementChild.appendChild(cutCardsEl);
-                        cardMap.firstElementChild.appendChild(drawCardsEl);
+
+                        // CUT
+                        getDrawCut(finalDraw.cut);
+
+                        // DRAW
+                        const theFinalDraw = finalDraw.draw;
+                        const theFinalDrawCards = theFinalDraw.draw;
+
+                        const blockTemplateDraw = document.getElementById('draw-interpretation-block-draw-day').content;
+                        const cardTemplateDraw = document.getElementById('draw-interpretation-card-draw-day').content;
+                        let blockCloneDraw = document.importNode(blockTemplateDraw, true);
+                        let blockContainerDraw = blockCloneDraw.querySelector('.tarot-cards-container');
+
+                        let blockInterpration = blockContainerDraw.querySelector('.block-interpretation');
+                        let containerCards = document.createElement('div');
+
+                        Object.entries(theFinalDrawCards).forEach(([k, c]) => {
+                            if(!c.name) return;
+
+                            let cardClone = document.importNode(cardTemplateDraw, true);
+                            let interpretationBlock = document.createElement('div');
+                            let interpretationBlockCardTitle = document.createElement('h4');
+                            let interpretationBlockCardName = document.createElement('span');
+                            let interpretationBlockCardNumber = document.createElement('span');
+                            let interpretationBlockCardText = document.createElement('p');
+
+                            cardClone.querySelector('.card-img').setAttribute('src', c.path);
+
+                            cardClone.querySelector('.tarot-card').style.width = cardWidth + "px";
+                            cardClone.querySelector('.tarot-card').style.height = cardHeight + "px";
+
+                            interpretationBlockCardNumber.innerText = c.nbArcane + ' - ';
+                            interpretationBlockCardName.innerText = c.name;
+                            interpretationBlockCardTitle.appendChild(interpretationBlockCardNumber);
+                            interpretationBlockCardTitle.appendChild(interpretationBlockCardName);
+                            interpretationBlockCardText.innerText = c.interpretation;
+
+                            interpretationBlock.appendChild(interpretationBlockCardTitle);
+                            interpretationBlock.appendChild(interpretationBlockCardText);
+
+                            blockInterpration.appendChild(interpretationBlock);
+                            containerCards.appendChild(cardClone);
+
+                        });
+
+                        containerCards.classList.add('block-cards-draw');
+                        blockContainerDraw.appendChild(containerCards);
+                        cardMap.firstElementChild.appendChild(blockContainerDraw);
+
                     }, 500)
                 }
             });

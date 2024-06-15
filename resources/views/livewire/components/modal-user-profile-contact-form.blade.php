@@ -1,5 +1,5 @@
 <div>
-    <x-modal wire:model="ModalUserProfileContactForm" title="Vos informations de contact" subtitle="Gestion de vos informations de contact" separator>
+    <x-mary-modal wire:model="ModalUserProfileContactForm" title="Vos informations de contact" subtitle="Gestion de vos informations de contact" separator>
 
         {{-- Loader --}}
         <div class="relative" wire:loading>
@@ -28,12 +28,12 @@
         </div>
 
         <x-slot:actions>
-            <x-button label="Quitter" @click="$wire.ModalUserProfileContactForm = false" class="btn-sm" />
-            <x-button label="Enregistrer" @click="$wire.ProfileContactFormSubmit()" class="btn-primary btn-sm" />
+            <x-mary-button label="Quitter" @click="$wire.ModalUserProfileContactForm = false" class="btn-sm" />
+            <x-mary-button label="Enregistrer" @click="$wire.ProfileContactFormSubmit()" class="btn-primary btn-sm" />
         </x-slot:actions>
         </form>
         
-    </x-modal>
+    </x-mary-modal>
 
     <button @click="$wire.ModalUserProfileContactForm = true" class="btn btn-sm btn-accent">{{ $btnText }}</button>
 

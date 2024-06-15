@@ -178,7 +178,7 @@
                                 <h3>Informations de naissance</h3>
                                 <div class="grid grid-cols-2 gap-4 mt-2">
                                     <div>
-                                        <x-datepicker
+                                        <x-mary-datepicker
                                             class="input input-primary w-full peer focus:border-none focus:ring-primary-focus"
                                             label="Votre date de naissance" icon-right="o-calendar" :config="$dateConfig" />
                                     </div>

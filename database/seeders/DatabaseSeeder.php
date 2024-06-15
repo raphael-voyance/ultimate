@@ -224,10 +224,10 @@ class DatabaseSeeder extends Seeder
             ]);
 
             $tirageDeux = DrawCard::create([
-                'name' => 'Tirage de la semaine',
-                'slug' => Str::of('Tirage de la semaine')->slug('-'),
+                'name' => "Tirage de l'année",
+                'slug' => Str::of("Tirage de l'année")->slug('-'),
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
-                'totalSelectedCards' => 7
+                'totalSelectedCards' => 12
             ]);
 
             $tirageTrois = DrawCard::create([

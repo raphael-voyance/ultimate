@@ -4,7 +4,7 @@
         class="outline-none block w-full px-4 py-2 text-left text-sm leading-5 text-white hover:text-white active:text-white focus:text-white hover:opacity-75 active:opacity-75 focus:opacity-75 transition-all"><i
             class="fa-thin fa-calendar"></i> Prendre RDV</a>
 
-    <x-modal wire:model="appointmentModal">
+    <x-mary-modal wire:model="appointmentModal">
 
         {{-- Loader --}}
         <div class="relative" wire:loading>
@@ -124,7 +124,7 @@
                                         <!-- Remember Me -->
                                         <div class="block mt-4">
                                             <label for="remember" class="inline-flex items-center">
-                                                <x-checkbox wire:model="remember" name="remember"
+                                                <x-mary-checkbox wire:model="remember" name="remember"
                                                     label="Se souvenir de moi"
                                                     class="focus:ring-primary-focus  checkbox-sm" />
                                             </label>
@@ -258,7 +258,7 @@
                                             <form class="mt-4">
 
 
-                                                <x-datepicker class="input-secondary" label="Votre date de naissance" wire:model="birthday" icon-right="o-calendar" :config="$dateConfig" />
+                                                <x-mary-datepicker class="input-secondary" label="Votre date de naissance" wire:model="birthday" icon-right="o-calendar" :config="$dateConfig" />
 
                                                 <x-ui.secondary-button class="btn-sm btn-secondary btn-outline mt-3 float-right" wire:click.prevent="saveBirthday">Enregistrer ma date de naissance</x-ui.secondary-button>
                                                 <div class="clear-both"></div>
@@ -274,7 +274,7 @@
 
 
                                         <form class="mt-4">
-                                            <x-datepicker class="input input-secondary w-full peer focus:border-none focus:ring-secondary-focus" label="Votre date de naissance" wire:model="birthday" icon-right="o-calendar" :config="$dateConfig" />
+                                            <x-mary-datepicker class="input input-secondary w-full peer focus:border-none focus:ring-secondary-focus" label="Votre date de naissance" wire:model="birthday" icon-right="o-calendar" :config="$dateConfig" />
 
                                             <x-ui.secondary-button class="btn-sm btn-outline mt-3 float-right" wire:click.prevent="saveBirthday">Enregistrer ma date de naissance</x-ui.secondary-button>
                                             <div class="clear-both"></div>
@@ -389,7 +389,7 @@
                         <section class="py-6 px-4 mt-2 rounded bg-base-300/75">
                             <div class="mx-auto w-80 max-w-full break-all">
                             <p class="mb-4"> Vous êtes connecté(e) en tant que : </p>
-                            <x-avatar :image="Auth::user()->profile->avatar" :title="Auth::user()->fullName()" :subtitle="Auth::user()->email" class="!w-12" />
+                            <x-mary-avatar :image="Auth::user()->profile->avatar" :title="Auth::user()->fullName()" :subtitle="Auth::user()->email" class="!w-12" />
                             </div>
                         </section>
                             
@@ -567,5 +567,5 @@
 
             </div>
         </div>
-    </x-modal>
+    </x-mary-modal>
 </div>

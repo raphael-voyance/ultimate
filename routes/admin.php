@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Universe\AdminController;
 use App\Http\Controllers\Universe\MessagingController;
+use App\Http\Controllers\Universe\DrawsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,17 +14,22 @@ use App\Http\Controllers\Universe\MessagingController;
 |
 */
 
-Route::middleware(['auth', 'admin'])->prefix('test')->as('test.')->group(function() {
+// Route::middleware(['auth', 'admin'])->prefix('test')->as('test.')->group(function() {
+
+//     Route::get('/', [AdminController::class, 'index'])->name('index');
+// });
+
+Route::prefix('admin')->as('admin.')->group(function() {
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
-});
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(function() {
-
-    Route::get('/', function() {
-        dd('salut');
+    // DRAWS ROUTES
+    Route::prefix('draw')->as('draw.')->group(function() {
+        Route::get('/', [DrawsController::class, 'index'])->name('index');
+        Route::get('/create', [DrawsController::class, 'create'])->name('create');
+        Route::get('/edit/{name}', [DrawsController::class, 'edit'])->name('edit');
     });
-    //Route::get('/', [AdminController::class, 'index'])->name('index');
+
     Route::get('/messagerie', [MessagingController::class, 'index'])->name('messaging');
 
     //--------------TIPS--------------

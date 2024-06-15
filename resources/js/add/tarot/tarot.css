@@ -2,6 +2,10 @@
     position: relative;
     width: 100%; height: 100%;
     margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .tarot-cards-container .tarot-card {
@@ -21,35 +25,148 @@
     display: none;
 }
 
-/* .draw-cut */
-.tarot-cards-container.tarot-cards-container-cut li .back-card {
-    display: none;
+/* CUT */
+/* Conteneur de cartes */
+.tarot-cards-container-cut {
+    margin-bottom: 2em;
+    flex-direction: column-reverse;
+}
+/* Carte */
+.tarot-cards-container-cut .block-cards-cut .tarot-card {
+    position: relative;
+}
+.tarot-cards-container-cut .block-cards-cut {
+    margin-top: 1em;
+    display: flex;
+}
+.tarot-cards-container-cut .block-cards-cut .tarot-card:first-of-type {
+    transform: translateX(-15px);
+}
+.tarot-cards-container-cut .block-cards-cut .tarot-card:last-of-type {
+    transform: translateX(15px);
+}
+/* Interprétation */
+.tarot-cards-container-cut .block-interpretation {
+    width: 100%;
+    height: 100%;
+
+    margin-top: 1em;
+    padding: 10px;
+
+    background-color: rgba(0, 0, 255, 0.21);
+}
+.tarot-cards-container-cut .block-interpretation p {
+    margin-bottom: 1em;
+}
+.tarot-cards-container-cut .block-interpretation h4 {
+    margin-bottom: .5em;
 }
 
-.tarot-cards-container.tarot-cards-container-cut li .front-card {
-    display: block;
+/* DRAW CROSS */
+/* Conteneur général #cardMap.draw-cross */
+.draw-cross {}
+/* Conteneur de cartes */
+.tarot-cards-container-draw-cross {
+    flex-direction: column-reverse;
+}
+/* Carte */
+
+.tarot-cards-container-draw-cross .block-cards-draw {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2em;
 }
 
-.tarot-cards-container.tarot-cards-container-cut li:first-of-type {
-    transform: translateX(-100%);
-}
-.tarot-cards-container.tarot-cards-container-cut li:last-of-type {
-    transform: translateX(100%);
+.tarot-cards-container-draw-cross .tarot-card {
+    position: relative;
 }
 
-/* .draw-day */
-.draw-day .tarot-cards-container.tarot-cards-container-draw li .front-card {
-    display: block;
+.tarot-cards-container-draw-cross .tarot-card:nth-of-type(1) {
+    transform: translateX(100%) translateY(100%);
 }
 
-/* .draw-weeck */
-.draw-week .tarot-cards-container.tarot-cards-container-draw li .front-card {
-    display: block;
+.tarot-cards-container-draw-cross .tarot-card:nth-of-type(2) {
+    transform: translateX(200%) translateY(100%);
 }
 
-/* .draw-cross */
-.draw-cross .tarot-cards-container.tarot-cards-container-draw li .front-card {
-    display: block;
+.tarot-cards-container-draw-cross .tarot-card:nth-of-type(3) {
 }
 
-/* .tarot-cards-container-draw */
+.tarot-cards-container-draw-cross .tarot-card:nth-of-type(4) {
+    transform: translateX(-100%) translateY(200%);
+}
+
+.tarot-cards-container-draw-cross .tarot-card:nth-of-type(5) {
+    transform: translateX(-200%) translateY(100%);
+}
+
+/* Interprétation */
+.block-interpretation {
+    width: 100%;
+    height: 100%;
+
+    margin-top: 1em;
+    padding: 10px;
+
+    background-color: rgba(0, 0, 255, 0.21);
+}
+.block-interpretation p {
+    margin-bottom: 1em;
+}
+.block-interpretation h4 {
+    margin-bottom: .2em;
+}
+
+/* DRAW DAY */
+/* Conteneur général #cardMap.draw-day */
+.draw-day {}
+/* Conteneur de cartes */
+.tarot-cards-container-draw-day {
+    flex-direction: column-reverse;
+}
+/* Carte */
+.tarot-cards-container-draw-day .tarot-card {
+    position: relative;
+}
+
+/* DRAW year */
+/* Conteneur général #cardMap.draw-year */
+.draw-year {}
+/* Conteneur de cartes */
+.tarot-cards-container-draw-year {
+    flex-direction: column;
+}
+/* Carte */
+.tarot-cards-container-draw-year .tarot-card {
+    position: relative;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 1em;
+    padding: 1em;
+
+    background-color: rgba(0, 0, 255, 0.21);
+}
+.tarot-cards-container-draw-year .tarot-card img {
+    max-width: 5em;
+}
+
+.tarot-cards-container-draw-year .tarot-card .domaine {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 255, .4);
+    width: 100%;
+    align-self: end;
+    text-align: center;
+    line-height: 3em;
+    margin-bottom: 1em;
+}
+
+.tarot-cards-container-draw-year .tarot-card .domaine .draw-domaine-text {
+    padding-right: 10px;
+}
+.tarot-cards-container-draw-year .tarot-card .domaine .draw-domaine-icone {
+    width: 3em;
+    background-color: rgba(0, 0, 255, .8);
+}

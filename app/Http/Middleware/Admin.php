@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class Admin
@@ -16,9 +16,11 @@ class Admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->hasRole('Admin') ) {
+        if (true) {
+            dd($request->user());
             return $next($request);
         }
+        dd($request->user());
         return abort(404);
     }
 }

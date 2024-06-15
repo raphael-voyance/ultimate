@@ -15,7 +15,7 @@
     <x-slot:actions>
         <!-- Drawer toggle for "main-drawer" -->
         <button id="open-main-navivation" type="button" class="md:hidden btn btn-outline btn-primary btn-circle">
-            <x-icon name="o-bars-3" class="cursor-pointer" />
+            <x-mary-icon name="o-bars-3" class="cursor-pointer" />
         </button>
         <div id="container-main-navivation"
             class="

@@ -67,7 +67,7 @@
                             $status = 'Gratuit';
                         }
                     @endphp
-                    <x-badge value="{{ $status }}"
+                    <x-mary-badge value="{{ $status }}"
                     @class([
                         'badge-success' => $invoice->status == 'PAID',
                         'badge-warning' => $invoice->status == 'PENDING',

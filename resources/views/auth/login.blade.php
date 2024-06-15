@@ -29,7 +29,7 @@
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
-                    <x-checkbox id="remember" name="remember" label="Se souvenir de moi"
+                    <x-mary-checkbox id="remember" name="remember" label="Se souvenir de moi"
                         class="focus:ring-primary-focus  checkbox-sm" />
                 </label>
             </div>
