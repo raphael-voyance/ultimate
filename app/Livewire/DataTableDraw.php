@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\DrawCard;
 use App\Models\TarotCard;
 
-class DataTable extends Component
+class DataTableDraw extends Component
 {
     public $draws;
     public $headers;
@@ -18,31 +18,33 @@ class DataTable extends Component
 
         foreach ($this->draws as $draw) {
             $interpretations = 'N/A';
-            $slugWithUnderscores = str_replace('-', '_', $draw->slug);
+            //$slugWithUnderscores = str_replace('-', '_', $draw->slug);
+            $draw->interpretationIsCompleted = true;
 
             foreach ($this->cards as $card) {
                 $interpretationsData = json_decode($card->interpretationsForDrawingCard, true);
                 
-                if (isset($interpretationsData[$slugWithUnderscores])) {
-                    $interpretations = $interpretationsData[$slugWithUnderscores];
-                    break;
+                if (isset($interpretationsData[$draw->slug])) {
+                    $interpretations = $interpretationsData[$draw->slug];
+                }
+                //ddd($interpretationsData);
+                foreach($interpretations as $interpretation) {
+                    if(empty($interpretation) || $interpretation == '' || $interpretation == null) {
+                        $draw->interpretationIsCompleted = false;
+                        break 2;
+                    }
                 }
             }
-
-            $draw->interpretations = $interpretations;
         }
-        
     
         $this->headers = [
             ['key' => 'id', 'label' => '#'],
             ['key' => 'name', 'label' => 'Nom du tirage'],
             ['key' => 'slug', 'label' => 'Slug du tirage'],
-            ['key' => 'interpretations', 'label' => 'Interprétations'],
+            ['key' => 'interpretations', 'label' => 'Interprétations complètes'],
             ['key' => 'actions', 'label' => 'Actions'],
         ];
     }
-    
-
 
     public function render()
     {

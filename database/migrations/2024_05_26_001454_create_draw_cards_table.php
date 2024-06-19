@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('slug');
             $table->text('description')->nullable();
             $table->unsignedInteger('totalSelectedCards');
+            $table->boolean('hasSumCards');
         });
     }
 

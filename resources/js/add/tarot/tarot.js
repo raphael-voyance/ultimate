@@ -445,13 +445,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log(finalDraw, interpretationCardDraw.drawSlug);
 
                 let drawS = interpretationCardDraw.drawSlug;
-                if(drawS == 'tirage_de_la_journee') {
+                if(drawS == 'tirage-de-la-journee') {
                     drawDay(finalDraw);
-                }else if(drawS == 'tirage_de_lannee') {
+                }else if(drawS == 'tirage-de-lannee') {
                     drawYear(finalDraw);
-                }else if(drawS == 'tirage_en_croix') {
+                }else if(drawS == 'tirage-en-croix') {
                     drawCross(finalDraw);
                 }
+                console.log('dd', drawS)
                 return;
 
             } catch (err) {
@@ -541,7 +542,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //DRAW CROSS
         const drawCross = function(finalDraw) {
 
-            console.log(finalDraw)
+            console.log('process draw', finalDraw)
             
             gsap.to(tarotCardsContainer, {
                 duration: 1,

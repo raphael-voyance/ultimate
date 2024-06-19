@@ -207,34 +207,30 @@ class DatabaseSeeder extends Seeder
             )
             ->create();
 
-            $tarot = new Tarot;
-            $tarotCards = $tarot->arrayCards;
-
-            foreach($tarotCards as $tarotCard) {
-                $tarotCard['interpretationsForDrawingCard'] = json_encode($tarotCard['interpretationsForDrawingCard']);
-                $tarotCard['arcanePath'] = json_encode($tarotCard['arcanePath']);
-                TarotCard::create($tarotCard);
-            }
+            $this->call(TarotCardSeeder::class);
 
             $tirageUn = DrawCard::create([
                 'name' => 'Tirage en croix',
                 'slug' => Str::of('Tirage en croix')->slug('-'), 
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
-                'totalSelectedCards' => 4
+                'totalSelectedCards' => 4,
+                'hasSumCards' => true
             ]);
 
             $tirageDeux = DrawCard::create([
                 'name' => "Tirage de l'année",
                 'slug' => Str::of("Tirage de l'année")->slug('-'),
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
-                'totalSelectedCards' => 12
+                'totalSelectedCards' => 12,
+                'hasSumCards' => false
             ]);
 
             $tirageTrois = DrawCard::create([
                 'name' => 'Tirage de la journée',
                 'slug' => Str::of('Tirage de la journée')->slug('-'),
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
-                'totalSelectedCards' => 1
+                'totalSelectedCards' => 1,
+                'hasSumCards' => false
             ]);
     }
 }

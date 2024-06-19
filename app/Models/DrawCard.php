@@ -10,7 +10,7 @@ class DrawCard extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'slug', 'description', 'totalSelectedCards'
+        'name', 'slug', 'description', 'totalSelectedCards', 'hasSumCards'
     ];
 
     public $timestamps = false;

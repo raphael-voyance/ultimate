@@ -8,12 +8,11 @@
 
     <section>
         <header>
-            <a class="btn">Créer un tirage</a>
+            <a href="{{ route('admin.draw.create') }}" class="btn">Créer un tirage</a>
         </header>
 
         <section>
-            @livewire('data-table')
-            @dump($draws)
+            @livewire('data-table-draw')
         </section>
 
     </section>

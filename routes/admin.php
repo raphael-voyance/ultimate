@@ -27,6 +27,7 @@ Route::prefix('admin')->as('admin.')->group(function() {
     Route::prefix('draw')->as('draw.')->group(function() {
         Route::get('/', [DrawsController::class, 'index'])->name('index');
         Route::get('/create', [DrawsController::class, 'create'])->name('create');
+        Route::get('/store', [DrawsController::class, 'store'])->name('store');
         Route::get('/edit/{name}', [DrawsController::class, 'edit'])->name('edit');
     });
 

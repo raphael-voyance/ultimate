@@ -1,13 +1,17 @@
 <div>
+
+  
  
 {{-- You can use any `$wire.METHOD` on `@row-click` --}}
 <x-mary-table :headers="$headers" :rows="$draws" striped >
 
   @scope('cell_interpretations', $draw)
   <div class="flex flex-nowrap gap-2">
+    @if($draw->interpretationIsCompleted)
     <x-mary-icon name="o-check" />
+    @else
     <x-mary-icon name="o-x-mark" />
-    {{ dump(print_r($draw->interpretations)) }}
+    @endif
   </div>
   @endscope
 
