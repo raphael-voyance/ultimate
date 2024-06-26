@@ -6,6 +6,8 @@ use App\Models\DrawCard;
 use App\Models\TarotCard;
 use Illuminate\Support\Str;
 
+use function PHPSTORM_META\type;
+
 class Tarot
 {
 
@@ -17,7 +19,7 @@ class Tarot
     public function __construct()
     {
         $this->cards = TarotCard::all();
-        $this->drawingCards = DrawCard::all();
+        $this->drawingCards = DrawCard::where('active', true)->get();
     }
 
     //Tirages
@@ -35,52 +37,56 @@ class Tarot
     public function loadInterpretations(array $drawCards = [], string $draw = '')
     {
         //dd($drawCards, $draw);
-        //$draw = str_replace('-', '_', $draw);
         $drawInterpretation = $this->createResponseInterpretation($drawCards, $draw);
         return response()->json($drawInterpretation, 200);
     }
 
     private function createResponseInterpretation($cards, $drawSlug)
     {
-        // recuperer le draw dans une variable $drawModel
-        // creer une variable hasSum = false
-        // verifier si le tirage contient un hasSumCards et attribuer true à hasSum
-        // si oui, l'ajouter 
-
-        // if($hasSum) {
-        //     $sum = array_sum($cards);
-        //     $sum = $this->reduceNumberBetweenOneToTwentyOne($sum);
-        //     $cards[] = str($sum);
-        // }
-        
+        $drawModel = DrawCard::where('slug', $drawSlug)->first();
+        //dd($drawModel->positionsKeywords);
         $draw = [
-            'drawSlug' => $drawSlug
+            'drawSlug' => $drawSlug,
         ];
+
+        if(isset($drawModel->positionsKeywords)) {
+            $draw = [
+                'drawPositions' => json_encode($drawModel->positionsKeywords),
+            ];
+        };
 
         if($cards[0] == 'cut') array_shift($cards);
 
-        if($drawSlug == 'tirage-en-croix') {
+        //dd($drawModel->hasSumCards);
+        if(isset($drawModel->hasSumCards)) {
             $sum = array_sum($cards);
             $sum = $this->reduceNumberBetweenOneToTwentyOne($sum);
-            $cards[] = str($sum);
+            $cards[] = strval($sum);
         }
 
-        
-
         foreach($cards as $k=>$card) {
+            
             $card = $this->getCard($card);
 
             $position = $k +1;
+            //dd($position);
             $interpretations = json_decode($card->interpretationsForDrawingCard);
 
-            if(isset($interpretations->$drawSlug)) {
-                $interpretation = $interpretations->$drawSlug->$position;
-            }else {
+            if (isset($interpretations->$drawSlug)) {
+                // Convert the object to an array for easier manipulation
+                $interpretationsArray = (array) $interpretations->$drawSlug;
+
+                // dd($interpretationsArray);
+            
+                if (isset($interpretationsArray[$position]) && ($interpretationsArray[$position] === null || $interpretationsArray[$position] === '')) {
+                    $interpretation = $card->description;
+                } else {
+                    $interpretation = $interpretationsArray[$position] ?? "Aucune interprétation trouvée pour cette carte...";
+                }
+            } else {
                 $interpretation = "Aucune interprétation trouvée pour cette carte...";
             }
             
-            
-            //dump($interpretation);
 
             $c = [
                 'position' => $position,
@@ -97,7 +103,8 @@ class Tarot
             //dump($card);
         }
 
-        //dump($draw);
+        
+        // dd($draw);
 
         return [
             "cards" => $cards,

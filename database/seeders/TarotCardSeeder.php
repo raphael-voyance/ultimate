@@ -29,7 +29,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'I day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -71,7 +71,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'II day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -113,7 +113,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'III day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -155,7 +155,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'IV day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -197,7 +197,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'V day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -239,7 +239,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'VI day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -281,7 +281,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'VII day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -323,7 +323,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'VIII day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -365,7 +365,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'IX day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -407,7 +407,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'X day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -449,7 +449,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'XI day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -491,7 +491,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'XII day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -533,7 +533,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'XIII day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -575,7 +575,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'XIIII day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -617,7 +617,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'XV day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -659,7 +659,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'XVI day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -701,7 +701,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'XVII day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -743,7 +743,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'XVIII day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -785,7 +785,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'XIX day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -827,7 +827,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'XX day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -869,7 +869,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => 'XXI day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
@@ -911,7 +911,7 @@ class TarotCardSeeder extends Seeder
                     'tirage-de-la-journee' => [
                         '1' => '0 day : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                     ],
-                    'tirage-de-lannee' => [
+                    'tirage-de-l-annee' => [
                         '1' => 'Le Bateleur 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '2' => 'Le Bateleur 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                         '3' => 'Le Bateleur 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',

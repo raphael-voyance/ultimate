@@ -17,9 +17,17 @@
 
   @scope('cell_actions', $draw)
   <div class="flex flex-nowrap gap-2">
-      <x-mary-button icon="o-pencil-square" spinner class="btn-sm btn-circle btn-info btn-outline" />
-      <x-mary-button icon="o-trash" spinner class="btn-sm btn-circle btn-error btn-outline" />
+      <a href="{{ route('admin.draw.edit', $draw->id) }}" class="btn btn-sm btn-circle btn-info btn-outline"><x-mary-icon name="o-pencil-square" /></a>
+      <x-mary-button data-btn-draw-del="{{ route('admin.draw.destroy', $draw->id) }}" icon="o-trash" spinner class="btn-sm btn-circle btn-error btn-outline" />
   </div>
+  @endscope
+
+  @scope('cell_active', $draw)
+    @if($draw->active == 1)
+    Oui
+    @else
+    Non
+    @endif
   @endscope
 
   {{-- Special `actions` slot --}}

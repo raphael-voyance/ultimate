@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Universe\AdminController;
-use App\Http\Controllers\Universe\MessagingController;
 use App\Http\Controllers\Universe\DrawsController;
+use App\Http\Controllers\Universe\MessagingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,7 @@ use App\Http\Controllers\Universe\DrawsController;
 //     Route::get('/', [AdminController::class, 'index'])->name('index');
 // });
 
-Route::prefix('admin')->as('admin.')->group(function() {
+Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(function() {
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
 
@@ -27,8 +28,11 @@ Route::prefix('admin')->as('admin.')->group(function() {
     Route::prefix('draw')->as('draw.')->group(function() {
         Route::get('/', [DrawsController::class, 'index'])->name('index');
         Route::get('/create', [DrawsController::class, 'create'])->name('create');
-        Route::get('/store', [DrawsController::class, 'store'])->name('store');
-        Route::get('/edit/{name}', [DrawsController::class, 'edit'])->name('edit');
+        Route::post('/store', [DrawsController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [DrawsController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [DrawsController::class, 'update'])->name('update');
+        Route::post('/saveKeywords/', [DrawsController::class, 'saveKeywords'])->name('save.keywords');
+        Route::delete('/destroy/{id}', [DrawsController::class, 'destroy'])->name('destroy');
     });
 
     Route::get('/messagerie', [MessagingController::class, 'index'])->name('messaging');

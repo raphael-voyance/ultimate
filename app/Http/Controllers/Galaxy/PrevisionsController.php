@@ -15,7 +15,8 @@ class PrevisionsController extends Controller
 {
     public function index(Request $request): View {
         $user = $request->user();
-        $drawCards = DrawCard::all();
+        $drawCards = DrawCard::where('active', true)->get();
+        //dd($drawCards);
         if($user) {
             $user->load('profile');
         }

@@ -17,7 +17,7 @@ class DataTableDraw extends Component
         $this->draws = DrawCard::all();
 
         foreach ($this->draws as $draw) {
-            $interpretations = 'N/A';
+            $interpretations = [];
             //$slugWithUnderscores = str_replace('-', '_', $draw->slug);
             $draw->interpretationIsCompleted = true;
 
@@ -27,7 +27,7 @@ class DataTableDraw extends Component
                 if (isset($interpretationsData[$draw->slug])) {
                     $interpretations = $interpretationsData[$draw->slug];
                 }
-                //ddd($interpretationsData);
+                
                 foreach($interpretations as $interpretation) {
                     if(empty($interpretation) || $interpretation == '' || $interpretation == null) {
                         $draw->interpretationIsCompleted = false;
@@ -42,6 +42,7 @@ class DataTableDraw extends Component
             ['key' => 'name', 'label' => 'Nom du tirage'],
             ['key' => 'slug', 'label' => 'Slug du tirage'],
             ['key' => 'interpretations', 'label' => 'Interprétations complètes'],
+            ['key' => 'active', 'label' => 'Publié'],
             ['key' => 'actions', 'label' => 'Actions'],
         ];
     }

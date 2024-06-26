@@ -433,6 +433,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 const interpretationCardDraw = responseDraw.data;
                 const interpretationCardCut = responseCut.data;
 
+                //console.log(interpretationCardDraw)
+
                 const finalDraw = {
                     cut: interpretationCardCut,
                     draw: interpretationCardDraw
@@ -442,17 +444,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 closeDeck();
 
-                console.log(finalDraw, interpretationCardDraw.drawSlug);
+                //console.log(finalDraw, interpretationCardDraw.drawSlug);
 
                 let drawS = interpretationCardDraw.drawSlug;
                 if(drawS == 'tirage-de-la-journee') {
                     drawDay(finalDraw);
-                }else if(drawS == 'tirage-de-lannee') {
+                }else if(drawS == 'tirage-de-l-annee') {
                     drawYear(finalDraw);
                 }else if(drawS == 'tirage-en-croix') {
                     drawCross(finalDraw);
+                }else {
+                    drawSpread(finalDraw);
                 }
-                console.log('dd', drawS)
+                //console.log('dd', drawS)
                 return;
 
             } catch (err) {
@@ -483,7 +487,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // TIRAGES
         interpretationDrawingCardBtn.addEventListener("click", () => {
             totalCardsForDrawingCardsEl.style.display = 'none';
-            console.log(cardsSelected)
+            //console.log(cardsSelected)
             launchGetDrawInterpretation(cardsSelected);
         });
 
@@ -569,6 +573,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         let blockInterpration = blockContainerDraw.querySelector('.block-interpretation');
                         let containerCards = document.createElement('div');
 
+                        let drawPositionsInterpretations = [];
+
+                        if (theFinalDrawCards.drawPositions) {
+                            try {
+                                drawPositionsInterpretations = JSON.parse(JSON.parse(theFinalDrawCards.drawPositions));
+                            } catch (error) {
+                                console.error("Error parsing JSON: ", error);
+                            }
+                        }
+                        console.log(drawPositionsInterpretations)
+
                         Object.entries(theFinalDrawCards).forEach(([k, c]) => {
                             if(!c.name) return;
 
@@ -589,6 +604,165 @@ document.addEventListener("DOMContentLoaded", () => {
                             interpretationBlockCardTitle.appendChild(interpretationBlockCardNumber);
                             interpretationBlockCardTitle.appendChild(interpretationBlockCardName);
                             interpretationBlockCardText.innerText = c.interpretation;
+
+                            let domaineContainerEl = document.createElement('div'); 
+                            let domaineIconEl = document.createElement('span'); 
+                            let domaineTextEl = document.createElement('span');
+                            let domainePositionEl = document.createElement('span');
+
+                            domaineContainerEl.classList.add('domaine');
+                            domaineIconEl.classList.add('draw-domaine-icone');
+                            domaineTextEl.classList.add('draw-domaine-text');
+                            domainePositionEl.classList.add('draw-domaine-position');
+
+                            // Trouver les données de position correspondantes
+                            const positionData = drawPositionsInterpretations.find(pos => pos.position === parseInt(k) + 1);
+
+                            if (positionData) {
+                                domainePositionEl.innerHTML = parseInt(k) + 1;
+                                domaineIconEl.innerHTML = `<i class="${positionData.icone}"></i>`;
+                                domaineTextEl.innerText = positionData.keywords;
+
+                                domaineContainerEl.appendChild(domainePositionEl);
+                                domaineContainerEl.appendChild(domaineTextEl);
+                                domaineContainerEl.appendChild(domaineIconEl);
+
+
+
+                                interpretationBlock.appendChild(domaineContainerEl);
+                            }
+
+                            interpretationBlock.appendChild(interpretationBlockCardTitle);
+                            interpretationBlock.appendChild(interpretationBlockCardText);
+
+                            blockInterpration.appendChild(interpretationBlock);
+                            containerCards.appendChild(cardClone);
+
+                        });
+
+                        containerCards.style.minHeight = cardHeight * 3 + "px";
+                        containerCards.classList.add('block-cards-draw');
+                        blockContainerDraw.appendChild(containerCards);
+                        cardMap.firstElementChild.appendChild(blockContainerDraw);
+
+                    }, 500)
+                }
+            });
+
+        };
+
+        //DRAW spread
+        const drawSpread = function(finalDraw) {
+
+            console.log('process draw', finalDraw)
+            
+            gsap.to(tarotCardsContainer, {
+                duration: 1,
+                scale: .8,
+                opacity: 0,
+                ease: "power1.out",
+                onComplete: () => {
+                    setTimeout(() => {
+                        tarotCardsContainer.remove();
+                        cardMap.classList.add('draw-spread');
+
+                        // CUT
+                        getDrawCut(finalDraw.cut);
+
+                        // DRAW
+                        const theFinalDraw = finalDraw.draw;
+                        const theFinalDrawCards = theFinalDraw.draw;
+
+                        const blockTemplateDraw = document.getElementById('draw-interpretation-block-draw-spread').content;
+                        const cardTemplateDraw = document.getElementById('draw-interpretation-card-draw-spread').content;
+                        let blockCloneDraw = document.importNode(blockTemplateDraw, true);
+                        let blockContainerDraw = blockCloneDraw.querySelector('.tarot-cards-container');
+
+                        let blockInterpration = blockContainerDraw.querySelector('.block-interpretation');
+                        let containerCards = document.createElement('div');
+
+
+
+
+                        let drawPositionsInterpretations = [];
+
+                        if (theFinalDrawCards.drawPositions) {
+                            try {
+                                drawPositionsInterpretations = JSON.parse(JSON.parse(theFinalDrawCards.drawPositions));
+                            } catch (error) {
+                                console.error("Error parsing JSON: ", error);
+                            }
+                        }
+
+
+
+                        
+                        console.log(drawPositionsInterpretations)
+
+
+
+
+
+
+                        Object.entries(theFinalDrawCards).forEach(([k, c]) => {
+                            if(!c.name) return;
+
+                            let cardClone = document.importNode(cardTemplateDraw, true);
+                            let interpretationBlock = document.createElement('div');
+                            let interpretationBlockCardTitle = document.createElement('h4');
+                            let interpretationBlockCardName = document.createElement('span');
+                            let interpretationBlockCardNumber = document.createElement('span');
+                            let interpretationBlockCardText = document.createElement('p');
+
+                            cardClone.querySelector('.card-img').setAttribute('src', c.path);
+
+                            cardClone.querySelector('.tarot-card').style.width = cardWidth + "px";
+                            cardClone.querySelector('.tarot-card').style.height = cardHeight + "px";
+
+                            interpretationBlockCardNumber.innerText = c.nbArcane + ' - ';
+                            interpretationBlockCardName.innerText = c.name;
+                            interpretationBlockCardTitle.appendChild(interpretationBlockCardNumber);
+                            interpretationBlockCardTitle.appendChild(interpretationBlockCardName);
+                            interpretationBlockCardText.innerText = c.interpretation;
+
+
+
+
+                            let domaineContainerEl = document.createElement('div'); 
+                            let domaineIconEl = document.createElement('span'); 
+                            let domaineTextEl = document.createElement('span');
+                            let domainePositionEl = document.createElement('span');
+
+                            domaineContainerEl.classList.add('domaine');
+                            domaineIconEl.classList.add('draw-domaine-icone');
+                            domaineTextEl.classList.add('draw-domaine-text');
+                            domainePositionEl.classList.add('draw-domaine-position');
+
+
+
+
+                            // Trouver les données de position correspondantes
+                            const positionData = drawPositionsInterpretations.find(pos => pos.position === parseInt(k) + 1);
+
+                            if (positionData) {
+                                domainePositionEl.innerHTML = parseInt(k) + 1;
+                                domaineIconEl.innerHTML = `<i class="${positionData.icone}"></i>`;
+                                domaineTextEl.innerText = positionData.keywords;
+
+                                domaineContainerEl.appendChild(domainePositionEl);
+                                domaineContainerEl.appendChild(domaineTextEl);
+                                domaineContainerEl.appendChild(domaineIconEl);
+
+
+
+                                interpretationBlock.appendChild(domaineContainerEl);
+                            }
+
+
+
+
+
+
 
                             interpretationBlock.appendChild(interpretationBlockCardTitle);
                             interpretationBlock.appendChild(interpretationBlockCardText);
@@ -633,6 +807,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         let blockCloneDraw = document.importNode(blockTemplateDraw, true);
                         let blockContainerDraw = blockCloneDraw.querySelector('.tarot-cards-container');
 
+                        const drawPositionsInterpretations = JSON.parse(JSON.parse(theFinalDrawCards.drawPositions));
+
                         Object.entries(theFinalDrawCards).forEach(([k, c]) => {
                             if(!c.name) return;
 
@@ -644,59 +820,15 @@ document.addEventListener("DOMContentLoaded", () => {
                             cardClone.querySelector('.card-name').innerText = c.name;
                             cardClone.querySelector('.card-interpretation-text').innerText = c.interpretation;
 
-                            switch (k) {
-                                case '0':
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-user"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Vous';
-                                  break;
-                                case '1':
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-money-bill"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Votre argent';
-                                  break;
-                                  case '2':
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-thin fa-comments"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Votre entourage / Votre communication';
-                                  break;
-                                  case '3':
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-house"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Votre fammile / votre foyer';
-                                  break;
-                                  case '4':
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-heart"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Vos enfants / Vos amours / Vos créations';
-                                  break;
-                                  case '5':
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-briefcase"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Votre vie quotidienne / Votre travail';
-                                  break;
-                                  case '6':
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-user-group-simple"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Votre conjoint / L\'autre / Vos partenaires';
-                                  break;
-                                  case '7':
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-sack-dollar"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Vos dépenses / Vos transformations';
-                                  break;
-                                  case '8':
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-earth-americas"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Les voyages / Vos aspirations';
-                                  break;
-                                  case '9':
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-user-crown"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Votre réussite sociale / Votre carrière';
-                                  break;
-                                  case '10':
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-users"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Vos projets / Vos amis / Vos espoirs';
-                                  break;
-                                  case '11':
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-dragon"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Les épreuves / Vos forces secrètes';
-                                  break;
-                                
-                                default:
-                                    cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-t-rex"></i>';
-                                    cardClone.querySelector('.draw-domaine-text').innerText = 'Général';
+                            // Trouver les données de position correspondantes
+                            const positionData = drawPositionsInterpretations.find(pos => pos.position === parseInt(k) + 1);
+
+                            if (positionData) {
+                                cardClone.querySelector('.draw-domaine-icone').innerHTML = `<i class="${positionData.icone}"></i>`;
+                                cardClone.querySelector('.draw-domaine-text').innerText = positionData.keywords;
+                            } else {
+                                cardClone.querySelector('.draw-domaine-icone').innerHTML = '<i class="fa-thin fa-t-rex"></i>';
+                                cardClone.querySelector('.draw-domaine-text').innerText = 'Général';
                             }
 
                             blockContainerDraw.appendChild(cardClone);
@@ -738,6 +870,18 @@ document.addEventListener("DOMContentLoaded", () => {
                         let blockInterpration = blockContainerDraw.querySelector('.block-interpretation');
                         let containerCards = document.createElement('div');
 
+                        let drawPositionsInterpretations = [];
+
+                        if (theFinalDrawCards.drawPositions) {
+                            try {
+                                drawPositionsInterpretations = JSON.parse(JSON.parse(theFinalDrawCards.drawPositions));
+                            } catch (error) {
+                                console.error("Error parsing JSON: ", error);
+                            }
+                        }
+
+                        console.log(drawPositionsInterpretations)
+
                         Object.entries(theFinalDrawCards).forEach(([k, c]) => {
                             if(!c.name) return;
 
@@ -758,6 +902,33 @@ document.addEventListener("DOMContentLoaded", () => {
                             interpretationBlockCardTitle.appendChild(interpretationBlockCardNumber);
                             interpretationBlockCardTitle.appendChild(interpretationBlockCardName);
                             interpretationBlockCardText.innerText = c.interpretation;
+
+                            let domaineContainerEl = document.createElement('div'); 
+                            let domaineIconEl = document.createElement('span'); 
+                            let domaineTextEl = document.createElement('span');
+                            let domainePositionEl = document.createElement('span');
+
+                            domaineContainerEl.classList.add('domaine');
+                            domaineIconEl.classList.add('draw-domaine-icone');
+                            domaineTextEl.classList.add('draw-domaine-text');
+                            domainePositionEl.classList.add('draw-domaine-position');
+
+                            // Trouver les données de position correspondantes
+                            const positionData = drawPositionsInterpretations.find(pos => pos.position === parseInt(k) + 1);
+
+                            if (positionData) {
+                                domainePositionEl.innerHTML = parseInt(k) + 1;
+                                domaineIconEl.innerHTML = `<i class="${positionData.icone}"></i>`;
+                                domaineTextEl.innerText = positionData.keywords;
+
+                                domaineContainerEl.appendChild(domainePositionEl);
+                                domaineContainerEl.appendChild(domaineTextEl);
+                                domaineContainerEl.appendChild(domaineIconEl);
+
+
+
+                                interpretationBlock.appendChild(domaineContainerEl);
+                            }
 
                             interpretationBlock.appendChild(interpretationBlockCardTitle);
                             interpretationBlock.appendChild(interpretationBlockCardText);

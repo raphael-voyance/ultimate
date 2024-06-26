@@ -21,6 +21,8 @@ export default defineConfig({
                 'resources/js/add/lunar.js',
                 'resources/js/add/numerology.js',
                 'resources/js/add/tarot/tarot.js',
+                
+                'resources/js/add/universe/draws.js',
             ],
             refresh: true,
         }),

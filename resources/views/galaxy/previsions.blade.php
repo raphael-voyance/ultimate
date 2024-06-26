@@ -85,12 +85,14 @@
         <li id="lunar_age"></li>
         </ul>
 
+        @if($drawCards->count() > 0)
         <h3 class="mt-6">Tirages de Tarot : </h3>
         <ul>
             @foreach ($drawCards as $draw)
                 <li><a href="{{ route('my_space.previsions.tarot') }}#{{ $draw->slug }}">{{ $draw->name }}</a></li>
             @endforeach
         </ul>
+        @endif
 
     </article>
 

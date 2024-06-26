@@ -13,8 +13,7 @@
             <div data-step="DRAWING_CARD_INTRO"
                 class="m-auto w-full h-full max-w-md p-6 flex flex-col justify-center gap-6">
 
-                <p class="text-center">Bienvenue sur votre assistant de tirage de cartes. J'ai créé cet outil en
-                    intégrant ma propre interprétation du Tarot de Marseille.</p>
+                <p class="text-center">Bienvenue sur votre assistant virtuel de tirage de cartes. J'ai créé cet outil en intégrant ma propre interprétation du Tarot de Marseille.</p>
 
                 <button class="btn btn-sm btn-primary text-white w-1/2 mx-auto"
                 data-to-step="SELECT_GAME">Commencer</button>
@@ -129,6 +128,25 @@
                             </div>
                             
                             
+                        </div>
+                    </template>
+
+                    {{-- DRAW spread --}}
+                    <template id="draw-interpretation-block-draw-spread">
+                        <div class="tarot-cards-container tarot-cards-container-draw-spread">
+                            <div class="block-interpretation max-w-md">
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit eligendi pariatur officia, iusto dolorum tenetur totam et officiis quidem laboriosam, placeat, a itaque eum vero voluptatum fugit! Voluptatem, magnam quo.
+                                </p>
+                            </div>
+                        </div>
+                    </template>
+                    
+                    <template id="draw-interpretation-card-draw-spread">
+                        <div class="tarot-card">
+                            <div>
+                                <img class="card-img" src="" alt="Card Image">
+                            </div>
                         </div>
                     </template>
 

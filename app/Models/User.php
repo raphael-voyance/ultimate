@@ -142,11 +142,9 @@ class User extends Authenticatable implements Searchable, MustVerifyEmail
         return false;
     }
 
-    public function hasRole(string $role) {
-        if($this->roles->contains('name', $role) || $this->roles->contains('slug', $role)) {
-            return true;
-        }
-        return false;
+    public function hasRole(string $role)
+    {
+        return $this->roles()->where('name', $role)->orWhere('slug', $role)->exists();
     }
 
     public function profile() :HasOne {

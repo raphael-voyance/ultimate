@@ -219,10 +219,72 @@ class DatabaseSeeder extends Seeder
 
             $tirageDeux = DrawCard::create([
                 'name' => "Tirage de l'année",
-                'slug' => Str::of("Tirage de l'année")->slug('-'),
+                'slug' => Str::of("Tirage de l année")->slug('-'),
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
                 'totalSelectedCards' => 12,
-                'hasSumCards' => false
+                'hasSumCards' => false,
+                'positionsKeywords' => json_encode([
+                    [
+                        'position' => 1,
+                        'keywords' => 'Vous',
+                        'icone' => 'fa-thin fa-user',
+                    ],
+                    [
+                        'position' => 2,
+                        'keywords' => 'Votre argent',
+                        'icone' => 'fa-thin fa-money-bill',
+                    ],
+                    [
+                        'position' => 3,
+                        'keywords' => 'Votre entourage / Votre communication',
+                        'icone' => 'fa-thin fa-comments',
+                    ],
+                    [
+                        'position' => 4,
+                        'keywords' => 'Votre fammile / votre foyer',
+                        'icone' => 'fa-thin fa-house',
+                    ],
+                    [
+                        'position' => 5,
+                        'keywords' => 'Vos enfants / Vos amours / Vos créations',
+                        'icone' => 'fa-thin fa-heart',
+                    ],
+                    [
+                        'position' => 6,
+                        'keywords' => 'Votre vie quotidienne / Votre travail',
+                        'icone' => 'fa-thin fa-briefcase',
+                    ],
+                    [
+                        'position' => 7,
+                        'keywords' => 'Votre conjoint / L\'autre / Vos partenaires',
+                        'icone' => 'fa-thin fa-user-group-simple',
+                    ],
+                    [
+                        'position' => 8,
+                        'keywords' => 'Vos dépenses / Vos transformations',
+                        'icone' => 'fa-thin fa-sack-dollar',
+                    ],
+                    [
+                        'position' => 9,
+                        'keywords' => 'Les voyages / Vos aspirations',
+                        'icone' => 'fa-thin fa-earth-americas',
+                    ],
+                    [
+                        'position' => 10,
+                        'keywords' => 'Votre réussite sociale / Votre carrière',
+                        'icone' => 'fa-thin fa-user-crown',
+                    ],
+                    [
+                        'position' => 11,
+                        'keywords' => 'Vos projets / Vos amis / Vos espoirs',
+                        'icone' => 'fa-thin fa-users',
+                    ],
+                    [
+                        'position' => 12,
+                        'keywords' => 'Les épreuves / Vos forces secrètes',
+                        'icone' => 'fa-thin fa-dragon',
+                    ],
+                ])
             ]);
 
             $tirageTrois = DrawCard::create([
@@ -230,7 +292,39 @@ class DatabaseSeeder extends Seeder
                 'slug' => Str::of('Tirage de la journée')->slug('-'),
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
                 'totalSelectedCards' => 1,
-                'hasSumCards' => false
+                'hasSumCards' => false,
+                'positionsKeywords' => json_encode([
+                    [
+                        'position' => 1,
+                        'keywords' => 'Votre journée',
+                        'icone' => 'fa-thin fa-sun',
+                    ],
+                ])
+            ]);
+
+            $tirageQuatre = DrawCard::create([
+                'name' => 'Mission de vie',
+                'slug' => Str::of('Mission de vie')->slug('-'),
+                'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
+                'totalSelectedCards' => 2,
+                'hasSumCards' => true,
+                'positionsKeywords' => json_encode([
+                    [
+                        'position' => 1,
+                        'keywords' => 'Vous',
+                        'icone' => 'fa-thin fa-sun',
+                    ],
+                    [
+                        'position' => 2,
+                        'keywords' => 'Les autres',
+                        'icone' => 'fa-thin fa-sun',
+                    ],
+                    [
+                        'position' => 3,
+                        'keywords' => 'Création',
+                        'icone' => 'fa-thin fa-sun',
+                    ],
+                ])
             ]);
     }
 }

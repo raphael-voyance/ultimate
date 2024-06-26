@@ -34,6 +34,7 @@
 /* Carte */
 .tarot-cards-container-cut .block-cards-cut .tarot-card {
     position: relative;
+    cursor: default;
 }
 .tarot-cards-container-cut .block-cards-cut {
     margin-top: 1em;
@@ -62,6 +63,51 @@
     margin-bottom: .5em;
 }
 
+/* Draw Globals */
+
+/* Interprétation */
+.block-interpretation {
+    width: 100%;
+    height: 100%;
+
+    margin-top: 1em;
+    padding: 10px;
+
+    background-color: rgba(0, 0, 255, 0.21);
+}
+.block-interpretation p {
+    margin-bottom: 1.5em;
+}
+.block-interpretation h4 {
+    margin-bottom: .2em;
+}
+
+.tarot-cards-container .domaine {
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    background: cornflowerblue;
+    border-radius: 5px;
+}
+.tarot-cards-container .draw-domaine-icone {
+    font-size: 1.2em;
+}
+.tarot-cards-container .draw-domaine-text {
+
+}
+.tarot-cards-container .draw-domaine-position {
+    background-color: rgba(0, 0, 255, 0.4);
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 100%;
+}
+
 /* DRAW CROSS */
 /* Conteneur général #cardMap.draw-cross */
 .draw-cross {}
@@ -70,7 +116,6 @@
     flex-direction: column-reverse;
 }
 /* Carte */
-
 .tarot-cards-container-draw-cross .block-cards-draw {
     display: flex;
     flex-direction: row;
@@ -79,6 +124,7 @@
 
 .tarot-cards-container-draw-cross .tarot-card {
     position: relative;
+    cursor: default;
 }
 
 .tarot-cards-container-draw-cross .tarot-card:nth-of-type(1) {
@@ -100,23 +146,6 @@
     transform: translateX(-200%) translateY(100%);
 }
 
-/* Interprétation */
-.block-interpretation {
-    width: 100%;
-    height: 100%;
-
-    margin-top: 1em;
-    padding: 10px;
-
-    background-color: rgba(0, 0, 255, 0.21);
-}
-.block-interpretation p {
-    margin-bottom: 1em;
-}
-.block-interpretation h4 {
-    margin-bottom: .2em;
-}
-
 /* DRAW DAY */
 /* Conteneur général #cardMap.draw-day */
 .draw-day {}
@@ -127,6 +156,7 @@
 /* Carte */
 .tarot-cards-container-draw-day .tarot-card {
     position: relative;
+    cursor: default;
 }
 
 /* DRAW year */
@@ -169,4 +199,25 @@
 .tarot-cards-container-draw-year .tarot-card .domaine .draw-domaine-icone {
     width: 3em;
     background-color: rgba(0, 0, 255, .8);
+}
+
+/* DRAW spread */
+/* Conteneur général #cardMap.draw-spread */
+.draw-spread {}
+/* Conteneur de cartes */
+.tarot-cards-container-draw-spread {
+    flex-direction: column-reverse;
+}
+
+.tarot-cards-container-draw-spread .block-cards-draw {
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    min-height: 100px!important;
+}
+
+/* Carte */
+.tarot-cards-container-draw-spread .tarot-card {
+    position: relative;
+    cursor: default;
 }
