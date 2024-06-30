@@ -45,7 +45,7 @@
     </button>
 
     <div x-show="open" x-cloak x-transition class="min-w-[201px]" :class="{
-        'absolute right-0 w-full z-20 rounded-lg': dropdownMenu
+        'absolute right-0 w-full z-50 rounded-lg': dropdownMenu
         }">
         {{ $slot }}
     </div>

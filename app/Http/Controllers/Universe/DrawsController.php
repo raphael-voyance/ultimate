@@ -182,7 +182,7 @@ class DrawsController extends Controller
         // Valider les données de la requête
         $validated = $request->validate([
             'drawId' => 'required|integer|exists:draw_cards,id',
-            'icone' => 'required|string',
+            'icone' => 'string|nullable',
             'keywords' => 'required|string',
             'position' => 'required|integer',
         ]);
@@ -195,11 +195,17 @@ class DrawsController extends Controller
     
         // Récupérer le tirage
         $draw = DrawCard::where('id', $drawId)->firstOrFail();
+        $drawName = $draw->name;
     
         // Décoder la colonne JSON
         $positionsKeywords = json_decode($draw->positionsKeywords, true);
     
-        // Mettre à jour la position correspondante
+        // Si le JSON est null, initialiser comme tableau vide
+        if ($positionsKeywords == null) {
+            $positionsKeywords = [];
+        }
+    
+        // Mettre à jour la position correspondante ou ajouter une nouvelle entrée
         $updated = false;
         foreach ($positionsKeywords as &$item) {
             if ($item['position'] == $position) {
@@ -210,9 +216,13 @@ class DrawsController extends Controller
             }
         }
     
-        // Vérifier si la mise à jour a été effectuée
+        // Si la position n'existe pas, ajouter un nouvel élément
         if (!$updated) {
-            return response()->json(['error' => 'Position not found'], 404);
+            $positionsKeywords[] = [
+                'position' => $position,
+                'icone' => $icone,
+                'keywords' => $keywords
+            ];
         }
     
         // Encoder à nouveau l'objet JSON et sauvegarder dans la base de données
@@ -220,7 +230,7 @@ class DrawsController extends Controller
         $draw->save();
     
         // Retourner une réponse JSON
-        return response()->json(['success' => 'Position updated successfully', 'positionsKeywords' => $positionsKeywords]);
+        return response()->json(['success' => 'La position ' . $position . ' du tirage " ' . $drawName . ' " a bien été mise à jour.', 'positionsKeywords' => $positionsKeywords]);
     }
 
     public function destroy(Request $request) {

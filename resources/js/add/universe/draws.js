@@ -43,62 +43,94 @@ if(btnsDrawDel.length) {
 
 //Page edit & create
 let btnsSubmitPositionKeyword = document.querySelectorAll('[data-submit-position]');
+let keywordsContainer = document.getElementById('keywordsContainer');
 
-if(btnsSubmitPositionKeyword.length) {
-    // console.log(btnsSubmitPositionKeyword)
+// Function to add event listeners to submit buttons
+function addSubmitButtonListeners() {
     btnsSubmitPositionKeyword.forEach((btn) => {
-        const submitRoute = btn.getAttribute('data-submit-save-position');
+        const submitRoute = keywordsContainer.getAttribute('data-submit-save-position');
         const positionObj = JSON.parse(btn.getAttribute('data-submit-position'));
-        console.log(positionObj)
+
         btn.addEventListener('click', function() {
-            let inputKeyword = document.getElementById('position-'+ positionObj.position +'-keyword');
-            let inputIcone = document.getElementById('position-'+ positionObj.position +'-icone');
+            let inputKeyword = document.getElementById('position-' + positionObj.position + '-keyword');
+            let inputIcone = document.getElementById('position-' + positionObj.position + '-icone');
+
+            console.log(inputKeyword, inputIcone)
+
+            // <input class="input input-primary w-full peer focus:border-none focus:ring-primary-focus" 
+                // type="text" 
+                // name="position-1-icone" 
+                // placeholder="fa-thin fa-dragon" 
+                // id="position-1-icone" 
+                // spellcheck="false" 
+                // data-ms-editor="true">
+
+            // <input class="input input-primary w-full peer focus:border-none focus:ring-primary-focus " 
+                // id="position-1-icone" 
+                // type="text" 
+                // name="position-1-icone" 
+            // value="fa-thin fa-sun" 
+            // label="Icône" 
+                // placeholder="fa-thin fa-dragon" 
+                // spellcheck="false" 
+                // data-ms-editor="true">
+
 
             positionObj.keywords = inputKeyword.value;
             positionObj.icone = inputIcone.value;
 
-            console.log(positionObj);
+            console.log('drawId:', parseInt(positionObj.drawId),
+                'icone:', positionObj.icone,
+                'keywords:', positionObj.keywords,
+                'position:', parseInt(positionObj.position))
+
             axios.post(submitRoute, {
-                drawId: positionObj.drawId,
+                drawId: parseInt(positionObj.drawId),
                 icone: positionObj.icone,
                 keywords: positionObj.keywords,
-                position: positionObj.position
+                position: parseInt(positionObj.position)
               })
                 .then(function (response) {
-                    if(response.data.status == 'success') {
-                        window.location = response.data.redirectRoute;
+                    if (response.data.success) {
+                        console.log(response)
+                        //window.location = response.data.redirectRoute;
+                        Toast.success(response.data.success);
                     }
                 })
                 .catch(function (error) {
-                    console.log(error);
-                    Toast.danger('Il y a eu une erreur dans le processus de suppression de votre demande, merci de réessayer après avoir rafraichi votre navigateur.');
+                    Toast.danger(error.response.data.message);
                 });
-            
         });
-    })
+    });
 }
 
+// Initial call to add event listeners to submit buttons
+if (btnsSubmitPositionKeyword.length) {
+    addSubmitButtonListeners();
+}
 
+if (keywordsContainer) {
+    let numberOfFieldsInput = document.getElementById('totalSelectedCards');
+    let hasSumCardsCheckbox = document.getElementById('hasSumCards');
+    let keywordTemplate = document.getElementById('keywordTemplate').content;
 
-let btnsCreatePositionKeywordFields = document.getElementById('btn_create_position_keyword_field');
+    function updateNumberOfFields() {
+        let hasSumCards = hasSumCardsCheckbox.checked;
+        return hasSumCards ? parseInt(numberOfFieldsInput.value) + 1 : parseInt(numberOfFieldsInput.value);
+    }
 
-if(btnsCreatePositionKeywordFields) {
-    btnsCreatePositionKeywordFields.addEventListener('click', function() {
-        const numberOfFieldsInput = document.getElementById('totalSelectedCards');
-        const hasSumCardsCheckbox = document.getElementById('hasSumCards');
+    function getDrawIdFromUrl() {
+        const url = window.location.href;
+        const regex = /\/draw\/edit\/(\d+)/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    }
 
-        const hasSumCards = hasSumCardsCheckbox.checked;
-        const numberOfFieldsInputToCreate = hasSumCards ? parseInt(numberOfFieldsInput.value) +1 : parseInt(numberOfFieldsInput.value);
-
-        const keywordsContainer = document.getElementById('keywordsContainer');
-        const keywordTemplate = document.getElementById('keywordTemplate').content;
-
-        //btnsCreatePositionKeywordFields.remove();
-
-        for (let i = 0; i < numberOfFieldsInputToCreate; i++) {
+    function createFields(numberOfFieldsInputToCreate) {
+        for (let i = keywordsContainer.children.length; i < numberOfFieldsInputToCreate; i++) {
             // Clone the template
             const clone = document.importNode(keywordTemplate, true);
-            
+
             // Update the index and position number
             const index = keywordsContainer.children.length + 1;
             clone.querySelectorAll('.position-number').forEach(span => {
@@ -106,15 +138,50 @@ if(btnsCreatePositionKeywordFields) {
             });
             clone.querySelectorAll('input').forEach(input => {
                 input.name = input.name.replace('__index__', index);
+
+                input.setAttribute('id', input.name.replace('__index__', index));
+            });
+            clone.querySelectorAll('button').forEach(btn => {
+                let drawId = getDrawIdFromUrl();
+                let data = { 'position' : index, 'drawId': drawId };
+                btn.setAttribute('data-submit-position', JSON.stringify(data));
             });
 
             // Append the clone to the container
             keywordsContainer.appendChild(clone);
         }
+        // Update submit buttons list and add event listeners
+        btnsSubmitPositionKeyword = document.querySelectorAll('[data-submit-position]');
+        addSubmitButtonListeners();
+    }
 
+    function removeExcessFields(numberOfFieldsInputToCreate) {
+        while (keywordsContainer.children.length > numberOfFieldsInputToCreate) {
+            keywordsContainer.removeChild(keywordsContainer.lastElementChild);
+        }
+    }
 
-        
+    function updateFields() {
+        let numberOfFieldsInputToCreate = updateNumberOfFields();
+        let keywordsFields = document.querySelectorAll('.keyword-field');
+
+        if (numberOfFieldsInputToCreate <= keywordsFields.length) {
+            removeExcessFields(numberOfFieldsInputToCreate);
+        } else {
+            createFields(numberOfFieldsInputToCreate);
+        }
+    }
+
+    numberOfFieldsInput.addEventListener('change', function() {
+        updateFields();
     });
+
+    hasSumCardsCheckbox.addEventListener('change', function() {
+        updateFields();
+    });
+
+    // Initial call to determine the visibility of the button and set up fields
+    updateFields();
 }
 
 

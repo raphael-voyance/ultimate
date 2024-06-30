@@ -1,22 +1,24 @@
 <x-admin-layout>
-    @section("js")
+    {{-- @section("js")
         @vite("resources/js/add/universe/draws.js")
-    @endsection
+    @endsection --}}
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
             <a href="{{ route('admin.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
-            <span>Tous les tirages</span>
+            <span>Interprétation des arcanes majeures du Tarot</span>
         </h2>
     </x-slot>
 
     <section>
-        <header>
-            <a href="{{ route('admin.draw.create') }}" class="btn">Créer un tirage</a>
-            <a href="{{ route('admin.tarot.index') }}" class="btn">Accéder aux interprétations des cartes</a>
-        </header>
 
         <section>
-            @livewire('data-table-draw')
+            <div class="grid grid-cols-5 gap-4">
+            @foreach ($cards as $card)
+                    <div>
+                        <a href="{{ route('admin.tarot.view', $card->slug) }}"><img src="{{ $card->imgPath }}" alt="Image {{ $card->name }}" /></a>
+                    </div>
+            @endforeach
+            </div>
         </section>
 
     </section>

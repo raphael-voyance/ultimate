@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Universe\AdminController;
 use App\Http\Controllers\Universe\DrawsController;
 use App\Http\Controllers\Universe\MessagingController;
+use App\Http\Controllers\Universe\TarotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +32,14 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
         Route::post('/store', [DrawsController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [DrawsController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [DrawsController::class, 'update'])->name('update');
-        Route::post('/saveKeywords/', [DrawsController::class, 'saveKeywords'])->name('save.keywords');
+        Route::post('/save-keywords', [DrawsController::class, 'saveKeywords'])->name('save.keywords');
         Route::delete('/destroy/{id}', [DrawsController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('tarot')->as('tarot.')->group(function() {
+        Route::get('/', [TarotController::class, 'index'])->name('index');
+        Route::get('/{slug}', [TarotController::class, 'view'])->name('view');
+        Route::put('/update/{slug}', [TarotController::class, 'update'])->name('update');
     });
 
     Route::get('/messagerie', [MessagingController::class, 'index'])->name('messaging');

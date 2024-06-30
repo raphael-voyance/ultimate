@@ -23,6 +23,7 @@ export default defineConfig({
                 'resources/js/add/tarot/tarot.js',
                 
                 'resources/js/add/universe/draws.js',
+                'resources/js/add/universe/tarot.js',
             ],
             refresh: true,
         }),

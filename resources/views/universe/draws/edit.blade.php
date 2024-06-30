@@ -13,6 +13,7 @@
         <header>
             <a href="{{ route('admin.draw.index') }}" class="btn">Voir tous les tirages</a>
             <a href="{{ route('admin.draw.create') }}" class="btn">Créer un tirage</a>
+            <a href="{{ route('admin.tarot.index') }}" class="btn">Accéder aux interprétations des cartes</a>
         </header>
 
         <section>
@@ -100,16 +101,17 @@
 
             <!-- Draw Keywords -->
 
-            @if($draw->positionsKeywords)
+            
             <div x-data="{ open: false }" :class="open ? 'collapse-open' : 'collapse-hidden'" class="mt-4 collapse bg-base-200">
                 
                 <div x-on:click="open = !open" class="collapse-title text-xl font-medium cursor-pointer">Mots-clefs des positions du tirage</div>
                 <div class="collapse-content">
-                    <div class="flex flex-col">
+                    <div class="flex flex-col" id="keywordsContainer" data-submit-save-position="{{ route('admin.draw.save.keywords') }}">
                         {{-- {{ dd($drawKeywords) }} --}}
+                        @if($draw->positionsKeywords)
                         @foreach ($drawKeywords as $keyword)
                         {{-- {{ dd($keyword->position) }} --}}
-                            <div class="mt-4 flex flex-col md:flex-row gap-4">
+                            <div class="mt-4 flex flex-col md:flex-row gap-4 keyword-field">
             
                                 <div class="w-full md:w-3/6">
                                     <label for="position-{{ $keyword->position }}-keyword" class="inline-flex gap-3 items-center cursor-pointer">Position {{ $keyword->position }}</label>
@@ -121,28 +123,18 @@
                                 <div class="w-full md:w-3/6">
                                     <label for="position-{{ $keyword->position }}-icone" class="inline-flex gap-3 items-center cursor-pointer">Icône</label>
                                     <input class="input input-primary w-full peer focus:border-none focus:ring-primary-focus @error('totalSelectedCards') input-error @enderror" id="position-{{ $keyword->position }}-icone" type="text"
-                                    name="position-{{ $keyword->position }}-icone" value="{{ $keyword->icone }}"
-                                    label="Icône" placeholder="fa-thin fa-dragon" />
+                                    name="position-{{ $keyword->position }}-icone" value="{{ $keyword->icone }}" placeholder="fa-thin fa-dragon" />
                                 </div>
             
                                 <div class="w-full md:w-1/6 content-end">
-                                    <button data-submit-save-position="{{ route('admin.draw.save.keywords') }}" data-submit-position='@json(["position" => $keyword->position, "drawId" => $draw->id])' class="btn btn-outline btn-ghost border-primary text-primary btn-circle"><i class="fa-thin fa-floppy-disk fa-lg"></i></button>
+                                    <button data-submit-position='@json(["position" => $keyword->position, "drawId" => $draw->id])' class="btn btn-outline btn-ghost border-primary text-primary btn-circle"><i class="fa-thin fa-floppy-disk fa-lg"></i></button>
                                 </div>
                             </div>
                         @endforeach
+                        @endif
                     </div>
                 </div>
               </div>
-            @endif
-            <div x-data="{ open: false }" :class="open ? 'collapse-open' : 'collapse-hidden'" class="mt-4 collapse bg-base-200">
-                <div x-on:click="open = !open" class="collapse-title text-xl font-medium cursor-pointer">Mots-clefs des positions du tirage</div>
-                <div class="collapse-content">
-                    <div class="flex flex-col" id="keywordsContainer">
-                        {{-- Zone où les champs seront ajoutés --}}
-                    </div>
-                    <button id="btn_create_position_keyword_field" class="btn btn-primary mt-4">Créer les champs de mots-clefs des positions du tirage</button>
-                </div>
-            </div>
             
             <template id="keywordTemplate">
                 <div class="mt-4 flex flex-col md:flex-row gap-4 keyword-field">

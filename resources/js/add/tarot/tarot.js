@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     changeGameBtnsA.innerText = d.name;
                     changeGameBtnsA.classList.add(
                         "btn",
-                        "btn-sm",
+                        "md:btn-sm",
                         "btn-primary",
                         "text-white/70",
                         "hover:text-white/70",
@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     "mb-3",
                     "inline-block"
                 );
-                changeGameBtnsUl.classList.add("flex", "gap-4");
+                changeGameBtnsUl.classList.add("flex", "gap-4", "flex-wrap");
 
                 changeGameBtnsContainer.append(changeGameBlocTitle);
                 changeGameBtnsContainer.append(changeGameBtnsUl);
@@ -316,11 +316,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             tarotCardsEl.forEach((card, i) => {
                 gsap.to(card, {
-                    duration: 1.3,
-                    x: () => gsap.utils.random(-60, 60),
-                    y: () => gsap.utils.random(-60, 60),
+                    duration: 0.8,
+                    x: () => gsap.utils.random(-260, 260),
+                    y: () => gsap.utils.random(-160, 160),
                     rotation: () => gsap.utils.random(-120, 120),
-                    stagger: .08,
+                    stagger: 0,
                     ease: "power1-inOut",
                     onComplete: () => {
                         gsap.to(tarotCardsEl, {
@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             y: 0,
                             x: 0,
                             rotation: 0,
-                            stagger: 0.1,
+                            stagger: 0,
                             ease: "power1.inOut",
                         });
     

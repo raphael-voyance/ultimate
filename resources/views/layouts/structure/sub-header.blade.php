@@ -1,4 +1,4 @@
-<div id="sub-header" class="flex flex-row items-center justify-between sm:justify-end text-white z-20 sticky top-0 bg-secondary">
+<div id="sub-header" class="flex flex-row items-center justify-between sm:justify-end text-white z-30 sticky top-0 bg-secondary">
     <div>
         @livewire('appointment-modal')
     </div>

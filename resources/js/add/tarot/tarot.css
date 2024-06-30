@@ -213,7 +213,9 @@
     display: flex;
     flex-direction: row;
     height: auto;
-    min-height: 100px!important;
+    min-height: 100px !important;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 /* Carte */

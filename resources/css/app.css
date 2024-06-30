@@ -66,6 +66,11 @@
     .text-info {
         @apply text-xs;
     }
+
+    .input-with-after::after {
+        content: '';
+        @apply absolute w-full h-4 bg-red-300 bottom-0 left-0;
+      }
 }
 
 @layer components {
