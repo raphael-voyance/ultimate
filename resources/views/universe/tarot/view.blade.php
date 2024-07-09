@@ -1,6 +1,7 @@
 <x-admin-layout>
     @section("js")
-        @vite("resources/js/add/universe/tarot.js")
+        @vite("resources/js/add/universe/tarot/tarot.js")
+        @vite("resources/js/add/universe/tarot/tarot.css")
     @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
@@ -31,21 +32,14 @@
                                 'inputType' => 'input'
                             ];
                         @endphp
-                        <span data-transform-input='@json($dataTransformInput)'>{{ $card->name }}</span>
+                        <span class="p-1" data-transform-input='@json($dataTransformInput)'>{{ $card->name }}</span>
                     </li>
 
                     <li class="flex gap-1 items-baseline min-h-9">
                         <span>
                             <u>Arcane numéro</u> :
                         </span>
-                        @php
-                            $dataTransformInput = [
-                                'value' => $card->numberArcane,
-                                'field' => 'numberArcane',
-                                'inputType' => 'input'
-                            ];
-                        @endphp
-                        <span data-transform-input='@json($dataTransformInput)'>{{ $card->numberArcane }}</span>
+                        <span>{{ $card->numberArcane }}</span>
                     </li>
 
                     <li class="flex flex-col gap-1 items-baseline">
@@ -59,7 +53,7 @@
                                 'inputType' => 'textarea'
                             ];
                         @endphp
-                        <span data-transform-input='@json($dataTransformInput)'>{{ $card->description }}</span>
+                        <p data-transform-input='@json($dataTransformInput)'>{{ $card->description }}</p>
                     </li>
                 </ul>
             </div>

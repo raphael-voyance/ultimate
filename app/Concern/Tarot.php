@@ -4,6 +4,7 @@ namespace App\Concern;
 
 use App\Models\DrawCard;
 use App\Models\TarotCard;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 use function PHPSTORM_META\type;
@@ -142,9 +143,13 @@ class Tarot
 
         $arcaneSumPath = $this->reduceNumberBetweenOneToTwentyOne($arcaneAnnualPath + $arcaneLifePath);
 
-        $arcaneLifePath = $this->getCard($arcaneLifePath);
-        $arcaneAnnualPath = $this->getCard($arcaneAnnualPath);
-        $arcaneSumPath = $this->getCard($arcaneSumPath);
+        $arcaneLifePath = $this->getCard($arcaneLifePath, true);
+        $arcaneAnnualPath = $this->getCard($arcaneAnnualPath, true);
+        $arcaneSumPath = $this->getCard($arcaneSumPath, true);
+
+        // dd('arcaneLifePath', $arcaneLifePath,
+        //     'arcaneAnnualPath', $arcaneAnnualPath,
+        //     'arcaneSumPath', $arcaneSumPath);
 
         return json_encode($datas = [
             'birthdate' => $birthdate,
@@ -154,10 +159,15 @@ class Tarot
         ]);
     }
 
-    public function getCard($numberOfCard)
+    public function getCard($numberOfCard, $thatNumberArcane = false)
     {
-        $card = TarotCard::where('numberArcane', $numberOfCard)->first();
-        return $card;
+        $card = TarotCard::where('numberArcane', $numberOfCard)->firstOrFail();
+        if($thatNumberArcane == false) {
+            return $card;
+        }else {
+            return $card->numberArcane;
+        }
+        
     }
 
     private function reduceNumberBetweenOneToTwentyOne($number)

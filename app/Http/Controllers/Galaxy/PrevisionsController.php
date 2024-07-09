@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Galaxy;
 
+use Exception;
+use Carbon\Carbon;
+use App\Concern\Tarot;
+use App\Models\DrawCard;
 use Illuminate\View\View;
+use App\Concern\Numerology;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Concern\Numerology;
-use App\Concern\Tarot;
-use App\Models\DrawCard;
-use Carbon\Carbon;
+use App\Models\Numerology as ModelsNumerology;
+use App\Models\TarotCard as ModelsTarology;
 
 class PrevisionsController extends Controller
 {
@@ -51,16 +54,144 @@ class PrevisionsController extends Controller
             return false;
         }
 
-        $numerology = json_decode($user->profile->numerology);
-        $tarologyArray = json_decode($user->profile->tarology);
+        $numerology = json_decode($user->profile->numerology, true);
+        $modelNumerology = new ModelsNumerology();
+        $modelTarology = new ModelsTarology();
 
-        unset($tarologyArray->arcaneSumPath->interpretationsForDrawingCard);
-        unset($tarologyArray->arcaneLifePath->interpretationsForDrawingCard);
-        unset($tarologyArray->arcaneAnnualPath->interpretationsForDrawingCard);
+        // dd($numerology);
+
+        try {
+            if (!isset($numerology['lifePath'])) {
+                throw new Exception('lifePath is not set in $numerology.');
+            }
+            $interpretationLifePath = $modelNumerology->where('number', $numerology['lifePath'])->firstOrFail();
+            if (!isset($interpretationLifePath->interpretations)) {
+                throw new Exception('interpretations property is not set in the database result.');
+            }
+            $interpretationLifePath = json_decode($interpretationLifePath->interpretations, true);
+            if (!isset($interpretationLifePath['lifePath'])) {
+                throw new Exception('lifePath key is not set in the decoded JSON.');
+            }
+            $numerology['interpretationLifePath'] = $interpretationLifePath['lifePath'];
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+
+        try {
+            if (!isset($numerology['annualPath'])) {
+                throw new Exception('annual is not set in $numerology.');
+            }
+            $interpretationAnnualPath = $modelNumerology->where('number', $numerology['annualPath'])->firstOrFail();
+            if (!isset($interpretationAnnualPath->interpretations)) {
+                throw new Exception('interpretations property is not set in the database result.');
+            }
+            $interpretationAnnualPath = json_decode($interpretationAnnualPath->interpretations, true);
+            if (!isset($interpretationAnnualPath['annualPath'])) {
+                throw new Exception('annualPath key is not set in the decoded JSON.');
+            }
+            $numerology['interpretationAnnualPath'] = $interpretationAnnualPath['annualPath'];
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+
+        try {
+            if (!isset($numerology['sumPath'])) {
+                throw new Exception('sumPath is not set in $numerology.');
+            }
+            $interpretationSumPath = $modelNumerology->where('number', $numerology['sumPath'])->firstOrFail();
+            if (!isset($interpretationSumPath->interpretations)) {
+                throw new Exception('interpretations property is not set in the database result.');
+            }
+            $interpretationSumPath = json_decode($interpretationSumPath->interpretations, true);
+            if (!isset($interpretationSumPath['sumPath'])) {
+                throw new Exception('sumPath key is not set in the decoded JSON.');
+            }
+            $numerology['interpretationSumPath'] = $interpretationSumPath['sumPath'];
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+
+// dd($numerology);
+
+        $tarology = json_decode($user->profile->tarology, true);
+        
+        // dd($tarology);
+        //dd($tarology['arcaneLifePath']);
+
+
+
+
+        try {
+            if (!isset($tarology['arcaneLifePath'])) {
+                throw new Exception('arcaneLifePath is not set in $tarology.');
+            }
+            $interpretationArcaneLifePath = $modelTarology->where('numberArcane', $tarology['arcaneLifePath'])->firstOrFail();
+
+            $tarology['imgArcaneLifePath'] = $interpretationArcaneLifePath->imgPath;
+            $tarology['nameArcaneLifePath'] = $interpretationArcaneLifePath->name;
+
+            if (!isset($interpretationArcaneLifePath->arcanePath)) {
+                throw new Exception('interpretations property is not set in the database result.');
+            }
+            $interpretationArcaneLifePath = json_decode($interpretationArcaneLifePath->arcanePath, true);
             
+            if (!isset($interpretationArcaneLifePath['lifePath'])) {
+                throw new Exception('lifePath key is not set in the decoded JSON.');
+            }
+            $tarology['interpretationArcaneLifePath'] = $interpretationArcaneLifePath['lifePath'];
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+
+        try {
+            if (!isset($tarology['arcaneAnnualPath'])) {
+                throw new Exception('arcaneAnnualPath is not set in $tarology.');
+            }
+            $interpretationArcaneAnnualPath = $modelTarology->where('numberArcane', $tarology['arcaneAnnualPath'])->firstOrFail();
+
+            $tarology['imgArcaneAnnualPath'] = $interpretationArcaneAnnualPath->imgPath;
+            $tarology['nameArcaneAnnualPath'] = $interpretationArcaneAnnualPath->name;
+
+            if (!isset($interpretationArcaneAnnualPath->arcanePath)) {
+                throw new Exception('interpretations property is not set in the database result.');
+            }
+            $interpretationArcaneAnnualPath = json_decode($interpretationArcaneAnnualPath->arcanePath, true);
+            
+            if (!isset($interpretationArcaneAnnualPath['annualPath'])) {
+                throw new Exception('annualPath key is not set in the decoded JSON.');
+            }
+            $tarology['interpretationArcaneAnnualPath'] = $interpretationArcaneAnnualPath['annualPath'];
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+
+        try {
+            if (!isset($tarology['arcaneSumPath'])) {
+                throw new Exception('arcaneSumPath is not set in $tarology.');
+            }
+            $interpretationArcaneSumPath = $modelTarology->where('numberArcane', $tarology['arcaneSumPath'])->firstOrFail();
+
+            $tarology['imgArcaneSumPath'] = $interpretationArcaneSumPath->imgPath;
+            $tarology['nameArcaneSumPath'] = $interpretationArcaneSumPath->name;
+
+            if (!isset($interpretationArcaneSumPath->arcanePath)) {
+                throw new Exception('interpretations property is not set in the database result.');
+            }
+            $interpretationArcaneSumPath = json_decode($interpretationArcaneSumPath->arcanePath, true);
+            
+            if (!isset($interpretationArcaneSumPath['sumPath'])) {
+                throw new Exception('sumPath key is not set in the decoded JSON.');
+            }
+            $tarology['interpretationArcaneSumPath'] = $interpretationArcaneSumPath['sumPath'];
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+
+        // dd($tarology, $numerology);
+        
         return response()->json([
             'numerology' => $numerology,
-            'tarology' => $tarologyArray
+            'tarology' => $tarology
         ]);
         
     }

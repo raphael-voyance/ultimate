@@ -18,12 +18,15 @@ export default defineConfig({
                 'resources/css/add/hero_home.css',
 
                 'resources/js/add/payment.js',
-                'resources/js/add/lunar.js',
-                'resources/js/add/numerology.js',
+                'resources/js/add/previsions/lunar.js',
+                'resources/js/add/previsions/numerology.js',
                 'resources/js/add/tarot/tarot.js',
                 
                 'resources/js/add/universe/draws.js',
-                'resources/js/add/universe/tarot.js',
+                'resources/js/add/universe/tarot/tarot.js',
+                'resources/js/add/universe/tarot/tarot.css',
+                'resources/js/add/universe/numerology/numerology.css',
+                'resources/js/add/universe/numerology/numerology.css',
             ],
             refresh: true,
         }),

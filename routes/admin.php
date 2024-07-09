@@ -1,12 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\Universe\AdminController;
 use App\Http\Controllers\Universe\DrawsController;
-use App\Http\Controllers\Universe\MessagingController;
 use App\Http\Controllers\Universe\TarotController;
+use App\Http\Controllers\Universe\MessagingController;
+use App\Http\Controllers\Universe\NumerologyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,12 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
         Route::get('/', [TarotController::class, 'index'])->name('index');
         Route::get('/{slug}', [TarotController::class, 'view'])->name('view');
         Route::put('/update/{slug}', [TarotController::class, 'update'])->name('update');
+    });
+
+    Route::prefix('numerology')->as('numerology.')->group(function() {
+        Route::get('/', [NumerologyController::class, 'index'])->name('index');
+        Route::get('/{number}', [NumerologyController::class, 'view'])->name('view');
+        Route::put('/update/{number}', [NumerologyController::class, 'update'])->name('update');
     });
 
     Route::get('/messagerie', [MessagingController::class, 'index'])->name('messaging');

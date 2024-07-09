@@ -1,4 +1,4 @@
-import { createAlert } from "../../Alert/alert.js";
+import { createAlert } from "../../../Alert/alert.js";
 
 window.addEventListener('load', () => {
 
@@ -69,9 +69,8 @@ if(transformInputEls) {
             axios.put(updateRoute, {
                 value: input.value,
                 field: data.field,
-                draw: data.draw,
                 position: data.position,
-                arcanePath: data.arcanePath
+                pathType: data.pathType
               })
                 .then(function (response) {
                     if (response.data.message) {

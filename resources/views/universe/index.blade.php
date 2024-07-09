@@ -59,19 +59,14 @@
         <h2>Relatif aux interprétations :</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <x-ui.card title="Les tirages">
-                Liste des tirages <br>
-                Interprétation des cartes
-                <x-slot:actions>
-                    <x-ui.link label="Voir tous les tirages" href="{{ route('admin.draw.index') }}" />
-                    <x-ui.link label="Créer un tirage" href="{{ route('admin.draw.create') }}" />
-                </x-slot:actions>
+                <x-ui.link label="Voir tous les tirages" href="{{ route('admin.draw.index') }}" />
+                <x-ui.link label="Interprétations des cartes" href="{{ route('admin.tarot.index') }}" />
+                <x-ui.link label="Créer un tirage" href="{{ route('admin.draw.create') }}" />
             </x-ui.card>
+            
 
             <x-ui.card title="Numérologie">
-                Interprétation des nombres
-                <x-slot:actions>
-                    <x-ui.link label="Voir toutes les interprétation" href="{{ route('home') }}" />
-                </x-slot:actions>
+                <x-ui.link label="Interprétations des nombres" href="{{ route('admin.numerology.index') }}" />
             </x-ui.card>
 
             <x-ui.card title="Les saisons">

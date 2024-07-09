@@ -6,7 +6,6 @@ namespace Database\Seeders;
 
 use App\Models\Role;
 use App\Models\User;
-use App\Concern\Tarot;
 use App\Models\Invoice;
 use App\Models\Message;
 use App\Models\Product;
@@ -14,7 +13,6 @@ use App\Models\Activity;
 use App\Models\DrawCard;
 use App\Models\Interess;
 use App\Models\TimeSlot;
-use App\Models\TarotCard;
 use App\Models\Appointment;
 use App\Models\TimeSlotDay;
 use App\Models\UserProfile;
@@ -302,29 +300,7 @@ class DatabaseSeeder extends Seeder
                 ])
             ]);
 
-            $tirageQuatre = DrawCard::create([
-                'name' => 'Mission de vie',
-                'slug' => Str::of('Mission de vie')->slug('-'),
-                'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
-                'totalSelectedCards' => 2,
-                'hasSumCards' => true,
-                'positionsKeywords' => json_encode([
-                    [
-                        'position' => 1,
-                        'keywords' => 'Vous',
-                        'icone' => 'fa-thin fa-sun',
-                    ],
-                    [
-                        'position' => 2,
-                        'keywords' => 'Les autres',
-                        'icone' => 'fa-thin fa-sun',
-                    ],
-                    [
-                        'position' => 3,
-                        'keywords' => 'Création',
-                        'icone' => 'fa-thin fa-sun',
-                    ],
-                ])
-            ]);
+            $this->call(NumerologySeeder::class);
+
     }
 }
