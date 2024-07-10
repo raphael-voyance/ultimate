@@ -1,12 +1,13 @@
-import { loader } from "../../helpers/utils.js";
-import { French } from "flatpickr/dist/l10n/fr.js";
-import flatpickr from "flatpickr";
+import { loader, formatDateString } from "../../helpers/utils.js";
 import axios from "axios";
 
 window.addEventListener("load", () => {
     let $numerologyDetailsEl = document.getElementById("numerology_details");
     let $numerologyDetailsHeaderEl = document.getElementById("numerology_details_content_header");
     let $numerologyDetailsHeaderContainerFormEl = document.createElement('div');
+
+    let $childrens = $numerologyDetailsHeaderEl.children;
+    
     let $numerologyContentEl = document.getElementById("numerology_details_content");
     let $lifePathEls = document.querySelectorAll(".life_path");
     let $annualPathEls = document.querySelectorAll(".annual_path");
@@ -58,7 +59,7 @@ window.addEventListener("load", () => {
     let $interpretationArcaneSumPath;
 
     if ($lifePathEls || $annualPathEls) {
-        loader.show($numerologyDetailsEl.getAttribute("id"));
+        loader.show($numerologyDetailsEl.getAttribute("id"), null, ['mt-4']);
         $numerologyContentEl.style.display = "none"
 
         axios
@@ -73,20 +74,26 @@ window.addEventListener("load", () => {
                     return false;
                 }
 
-                console.log(response.data)
-
                 $numerologyContentEl.style.display = "block";
 
                 $birthDate = response.data.numerology.birthdate;
                 $createFormBirthdateBtnEl.style.minHeight = "48px";
+                $createFormBirthdateBtnEl.classList = 'btn btn-outline';
                 $createFormBirthdateBtnEl.innerText = 'Modifier votre date de naissance';
+                
+                console.log($childrens)
 
-                $numerologyDetailsHeaderContainerFormEl.prepend($createFormBirthdateBtnEl);
+                if ($childrens.length >= 2) {
+                    $numerologyDetailsHeaderEl.insertBefore($createFormBirthdateBtnEl, $childrens[1]);
+                } else {
+                    $numerologyDetailsHeaderEl.appendChild($createFormBirthdateBtnEl);
+                }
                 $numerologyDetailsHeaderEl.prepend($numerologyDetailsHeaderContainerFormEl);
 
                 $createFormBirthdateBtnEl.addEventListener('click', () => {
                     let $FormBirthdateEl = document.querySelector('[data="FormBirthdate"]')
                     if(!createFormBirthdateIsOpen) {
+                        createFormBirthdateIsOpen = true;
                         $createFormBirthdateBtnEl.style.display = "none";
                         createFormBirthDate(submitForm, $birthDate, $birthDate);
                     }else {
@@ -132,10 +139,6 @@ window.addEventListener("load", () => {
                 $interpretationArcaneSumPath = response.data.tarology.interpretationArcaneSumPath;
                 $imgArcaneSumPath = response.data.tarology.imgArcaneSumPath;
                 $nameArcaneSumPath = response.data.tarology.nameArcaneSumPath;
-
-                console.log($arcaneLifePath,
-                    $imgArcaneLifePath,
-                    $nameArcaneLifePath,$arcaneLifePathDescEl)
 
                 $arcaneLifePathDescEl.innerText = $interpretationArcaneLifePath;
                 $arcaneLifePathDescEl.classList = 'text-sm text-center';
@@ -265,16 +268,14 @@ window.addEventListener("load", () => {
         $formContainer.classList = "max-w-xs flex flex-row gap-2 items-center";
         $formContainer.setAttribute('data', 'FormBirthdate');
         createFormBirthdateIsOpen = true;
-
-        // flatpickr($input, {
-        //     locale: French,
-        //     dateFormat: "d/m/Y",
-        //     defaultDate: $defaultDate ? $defaultDate : ""
-        // });
+        
         $input.classList =
             "input input-primary pl-12 w-full peer focus:border-none focus:ring-primary-focus";
         $input.setAttribute('type', 'text');
         $input.setAttribute('value', $defaultDate ? $defaultDate : "");
+        $input.setAttribute('id', 'input-date');
+        $input.setAttribute('placeholder', '31/12/1985');
+        $input.addEventListener('input', formatDateString);
 
         if($DateValue) { $input.value = $DateValue; }
 
@@ -302,24 +303,38 @@ window.addEventListener("load", () => {
         $formContainer.appendChild($inputContainer);
         $formContainer.appendChild($btn);
         $formContainer.appendChild($cancelBtn);
-        $numerologyDetailsHeaderContainerFormEl.prepend($formContainer);
+
+        console.log($childrens)
+        if ($childrens.length >= 2) {
+            $numerologyDetailsHeaderEl.insertBefore($formContainer, $childrens[2]);
+        } else {
+            $numerologyDetailsHeaderContainerFormEl.prepend($formContainer);
+        }
 
         $btn.addEventListener("click", (e) => {
             e.preventDefault();
+            if($DateValue && $input.value == $DateValue) {
+                $createFormBirthdateBtnEl.style.display = "block";
+                createFormBirthdateIsOpen = false;
+                $formContainer.remove();
+                return;
+            }
             $submitFn($input.value);
         });
 
         $cancelBtn.addEventListener("click", (e) => {
-            let $FormBirthdateEl = document.querySelector('[data="FormBirthdate"]');
+            e.preventDefault();
             $createFormBirthdateBtnEl.style.display = "block";
             createFormBirthdateIsOpen = false;
-            $FormBirthdateEl.remove();
-            e.preventDefault();
+            $formContainer.remove();
+            return;
         });
 
     }
 
     function submitForm(birthdate) {
+
+        loader.show('numerology_details_content_header');
 
         axios
             .post("/mon-espace/post-birthdate", {
@@ -337,6 +352,7 @@ window.addEventListener("load", () => {
                 location.reload();
             })
             .catch(function (error) {
+                loader.hide();
                 console.log(error);
             });
     }

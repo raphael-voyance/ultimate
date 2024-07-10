@@ -2,6 +2,7 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
 import typographie from '@tailwindcss/typography';
 import aspectratio from '@tailwindcss/aspect-ratio';
+import plugin from 'tailwindcss/plugin';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -35,7 +36,24 @@ export default {
         aspectRatio: false,
     },
 
-    plugins: [forms, typographie, aspectratio, require("daisyui")],
+    plugins: [forms, typographie, aspectratio, require("daisyui"), plugin(function({ addUtilities }) {
+        const newUtilities = {
+          '.my-rotate-y-180': {
+            transform: 'rotateY(180deg)',
+          },
+          '.preserve-3d': {
+            transformStyle: 'preserve-3d',
+          },
+          '.perspective': {
+            perspective: '1000px',
+          },
+          '.backface-hidden': {
+            backfaceVisibility: 'hidden',
+          },
+        }
+  
+        addUtilities(newUtilities, ['responsive', 'hover'])
+      })],
 
     daisyui: {
         themes: [

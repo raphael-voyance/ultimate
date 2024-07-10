@@ -58,8 +58,6 @@ class PrevisionsController extends Controller
         $modelNumerology = new ModelsNumerology();
         $modelTarology = new ModelsTarology();
 
-        // dd($numerology);
-
         try {
             if (!isset($numerology['lifePath'])) {
                 throw new Exception('lifePath is not set in $numerology.');
@@ -111,15 +109,7 @@ class PrevisionsController extends Controller
             echo 'Error: ' . $e->getMessage();
         }
 
-// dd($numerology);
-
         $tarology = json_decode($user->profile->tarology, true);
-        
-        // dd($tarology);
-        //dd($tarology['arcaneLifePath']);
-
-
-
 
         try {
             if (!isset($tarology['arcaneLifePath'])) {
@@ -186,8 +176,6 @@ class PrevisionsController extends Controller
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
-
-        // dd($tarology, $numerology);
         
         return response()->json([
             'numerology' => $numerology,
@@ -212,6 +200,10 @@ class PrevisionsController extends Controller
             'numerology' => $numerology,
             'birthday' => $birthdate
         ]);
+
+        toast()
+                ->success('Votre date de naissance a été modifié avec succés.')
+                ->pushOnNextPage();
 
         return response()->json(['numerology' => $numerology]);
     }
