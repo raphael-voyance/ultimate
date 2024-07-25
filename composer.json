@@ -15,11 +15,11 @@
         "spatie/laravel-honeypot": "^4.5",
         "spatie/laravel-searchable": "^1.12",
         "spatie/laravel-sitemap": "^7.2",
-        "usernotnull/tall-toasts": "^2.1"
+        "usernotnull/tall-toasts": "^2.1",
+        "fakerphp/faker": "^1.23"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
-        "fakerphp/faker": "^1.23",
         "laravel-lang/common": "^6.2",
         "laravel/breeze": "^2.0",
         "laravel/pint": "^1.13",
