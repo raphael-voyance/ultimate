@@ -1,7 +1,7 @@
 <div id="sub-header" class="flex flex-row items-center justify-between sm:justify-end text-white z-30 sticky top-0 bg-secondary">
-    <div>
+    {{-- <div>
         @livewire('appointment-modal')
-    </div>
+    </div> --}}
 
     <div>
         <a class="outline-none block w-full px-4 py-2 text-left text-sm leading-5 text-white hover:text-white active:text-white focus:text-white hover:opacity-75 active:opacity-75 focus:opacity-75 transition-all" href="{{ route('contact') }}"><i class="fa-thin fa-circle-nodes"></i> Me contacter</a>
