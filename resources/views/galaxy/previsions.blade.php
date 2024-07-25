@@ -26,15 +26,19 @@
 
     <article class="p-4 sm:p-8 bg-neutral sm:rounded-lg">
 
-        <header>
-            <h3 class="mb-6" id="season_text"></h3>
-        <ul>
-            <li id="lunar_phase_text"></li>
-            <li id="lunar_phase_emoji"></li>
-            <li id="lunar_is_waxing"></li>
-            <li id="lunar_is_waning"></li>
-            <li id="lunar_age"></li>
-            </ul>
+        
+        
+        <header class="flex flex-row flex-nowrap justify-center mb-4">
+
+            <div>
+                <div style="box-shadow: 4px 1px 20px 0px white; border-radius: 50%;" class="m-auto h-36 w-36">
+                    <img class="m-auto w-36" id="lunar_img" />
+                </div>
+                <h5 class="m-auto mt-3" id="lunar_img_title" />
+            </div>
+            {{-- <div class="w-1/2">
+                <h3 class="mb-6" id="season_text"></h3>
+            </div> --}}
         </header>
         
 
@@ -89,17 +93,17 @@
                     </div>
                     <div class="md:col-span-2 h-full">
                         <div class="relative p-4 max-w-lg w-full m-auto mt-6 md:mt-0">
-                            <div class="container_arcane_life_path mt-2 text-center bg-indigo-400 px-4 py-5"></div>
+                            <div class="container_arcane_life_path mt-2 text-center border-t-2 bg-indigo-400 px-4 py-5"></div>
                         </div>
                     </div>
                     <div class="md:col-span-2 h-full">
                         <div class="relative p-4 max-w-lg w-full m-auto mt-6 md:mt-0">
-                            <div class="container_arcane_annual_path mt-2 text-center bg-amber-500 px-4 py-5"></div>
+                            <div class="container_arcane_annual_path mt-2 text-center border-t-2 bg-amber-500 px-4 py-5"></div>
                         </div>
                     </div>
                     <div class="md:col-span-2 h-full">
                         <div class="relative p-4 max-w-lg w-full m-auto mt-6 md:mt-0">
-                            <div class="container_arcane_sum_path mt-2 text-center bg-teal-500 px-4 py-5"></div>
+                            <div class="container_arcane_sum_path mt-2 text-center border-t-2 bg-teal-500 px-4 py-5"></div>
                         </div>
                     </div>
                 </div>

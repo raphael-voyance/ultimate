@@ -6,7 +6,9 @@
     </x-slot>
 
     <article class="p-4 sm:p-8 bg-neutral sm:rounded-lg">
-        Astrologie
+
+        @livewire('data-table-appointment')
+        
     </article>
 
 </x-app-layout>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use App\Models\DrawCard;
@@ -49,6 +49,6 @@ class DataTableDraw extends Component
 
     public function render()
     {
-        return view('livewire.data-table');
+        return view('livewire.admin.data-table-draw');
     }
 }

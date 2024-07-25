@@ -16,7 +16,7 @@
         </header>
 
         <section>
-            @livewire('data-table-draw')
+            @livewire('admin.data-table-draw')
         </section>
 
     </section>
