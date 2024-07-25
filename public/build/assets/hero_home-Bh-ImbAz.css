@@ -1,0 +1,1 @@
+#home-hero>#header.isAbsolute{position:absolute;width:100%}@media (min-width: 768px){#home-hero>#header.isAbsolute .logo{position:fixed;top:75px;left:50%;transform:translate(-50%)}}#home-hero>#header.isFixed{position:fixed;top:0;width:100%}#home-hero>#header.isFixed .logo{display:block}

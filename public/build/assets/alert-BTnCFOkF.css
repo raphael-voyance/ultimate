@@ -1,0 +1,1 @@
+.alert-box-overflow{display:flex;position:fixed;width:100vw;height:100vh;top:0;left:0;z-index:100}.alert-box-container{position:relative;margin:auto;padding:20px 30px;width:50vw;max-width:100%}.alert-box-btn-close{position:absolute;width:25px;height:25px;right:0;top:0}

@@ -1,0 +1,1 @@
+window.addEventListener("load",()=>{const e=document.getElementById("messages_navigation");document.getElementById("contentMessagesComponent").innerText,e!==null&&e.addEventListener("click",()=>{}),window.addEventListener("scroll",()=>{const t=window.scrollY+30,n=e.offsetTop;t>n?e.style.transform=`translateY(${t-n}px)`:e.style.transform="translateY(0)"})});
