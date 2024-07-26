@@ -26,7 +26,7 @@ class Header extends Component
                     <div id="sticky-header" class="sticky z-[29]">
                 @endif
 
-                    <header id="header" {{ $attributes->merge(['class' => 'min-h-[96px] bg-base-100/75 shadow-md']) }}>
+                    <header id="header" {{ $attributes->merge(['class' => 'min-h-[96px] bg-base-100/75 shadow-md z-10']) }}>
                         <div class="absolute w-full h-full backdrop-blur-sm"></div>
                         <div class="min-h-[96px] mx-auto z-30 pl-6 pr-10 py-5 flex items-center relative @if(!$fullWidth) max-w-screen-2xl @endif">
                             <div class="flex items-center" }}>

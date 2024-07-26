@@ -71,10 +71,10 @@
                     <div class="text-base-content">
 
                         <div class="grid md:grid-cols-2 text-sm">
-                            @if (Auth::user()->phone())
+                            @if (Auth::user()->getPhone())
                                 <div class="grid grid-cols-2">
                                     <div class="px-4 py-2 font-semibold">Téléphone</div>
-                                    <div class="px-4 py-2">{{ Auth::user()->phone() }}</div>
+                                    <div class="px-4 py-2">{{ Auth::user()->getPhone() }}</div>
                                 </div>
                             @endif
 

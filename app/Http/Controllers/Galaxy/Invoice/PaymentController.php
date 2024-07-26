@@ -98,6 +98,8 @@ class PaymentController extends Controller
 
         $quantity = 1;
 
+        // dd($quantity);
+
         return $request->user()->checkout([$stripePriceId => $quantity], [
             'success_url' => route('payment.create', ['payment_invoice_token' => $invoice->payment_invoice_token]).'?session_id={CHECKOUT_SESSION_ID}',
 

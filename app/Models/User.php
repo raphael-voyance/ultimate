@@ -134,7 +134,7 @@ class User extends Authenticatable implements Searchable, MustVerifyEmail
         return $a;
     }
 
-    public function phone() {
+    public function getPhone() {
         $contact = json_decode($this->profile->contact);
         if(isset($contact->phone)) {
             return $contact->phone;

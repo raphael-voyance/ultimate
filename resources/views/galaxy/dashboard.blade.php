@@ -13,8 +13,8 @@
                 <li>Nom : {{ Auth::user()->last_name }}</li>
                 <li>Prénom : {{ Auth::user()->first_name }}</li>
                 <li>Adresse email : {{ Auth::user()->email }}</li>
-                @if(Auth::user()->phone())
-                <li>Numéro de téléphone : {{ Auth::user()->phone() }}</li>
+                @if(Auth::user()->getPhone())
+                <li>Numéro de téléphone : {{ Auth::user()->getPhone() }}</li>
                 @endif
                 @if(Auth::user()->birthday())
                 <li>Date de naissance : {{ Auth::user()->birthday() }}</li>
