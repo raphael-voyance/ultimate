@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 $container.style.height = cardHeight + "px";
 
                 frontCardEl.innerHTML = `<img class="w-full h-full object-contain" src="${card.imgPath}"/>`;
-                backCardEl.innerHTML = '<img class="w-full h-full object-contain" src=" ' + window.location.origin + ' /imgs/tarot/back-card.png"/>';
+                backCardEl.innerHTML = '<img class="w-full h-full object-contain" src=" ' + window.location.origin + '/imgs/tarot/back-card.png"/>';
 
                 li.appendChild(backCardEl);
                 li.appendChild(frontCardEl);
