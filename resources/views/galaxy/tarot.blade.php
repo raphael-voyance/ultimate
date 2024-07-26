@@ -1,4 +1,4 @@
-<x-fullscreen-layout>
+<x-full-screen-layout>
     @section('js')
         @vite(['resources/js/add/tarot/tarot.js'])
     @endsection
@@ -13,4 +13,4 @@
 
     </article>
 
-</x-fullscreen-layout>
+</x-full-screen-layout>
