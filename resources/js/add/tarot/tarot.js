@@ -466,7 +466,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const getDrawInterpretation = async (drawCards, drawSlug) => {
             try {
-                let url = 'http://ultimate.test/mon-espace/previsions/tarot/interpretation'
+                let url = window.location.origin + '/mon-espace/previsions/tarot/interpretation'
                 return axios({
                     method: 'get',
                     url: url,
