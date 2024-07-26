@@ -1,13 +1,11 @@
 <?php
 
-use App\Http\Controllers\ComingSoonController;
 use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\Galaxy\ProfileController;
 use App\Http\Controllers\Galaxy\PrevisionsController;
 use App\Http\Controllers\Galaxy\AppointmentsController;
-use App\Http\Middleware\ComingSoon;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +17,6 @@ use App\Http\Middleware\ComingSoon;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-// Route::get('/coming-soon', [ComingSoonController::class, 'index'])->name('coming_soon');
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
 Route::get('/me-consulter', [PublicController::class, 'consultations'])->name('consultations');

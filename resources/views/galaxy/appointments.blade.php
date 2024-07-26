@@ -7,7 +7,7 @@
 
     <article class="p-4 sm:p-8 bg-neutral sm:rounded-lg">
 
-        @livewire('data-table-appointment')
+        
         
     </article>
 
