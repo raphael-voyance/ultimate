@@ -347,7 +347,7 @@
 
                                                     <form class="mt-4">
                                                         <div>
-                                                            <x-ui.form.datetime class="input-secondary" label="Votre heure de naissance" wire:model="time_of_birth" type="time" />
+                                                            <x-ui.form.date-time class="input-secondary" label="Votre heure de naissance" wire:model="time_of_birth" type="time" />
                                                             @error('time_of_birth')
                                                                 <x-ui.form.input-error :messages="$message" class="mt-2" />
                                                             @enderror

@@ -183,7 +183,7 @@
                                             label="Votre date de naissance" icon-right="o-calendar" :config="$dateConfig" />
                                     </div>
                                     <div>
-                                        <x-ui.form.datetime
+                                        <x-ui.form.date-time
                                             class="input input-primary w-full peer focus:border-none focus:ring-primary-focus"
                                             label="Votre heure de naissance" id="time_of_birth" name="time_of_birth"
                                             type="time" />
