@@ -186,7 +186,7 @@ class TarotCardSeeder extends Seeder
             5 => [
                 'name' => 'Le Pape',
                 'slug' => Str::slug('Le Pape', $separator = '-', $language = 'fr'),
-                'imgPath' => asset('imgs/tarot/5-le-Pape.jpg'),
+                'imgPath' => asset('imgs/tarot/5-le-pape.jpg'),
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                 'numberArcane' => 5,
                 'interpretationsForDrawingCard' => [
@@ -270,7 +270,7 @@ class TarotCardSeeder extends Seeder
             7 => [
                 'name' => 'Le Chariot',
                 'slug' => Str::slug('Le Chariot', $separator = '-', $language = 'fr'),
-                'imgPath' => asset('imgs/tarot/7-le-Chariot.jpg'),
+                'imgPath' => asset('imgs/tarot/7-le-chariot.jpg'),
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias quaerat totam ex vero incidunt iusto minima laboriosam tempore voluptatem. Fuga ut nostrum quibusdam alias natus non quo reprehenderit provident.',
                 'numberArcane' => 7,
                 'interpretationsForDrawingCard' => [
