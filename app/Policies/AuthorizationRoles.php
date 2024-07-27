@@ -21,6 +21,6 @@ class AuthorizationRoles
 
     public function consultant(User $user)
     {
-        return $user->hasRole('Admin') || $user->hasRole('Consultant');
+        return $user->hasRole('Consultant');
     }
 }

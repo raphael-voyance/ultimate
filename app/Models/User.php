@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Searchable\Searchable;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
 
 class User extends Authenticatable implements Searchable, MustVerifyEmail
 {
@@ -144,7 +146,15 @@ class User extends Authenticatable implements Searchable, MustVerifyEmail
 
     public function hasRole(string $role)
     {
-        return $this->roles()->where('name', $role)->orWhere('slug', $role)->exists();
+        $role = Str::lower($role);
+        $user_roles = [];
+        foreach($this->roles as $user_role) {
+            $user_roles[] = $user_role->slug;
+        }
+
+        if (in_array($role, $user_roles)) {
+            return true;
+        }
     }
 
     public function profile() :HasOne {

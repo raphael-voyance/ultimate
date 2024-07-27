@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Invoice;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Request;
 
 class InvoicePolicy
 {
@@ -14,7 +15,6 @@ class InvoicePolicy
         if ($user->hasRole('admin')) {
             return true;
         }
-    
         return null;
     }
 

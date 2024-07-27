@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Invoice;
+use App\Policies\InvoicePolicy;
 use App\Policies\AuthorizationRoles;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
@@ -25,6 +27,6 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         Gate::define('admin', [AuthorizationRoles::class, 'admin']);
         Gate::define('consultant', [AuthorizationRoles::class, 'consultant']);
-        //Gate::policy(Invoice::class, InvoicePolicy::class);
+        Gate::policy(Invoice::class, InvoicePolicy::class);
     }
 }
