@@ -1,7 +1,7 @@
 {
-  "_alert-!~{00j}~.js": {
+  "_alert-!~{00k}~.js": {
     "file": "assets/alert-BTnCFOkF.css",
-    "src": "_alert-!~{00j}~.js"
+    "src": "_alert-!~{00k}~.js"
   },
   "_alert-maf5A8O9.js": {
     "file": "assets/alert-maf5A8O9.js",
@@ -155,6 +155,15 @@
     "file": "assets/tarot-DXQIpJhJ.css",
     "src": "resources/js/add/universe/numerology/numerology.css",
     "isEntry": true
+  },
+  "resources/js/add/universe/numerology/numerology.js": {
+    "file": "assets/numerology-Cf9TGInO.js",
+    "name": "numerology",
+    "src": "resources/js/add/universe/numerology/numerology.js",
+    "isEntry": true,
+    "css": [
+      "assets/alert-BTnCFOkF.css"
+    ]
   },
   "resources/js/add/universe/tarot/tarot.css": {
     "file": "assets/tarot-DXQIpJhJ.css",
