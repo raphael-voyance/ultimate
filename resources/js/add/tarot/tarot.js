@@ -404,8 +404,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 ) {
                     el.classList.remove("selected", "ring-2", "ring-primary");
                     cardsSelected = cardsSelected.filter(
+                        
                         (item) => item != numberArcane
+                        
                     );
+                    selectIsOpen = true;console.log(cardsSelected, selectIsOpen)
                 }
                 afterSelectCard(cardsSelected, totalCards);
                 return;
