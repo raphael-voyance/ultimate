@@ -20,7 +20,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        return view('universe.posts.create');
     }
 
     /**
@@ -28,7 +28,7 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return view('universe.posts.create');
     }
 
     /**

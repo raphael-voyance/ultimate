@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\Universe\AdminController;
+use App\Http\Controllers\Universe\BlogController;
 use App\Http\Controllers\Universe\DrawsController;
 use App\Http\Controllers\Universe\TarotController;
 use App\Http\Controllers\Universe\MessagingController;
@@ -37,19 +37,29 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
         Route::delete('/destroy/{id}', [DrawsController::class, 'destroy'])->name('destroy');
     });
 
+    // TAROT ROUTES
     Route::prefix('tarot')->as('tarot.')->group(function() {
         Route::get('/', [TarotController::class, 'index'])->name('index');
         Route::get('/{slug}', [TarotController::class, 'view'])->name('view');
         Route::put('/update/{slug}', [TarotController::class, 'update'])->name('update');
     });
 
+    // NUMEROLOGY ROUTES
     Route::prefix('numerology')->as('numerology.')->group(function() {
         Route::get('/', [NumerologyController::class, 'index'])->name('index');
         Route::get('/{number}', [NumerologyController::class, 'view'])->name('view');
         Route::put('/update/{number}', [NumerologyController::class, 'update'])->name('update');
     });
 
+    // MESSAGERIE ROUTES
     Route::get('/messagerie', [MessagingController::class, 'index'])->name('messaging');
+
+    // POSTS ROUTES
+    Route::prefix('blog')->as('posts.')->group(function() {
+        Route::get('/post/create', [BlogController::class, 'create'])->name('create');
+        Route::post('/post/store', [BlogController::class, 'store'])->name('store');
+    });
+
 
     //--------------TIPS--------------
     //--------------------------------

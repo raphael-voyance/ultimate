@@ -56,6 +56,34 @@
     </div>
 
     <div>
+        <h2>Relatif au blog :</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+            <x-ui.card title="Articles">
+                <div class="text-xl font-bold">
+                    <x-ui.link label="Rédiger un article" href="{{ route('admin.posts.create') }}" />
+                    <x-ui.link label="Catégories" href="{{ route('admin.posts.create') }}" />
+                </div>
+                <x-slot:actions>
+                    <x-ui.link label="Voir tous les articles" href="{{ route('home') }}" />
+                </x-slot:actions>
+            </x-ui.card>
+
+            <x-ui.card title="Commentaires">
+            <ul>
+                <li>3 commentaires à approuver</li>
+                <li>56 commentaires approuvés</li>
+            </ul>
+    
+            <x-slot:actions>
+                <x-ui.link label="Voir tous les commentaires" href="{{ route('home') }}" />
+            </x-slot:actions>
+            </x-ui.card>
+        </div>
+        
+    </div>
+
+    <div>
         <h2>Relatif aux interprétations :</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <x-ui.card title="Les tirages">
