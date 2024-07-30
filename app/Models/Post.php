@@ -20,7 +20,7 @@ class Post extends Model
     ];
 
     public function excerpt() {
-        return Str::excerpt($this->content);
+        return Str::excerpt($this->content, '', $options = ['radius' => 350, 'omission' => '...']);
     }
 
     

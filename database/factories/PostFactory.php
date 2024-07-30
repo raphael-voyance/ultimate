@@ -22,7 +22,7 @@ class PostFactory extends Factory
         return [
             'title' => $title,
             'slug' => Str::slug($title),
-            'content' => $this->faker->paragraph(),
+            'content' => $this->faker->paragraph(15),
             'published_at' => $this->faker->dateTime(),
             'status' => 'PUBLISH',
             'image' => asset('imgs/pending.jpg'),
