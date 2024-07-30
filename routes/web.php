@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\Galaxy\ProfileController;
 use App\Http\Controllers\Galaxy\PrevisionsController;
@@ -20,12 +21,16 @@ use App\Http\Controllers\Galaxy\AppointmentsController;
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
 Route::get('/me-consulter', [PublicController::class, 'consultations'])->name('consultations');
-Route::get('/mon-univers', [PublicController::class, 'my_universe'])->name('my_universe');
 Route::get('/temoignages', [PublicController::class, 'testimonies'])->name('testimonies');
 Route::get('/me-contacter', [PublicController::class, 'contact'])->name('contact');
 
+Route::prefix('mon-univers')->as('my_universe.')->group(function() {
+    Route::get('/', [BlogController::class, 'index'])->name('index');
+    Route::get('/{slug}', [BlogController::class, 'show'])->name('show');
+});
+
 Route::middleware([ProtectAgainstSpam::class])->group(function() {
-    //Post Route
+    //Method Post Route
     Route::post('/me-contacter', [PublicController::class, 'store_contact'])->name('store_contact');
 });
 

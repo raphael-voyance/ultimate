@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Post;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Invoice;
@@ -302,5 +303,7 @@ class DatabaseSeeder extends Seeder
 
             $this->call(NumerologySeeder::class);
 
+            Post::factory()->count(10)->create();
+            
     }
 }

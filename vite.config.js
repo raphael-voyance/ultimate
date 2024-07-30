@@ -17,6 +17,8 @@ export default defineConfig({
                 'resources/js/add/hero_home.js',
                 'resources/css/add/hero_home.css',
 
+                'resources/css/add/blog_style.css',
+
                 'resources/js/add/payment.js',
                 'resources/js/add/previsions/lunar.js',
                 'resources/js/add/previsions/numerology.js',

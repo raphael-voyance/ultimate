@@ -27,9 +27,6 @@ class PublicController extends Controller
     public function consultations(): View {
         return view('consultations');
     }
-    public function my_universe(): View {
-        return view('my-universe');
-    }
     public function testimonies(): View {
         return view('testimonies');
     }
