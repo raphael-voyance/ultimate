@@ -1,6 +1,6 @@
 <x-admin-layout>
     @section("js")
-        @vite("resources/js/add/universe/draws.js")
+        @vite("resources/js/add/universe/blog.js")
     @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
@@ -9,13 +9,13 @@
         </h2>
     </x-slot>
 
-    <section>
+    <section id="blog-create">
         <header>
-            <a href="{{ route('admin.draw.index') }}" class="btn">Voir tous les articles</a>
+            <a href="{{ route('admin.post.index') }}" class="btn">Voir tous les articles</a>
         </header>
 
         <section>
-            <form action="{{ route('admin.posts.store') }}" method="POST" autocomplete="off" x-data="{
+            <form action="{{ route('admin.post.store') }}" method="POST" autocomplete="off" x-data="{
                 name: '',
                 slug: '',
 

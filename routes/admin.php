@@ -55,7 +55,8 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     Route::get('/messagerie', [MessagingController::class, 'index'])->name('messaging');
 
     // POSTS ROUTES
-    Route::prefix('blog')->as('posts.')->group(function() {
+    Route::prefix('blog')->as('post.')->group(function() {
+        Route::get('/', [BlogController::class, 'index'])->name('index');
         Route::get('/post/create', [BlogController::class, 'create'])->name('create');
         Route::post('/post/store', [BlogController::class, 'store'])->name('store');
     });

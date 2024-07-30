@@ -1,7 +1,7 @@
 {
-  "_alert-!~{00l}~.js": {
+  "_alert-!~{00m}~.js": {
     "file": "assets/alert-BTnCFOkF.css",
-    "src": "_alert-!~{00l}~.js"
+    "src": "_alert-!~{00m}~.js"
   },
   "_alert-maf5A8O9.js": {
     "file": "assets/alert-maf5A8O9.js",
@@ -39,7 +39,7 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-BFHNl6ut.css",
+    "file": "assets/app-CV5bJH2C.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -143,6 +143,12 @@
     "css": [
       "assets/tarot-Rq52TpHv.css"
     ]
+  },
+  "resources/js/add/universe/blog.js": {
+    "file": "assets/blog-CN9FXROQ.js",
+    "name": "blog",
+    "src": "resources/js/add/universe/blog.js",
+    "isEntry": true
   },
   "resources/js/add/universe/draws.js": {
     "file": "assets/draws-_Ntttl5B.js",

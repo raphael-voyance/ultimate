@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('slug');
             $table->longText('content');
             $table->timestamp('published_at');
-            $table->enum('status', ['PUBLISH', 'DRAFT', 'TRASH'])->default('DRAFT');
+            $table->enum('status', ['PUBLISH', 'DRAFT', 'TRASH', 'PRIVATE'])->default('DRAFT');
             $table->string('image');
             $table->timestamps();
         });

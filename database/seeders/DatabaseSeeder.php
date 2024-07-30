@@ -303,12 +303,15 @@ class DatabaseSeeder extends Seeder
 
             $this->call(NumerologySeeder::class);
 
-            Post::factory()->count(10)->create();
+            Post::factory()->count(18)->create();
             Post::factory()->count(10)->create([
                 'status' => 'DRAFT'
             ]);
-            Post::factory()->count(10)->create([
+            Post::factory()->count(4)->create([
                 'status' => 'TRASH'
+            ]);
+            Post::factory()->count(24)->create([
+                'status' => 'PRIVATE'
             ]);
             
     }

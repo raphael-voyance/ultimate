@@ -25,6 +25,7 @@ export default defineConfig({
                 'resources/js/add/tarot/tarot.js',
                 
                 'resources/js/add/universe/draws.js',
+                'resources/js/add/universe/blog.js',
                 'resources/js/add/universe/tarot/tarot.js',
                 'resources/js/add/universe/tarot/tarot.css',
                 'resources/js/add/universe/numerology/numerology.js',
