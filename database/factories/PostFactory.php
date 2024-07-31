@@ -22,6 +22,7 @@ class PostFactory extends Factory
         return [
             'title' => $title,
             'slug' => Str::slug($title),
+            'excerpt' => $this->faker->paragraph(),
             'content' => $this->faker->paragraph(15),
             'published_at' => $this->faker->dateTime(),
             'status' => 'PUBLISH',

@@ -1,6 +1,9 @@
 <x-admin-layout>
     @section("js")
-        @vite("resources/js/add/universe/blog.js")
+        @vite("resources/js/add/universe/blog/blog.js")
+    @endsection
+    @section("css")
+        @vite("resources/js/add/universe/blog/blog.css")
     @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
@@ -16,7 +19,7 @@
 
         <section>
             <form action="{{ route('admin.post.store') }}" method="POST" autocomplete="off" x-data="{
-                name: '',
+                title: '',
                 slug: '',
 
                 slugify() {
@@ -41,7 +44,7 @@
                         @enderror
                     </div>
 
-                    <!-- Draw Slug -->
+                    <!-- Post Slug -->
                     <div>
                         <input class="input input-primary w-full peer focus:border-none focus:ring-primary-focus" id="slug_t" disabled type="text" x-model="slug"
                         name="slug" required
@@ -51,13 +54,29 @@
                     <input type="hidden" name="slug" id="slug" x-model="slug">
                 </div>
                 
-                <!-- Draw Desc -->
+                <!-- Résumé de l'article -->
                 <div class="mt-4">
-                    <label for="content" class="pt-0 label label-text font-semibold">L'article</label>
-                    <textarea id="content" rows="4" class="textarea textarea-primary w-full peer @error('content') border-error @enderror" required name="content"  placeholder="Contenu de l'article">{{ old('content') }}</textarea>
-                    @error('content')
+                    <label for="excerpt" class="pt-0 label label-text font-semibold">Résumé de l'article</label>
+                    <textarea id="excerpt" rows="4" class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror" required name="excerpt"  placeholder="Contenu de l'article">{{ old('excerpt') }}</textarea>
+                    @error('excerpt')
                         <x-ui.form.input-error :messages="$message" class="mt-2" />
                     @enderror
+                </div>
+
+                <div>
+                    Ajouter un composant
+                </div>
+
+                <div>
+                    Catégories
+                </div>
+
+                <div>
+                    Image à la une
+                </div>
+
+                <div>
+                    Status
                 </div>
 
                 <div class="flex justify-end mt-2">

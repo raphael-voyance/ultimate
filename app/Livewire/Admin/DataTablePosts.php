@@ -21,6 +21,11 @@ class DataTablePosts extends Component
         ];
     }
 
+    public function deletePost($id) {
+        $post = Post::where('id', $id)->firstOrFail();
+        $post->delete();
+    }
+
     public function render()
     {
         return view('livewire.admin.data-table-posts');

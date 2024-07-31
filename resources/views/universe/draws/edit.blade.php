@@ -1,6 +1,23 @@
 <x-admin-layout>
     @section("js")
         @vite("resources/js/add/universe/draws.js")
+        <script>
+            function drawForm() {
+                return {
+                    name: '{{ old('name') ?? $post->name }}',
+                    slug: '{{ old('slug') ?? $post->slug }}',
+        
+                    slugify() {
+                        this.slug = this.name
+                            .normalize('NFD') // Normalize the string to decompose combined characters
+                            .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks
+                            .toLowerCase()
+                            .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric characters with hyphens
+                            .replace(/^-+|-+$/g, ''); // Remove leading and trailing hyphens
+                    }
+                }
+            }
+        </script>
     @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
@@ -17,23 +34,7 @@
         </header>
 
         <section>
-            <form action="{{ route('admin.draw.update', $draw->id) }}" method="POST" autocomplete="off" x-data="{
-                name: '',
-                slug: '',
-
-                slugify() {
-                    this.slug = this.name
-                        .normalize('NFD') // Normalize the string to decompose combined characters
-                        .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks
-                        .toLowerCase()
-                        .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric characters with hyphens
-                        .replace(/^-+|-+$/g, ''); // Remove leading and trailing hyphens
-                }
-            }" x-init="
-                $watch('name', value => slugify());
-                name = $el.querySelector('#name').dataset.name || '';
-                slug = $el.querySelector('#slug').dataset.slug || '';
-            ">
+            <form action="{{ route('admin.draw.update', $draw->id) }}" method="POST" autocomplete="off" x-data="drawForm()">
                 @csrf
                 @method('PUT')
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug');
+            $table->text('excerpt')->nullable();
             $table->longText('content');
             $table->timestamp('published_at');
             $table->enum('status', ['PUBLISH', 'DRAFT', 'TRASH', 'PRIVATE'])->default('DRAFT');

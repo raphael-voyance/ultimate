@@ -1,7 +1,7 @@
 {
-  "_alert-!~{00m}~.js": {
+  "_alert-!~{00n}~.js": {
     "file": "assets/alert-BTnCFOkF.css",
-    "src": "_alert-!~{00m}~.js"
+    "src": "_alert-!~{00n}~.js"
   },
   "_alert-maf5A8O9.js": {
     "file": "assets/alert-maf5A8O9.js",
@@ -144,11 +144,23 @@
       "assets/tarot-Rq52TpHv.css"
     ]
   },
-  "resources/js/add/universe/blog.js": {
-    "file": "assets/blog-CN9FXROQ.js",
+  "resources/js/add/universe/blog/blog.css": {
+    "file": "assets/blog-l0sNRNKZ.js",
     "name": "blog",
-    "src": "resources/js/add/universe/blog.js",
+    "src": "resources/js/add/universe/blog/blog.css",
     "isEntry": true
+  },
+  "resources/js/add/universe/blog/blog.js": {
+    "file": "assets/blog-IcSUyYNj.js",
+    "name": "blog",
+    "src": "resources/js/add/universe/blog/blog.js",
+    "isEntry": true,
+    "imports": [
+      "_alert-maf5A8O9.js"
+    ],
+    "css": [
+      "assets/alert-BTnCFOkF.css"
+    ]
   },
   "resources/js/add/universe/draws.js": {
     "file": "assets/draws-_Ntttl5B.js",

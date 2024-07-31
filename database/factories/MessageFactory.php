@@ -30,7 +30,7 @@ class MessageFactory extends Factory
             'content' => fake()->text(fake()->numberBetween(500, 10000)),
             'sender_phone' => fake()->phoneNumber(),
 
-            'created_at' => fake()->dateTimeInInterval('-4 months', '-3 days')
+            // 'created_at' => fake()->dateTimeInInterval('-4 months', '-3 days')
         ];
     }
 }

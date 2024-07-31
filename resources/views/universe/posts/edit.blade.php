@@ -1,96 +1,92 @@
 <x-admin-layout>
     @section("js")
-        @vite("resources/js/add/universe/draws.js")
+        @vite("resources/js/add/universe/blog/blog.js")
+        <script>
+            function postForm() {
+                return {
+                    title: '{{ old('title') ?? $post->title }}',
+                    slug: '{{ old('slug') ?? $post->slug }}',
+        
+                    slugify() {
+                        this.slug = this.title
+                            .normalize('NFD') // Normalize the string to decompose combined characters
+                            .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks
+                            .toLowerCase()
+                            .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric characters with hyphens
+                            .replace(/^-+|-+$/g, ''); // Remove leading and trailing hyphens
+                    }
+                }
+            }
+        </script>
+    @endsection
+    @section("css")
+        @vite("resources/js/add/universe/blog/blog.css")
     @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
             <a href="{{ route('admin.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
-            <span>Créer un tirage</span>
+            <span>Modifier l'article : {{ $post->title }}</span>
         </h2>
     </x-slot>
 
-    <section>
+    <section id="blog-create">
+        {{ $post }}
         <header>
-            <a href="{{ route('admin.draw.index') }}" class="btn">Voir tous les tirages</a>
-            <a href="{{ route('admin.tarot.index') }}" class="btn">Accéder aux interprétations des cartes</a>
+            <a href="{{ route('admin.post.index') }}" class="btn">Voir tous les articles</a>
         </header>
 
         <section>
-            <form action="{{ route('admin.draw.store') }}" method="POST" autocomplete="off" x-data="{
-                name: '',
-                slug: '',
-
-                slugify() {
-                    this.slug = this.name
-                        .normalize('NFD') // Normalize the string to decompose combined characters
-                        .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks
-                        .toLowerCase()
-                        .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric characters with hyphens
-                        .replace(/^-+|-+$/g, ''); // Remove leading and trailing hyphens
-                }
-            }" x-init="$watch('name', value => slugify())">
+            <form action="{{ route('admin.post.update', $post->id) }}" method="POST" autocomplete="off" x-data="postForm()">
                 @csrf
-                @method('POST')
+                @method('PUT')
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <!-- Draw Name -->
+                    <!-- Post Title -->
                     <div>
-                        <input class="input input-primary w-full peer focus:border-none focus:ring-primary-focus @error('name') input-error @enderror" id="name" type="text" x-model="name"
-                        name="name" value="{{ old('name') }}" required
-                        label="Nom du tirage " placeholder="Nom du tirage" />
-                        @error('name')
+                        <input class="input input-primary w-full peer focus:border-none focus:ring-primary-focus @error('title') input-error @enderror" id="title" type="text" x-model="title"
+                        name="title" value="{{ old('title') }}" required
+                        label="Titre de l'article" placeholder="Titre de l'article" />
+                        @error('title')
                             <x-ui.form.input-error :messages="$message" class="mt-2" />
                         @enderror
                     </div>
 
-                    <!-- Draw Slug -->
+                    <!-- Post Slug -->
                     <div>
-                        <input class="input input-primary w-full peer focus:border-none focus:ring-primary-focus" id="slug_d" disabled type="text" x-model="slug"
+                        <input class="input input-primary w-full peer focus:border-none focus:ring-primary-focus" id="slug_t" disabled type="text" x-model="slug"
                         name="slug" required
-                        label="Slug du tirage " placeholder="Slug du tirage" />
+                        label="Slug de l'article" placeholder="Slug de l'article" />
                     </div>
                     <!-- Draw Slug (Hidden) -->
                     <input type="hidden" name="slug" id="slug" x-model="slug">
-
-                    <!-- Draw totalSelectedCards -->
-                    <div>
-                        <input class="input input-primary w-full peer focus:border-none focus:ring-primary-focus @error('totalSelectedCards') input-error @enderror" id="totalSelectedCards" type="number"
-                        name="totalSelectedCards" value="{{ old('totalSelectedCards') }}" required
-                        label="Nombre de carte(s) à choisir" placeholder="Nombre de carte(s) à choisir" />
-                        
-                        @error('totalSelectedCards')
-                            <x-ui.form.input-error :messages="$message" class="mt-2" />
-                        @enderror
-                    </div>
                 </div>
                 
-                <!-- Draw Desc -->
+                <!-- Résumé de l'article -->
                 <div class="mt-4">
-                    <label for="description" class="pt-0 label label-text font-semibold">Description du tirage</label>
-                    <textarea id="description" rows="4" class="textarea textarea-primary w-full peer @error('description') border-error @enderror" required name="description"  placeholder="Description du tirage">{{ old('description') }}</textarea>
-                    @error('description')
+                    <label for="excerpt" class="pt-0 label label-text font-semibold">Résumé de l'article</label>
+                    <textarea id="excerpt" rows="4" class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror" required name="excerpt"  placeholder="Contenu de l'article">{{ old('excerpt') ? old('excerpt') : $post->excerpt }}</textarea>
+                    @error('excerpt')
                         <x-ui.form.input-error :messages="$message" class="mt-2" />
                     @enderror
                 </div>
 
-                <!-- Draw Checkbox -->
-                <div class="mt-4 flex flex-row justify-between">
-                    <div>
-                        <label for="hasSumCards" class="inline-flex gap-3 items-center cursor-pointer">
-                        <input type="checkbox" id="hasSumCards" name="hasSumCards" value="1" class="checkbox checkbox-primary focus:ring-primary-focus  checkbox-sm" @if(old('hasSumCards')) checked @endif >
-                                Calculer la synthèse ?
-                        </label>
-                    </div>
-                    <div>
-                        <label for="active" class="inline-flex gap-3 items-center cursor-pointer">
-                        <input type="checkbox" id="active" name="active" value="1" class="checkbox checkbox-primary focus:ring-primary-focus  checkbox-sm" @if(old('active')) checked @endif >
-                                Actif ?
-                        </label>
-                    </div>
-                    
+                <div>
+                    Ajouter un composant
+                </div>
+
+                <div>
+                    Catégories
+                </div>
+
+                <div>
+                    Image à la une
+                </div>
+
+                <div>
+                    Status
                 </div>
 
                 <div class="flex justify-end mt-2">
-                    <button type="submit" class="btn btn-primary btn-sm">Ajouter le tirage</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Poster l'article</button>
                 </div>
             </form>
         </section>

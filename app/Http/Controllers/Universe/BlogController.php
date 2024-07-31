@@ -45,7 +45,9 @@ class BlogController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Post::where('id', $id)->firstOrFail();
+
+        return view('universe.posts.edit', ['post' => $post]);
     }
 
     /**
@@ -53,7 +55,7 @@ class BlogController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        return back()->withInput();
     }
 
     /**
@@ -61,6 +63,17 @@ class BlogController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        
+        // Post
+        $post = Post::where('id', $id)->firstOrFail();
+
+        $post->delete();
+
+        toast()
+            ->success('L\'article vient d\'être supprimé avec succés.')
+            ->pushOnNextPage();
+
+        $redirectRoute = route('admin.post.index');
+        return response()->json(['status' => 'success', 'redirectRoute' => $redirectRoute]);
     }
 }
