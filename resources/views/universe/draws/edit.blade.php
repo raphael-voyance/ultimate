@@ -4,8 +4,8 @@
         <script>
             function drawForm() {
                 return {
-                    name: '{{ old('name') ?? $post->name }}',
-                    slug: '{{ old('slug') ?? $post->slug }}',
+                    name: '{{ old('name') ?? $draw->name }}',
+                    slug: '{{ old('slug') ?? $draw->slug }}',
         
                     slugify() {
                         this.slug = this.name

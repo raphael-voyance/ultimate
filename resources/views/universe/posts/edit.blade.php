@@ -63,14 +63,19 @@
                 <!-- Résumé de l'article -->
                 <div class="mt-4">
                     <label for="excerpt" class="pt-0 label label-text font-semibold">Résumé de l'article</label>
-                    <textarea id="excerpt" rows="4" class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror" required name="excerpt"  placeholder="Contenu de l'article">{{ old('excerpt') ? old('excerpt') : $post->excerpt }}</textarea>
+                    <textarea id="excerpt" rows="4" class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror" required name="excerpt"  placeholder="Résumé de l'article">{{ old('excerpt') ? old('excerpt') : $post->excerpt }}</textarea>
                     @error('excerpt')
                         <x-ui.form.input-error :messages="$message" class="mt-2" />
                     @enderror
                 </div>
 
-                <div>
-                    Ajouter un composant
+                <!-- Contenu de l'article -->
+                <div class="mt-4">
+                    <label for="content" class="pt-0 label label-text font-semibold">Contenu de l'article</label>
+                    <textarea id="content" rows="4" class="textarea textarea-primary w-full peer @error('content') border-error @enderror" required name="content"  placeholder="Contenu de l'article">{{ old('content') ? old('content') : $post->content }}</textarea>
+                    @error('content')
+                        <x-ui.form.input-error :messages="$message" class="mt-2" />
+                    @enderror
                 </div>
 
                 <div>
