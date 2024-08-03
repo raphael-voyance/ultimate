@@ -1,12 +1,15 @@
 import { createAlert } from "../../../Alert/alert.js";
+import EditorJS from '@editorjs/editorjs';
+
 import { createComponent } from "../../../Blogging/components.js";
+
+// PAGES //
 
 window.addEventListener('load', () => {
     const blogIndex = document.getElementById('blog-index');
     const blogCreate = document.getElementById('blog-create');
     const blogEdit = document.getElementById('blog-edit');
     
-
     if (blogIndex) {
         let copyButtons = document.querySelectorAll('[data-copy-link]');
         let btnsPostDel = document.querySelectorAll('[data-btn-post-del]');
@@ -59,7 +62,7 @@ window.addEventListener('load', () => {
     }
 
     if (blogCreate || blogEdit) {
-        // Votre code pour blogCreate & blogEdit
+        const editor = new EditorJS('post-editor');
     }
 
     function copyBtn(copyBtn) {

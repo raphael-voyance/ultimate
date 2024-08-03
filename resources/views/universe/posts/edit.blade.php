@@ -2,10 +2,16 @@
     @section("js")
         @vite("resources/js/add/universe/blog/blog.js")
         <script>
+            function decodeHtml(html) {
+                var txt = document.createElement("textarea");
+                txt.innerHTML = html;
+                return txt.value;
+            }
+
             function postForm() {
                 return {
-                    title: '{{ old('title') ?? $post->title }}',
-                    slug: '{{ old('slug') ?? $post->slug }}',
+                    title: decodeHtml('{{ old('title') ?? $post->title }}'),
+                    slug: decodeHtml('{{ old('slug') ?? $post->slug }}'),
         
                     slugify() {
                         this.slug = this.title
@@ -24,13 +30,15 @@
     @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
-            <a href="{{ route('admin.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
-            <span>Modifier l'article : {{ $post->title }}</span>
+            <a href="{{ route('admin.post.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
+            <div class="text-center sm:pl-4 mt-2 sm:mt-0 sm:text-left">
+                <span class="block mb-2  sm:mb-1"> Modifier l'article : </span>
+                <span class="italic"> {{ $post->title }} </span>
+            </div>
         </h2>
     </x-slot>
 
     <section id="blog-create">
-        {{ $post }}
         <header>
             <a href="{{ route('admin.post.index') }}" class="btn">Voir tous les articles</a>
         </header>
@@ -56,7 +64,7 @@
                         name="slug" required
                         label="Slug de l'article" placeholder="Slug de l'article" />
                     </div>
-                    <!-- Draw Slug (Hidden) -->
+                    <!-- Post Slug (Hidden) -->
                     <input type="hidden" name="slug" id="slug" x-model="slug">
                 </div>
                 
@@ -70,12 +78,8 @@
                 </div>
 
                 <!-- Contenu de l'article -->
-                <div class="mt-4">
-                    <label for="content" class="pt-0 label label-text font-semibold">Contenu de l'article</label>
-                    <textarea id="content" rows="4" class="textarea textarea-primary w-full peer @error('content') border-error @enderror" required name="content"  placeholder="Contenu de l'article">{{ old('content') ? old('content') : $post->content }}</textarea>
-                    @error('content')
-                        <x-ui.form.input-error :messages="$message" class="mt-2" />
-                    @enderror
+                <div class="mt-4 bg-gray-50 text-gray-700">
+                    <div id="post-editor"></div>
                 </div>
 
                 <div>
@@ -83,11 +87,30 @@
                 </div>
 
                 <div>
-                    Image à la une
+                    <h5>Image à la une :</h5>
+                    <img class="w-36" src="{{ $post->image }}" />
                 </div>
 
                 <div>
-                    Status
+                    <h5>Status :</h5>
+                    @switch($post->status)
+                        @case('PUBLISH')
+                        Publié
+                        @break
+                        @case('DRAFT')
+                        Brouillon
+                        @break
+                        @case('PRIVATE')
+                        Privé
+                        @break
+                    @endswitch
+                    <p>Créé le : {{ $post->created_at }}</p>
+                    @if($post->status == "PUBLISH" || $post->status == "PRIVATE")
+                        <p>Publié le : {{ $post->published_at }}</p>
+                    @endif
+                    @if($post->updated_at && $post->created_at != $post->updated_at)
+                        <p>Modifié le : {{ $post->updated_at }}</p>
+                    @endif
                 </div>
 
                 <div class="flex justify-end mt-2">

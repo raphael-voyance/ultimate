@@ -5,8 +5,10 @@
     @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
-            <a href="{{ route('admin.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
-            <span>Le {{ $number->name }}</span>
+            <a href="{{ route('admin.numerology.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
+            <div class="text-center sm:pl-4 mt-2 sm:mt-0 sm:text-left">
+                <span> Le {{ $number->name }} : </span>
+            </div>
         </h2>
     </x-slot>
 

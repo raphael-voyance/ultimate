@@ -2,10 +2,16 @@
     @section("js")
         @vite("resources/js/add/universe/draws.js")
         <script>
+            function decodeHtml(html) {
+                var txt = document.createElement("textarea");
+                txt.innerHTML = html;
+                return txt.value;
+            }
+
             function drawForm() {
                 return {
-                    name: '{{ old('name') ?? $draw->name }}',
-                    slug: '{{ old('slug') ?? $draw->slug }}',
+                    name: decodeHtml('{{ old('name') ?? $draw->name }}'),
+                    slug: decodeHtml('{{ old('slug') ?? $draw->slug }}'),
         
                     slugify() {
                         this.slug = this.name
@@ -21,8 +27,11 @@
     @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
-            <a href="{{ route('admin.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
-            <span>Modifier le tirage "{{ $draw->name }}"</span>
+            <a href="{{ route('admin.draw.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
+            <div class="text-center sm:pl-4 mt-2 sm:mt-0 sm:text-left">
+                <span class="block mb-2  sm:mb-1"> Modifier le tirage : </span>
+                <span class="italic"> {{ $draw->name }} </span>
+            </div>
         </h2>
     </x-slot>
 
