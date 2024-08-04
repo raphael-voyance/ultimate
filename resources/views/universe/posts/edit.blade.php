@@ -78,8 +78,8 @@
                 </div>
 
                 <!-- Contenu de l'article -->
-                <div class="mt-4 bg-gray-50 text-gray-700">
-                    <div id="post-editor"></div>
+                <div class="mt-4 text-white">
+                    <div id="editorjs"></div>
                 </div>
 
                 <div>

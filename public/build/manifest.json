@@ -39,7 +39,7 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-CCiD2UPo.css",
+    "file": "assets/app-BJ8sOmo7.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -145,13 +145,12 @@
     ]
   },
   "resources/js/add/universe/blog/blog.css": {
-    "file": "assets/blog-l0sNRNKZ.js",
-    "name": "blog",
+    "file": "assets/blog-DlIuPllQ.css",
     "src": "resources/js/add/universe/blog/blog.css",
     "isEntry": true
   },
   "resources/js/add/universe/blog/blog.js": {
-    "file": "assets/blog-DVXFJHzv.js",
+    "file": "assets/blog-Ccdvn0Q-.js",
     "name": "blog",
     "src": "resources/js/add/universe/blog/blog.js",
     "isEntry": true,
