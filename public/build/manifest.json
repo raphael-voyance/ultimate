@@ -145,16 +145,17 @@
     ]
   },
   "resources/js/add/universe/blog/blog.css": {
-    "file": "assets/blog-DlIuPllQ.css",
+    "file": "assets/blog-DrVJwr_d.css",
     "src": "resources/js/add/universe/blog/blog.css",
     "isEntry": true
   },
   "resources/js/add/universe/blog/blog.js": {
-    "file": "assets/blog-Ccdvn0Q-.js",
+    "file": "assets/blog-CESt_NmU.js",
     "name": "blog",
     "src": "resources/js/add/universe/blog/blog.js",
     "isEntry": true,
     "imports": [
+      "_axios-B4uVmeYG.js",
       "_alert-maf5A8O9.js"
     ],
     "css": [

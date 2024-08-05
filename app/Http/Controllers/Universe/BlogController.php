@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Universe;
 
-use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Concern\Blog;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BlogController extends Controller
 {
@@ -29,7 +30,34 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        return view('universe.posts.create');
+        $validated = $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'content' => 'required',
+            'slug' => 'required|unique:posts|max:255',
+            'excerpt' => 'string',
+        ]);
+
+        $post = new Post;
+
+        $post->title = $request->get('title');
+        $post->content = json_encode($request->get('content'));
+        $post->slug = $request->get('slug');
+        $post->excerpt = $request->get('excerpt');
+
+        if($request->image) {
+            $post->image = $request->image;
+        }else {
+            $post->image = asset('imgs/pending.jpg');
+        }
+ 
+        $post->save();
+
+        toast()
+            ->success('L\'article "' . $post->title . '" a bien été ajouté.')
+            ->pushOnNextPage();
+
+        $redirectRoute = route('admin.post.edit', $post->id);
+        return response()->json(['status' => 'success', 'redirectRoute' => $redirectRoute]);
     }
 
     /**
@@ -55,7 +83,26 @@ class BlogController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        return back()->withInput();
+        $post = Post::where('id', $id)->firstOrFail();
+
+        $post->content = $request->content;
+ 
+        $post->save();
+
+        toast()
+            ->success('L\'article "' . $post->title . '" a bien été mis à jour.')
+            ->pushOnNextPage();
+
+        $redirectRoute = route('admin.post.edit', $id);
+        return response()->json(['status' => 'success', 'redirectRoute' => $redirectRoute]);
+
+        // return back()->withInput();
+    }
+
+    public function getPostDataContent(int $postId) {
+        $blog = new Blog;
+        // dd($blog->getPostContentData($postId));
+        return $blog->getPostContentData($postId);
     }
 
     /**

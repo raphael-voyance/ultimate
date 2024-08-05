@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Concern\Blog;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -64,5 +65,10 @@ class BlogController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getPostDataContent(int $postId) {
+        $blog = new Blog;
+        dd($blog->getPostContentData($postId));
     }
 }

@@ -33,18 +33,18 @@
             <a href="{{ route('admin.post.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
             <div class="text-center sm:pl-4 mt-2 sm:mt-0 sm:text-left">
                 <span class="block mb-2  sm:mb-1"> Modifier l'article : </span>
-                <span class="italic"> {{ $post->title }} </span>
+                <span class="italic"> "{{ $post->title }}" </span>
             </div>
         </h2>
     </x-slot>
 
-    <section id="blog-create">
+    <section id="blog-edit" data-post-id="{{ $post->id }}">
         <header>
             <a href="{{ route('admin.post.index') }}" class="btn">Voir tous les articles</a>
         </header>
 
         <section>
-            <form action="{{ route('admin.post.update', $post->id) }}" method="POST" autocomplete="off" x-data="postForm()">
+            <form action="{{ route('admin.post.update', $post->id) }}" method="POST" autocomplete="off" x-data="postForm()" x-init="$watch('title', value => slugify())">
                 @csrf
                 @method('PUT')
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -79,7 +79,7 @@
 
                 <!-- Contenu de l'article -->
                 <div class="mt-4 text-white">
-                    <div id="editorjs"></div>
+                    <div id="editor"></div>
                 </div>
 
                 <div>
@@ -114,7 +114,7 @@
                 </div>
 
                 <div class="flex justify-end mt-2">
-                    <button type="submit" class="btn btn-primary btn-sm">Poster l'article</button>
+                    <button id="btn-submit-post" type="submit" class="btn btn-primary btn-sm">Enregistrer l'article</button>
                 </div>
             </form>
         </section>

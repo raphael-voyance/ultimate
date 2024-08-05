@@ -84,7 +84,7 @@ if(transformInputEls) {
                 .catch(function (error) {
                     Toast.danger(error.response.data.message);
                 });
-        });
+            });
 
     });
 }

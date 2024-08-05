@@ -1,6 +1,14 @@
 <x-admin-layout>
     @section("js")
         @vite("resources/js/add/universe/blog/blog.js")
+        <script>
+            function decodeHtml(html) {
+                var txt = document.createElement("textarea");
+                txt.innerHTML = html;
+                return txt.value;
+            }
+
+        </script>
     @endsection
     @section("css")
         @vite("resources/js/add/universe/blog/blog.css")
@@ -9,12 +17,12 @@
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
             <a href="{{ route('admin.post.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
             <div class="text-center sm:pl-4 mt-2 sm:mt-0 sm:text-left">
-                <span> Créer un article : </span>
+                <span class="block mb-2  sm:mb-1"> Créer un article : </span>
             </div>
         </h2>
     </x-slot>
 
-    <section id="blog-create">
+    <section id="blog-create"">
         <header>
             <a href="{{ route('admin.post.index') }}" class="btn">Voir tous les articles</a>
         </header>
@@ -52,21 +60,22 @@
                         name="slug" required
                         label="Slug de l'article" placeholder="Slug de l'article" />
                     </div>
-                    <!-- Draw Slug (Hidden) -->
+                    <!-- Post Slug (Hidden) -->
                     <input type="hidden" name="slug" id="slug" x-model="slug">
                 </div>
                 
                 <!-- Résumé de l'article -->
                 <div class="mt-4">
                     <label for="excerpt" class="pt-0 label label-text font-semibold">Résumé de l'article</label>
-                    <textarea id="excerpt" rows="4" class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror" required name="excerpt"  placeholder="Contenu de l'article">{{ old('excerpt') }}</textarea>
+                    <textarea id="excerpt" rows="4" class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror" required name="excerpt"  placeholder="Résumé de l'article">{{ old('excerpt') }}</textarea>
                     @error('excerpt')
                         <x-ui.form.input-error :messages="$message" class="mt-2" />
                     @enderror
                 </div>
 
-                <div>
-                    Ajouter un composant
+                <!-- Contenu de l'article -->
+                <div class="mt-4 text-white">
+                    <div id="editor"></div>
                 </div>
 
                 <div>
@@ -74,15 +83,16 @@
                 </div>
 
                 <div>
-                    Image à la une
+                    <h5>Image à la une :</h5>
+                    
                 </div>
 
                 <div>
-                    Status
+                    <h5>Status :</h5>
                 </div>
 
                 <div class="flex justify-end mt-2">
-                    <button type="submit" class="btn btn-primary btn-sm">Poster l'article</button>
+                    <button id="btn-submit-post" type="submit" class="btn btn-primary btn-sm">Poster l'article</button>
                 </div>
             </form>
         </section>
