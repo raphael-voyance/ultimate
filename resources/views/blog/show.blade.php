@@ -18,7 +18,7 @@
             </div>
             
             <div class="the-post">
-                <p>{{ $post->content }}</p>
+                <p>{!! $post->body !!}</p>
             </div>
             
         </section>

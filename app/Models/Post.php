@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use AlAminFirdows\LaravelEditorJs\Facades\LaravelEditorJs;
 
 class Post extends Model
 {
@@ -18,6 +19,16 @@ class Post extends Model
         'status',
         'image'
     ];
+
+    public function getBodyAttribute()
+    {
+        //dd($this->attributes['content']);
+        if($this->attributes['content']) {
+            return LaravelEditorJs::render($this->attributes['content']);
+        }
+        return;
+        
+    }
 
     public function excerpt() {
         return Str::excerpt($this->content, '', $options = ['radius' => 350, 'omission' => '...']);
