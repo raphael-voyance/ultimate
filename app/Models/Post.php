@@ -24,6 +24,8 @@ class Post extends Model
     {
         //dd($this->attributes['content']);
         if($this->attributes['content']) {
+            // $i = htmlspecialchars_decode($this->attributes['content']);
+            // dd(LaravelEditorJs::render($i));
             return LaravelEditorJs::render($this->attributes['content']);
         }
         return;

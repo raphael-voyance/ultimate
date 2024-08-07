@@ -1,7 +1,10 @@
 <x-guest-layout>
 
     @section('css')
-        @vite('resources/css/add/blog_style.css')
+        @vite('resources/js/add/blog/blog.css')
+    @endsection
+    @section('js')
+        @vite('resources/js/add/blog/blog.js')
     @endsection
 
     <article class="blog">
@@ -17,9 +20,7 @@
                 <img src="{{ $post->image }}" />
             </div>
             
-            <div class="the-post">
-                <p>{!! $post->body !!}</p>
-            </div>
+            <div data-post-id="{{ $post->id }}" class="the-post" id="editor-view"></div>
             
         </section>
 

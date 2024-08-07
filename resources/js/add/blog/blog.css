@@ -87,4 +87,17 @@
 .blog .post-content .thumbnail {}
 .blog .post-content .thumbnail img {}
 .blog .post-content .the-post {}
+
+/* DEBUT POST CONTENT EDITOR VIEW */
+.codex-editor__redactor {
+    padding-bottom: 0!important;
+}
+.ce-block__content {
+    margin: 0;
+}
+/* FIN POST CONTENT EDITOR VIEW */
+
+
+
+
 /* FIN SINGLE POST */

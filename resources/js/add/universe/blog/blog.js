@@ -13,7 +13,7 @@ import CheckList from '@editorjs/checklist';
 import LinkTool from '@editorjs/link';
 import ImageTool from '@editorjs/image';
 
-import { createComponent } from "../../../Blogging/components.js";
+// import { createComponent } from "../../../Blogging/components.js";
 
 // PAGES //
 
@@ -104,17 +104,18 @@ window.addEventListener('load', () => {
     }
 
     function initializeEditor(data, id) {
-        console.log('initializeEditor(data)', data)
+        console.log('initializeEditor(data)', data);
         let contentData = data.length ? JSON.parse(data) : {};
-
-        let title = document.getElementById('title');
-        let excerpt = document.getElementById('excerpt');
-        let slug = document.getElementById('slug');
+    
+        let titleElement = document.getElementById('title');
+        let excerptElement = document.getElementById('excerpt');
+        let slugElement = document.getElementById('slug');
         let content;
-
+    
         const btnSubmitPost = document.getElementById('btn-submit-post');
         const editor = new EditorJS({
             holder: 'editor',
+            readOnly: false,
             placeholder: 'Tout est bon à dire du moment que c\'est fait avec le coeur',
             tools: {
                 header: Header,
@@ -130,27 +131,18 @@ window.addEventListener('load', () => {
                 image: {
                     class: ImageTool,
                     config: {
-                      endpoints: {
-                        byFile: 'http://localhost:8008/uploadFile', // Your backend file uploader endpoint
-                        byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
-                      }
+                        endpoints: {
+                            byFile: 'http://localhost:8008/uploadFile', // Your backend file uploader endpoint
+                            byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
+                        }
                     }
-                  },
+                },
             },
-
+    
             data: contentData,
-
-            /**
-             * Internationalzation config
-             */
+    
             i18n: {
-                /**
-                 * @type {I18nDictionary}
-                 */
                 messages: {
-                    /**
-                     * Other below: translation of different UI components of the editor.js core
-                     */
                     ui: {
                         'Search': "Rechercher",
                         'popover': {
@@ -174,10 +166,6 @@ window.addEventListener('load', () => {
                             }
                         }
                     },
-
-                    /**
-                     * Section for translation Tool Names: both block and inline tools
-                     */
                     toolNames: {
                         "Text": "Paragraphe",
                         "Heading": "Titre",
@@ -192,44 +180,19 @@ window.addEventListener('load', () => {
                         "Bold": "Gras",
                         "Italic": "Italic",
                     },
-
-                    /**
-                     * Section for passing translations to the external tools classes
-                     */
                     tools: {
-                        /**
-                         * Each subsection is the i18n dictionary that will be passed to the corresponded plugin
-                         * The name of a plugin should be equal the name you specify in the 'tool' section for that plugin
-                         */
-                        "warning": { // <-- 'Warning' tool will accept this dictionary section
+                        "warning": {
                             "Title": "Titre",
                             "Message": "Message",
                         },
-
-                        /**
-                         * Link is the internal Inline Tool
-                         */
                         "link": {
                             "Add a link": "Ajouter un lien"
                         },
-                        /**
-                         * The "stub" is an internal block tool, used to fit blocks that does not have the corresponded plugin
-                         */
                         "stub": {
                             'The block can not be displayed correctly.': 'Le block ne peut pas s\'afficher correctement.'
                         }
                     },
-
-                    /**
-                     * Section allows to translate Block Tunes
-                     */
                     blockTunes: {
-                        /**
-                         * Each subsection is the i18n dictionary that will be passed to the corresponded Block Tune plugin
-                         * The name of a plugin should be equal the name you specify in the 'tunes' section for that plugin
-                         *
-                         * Also, there are few internal block tunes: "delete", "moveUp" and "moveDown"
-                         */
                         "delete": {
                             "Delete": "Supprimer",
                             "Click to delete": "Confirmer",
@@ -244,19 +207,19 @@ window.addEventListener('load', () => {
                 }
             },
         });
-
+    
         if (btnSubmitPost) {
             btnSubmitPost.addEventListener('click', function(e) {
                 e.preventDefault();
-
-                title = title.value;
-                excerpt = excerpt.value;
-                slug = slug.value;
-
+    
                 editor.save().then((outputData) => {
-
+                    let title = titleElement.value;
+                    let excerpt = excerptElement.value;
+                    let slug = slugElement.value;
                     content = outputData;
-
+    
+                    console.log(title, excerpt, slug, content);
+    
                     if (blogCreate) {
                         let url = window.location.origin + '/admin/blog/post/store';
                         axios.post(url, {
@@ -277,7 +240,10 @@ window.addEventListener('load', () => {
                     if (blogEdit) {
                         let url = window.location.origin + '/admin/blog/post/update/' + id;
                         axios.post(url, {
-                            content: outputData
+                            content: outputData,
+                            title: title,
+                            excerpt: excerpt,
+                            slug: slug
                         })
                         .then(function (response) {
                             if(response.data.status == 'success') {
@@ -288,9 +254,8 @@ window.addEventListener('load', () => {
                             Toast.danger(error.response.data.message);
                         });
                     }
-                    
                 }).catch((error) => {
-                    console.log('Saving failed: ', error)
+                    console.log('Saving failed: ', error);
                 });
             });
         }

@@ -1,7 +1,7 @@
 {
-  "_alert-!~{00n}~.js": {
+  "_alert-!~{00o}~.js": {
     "file": "assets/alert-BTnCFOkF.css",
-    "src": "_alert-!~{00n}~.js"
+    "src": "_alert-!~{00o}~.js"
   },
   "_alert-maf5A8O9.js": {
     "file": "assets/alert-maf5A8O9.js",
@@ -14,14 +14,13 @@
     "file": "assets/axios-B4uVmeYG.js",
     "name": "axios"
   },
+  "_image-CZRH7lL6.js": {
+    "file": "assets/image-CZRH7lL6.js",
+    "name": "image"
+  },
   "_index-DjKJqAo0.js": {
     "file": "assets/index-DjKJqAo0.js",
     "name": "index"
-  },
-  "resources/css/add/blog_style.css": {
-    "file": "assets/blog_style-B8rG44ua.css",
-    "src": "resources/css/add/blog_style.css",
-    "isEntry": true
   },
   "resources/css/add/hero_home.css": {
     "file": "assets/hero_home-Bh-ImbAz.css",
@@ -42,6 +41,23 @@
     "file": "assets/app-BJ8sOmo7.css",
     "src": "resources/css/app.css",
     "isEntry": true
+  },
+  "resources/js/add/blog/blog.css": {
+    "file": "assets/blog-B_R7vN6s.css",
+    "src": "resources/js/add/blog/blog.css",
+    "isEntry": true
+  },
+  "resources/js/add/blog/blog.js": {
+    "file": "assets/blog-iooFlk7k.js",
+    "name": "blog",
+    "src": "resources/js/add/blog/blog.js",
+    "isEntry": true,
+    "imports": [
+      "_image-CZRH7lL6.js"
+    ],
+    "css": [
+      "assets/alert-BTnCFOkF.css"
+    ]
   },
   "resources/js/add/hero_home.js": {
     "file": "assets/hero_home-D9WuI40L.js",
@@ -150,13 +166,14 @@
     "isEntry": true
   },
   "resources/js/add/universe/blog/blog.js": {
-    "file": "assets/blog-CESt_NmU.js",
+    "file": "assets/blog-3oHnSzEH.js",
     "name": "blog",
     "src": "resources/js/add/universe/blog/blog.js",
     "isEntry": true,
     "imports": [
       "_axios-B4uVmeYG.js",
-      "_alert-maf5A8O9.js"
+      "_alert-maf5A8O9.js",
+      "_image-CZRH7lL6.js"
     ],
     "css": [
       "assets/alert-BTnCFOkF.css"

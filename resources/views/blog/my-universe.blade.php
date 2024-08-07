@@ -1,7 +1,7 @@
 <x-guest-layout>
 
     @section('css')
-        @vite('resources/css/add/blog_style.css')
+        @vite('resources/js/add/blog/blog.css')
     @endsection
 
         <x-slot name="header">

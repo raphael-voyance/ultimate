@@ -17,12 +17,12 @@ export default defineConfig({
                 'resources/js/add/hero_home.js',
                 'resources/css/add/hero_home.css',
 
-                'resources/css/add/blog_style.css',
-
                 'resources/js/add/payment.js',
                 'resources/js/add/previsions/lunar.js',
                 'resources/js/add/previsions/numerology.js',
                 'resources/js/add/tarot/tarot.js',
+                'resources/js/add/blog/blog.js',
+                'resources/js/add/blog/blog.css',
                 
                 'resources/js/add/universe/draws.js',
                 'resources/js/add/universe/blog/blog.js',

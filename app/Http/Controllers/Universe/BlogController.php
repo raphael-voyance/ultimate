@@ -34,7 +34,7 @@ class BlogController extends Controller
             'title' => 'required|unique:posts|max:255',
             'content' => 'required',
             'slug' => 'required|unique:posts|max:255',
-            'excerpt' => 'string',
+            'excerpt' => 'nullable|string',
         ]);
 
         $post = new Post;
