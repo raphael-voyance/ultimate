@@ -52,7 +52,10 @@
                             <div class="divider mb-auto w-3/4 mx-auto"></div>
 
                         </div>
-                        <h4 class="text-center">Votre date de naissance : <span class="birthdate_path badge-primary rounded-2xl py-1 px-2 text-sm"></span></h4>
+                        <div id="form-change-date" class="flex flex-col justify-center items-center gap-4">
+                            <h4 class="text-center">Votre date de naissance : <span class="birthdate_path badge-primary rounded-2xl py-1 px-2 text-sm"></span></h4>
+                        </div>
+                        
                     </div>
                 
                 

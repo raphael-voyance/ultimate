@@ -84,7 +84,7 @@ window.addEventListener("load", () => {
                 console.log($childrens)
 
                 if ($childrens.length >= 2) {
-                    $numerologyDetailsHeaderEl.insertBefore($createFormBirthdateBtnEl, $childrens[1]);
+                    $numerologyDetailsHeaderEl.insertBefore($createFormBirthdateBtnEl, $childrens[2]);
                 } else {
                     $numerologyDetailsHeaderEl.appendChild($createFormBirthdateBtnEl);
                 }
@@ -302,13 +302,18 @@ window.addEventListener("load", () => {
         $inputContainer.appendChild($icon);
         $formContainer.appendChild($inputContainer);
         $formContainer.appendChild($btn);
-        $formContainer.appendChild($cancelBtn);
+        if($birthDate) {
+            $formContainer.appendChild($cancelBtn);
+        }
+        
+        const k = document.getElementById('form-change-date');
 
-        console.log($childrens)
-        if ($childrens.length >= 2) {
-            $numerologyDetailsHeaderEl.insertBefore($formContainer, $childrens[2]);
+        $numerologyDetailsEl.classList.add('flex', 'flex-col', 'justify-center', 'items-center', 'gap-4');
+        if ($childrens.length >= 3) {
+            k.classList.add('w-full')
+            k.append($formContainer);
         } else {
-            $numerologyDetailsHeaderContainerFormEl.prepend($formContainer);
+            $numerologyDetailsEl.append($formContainer);
         }
 
         $btn.addEventListener("click", (e) => {
@@ -326,6 +331,7 @@ window.addEventListener("load", () => {
             e.preventDefault();
             $createFormBirthdateBtnEl.style.display = "block";
             createFormBirthdateIsOpen = false;
+            k.classList.remove('w-full')
             $formContainer.remove();
             return;
         });
@@ -334,7 +340,7 @@ window.addEventListener("load", () => {
 
     function submitForm(birthdate) {
 
-        loader.show('numerology_details_content_header');
+        loader.show('numerology_details');
 
         axios
             .post("/mon-espace/post-birthdate", {
