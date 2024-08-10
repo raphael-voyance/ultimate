@@ -95,6 +95,15 @@
 .ce-block__content {
     margin: 0;
 }
+
+/* DELIMITER */
+.ce-delimiter::before {
+    content: ''!important;
+    width: 80%;
+    background-color: #fff;
+    height: 2px!important;
+    margin: 10px auto;
+}
 /* FIN POST CONTENT EDITOR VIEW */
 
 

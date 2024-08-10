@@ -12,7 +12,7 @@
     </x-slot>
 
     <section id="blog-index">
-        <header>
+        <header class="mb-6">
             <a href="{{ route('admin.post.create') }}" class="btn">Nouvel article</a>
         </header>
 

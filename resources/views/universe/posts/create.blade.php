@@ -23,12 +23,12 @@
     </x-slot>
 
     <section id="blog-create"">
-        <header>
+        <header class="mb-6">
             <a href="{{ route('admin.post.index') }}" class="btn">Voir tous les articles</a>
         </header>
 
         <section>
-            <form action="{{ route('admin.post.store') }}" method="POST" autocomplete="off" x-data="{
+            <form action="#" autocomplete="off" x-data="{
                 title: '',
                 slug: '',
 
@@ -41,9 +41,8 @@
                         .replace(/^-+|-+$/g, ''); // Remove leading and trailing hyphens
                 }
             }" x-init="$watch('title', value => slugify())">
-                @csrf
-                @method('POST')
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
                     <!-- Post Title -->
                     <div>
                         <input class="input input-primary w-full peer focus:border-none focus:ring-primary-focus @error('title') input-error @enderror" id="title" type="text" x-model="title"
@@ -65,7 +64,7 @@
                 </div>
                 
                 <!-- Résumé de l'article -->
-                <div class="mt-4">
+                <div class="mb-6">
                     <label for="excerpt" class="pt-0 label label-text font-semibold">Résumé de l'article</label>
                     <textarea id="excerpt" rows="4" class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror" required name="excerpt"  placeholder="Résumé de l'article">{{ old('excerpt') }}</textarea>
                     @error('excerpt')
@@ -78,17 +77,91 @@
                     <div id="editor"></div>
                 </div>
 
-                <div>
-                    Catégories
-                </div>
+                <div class="mb-8">
+                    <h5 class="mb-2">Image à la une :</h5>
+                    <div class="flex flex-wrap gap-4 justify-start items-center">
 
-                <div>
-                    <h5>Image à la une :</h5>
+                        <div class="avatar">
+                            <div class="w-20 rounded-full">
+                              <img src="http://ultimate.test/imgs/pending.jpg" />
+                            </div>
+                          </div>
+
+                        <input type="file" class="file-input w-full max-w-xs" />
+                    </div>
                     
                 </div>
 
-                <div>
-                    <h5>Status :</h5>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+
+                    <fieldset>
+                        <legend>Catégories : </legend>
+                        
+                        <div class="form-control">
+                            <label for="cat-1" class="label cursor-pointer gap-2 justify-start">
+                              <input type="checkbox" id="cat-1" name="cat-1" checked="checked" class="checkbox checkbox-primary checkbox-sm" />
+                              <span class="label-text">Catégorie 1</span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label for="cat-2" class="label cursor-pointer gap-2 justify-start">
+                              <input type="checkbox" id="cat-2" name="cat-2" class="checkbox checkbox-primary checkbox-sm" />
+                              <span class="label-text">Catégorie 2</span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label for="cat-3" class="label cursor-pointer gap-2 justify-start">
+                              <input type="checkbox" id="cat-3" name="cat-3" checked="checked" class="checkbox checkbox-primary checkbox-sm" />
+                              <span class="label-text">Catégorie 3</span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Status : </legend>
+                        
+                        <div class="form-control">
+                            <label for="publish" class="label cursor-pointer gap-2 justify-start">
+                              <input type="checkbox" id="publish" name="publish" class="checkbox checkbox-primary checkbox-sm" />
+                              <span class="label-text">Publié</span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label for="draft" class="label cursor-pointer gap-2 justify-start">
+                              <input type="checkbox" id="draft" name="draft" checked="checked" class="checkbox checkbox-primary checkbox-sm" />
+                              <span class="label-text">Brouillon</span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label for="private" class="label cursor-pointer gap-2 justify-start">
+                              <input type="checkbox" id="private" name="private" class="checkbox checkbox-primary checkbox-sm" />
+                              <span class="label-text">Privé</span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Date de la publication : </legend>
+                        
+                        <div class="form-control">
+                            <label for="now" class="label cursor-pointer gap-2 justify-start">
+                              <input type="checkbox" id="now" name="now" checked="checked" class="checkbox checkbox-primary checkbox-sm" />
+                              <span class="label-text">Maintenant</span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label for="published_at" class="label cursor-pointer gap-2 justify-start">
+                              <input type="checkbox" id="published_at" name="published_at" class="checkbox checkbox-primary checkbox-sm" />
+                              <span class="label-text">Publier le...</span>
+                            </label>
+                        </div>
+                    </fieldset>
+
                 </div>
 
                 <div class="flex justify-end mt-2">

@@ -4,7 +4,7 @@
  
 {{-- You can use any `$wire.METHOD` on `@row-click` --}}
 @php
-  $posts = App\Models\Post::paginate(8);
+  $posts = DB::table('posts')->orderBy('title', 'desc')->paginate(8);
 @endphp
 <x-mary-table :headers="$headers" :rows="$posts" striped with-pagination>
 

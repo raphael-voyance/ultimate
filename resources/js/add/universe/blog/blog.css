@@ -17,6 +17,10 @@
     color: #27283F;
 }
 
+.codex-editor__redactor {
+    padding-bottom: 100px!important;
+}
+
 .cdx-block {
     margin-bottom: 5px;
     padding-left: 1em;
