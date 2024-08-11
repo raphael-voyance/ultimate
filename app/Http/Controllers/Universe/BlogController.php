@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Concern\Blog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 
 class BlogController extends Controller
 {
@@ -22,7 +23,10 @@ class BlogController extends Controller
      */
     public function create()
     {
-        return view('universe.posts.create');
+        $categories = Category::all();
+        return view('universe.posts.create', [
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -74,8 +78,12 @@ class BlogController extends Controller
     public function edit(string $id)
     {
         $post = Post::where('id', $id)->firstOrFail();
+        $categories = Category::all();
 
-        return view('universe.posts.edit', ['post' => $post]);
+        return view('universe.posts.edit', [
+            'post' => $post,
+            'categories' => $categories
+        ]);
     }
 
     /**

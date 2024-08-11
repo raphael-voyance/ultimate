@@ -15,6 +15,7 @@ use App\Models\DrawCard;
 use App\Models\Interess;
 use App\Models\TimeSlot;
 use App\Models\Appointment;
+use App\Models\Category;
 use App\Models\TimeSlotDay;
 use App\Models\UserProfile;
 use Illuminate\Support\Str;
@@ -316,6 +317,8 @@ class DatabaseSeeder extends Seeder
             Post::factory()->count(2)->create([
                 'status' => 'PRIVATE',
             ]);
+
+            Category::factory()->count(15)->create();
             
     }
 }

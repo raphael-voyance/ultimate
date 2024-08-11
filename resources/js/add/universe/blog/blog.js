@@ -1,4 +1,5 @@
 import axios from "axios";
+import { formatDateString } from "../../../helpers/utils.js";
 import { createAlert } from "../../../Alert/alert.js";
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
@@ -75,7 +76,50 @@ window.addEventListener('load', () => {
     }
 
     if (blogCreate || blogEdit) {
-        //console.log('blogCreate || blogEdit')
+        const addCategorieBtn = document.getElementById('add-categorie');
+        const addCategorieInputContainer = document.getElementById('add-categorie-input-container');
+        const addCategorieInput = document.getElementById('add-categorie-input');
+        const addCategorieSubmitBtn = document.getElementById('add-categorie-submit-btn');
+        const addCategorieCancelBtn = document.getElementById('add-categorie-cancel-btn');
+        
+        const publishedAtSelectDate = document.getElementById('published_at_select_date');
+        const publishedAtInput = document.getElementById('published_at_input');
+        const publishedAtInputContainer = document.getElementById('published_at_input_container');
+        const publishedAtInputSubmitBtn = document.getElementById('published_at_input_submit_btn');
+        const publishedAtInputCancelBtn = document.getElementById('published_at_input_cancel_btn');
+        const publishedAtText = document.getElementById('published_at_text');
+
+        // Ajout d'une catégorie
+        addCategorieBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.classList.add('hidden');
+            addCategorieInputContainer.classList.remove('hidden');
+        })
+
+        addCategorieCancelBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            addCategorieBtn.classList.remove('hidden');
+            addCategorieInputContainer.classList.add('hidden');
+        })
+
+        // Ajout d'une date de publication
+        publishedAtInput.addEventListener('input', formatDateString);
+        
+        publishedAtSelectDate.addEventListener('click', function() {
+            publishedAtInputContainer.classList.remove('hidden');
+        })
+
+        publishedAtInputSubmitBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            publishedAtInputContainer.classList.add('hidden');
+            publishedAtText.innerText = 'Publier le ' + publishedAtInput.value;
+        })
+
+        publishedAtInputCancelBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            publishedAtInputContainer.classList.add('hidden');
+        })
+
     }
 
     if (blogEdit) {

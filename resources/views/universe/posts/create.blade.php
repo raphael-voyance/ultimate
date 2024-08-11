@@ -9,6 +9,7 @@
             }
 
         </script>
+        
     @endsection
     @section("css")
         @vite("resources/js/add/universe/blog/blog.css")
@@ -43,27 +44,27 @@
             }" x-init="$watch('title', value => slugify())">
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
-                    <!-- Post Title -->
+                    {{-- Post Title --}}
                     <div>
                         <input class="input input-primary w-full peer focus:border-none focus:ring-primary-focus @error('title') input-error @enderror" id="title" type="text" x-model="title"
                         name="title" value="{{ old('title') }}" required
-                        label="Titre de l'article" placeholder="Titre de l'article" />
+                        placeholder="Titre de l'article" />
                         @error('title')
                             <x-ui.form.input-error :messages="$message" class="mt-2" />
                         @enderror
                     </div>
 
-                    <!-- Post Slug -->
+                    {{-- Post Slug --}}
                     <div>
                         <input class="input input-primary w-full peer focus:border-none focus:ring-primary-focus" id="slug_t" disabled type="text" x-model="slug"
                         name="slug" required
                         label="Slug de l'article" placeholder="Slug de l'article" />
                     </div>
-                    <!-- Post Slug (Hidden) -->
+                    {{-- Post Slug (Hidden) --}}
                     <input type="hidden" name="slug" id="slug" x-model="slug">
                 </div>
                 
-                <!-- Résumé de l'article -->
+                {{-- Résumé de l'article --}}
                 <div class="mb-6">
                     <label for="excerpt" class="pt-0 label label-text font-semibold">Résumé de l'article</label>
                     <textarea id="excerpt" rows="4" class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror" required name="excerpt"  placeholder="Résumé de l'article">{{ old('excerpt') }}</textarea>
@@ -72,11 +73,12 @@
                     @enderror
                 </div>
 
-                <!-- Contenu de l'article -->
+                {{-- Contenu de l'article --}}
                 <div class="mt-4 text-white">
                     <div id="editor"></div>
                 </div>
 
+                {{-- Image à la une --}}
                 <div class="mb-8">
                     <h5 class="mb-2">Image à la une :</h5>
                     <div class="flex flex-wrap gap-4 justify-start items-center">
@@ -89,81 +91,102 @@
 
                         <input type="file" class="file-input w-full max-w-xs" />
                     </div>
-                    
                 </div>
 
+                {{-- Métas infos --}}
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
 
+                    {{-- Catégories --}}
                     <fieldset>
                         <legend>Catégories : </legend>
+
+                        <div x-data="{ showAll: false }">
+                            <!-- La liste des catégories -->
+                            @foreach ($categories as $index => $category)
+                                <div 
+                                    class="form-control" 
+                                    x-show="{{ $index < 4 ? 'true' : 'showAll' }}">
+                                    <label for="{{ $category->slug }}" class="label cursor-pointer gap-2 justify-start">
+                                        <input 
+                                            type="checkbox" 
+                                            id="{{ $category->slug }}" 
+                                            name="{{ $category->slug }}"
+                                            value="{{ $category->slug }}" 
+                                            class="checkbox checkbox-primary checkbox-sm" 
+                                        />
+                                        <span class="label-text">{{ $category->name }}</span>
+                                    </label>
+                                </div>
+                            @endforeach
                         
-                        <div class="form-control">
-                            <label for="cat-1" class="label cursor-pointer gap-2 justify-start">
-                              <input type="checkbox" id="cat-1" name="cat-1" checked="checked" class="checkbox checkbox-primary checkbox-sm" />
-                              <span class="label-text">Catégorie 1</span>
-                            </label>
+                            <!-- Le lien "Tout afficher" ou "Voir moins" -->
+                            @if(count($categories) > 4)
+                            <button @click.prevent="showAll = !showAll" class="btn btn-ghost btn-sm"><span x-text="showAll ? 'Voir moins' : 'Afficher toutes les catégories'"></span></button>
+                            @endif
                         </div>
 
-                        <div class="form-control">
-                            <label for="cat-2" class="label cursor-pointer gap-2 justify-start">
-                              <input type="checkbox" id="cat-2" name="cat-2" class="checkbox checkbox-primary checkbox-sm" />
-                              <span class="label-text">Catégorie 2</span>
-                            </label>
-                        </div>
-
-                        <div class="form-control">
-                            <label for="cat-3" class="label cursor-pointer gap-2 justify-start">
-                              <input type="checkbox" id="cat-3" name="cat-3" checked="checked" class="checkbox checkbox-primary checkbox-sm" />
-                              <span class="label-text">Catégorie 3</span>
-                            </label>
+                        {{-- Ajouter une Catégorie --}}
+                        <button id="add-categorie" class="btn btn-ghost btn-sm"><i class="fal fa-plus"></i>Ajouter une catégorie</button>
+                        <div class="hidden flex flex-nowrap max-w-full justify-start items-center gap-2" id="add-categorie-input-container">
+                            <input class="input input-primary input-sm peer focus:border-none focus:ring-primary-focus" type="text" placeholder="Nom de la catégorie" id="add-categorie-input" name="add-categorie-input" />
+                            <button id="add-categorie-submit-btn" class="btn btn-sm btn-outline btn-ghost btn-circle"><i class="fal fa-save"></i></button>
+                            <button id="add-categorie-cancel-btn" class="btn btn-sm btn-outline btn-ghost btn-circle"><i class="fal fa-times"></i></button>
                         </div>
                     </fieldset>
 
+                    {{-- Status --}}
                     <fieldset>
                         <legend>Status : </legend>
                         
                         <div class="form-control">
                             <label for="publish" class="label cursor-pointer gap-2 justify-start">
-                              <input type="checkbox" id="publish" name="publish" class="checkbox checkbox-primary checkbox-sm" />
+                              <input type="radio" id="publish" name="status" value="publish" class="radio radio-primary radio-sm" />
                               <span class="label-text">Publié</span>
                             </label>
                         </div>
 
                         <div class="form-control">
                             <label for="draft" class="label cursor-pointer gap-2 justify-start">
-                              <input type="checkbox" id="draft" name="draft" checked="checked" class="checkbox checkbox-primary checkbox-sm" />
+                              <input type="radio" id="draft" name="status" value="draft" checked="checked" class="radio radio-primary radio-sm" />
                               <span class="label-text">Brouillon</span>
                             </label>
                         </div>
 
                         <div class="form-control">
                             <label for="private" class="label cursor-pointer gap-2 justify-start">
-                              <input type="checkbox" id="private" name="private" class="checkbox checkbox-primary checkbox-sm" />
+                              <input type="radio" id="private" name="status" value="private" class="radio radio-primary radio-sm" />
                               <span class="label-text">Privé</span>
                             </label>
                         </div>
                     </fieldset>
 
+                    {{-- Publication --}}
                     <fieldset>
                         <legend>Date de la publication : </legend>
                         
                         <div class="form-control">
                             <label for="now" class="label cursor-pointer gap-2 justify-start">
-                              <input type="checkbox" id="now" name="now" checked="checked" class="checkbox checkbox-primary checkbox-sm" />
+                              <input type="radio" id="now" name="published_at" value="now" checked="checked" class="radio radio-primary radio-sm" />
                               <span class="label-text">Maintenant</span>
                             </label>
                         </div>
 
                         <div class="form-control">
-                            <label for="published_at" class="label cursor-pointer gap-2 justify-start">
-                              <input type="checkbox" id="published_at" name="published_at" class="checkbox checkbox-primary checkbox-sm" />
-                              <span class="label-text">Publier le...</span>
+                            <label for="published_at" id="published_at_select_date" class="label cursor-pointer gap-2 justify-start">
+                              <input type="radio" id="published_at" name="published_at" value="" class="radio radio-primary radio-sm" />
+                              <span id="published_at_text" class="label-text">Publier le...</span>
                             </label>
+                        </div>
+                        <div class="hidden flex flex-nowrap max-w-full justify-start items-center gap-2" id="published_at_input_container">
+                            <input class="input input-primary input-sm peer focus:border-none focus:ring-primary-focus" id="published_at_input" type="text" />
+                            <button id="published_at_input_submit_btn" class="btn btn-sm btn-outline btn-ghost btn-circle"><i class="fal fa-save"></i></button>
+                            <button id="published_at_input_cancel_btn" class="btn btn-sm btn-outline btn-ghost btn-circle"><i class="fal fa-times"></i></button>
                         </div>
                     </fieldset>
 
                 </div>
 
+                {{-- Soumission --}}
                 <div class="flex justify-end mt-2">
                     <button id="btn-submit-post" type="submit" class="btn btn-primary btn-sm">Poster l'article</button>
                 </div>
