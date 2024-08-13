@@ -65,12 +65,29 @@
                 </div>
                 
                 {{-- Résumé de l'article --}}
-                <div class="mb-6">
+                <div x-data="{ 
+                    wordCount: 0,
+                    init() {
+                        this.wordCount = this.$refs.excerpt.value.split(/\s+/).filter(word => word.length > 0).length;
+                    } 
+                }" class="mb-6">
                     <label for="excerpt" class="pt-0 label label-text font-semibold">Résumé de l'article</label>
-                    <textarea id="excerpt" rows="4" class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror" required name="excerpt"  placeholder="Résumé de l'article">{{ old('excerpt') }}</textarea>
+                    <textarea
+                        x-ref="excerpt"
+                        id="excerpt"
+                        rows="4" 
+                        class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror" 
+                        required 
+                        name="excerpt" 
+                        placeholder="Résumé de l'article"
+                        @input="wordCount = $event.target.value.split(/\s+/).filter(word => word.length > 0).length">{{ old('excerpt') ? old('excerpt') : '' }}</textarea>
                     @error('excerpt')
                         <x-ui.form.input-error :messages="$message" class="mt-2" />
                     @enderror
+                
+                    <div :class="wordCount > 67 ? 'text-red-600' : (wordCount < 55 ? 'text-orange-600' : 'text-green-600')" class="mt-2">
+                        <span x-text="wordCount"></span> mot<span x-text="wordCount > 1 ? 's' : ''"></span> / 66
+                    </div>
                 </div>
 
                 {{-- Contenu de l'article --}}

@@ -176,8 +176,6 @@ $filename = null;
                 Storage::disk('private')->delete('images/' . $filename);
             } elseif (Storage::disk('public')->exists('posts/thumbnails/' . $filename)) {
                 Storage::disk('public')->delete('posts/thumbnails/' . $filename);
-            } else {
-                dd('Le fichier à supprimer n\'existe pas : ' . $filename);
             }
         }
 

@@ -14,7 +14,7 @@
         <section class="posts-list">
             @foreach ($posts as $post)
             
-                <article class="post-item">
+                <article class="post-item relative">
         
                     <div data-alt="{{ $post->title }}" class="thumbnail">
                         <img src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="{{ $post->title }}" />
@@ -29,11 +29,16 @@
                         <a href="{{ route('my_universe.show', $post->slug) }}">Lire l'article</a>
 
                         <div class="post-meta">
-                            <p>Le 15 janvier 1991</p>
+                            <p>le {{ \Carbon\Carbon::parse($post->published_at)->translatedFormat('l d F Y') }}</p>
                         </div>
                         <div class="post-categories">
-                            <a href="#" class="badge badge-accent hover:text-inherit">Catégorie 1</a> <a href="#" class="badge badge-accent hover:text-inherit">Catégorie 2</a>
+                            @foreach ($post->categories as $category)
+                            <a href="#" class="badge badge-accent hover:text-inherit focus:text-inherit">{{ $category->name }}</a> 
+                            @endforeach
                         </div>
+                        @can('admin')
+                            <a href="{{ route('admin.blog.post.edit', $post->id) }}" class="absolute right-3 top-3 badge badge-secondary hover:text-inherit focus:text-inherit">Modifier l'article</a> 
+                        @endcan
                     </div>
                 </article>
                 
