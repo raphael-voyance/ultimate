@@ -17,13 +17,13 @@
                 <article class="post-item">
         
                     <div data-alt="{{ $post->title }}" class="thumbnail">
-                        <img alt="Image de l'article : {{ $post->title }}" src="{{ $post->image }}" />
+                        <img src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="{{ $post->title }}" />
                     </div>
 
                     <div class="post-info">
                         <h3>{{ $post->title }}</h3>
                         @if($post->excerpt)
-                        <p>{{ $post->excerpt }}</p>
+                            <p>{{ $post->excerpt }}</p>
                         @endif
 
                         <a href="{{ route('my_universe.show', $post->slug) }}">Lire l'article</a>
