@@ -185,12 +185,12 @@
                         <div class="form-control">
                             <label for="published_at" id="published_at_select_date" class="label cursor-pointer gap-2 justify-start">
                               <input type="radio" id="published_at" name="published_at" value="{{ \Carbon\Carbon::parse($post->published_at)->format('d/m/Y') }}" checked="checked" class="radio radio-primary radio-sm" />
-                              <span id="published_at_text" class="label-text">Publiée le {{ \Carbon\Carbon::parse($post->published_at)->translatedFormat('l d F') }}</span>
+                              <span id="published_at_text" class="label-text">Publié le {{ \Carbon\Carbon::parse($post->published_at)->translatedFormat('l d F Y') }}</span>
                             </label>
                         </div>
 
-                        <p class="label-text pl-[2.2em] mb-[0.6em]">Créé le {{ \Carbon\Carbon::parse($post->created_at)->translatedFormat('l d F') }}</p>
-                        <p class="label-text pl-[2.2em]">Modifié le {{ \Carbon\Carbon::parse($post->updated_at)->translatedFormat('l d F') }}</p>
+                        <p class="label-text pl-[2.2em] mb-[0.6em]">Créé le {{ \Carbon\Carbon::parse($post->created_at)->translatedFormat('l d F Y') }}</p>
+                        <p class="label-text pl-[2.2em]">Modifié le {{ \Carbon\Carbon::parse($post->updated_at)->translatedFormat('l d F Y') }}</p>
 
                         <div class="hidden flex flex-nowrap max-w-full justify-start items-center gap-2" id="published_at_input_container">
                             <input class="input input-primary input-sm peer focus:border-none focus:ring-primary-focus" id="published_at_input" type="text" />
