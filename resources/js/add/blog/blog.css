@@ -4,12 +4,19 @@
 .blog .posts-list {}
 
 .blog .posts-list .post-item {
+    background-color: rgba(255, 255, 255, 0.1);
     transition: all .3s ease-in-out;
     border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 15px;
 }
 
-.blog .posts-list .post-item .thumbnail {}
-.blog .posts-list .post-item .thumbnail img {}
+.blog .posts-list .post-item .thumbnail {
+    height: 288px;
+    overflow: hidden;
+}
+.blog .posts-list .post-item .thumbnail img {
+}
 
 .blog .posts-list .post-item:hover .thumbnail {}
 
@@ -27,6 +34,10 @@
 
 .blog .posts-list .post-item .post-info .post-meta {}
 .blog .posts-list .post-item .post-info .post-meta p {}
+.blog .posts-list .post-item .post-info .post-meta .published_at {
+    font-size: .8em;
+    font-style: italic;
+}
 
 .blog .posts-list .post-item .post-info .post-categories {}
 .blog .posts-list .post-item .post-info .post-categories .badge {}
@@ -35,7 +46,6 @@
     
     .blog .posts-list .post-item {
         position: relative;
-        min-height: 230px;
         height: 230px;
         margin-bottom: 15px;
         overflow: hidden;
@@ -62,13 +72,15 @@
         color: #fff;
         font-size: 1.5em;
         background-color: rgba(0, 0, 0, 0.3);
+        z-index: 1;
     }
     .blog .posts-list .post-item .thumbnail img {
-        
+        width: 100%;
+        transform: translateY(-30%);
     }
 
     .blog .posts-list .post-item:hover {
-        height: 510px;
+        height: 550px;
         box-shadow: 0px 0px 10px -2px rgba(0,0,0,0.75);
     }
 
@@ -77,6 +89,11 @@
     .blog .posts-list .post-item:hover .thumbnail::before {
         opacity: 0;
     }
+    .blog .posts-list .post-item .post-info .post-exerpt {
+        padding-left: 15px;
+        border-left: rgba(255, 255, 255, 0.6) solid 2px;
+    }
+    
 }
 
 /* FIN BLOG POSTS */

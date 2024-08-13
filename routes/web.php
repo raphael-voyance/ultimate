@@ -28,6 +28,7 @@ Route::get('/me-contacter', [PublicController::class, 'contact'])->name('contact
 Route::prefix('mon-univers')->as('my_universe.')->group(function() {
     Route::get('/', [BlogController::class, 'index'])->name('index');
     Route::get('/{slug}', [BlogController::class, 'show'])->name('show');
+    Route::get('/categorie/{slug}', [BlogController::class, 'showCategory'])->name('show.category');
 });
 
 Route::get('/storage/public/posts/thumbnails/{filename}', function ($filename) {

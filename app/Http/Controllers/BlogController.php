@@ -42,4 +42,9 @@ class BlogController extends Controller
         $blog = new Blog;
         dd($blog->getPostContentData($postId));
     }
+
+    public function showCategory(string $slug) {
+        $posts = Post::where('status', 'PUBLISH')->paginate(3);
+        return view('blog.category', ['posts' => $posts]);
+    }
 }

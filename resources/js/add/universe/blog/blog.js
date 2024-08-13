@@ -253,7 +253,7 @@ window.addEventListener('load', () => {
                 },
             },
     
-            data: contentData,
+            data: JSON.parse(contentData),
     
             i18n: {
                 messages: {

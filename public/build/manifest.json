@@ -42,12 +42,12 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-BLI4kOIv.css",
+    "file": "assets/app-BBdPvW97.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/add/blog/blog.css": {
-    "file": "assets/blog-DM7iRYlu.css",
+    "file": "assets/blog-B7TN_AAn.css",
     "src": "resources/js/add/blog/blog.css",
     "isEntry": true
   },
@@ -171,7 +171,7 @@
     "isEntry": true
   },
   "resources/js/add/universe/blog/blog.js": {
-    "file": "assets/blog-BBfuJ7Xj.js",
+    "file": "assets/blog-Bm4uPqta.js",
     "name": "blog",
     "src": "resources/js/add/universe/blog/blog.js",
     "isEntry": true,
