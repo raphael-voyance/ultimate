@@ -17,7 +17,11 @@
                 <article class="post-item relative">
         
                     <div data-alt="{{ $post->title }}" class="thumbnail">
-                        <img src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="{{ $post->title }}" />
+                        @if(Str::contains(basename($post->image), 'pending'))
+                                    <img src="{{ asset('imgs/pending.jpg') }}" alt="{{ $post->title }}" />
+                                @else
+                                    <img src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="{{ $post->title }}" />
+                                @endif
                     </div>
 
                     <div class="post-info">

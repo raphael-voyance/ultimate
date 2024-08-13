@@ -75,7 +75,7 @@ class BlogController extends Controller
                 $post->image = asset('storage/' . $thumbnailPath);
             }
         }else {
-            $post->image = asset('storage/posts/thumbnails/pending.jpg');
+            $post->image = asset('imgs/pending.jpg');
         }
  
         $post->save();

@@ -107,11 +107,14 @@
                         <div class="avatar">
                             
                             <div class="w-20 rounded-full">
-                            @if($post->status == 'PRIVATE')
-                                <img src="{{ route('image.private', ['filename' => basename($post->image)]) }}" alt="Thumbnail">
-                            @else
-                              <img src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" />
-                            @endif
+                                @if(Str::contains(basename($post->image), 'pending'))
+                                    <!-- Affichage spécifique si le nom de l'image contient "pending" -->
+                                    <img src="{{ asset('imgs/pending.jpg') }}" alt="Pending Thumbnail" />
+                                @elseif($post->status == 'PRIVATE')
+                                    <img src="{{ route('image.private', ['filename' => basename($post->image)]) }}" alt="Thumbnail">
+                                @else
+                                    <img src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" />
+                                @endif
                             </div>
                           </div>
 
