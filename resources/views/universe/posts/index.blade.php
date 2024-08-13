@@ -13,7 +13,7 @@
 
     <section id="blog-index">
         <header class="mb-6">
-            <a href="{{ route('admin.post.create') }}" class="btn">Nouvel article</a>
+            <a href="{{ route('admin.blog.post.create') }}" class="btn">Nouvel article</a>
         </header>
 
         <section>

@@ -304,21 +304,21 @@ class DatabaseSeeder extends Seeder
 
             $this->call(NumerologySeeder::class);
 
-            Post::factory()->count(2)->create();
-            Post::factory()->count(2)->create([
-                'excerpt' => null,
-            ]);
-            Post::factory()->count(2)->create([
-                'status' => 'DRAFT',
-            ]);
-            Post::factory()->count(2)->create([
-                'status' => 'TRASH',
-            ]);
-            Post::factory()->count(2)->create([
-                'status' => 'PRIVATE',
-            ]);
+            // Post::factory()->count(2)->create();
+            // Post::factory()->count(2)->create([
+            //     'excerpt' => null,
+            // ]);
+            // Post::factory()->count(2)->create([
+            //     'status' => 'DRAFT',
+            // ]);
+            // Post::factory()->count(2)->create([
+            //     'status' => 'TRASH',
+            // ]);
+            // Post::factory()->count(2)->create([
+            //     'status' => 'PRIVATE',
+            // ]);
 
-            Category::factory()->count(15)->create();
+            // Category::factory()->count(15)->create();
             
     }
 }

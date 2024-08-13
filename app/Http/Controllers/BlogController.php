@@ -21,13 +21,22 @@ class BlogController extends Controller
      * Display the specified resource.
      */
     public function show(string $slug)
-    {
-        $post = Post::where('slug', $slug)->firstOrFail();
-        if(!Auth::user() || ($post->status != 'PUBLISH' && !Auth::user()->hasRole('admin'))) {
+{
+    // Récupèrer l'article en fonction du slug
+    $post = Post::where('slug', $slug)->firstOrFail();
+    $user = Auth::user();
+    
+    if (!$user) {
+        if ($post->status !== 'PUBLISH') {
             abort(404);
         }
-        return view('blog.show', ['post' => $post]);
+    } elseif ($user && !$user->hasRole('admin')) {
+        if ($post->status !== 'PUBLISH') {
+            abort(404);
+        }
     }
+    return view('blog.show', ['post' => $post]);
+}
 
     public function getPostDataContent(int $postId) {
         $blog = new Blog;

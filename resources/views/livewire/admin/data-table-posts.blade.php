@@ -41,8 +41,8 @@
 
   @scope('cell_actions', $post)
   <div class="flex flex-nowrap gap-2">
-      <a href="{{ route('admin.post.edit', $post->id) }}" class="btn btn-sm btn-circle btn-info btn-outline"><x-mary-icon name="o-pencil-square" /></a>
-      <x-mary-button data-btn-post-del="{{ route('admin.post.destroy', $post->id) }}" icon="o-trash" spinner class="btn-sm btn-circle btn-error btn-outline" />
+      <a href="{{ route('admin.blog.post.edit', $post->id) }}" class="btn btn-sm btn-circle btn-info btn-outline"><x-mary-icon name="o-pencil-square" /></a>
+      <x-mary-button data-btn-post-del="{{ route('admin.blog.post.destroy', $post->id) }}" icon="o-trash" spinner class="btn-sm btn-circle btn-error btn-outline" />
   </div>
   @endscope
 

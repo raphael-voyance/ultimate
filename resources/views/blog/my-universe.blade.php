@@ -22,7 +22,10 @@
 
                     <div class="post-info">
                         <h3>{{ $post->title }}</h3>
-                        <p>{{ $post->excerpt(15) }}</p>
+                        @if($post->excerpt)
+                        <p>{{ $post->excerpt }}</p>
+                        @endif
+
                         <a href="{{ route('my_universe.show', $post->slug) }}">Lire l'article</a>
 
                         <div class="post-meta">

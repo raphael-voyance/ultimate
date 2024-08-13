@@ -20,6 +20,11 @@ class Post extends Model
         'image'
     ];
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
     public function getBodyAttribute()
     {
         //dd($this->attributes['content']);
@@ -30,10 +35,6 @@ class Post extends Model
         }
         return;
         
-    }
-
-    public function excerpt() {
-        return Str::excerpt($this->content, '', $options = ['radius' => 350, 'omission' => '...']);
     }
 
     

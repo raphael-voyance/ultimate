@@ -19,6 +19,13 @@ return new class extends Migration
             $table->string('slug');
             $table->text('description')->nullable();
         });
+
+        Schema::create('category_post', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('post_id');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -27,5 +34,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('categories');
+        Schema::dropIfExists('category_post');
     }
 };

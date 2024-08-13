@@ -55,17 +55,25 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     Route::get('/messagerie', [MessagingController::class, 'index'])->name('messaging');
 
     // POSTS ROUTES
-    Route::prefix('blog')->as('post.')->group(function() {
-        Route::get('/', [BlogController::class, 'index'])->name('index');
-        Route::get('/post/create', [BlogController::class, 'create'])->name('create');
-        Route::get('/post/edit/{id}', [BlogController::class, 'edit'])->name('edit');
-        Route::post('/post/update/{id}', [BlogController::class, 'update'])->name('update');
-        Route::post('/post/store', [BlogController::class, 'store'])->name('store');
-        Route::delete('/post/destroy/{id}', [BlogController::class, 'destroy'])->name('destroy');
+    Route::prefix('blog')->as('blog.')->group(function() {
+        Route::prefix('post')->as('post.')->group(function() {
+            Route::get('/', [BlogController::class, 'index'])->name('index');
+            Route::get('/create', [BlogController::class, 'create'])->name('create');
+            Route::get('/edit/{id}', [BlogController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [BlogController::class, 'update'])->name('update');
+            Route::post('/store', [BlogController::class, 'store'])->name('store');
+            Route::delete('/destroy/{id}', [BlogController::class, 'destroy'])->name('destroy');
+        });
+        
 
         Route::get('/post/get-data-editor/{id}', [BlogController::class, 'getPostDataContent']);
+
+        Route::prefix('category')->as('category.')->group(function() {
+            Route::post('/store', [BlogController::class, 'storeCategory'])->name('store');
+        });
     });
 
+});
 
     //--------------TIPS--------------
     //--------------------------------
@@ -73,26 +81,28 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     // les images d'un disque local créé
     // 1 - Créer le disque dans le fichier: config/filesystems.php
     // 2 - Créer la route associée comme la suivante
-    // 3 - Pour accéder à la ressource <img src="{{ route('image.protected', ['filename' => 'image.svg']) }}" alt="Votre Image Protégée">
-    Route::get('/image/{filename}', function ($filename) {
+    // 3 - Pour accéder à la ressource <img src="{{ route('image.private', ['filename' => 'image.svg']) }}" alt="Votre Image Protégée">
+    
+    Route::get('/storage/private/images/{filename}', function ($filename) {
+        $path = 'images/' . $filename;  // Assure-toi d'utiliser le bon chemin relatif
+    
+        // Vérification des extensions autorisées
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
-
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg']; // Définir les extensions autorisées ici
-
-        // Vérifier si l'extension est autorisée
-        if (in_array($extension, $allowedExtensions)) {
-            $image = Storage::disk('protected')->get($filename);
-
-            if ($extension === 'svg') {
-                $contentType = 'image/svg+xml';
-            } else {
-                $contentType = 'image/' . $extension;
-            }
-
-            return response($image)->header('Content-Type', $contentType);
-        } else {
-            abort(404); // Ou une autre réponse appropriée pour les extensions non autorisées
+        $allowedExtensions = ['webp', 'jpg', 'jpeg', 'png', 'gif', 'svg'];
+    
+        if (!in_array($extension, $allowedExtensions)) {
+            abort(404);
         }
-    })->name('image.protected');
-
-});
+    
+        // Vérification de l'existence du fichier
+        if (!Storage::disk('private')->exists($path)) {
+            abort(404);
+        }
+    
+        $image = Storage::disk('private')->get($path);
+    
+        // Détection du type de contenu
+        $contentType = $extension === 'svg' ? 'image/svg+xml' : 'image/' . $extension;
+    
+        return response($image)->header('Content-Type', $contentType);
+    })->middleware(['auth', 'can:admin'])->name('image.private');

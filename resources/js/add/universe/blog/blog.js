@@ -88,14 +88,55 @@ window.addEventListener('load', () => {
         const publishedAtInputSubmitBtn = document.getElementById('published_at_input_submit_btn');
         const publishedAtInputCancelBtn = document.getElementById('published_at_input_cancel_btn');
         const publishedAtText = document.getElementById('published_at_text');
+        const publishedAtElement = document.getElementById('published_at');
 
         // Ajout d'une catégorie
+        // Afficher le formulaire
         addCategorieBtn.addEventListener('click', function(e) {
             e.preventDefault();
             this.classList.add('hidden');
             addCategorieInputContainer.classList.remove('hidden');
         })
 
+        // Soumettre le formulaire
+        addCategorieSubmitBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const url = addCategorieSubmitBtn.getAttribute('data-submit-url');
+            const name = addCategorieInput.value;
+
+                axios.post(url, {
+                            name: name
+                        })
+                        .then(function (response) {
+                            if(response.data.status == 'success') {
+                                addElementCategory(name, response.data.categoryId);
+                                Toast.success(response.data.message);
+                            }
+                        })
+                        .catch(function (error) {
+                            Toast.danger(error.response.data.message);
+                        });
+        })
+
+        // Créer l'élément dans la liste des catégories
+        function addElementCategory(category, id) {
+            const categoriesList = document.getElementById('categories-list');
+            const div = document.createElement('div');
+            div.innerHTML = `<div class="form-control" x-show="true">
+                        <label for="${category}" class="label cursor-pointer gap-2 justify-start">
+                            <input type="checkbox" id="${category}" name="${category}" value="${id}" class="checkbox checkbox-primary checkbox-sm" checked="checked">
+                            <span class="label-text">${category}</span>
+                        </label>
+                    </div>`;
+
+            // Ajout du nouvel élément au début de la liste
+            categoriesList.prepend(div.firstElementChild);
+            addCategorieBtn.classList.remove('hidden');
+            addCategorieInputContainer.classList.add('hidden');
+        }
+        
+        // Cacher le formulaire
         addCategorieCancelBtn.addEventListener('click', function(e) {
             e.preventDefault();
             addCategorieBtn.classList.remove('hidden');
@@ -112,6 +153,7 @@ window.addEventListener('load', () => {
         publishedAtInputSubmitBtn.addEventListener('click', function(e) {
             e.preventDefault();
             publishedAtInputContainer.classList.add('hidden');
+            publishedAtElement.value = publishedAtInput.value;
             publishedAtText.innerText = 'Publier le ' + publishedAtInput.value;
         })
 
@@ -124,6 +166,7 @@ window.addEventListener('load', () => {
 
     if (blogEdit) {
         const postId = blogEdit.getAttribute('data-post-id');
+        const btnPostDel = document.querySelector('[data-btn-post-del]');
 
         (async function(id) {
             try {
@@ -133,13 +176,41 @@ window.addEventListener('load', () => {
                         postId: postId
                     }
                 });
-                dataPostContent = response.data; // Assignez les données récupérées à la variable data
-                initializeEditor(dataPostContent, postId); // Initialisez l'éditeur avec les données récupérées
+                dataPostContent = response.data;
+                initializeEditor(dataPostContent, postId);
             } catch (err) {
                 console.error("Erreur lors de la requête au serveur :", err.message);
                 throw err;
             }
         })(postId);
+        
+        btnPostDel.addEventListener('click', function(e) {
+            e.preventDefault();
+            const cancelRoute = this.getAttribute('data-btn-post-del');
+
+            createAlert('Vous êtes sur le point de supprimer un article, êtes-vous sûr(e) ?', 'default', function(confirmation) {
+                if (confirmation) {
+                    console.log(confirmation)
+                    axios.delete(cancelRoute)
+                    .then(function (response) {
+                        if(response.data.status == 'success') {
+                            window.location = response.data.redirectRoute;
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        Toast.danger('Il y a eu une erreur dans le processus de suppression de l\'article, merci de réessayer après avoir rafraichi votre navigateur.');
+                    });
+        
+                } else {
+                    // Code à exécuter si l'utilisateur annule
+                    console.log("Suppression annulée !");
+                }
+            });
+
+        });
+
+        
     }
 
     if(blogCreate) {
@@ -148,15 +219,14 @@ window.addEventListener('load', () => {
     }
 
     function initializeEditor(data, id) {
-        console.log('initializeEditor(data)', data);
         let contentData = data.length ? JSON.parse(data) : {};
-    
         let titleElement = document.getElementById('title');
         let excerptElement = document.getElementById('excerpt');
         let slugElement = document.getElementById('slug');
         let content;
-    
+        let thumbnailElement = document.getElementById('thumbnail');
         const btnSubmitPost = document.getElementById('btn-submit-post');
+
         const editor = new EditorJS({
             holder: 'editor',
             readOnly: false,
@@ -251,26 +321,46 @@ window.addEventListener('load', () => {
                 }
             },
         });
-    
+
         if (btnSubmitPost) {
             btnSubmitPost.addEventListener('click', function(e) {
                 e.preventDefault();
-    
+
                 editor.save().then((outputData) => {
-                    let title = titleElement.value;
-                    let excerpt = excerptElement.value;
-                    let slug = slugElement.value;
+                    const title = titleElement.value;
+                    const excerpt = excerptElement.value;
+                    const slug = slugElement.value;
                     content = outputData;
-    
-                    console.log(title, excerpt, slug, content);
+
+                    const thumbnail = thumbnailElement.files[0];
+
+                    const selectedStatus = document.querySelector('input[name="status"]:checked').value;
+
+                    const checkboxes = document.querySelectorAll('#categories-list input[type="checkbox"]:checked');
+
+                    const selectedCategories = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+                    const publishedAt = document.querySelector('input[name="published_at"]:checked').value;
+
+                    const formData = new FormData();
+                    formData.append('title', title);
+                    formData.append('excerpt', excerpt);
+                    formData.append('slug', slug);
+                    formData.append('content', JSON.stringify(content));
+                    formData.append('thumbnail', thumbnail);
+                    formData.append('status', selectedStatus);
+                    formData.append('publishedAt', publishedAt);
+                    
+                    selectedCategories.forEach((category, index) => {
+                        formData.append(`categories[]`, category);
+                    });
     
                     if (blogCreate) {
                         let url = window.location.origin + '/admin/blog/post/store';
-                        axios.post(url, {
-                            content: content,
-                            title: title,
-                            excerpt: excerpt,
-                            slug: slug
+                        axios.post(url, formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
                         })
                         .then(function (response) {
                             if(response.data.status == 'success') {
@@ -281,13 +371,13 @@ window.addEventListener('load', () => {
                             Toast.danger(error.response.data.message);
                         });
                     }
+
                     if (blogEdit) {
                         let url = window.location.origin + '/admin/blog/post/update/' + id;
-                        axios.post(url, {
-                            content: outputData,
-                            title: title,
-                            excerpt: excerpt,
-                            slug: slug
+                        axios.post(url, formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
                         })
                         .then(function (response) {
                             if(response.data.status == 'success') {

@@ -16,7 +16,7 @@
     @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
-            <a href="{{ route('admin.post.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
+            <a href="{{ route('admin.blog.post.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
             <div class="text-center sm:pl-4 mt-2 sm:mt-0 sm:text-left">
                 <span class="block mb-2  sm:mb-1"> Créer un article : </span>
             </div>
@@ -25,7 +25,7 @@
 
     <section id="blog-create"">
         <header class="mb-6">
-            <a href="{{ route('admin.post.index') }}" class="btn">Voir tous les articles</a>
+            <a href="{{ route('admin.blog.post.index') }}" class="btn">Voir tous les articles</a>
         </header>
 
         <section>
@@ -85,11 +85,11 @@
 
                         <div class="avatar">
                             <div class="w-20 rounded-full">
-                              <img src="/imgs/pending.jpg" />
+                              <img src="{{ asset('/storage/posts/thumbnails/pending.jpg') }}" />
                             </div>
                           </div>
 
-                        <input type="file" class="file-input w-full max-w-xs" />
+                        <input id="thumbnail" type="file" class="file-input w-full max-w-xs" />
                     </div>
                 </div>
 
@@ -100,7 +100,7 @@
                     <fieldset>
                         <legend>Catégories : </legend>
 
-                        <div x-data="{ showAll: false }">
+                        <div id="categories-list" x-data="{ showAll: false }">
                             <!-- La liste des catégories -->
                             @foreach ($categories as $index => $category)
                                 <div 
@@ -111,7 +111,7 @@
                                             type="checkbox" 
                                             id="{{ $category->slug }}" 
                                             name="{{ $category->slug }}"
-                                            value="{{ $category->slug }}" 
+                                            value="{{ $category->id }}" 
                                             class="checkbox checkbox-primary checkbox-sm" 
                                         />
                                         <span class="label-text">{{ $category->name }}</span>
@@ -129,7 +129,7 @@
                         <button id="add-categorie" class="btn btn-ghost btn-sm"><i class="fal fa-plus"></i>Ajouter une catégorie</button>
                         <div class="hidden flex flex-nowrap max-w-full justify-start items-center gap-2" id="add-categorie-input-container">
                             <input class="input input-primary input-sm peer focus:border-none focus:ring-primary-focus" type="text" placeholder="Nom de la catégorie" id="add-categorie-input" name="add-categorie-input" />
-                            <button id="add-categorie-submit-btn" class="btn btn-sm btn-outline btn-ghost btn-circle"><i class="fal fa-save"></i></button>
+                            <button id="add-categorie-submit-btn" data-submit-url="{{ route('admin.blog.category.store') }}" class="btn btn-sm btn-outline btn-ghost btn-circle"><i class="fal fa-save"></i></button>
                             <button id="add-categorie-cancel-btn" class="btn btn-sm btn-outline btn-ghost btn-circle"><i class="fal fa-times"></i></button>
                         </div>
                     </fieldset>

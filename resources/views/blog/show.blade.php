@@ -17,7 +17,11 @@
 
         <section class="post-content">
             <div class="thumbnail">
-                <img src="{{ $post->image }}" />
+                @if($post->status == 'PRIVATE')
+                    <img src="{{ route('image.private', ['filename' => basename($post->image)]) }}" alt="Thumbnail">
+                @else
+                    <img src="{{ $post->image }}" alt="Thumbnail" />
+                @endif
             </div>
             
             <div data-post-id="{{ $post->id }}" class="the-post" id="editor-view"></div>

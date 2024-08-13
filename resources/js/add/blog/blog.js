@@ -28,20 +28,19 @@ window.addEventListener('load', () => {
                     postId: postId
                 }
             });
-            console.log(response.data)
-            dataPostContent = response.data; // Assignez les données récupérées à la variable data
-            initializeEditor(dataPostContent, postId); // Initialisez l'éditeur avec les données récupérées
+            // console.log('response.data : ', response.data)
+            dataPostContent = response.data;
+            initializeEditor(dataPostContent);
         } catch (err) {
             console.error("Erreur lors de la requête au serveur :", err.message);
             throw err;
         }
     })(postId);
 
-    function initializeEditor(data, id) {
+    function initializeEditor(data) {
         console.log('initializeEditor(data)', data);
         let contentData = data.length ? JSON.parse(data) : {};
-    
-        const btnSubmitPost = document.getElementById('btn-submit-post');
+
         const editor = new EditorJS({
             holder: 'editor-view',
             readOnly: true,
@@ -68,7 +67,7 @@ window.addEventListener('load', () => {
                 },
             },
     
-            data: contentData,
+            data: JSON.parse(contentData),
     
         });
     }

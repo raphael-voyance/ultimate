@@ -25,7 +25,7 @@ class PostFactory extends Factory
             'excerpt' => $this->faker->paragraph(),
             'published_at' => $this->faker->dateTime(),
             'status' => 'PUBLISH',
-            'image' => asset('imgs/pending.jpg'),
+            'image' => asset('storage/posts/thumbnails/pending.jpg'),
         ];
     }
 }
