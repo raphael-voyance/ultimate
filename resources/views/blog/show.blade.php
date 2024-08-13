@@ -20,7 +20,7 @@
                 @if($post->status == 'PRIVATE')
                     <img src="{{ route('image.private', ['filename' => basename($post->image)]) }}" alt="Thumbnail">
                 @else
-                    <img src="{{ $post->image }}" alt="Thumbnail" />
+                    <img src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" />
                 @endif
             </div>
             

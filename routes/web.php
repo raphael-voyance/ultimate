@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Honeypot\ProtectAgainstSpam;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PublicController;
@@ -28,6 +29,30 @@ Route::prefix('mon-univers')->as('my_universe.')->group(function() {
     Route::get('/', [BlogController::class, 'index'])->name('index');
     Route::get('/{slug}', [BlogController::class, 'show'])->name('show');
 });
+
+Route::get('/storage/public/posts/thumbnails/{filename}', function ($filename) {
+    $path = 'posts/thumbnails/' . $filename;
+
+    // Vérification des extensions autorisées
+    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+    $allowedExtensions = ['webp', 'jpg', 'jpeg', 'png', 'gif', 'svg'];
+
+    if (!in_array($extension, $allowedExtensions)) {
+        abort(404);
+    }
+
+    // Vérification de l'existence du fichier
+    if (!Storage::disk('public')->exists($path)) {
+        abort(404);
+    }
+
+    $image = Storage::disk('public')->get($path);
+
+    // Détection du type de contenu
+    $contentType = $extension === 'svg' ? 'image/svg+xml' : 'image/' . $extension;
+
+    return response($image)->header('Content-Type', $contentType);
+})->name('image.post.thumbnail');
 
 Route::middleware([ProtectAgainstSpam::class])->group(function() {
     //Method Post Route
