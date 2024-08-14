@@ -17,7 +17,7 @@
         <section class="post-content">
 
             {{-- Sinon la date de publication de l'article n'est pas passée --}}
-            @if(\Carbon\Carbon::parse($post->published_at)->isFuture() && Auth::check() && Auth::user()->cannot('admin'))
+            @if(\Carbon\Carbon::parse($post->published_at)->isFuture())
             {{-- @if(\Carbon\Carbon::parse($post->published_at)->isFuture()) --}}
             <section>
                 <div class="card bg-base-100 max-w-xl shadow-xl mx-auto mb-8">
@@ -36,7 +36,7 @@
             </section>
 
             {{-- Sinon la date de publication de l'article est passée --}}
-            @else
+            @elseif(!\Carbon\Carbon::parse($post->published_at)->isFuture() || Auth::check() && Auth::user()->can('admin'))
 
             @if(\Carbon\Carbon::parse($post->published_at)->isFuture())
             <p class="published_at text-red-500">

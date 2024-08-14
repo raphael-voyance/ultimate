@@ -28,10 +28,8 @@
                             <p class="post-excerpt">{{ $post->excerpt }}</p>
                         @endif
         
-                        @if(\Carbon\Carbon::parse($post->published_at)->isFuture())
-                            
-                        @else
-                        <a href="{{ route('my_universe.show', $post->slug) }}" class="badge badge-primary hover:text-inherit focus:text-inherit">Lire l'article</a>
+                        @if(!\Carbon\Carbon::parse($post->published_at)->isFuture() || (Auth::check() && Auth::user()->can('admin')))
+                            <a href="{{ route('my_universe.show', $post->slug) }}" class="badge badge-primary hover:text-inherit focus:text-inherit">Lire l'article</a>
                         @endif
         
                         <div class="post-meta">
