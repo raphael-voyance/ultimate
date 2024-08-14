@@ -42,7 +42,7 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-CLuZSsP1.css",
+    "file": "assets/app-Cr0M6b6h.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -171,7 +171,7 @@
     "isEntry": true
   },
   "resources/js/add/universe/blog/blog.js": {
-    "file": "assets/blog-C4AfIO3H.js",
+    "file": "assets/blog-Ckp7PfUz.js",
     "name": "blog",
     "src": "resources/js/add/universe/blog/blog.js",
     "isEntry": true,
@@ -186,7 +186,7 @@
     ]
   },
   "resources/js/add/universe/blog/category.js": {
-    "file": "assets/category-BkoKTXVR.js",
+    "file": "assets/category-pn0XF9D8.js",
     "name": "category",
     "src": "resources/js/add/universe/blog/category.js",
     "isEntry": true,

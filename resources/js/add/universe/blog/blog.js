@@ -112,6 +112,7 @@ window.addEventListener('load', () => {
                             if(response.data.status == 'success') {
                                 addElementCategory(name, response.data.categoryId);
                                 Toast.success(response.data.message);
+                                addCategorieInput.value = '';
                             }
                         })
                         .catch(function (error) {

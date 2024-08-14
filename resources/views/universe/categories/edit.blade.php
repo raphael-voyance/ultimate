@@ -13,20 +13,23 @@
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
             <a href="{{ route('admin.blog.category.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
             <div class="text-center sm:pl-4 mt-2 sm:mt-0 sm:text-left">
-                <span class="block mb-2  sm:mb-1"> Créer une catégorie : </span>
+                <span class="block mb-2  sm:mb-1"> Modifier la catégorie : </span>
+                <span class="italic"> "{{ $category->name }}" </span>
             </div>
         </h2>
     </x-slot>
 
-    <section id="create-category">
+    <section>
         <header class="mb-6">
+            <a href="{{ route('admin.blog.category.create') }}" class="btn">Nouvelle catégorie</a>
             <a href="{{ route('admin.blog.category.index') }}" class="btn">Voir toutes les catégories</a>
+            <a href="#" data-btn-category-del="{{ route('admin.blog.category.destroy', $category->id) }}" class="btn btn-error hover:text-white focus:text-white">Supprimer la categorie</a>
         </header>
 
         <section>
             <form action="#" autocomplete="off" x-data="{
-                name: decodeHtml('{{ old('name') }}'),
-                slug: decodeHtml('{{ old('slug') }}'),
+                name: decodeHtml('{{ old('name') ?? $category->name }}'),
+                slug: decodeHtml('{{ old('slug') ?? $category->slug }}'),
 
                 slugify() {
                     this.slug = this.name
@@ -68,21 +71,15 @@
                         class="textarea textarea-primary w-full peer @error('description') border-error @enderror" 
                         required 
                         name="description" 
-                        placeholder="Description de la catégorie">{{ old('description') }}</textarea>
+                        placeholder="Description de la catégorie">{{ old('description') ?? $category->description }}</textarea>
                     @error('description')
                         <x-ui.form.input-error :messages="$message" class="mt-2" />
                     @enderror
                 </div>
 
-                
-
-                
-
-                
-
                 {{-- Soumission --}}
                 <div class="flex justify-end mt-2">
-                    <button data-submit-url="{{ route('admin.blog.category.store') }}" id="btn-submit-category" type="submit" class="btn btn-primary btn-sm">Enregistrer la catégorie</button>
+                    <button data-submit-url="{{ route('admin.blog.category.update', $category->id) }}" id="btn-submit-category" type="submit" class="btn btn-primary btn-sm">Enregistrer la catégorie</button>
                 </div>
             </form>
         </section>

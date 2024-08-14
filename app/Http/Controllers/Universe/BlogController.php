@@ -269,18 +269,59 @@ class BlogController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|unique:categories|max:255',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
+            'slug' => 'required|unique:categories|max:255',
         ]);
 
         $category = new Category();
         $category->name = $request->name;
         $category->description = $request->description;
-        $category->slug = Str::slug($request->name);
+        $category->slug = $request->slug;
+        $category->save();
+
+        $redirectRoute = route('admin.blog.category.edit', $category->id);
+        return response()->json([
+            'status' => 'success', 
+            'message' => 'La catégorie "' . $category->name . '" a bien été ajoutée.',
+            'categoryId' => $category->id,
+            'redirectRoute' => $redirectRoute
+        ]);
+    }
+
+    public function editCategory(string $id) {
+        $category = Category::where('id', $id)->firstOrFail();
+
+        return view('universe.categories.edit', [
+            'category' => $category
+        ]);
+    }
+
+    public function updateCategory(Request $request, string $id) {
+        // Récupère l'article à mettre à jour
+        $category = Category::where('id', $id)->firstOrFail();
+
+        $validated = $request->validate([
+            'name' => [
+                'required',
+                'max:255',
+                Rule::unique('categories')->ignore($category->id),
+            ],
+            'description' => 'required',
+            'slug' => [
+                'required',
+                'max:255',
+                Rule::unique('categories')->ignore($category->id),
+            ],
+        ]);
+
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->slug = $request->slug;
         $category->save();
 
         return response()->json([
             'status' => 'success', 
-            'message' => 'La catégorie "' . $category->name . '" a bien été ajoutée.',
+            'message' => 'La catégorie "' . $category->name . '" a bien été mise à jour.',
             'categoryId' => $category->id
         ]);
     }

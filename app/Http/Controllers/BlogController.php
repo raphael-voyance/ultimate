@@ -45,7 +45,7 @@ class BlogController extends Controller
     }
 
     public function showCategory(string $slug) {
-        $category = Category::where('slug', $slug)->select('id', 'name')->firstOrFail();
+        $category = Category::where('slug', $slug)->select('id', 'name', 'description')->firstOrFail();
         // Récupère les articles qui appartiennent à cette catégorie et qui sont publiés
         $posts = Post::where('status', 'PUBLISH')
         ->whereHas('categories', function($query) use ($category) {

@@ -16,6 +16,7 @@ class DataTableCategories extends Component
         $this->headers = [
             ['key' => 'id', 'label' => '#'],
             ['key' => 'name', 'label' => 'Nom'],
+            ['key' => 'description', 'label' => 'Description'],
             ['key' => 'actions', 'label' => 'Actions'],
         ];
     }

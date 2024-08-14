@@ -57,7 +57,7 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     // POSTS ROUTES
     Route::prefix('blog')->as('blog.')->group(function() {
         Route::prefix('post')->as('post.')->group(function() {
-            Route::get('/', [BlogController::class, 'index'])->name('index');
+            Route::get('/all', [BlogController::class, 'index'])->name('index');
             Route::get('/create', [BlogController::class, 'create'])->name('create');
             Route::get('/edit/{id}', [BlogController::class, 'edit'])->name('edit');
             Route::post('/update/{id}', [BlogController::class, 'update'])->name('update');
@@ -69,11 +69,15 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
         Route::get('/post/get-data-editor/{id}', [BlogController::class, 'getPostDataContent']);
 
         Route::prefix('category')->as('category.')->group(function() {
-            Route::get('/', [BlogController::class, 'indexCategory'])->name('index');
+            Route::get('/all', [BlogController::class, 'indexCategory'])->name('index');
 
             Route::get('/create', [BlogController::class, 'createCategory'])->name('create');
             
             Route::post('/store', [BlogController::class, 'storeCategory'])->name('store');
+
+            Route::get('/edit/{id}', [BlogController::class, 'editCategory'])->name('edit');
+
+            Route::post('/update/{id}', [BlogController::class, 'updateCategory'])->name('update');
 
             Route::delete('/destroy/{id}', [BlogController::class, 'destroyCategory'])->name('destroy');
         });
