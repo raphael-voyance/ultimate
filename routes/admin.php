@@ -69,7 +69,13 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
         Route::get('/post/get-data-editor/{id}', [BlogController::class, 'getPostDataContent']);
 
         Route::prefix('category')->as('category.')->group(function() {
+            Route::get('/', [BlogController::class, 'indexCategory'])->name('index');
+
+            Route::get('/create', [BlogController::class, 'createCategory'])->name('create');
+            
             Route::post('/store', [BlogController::class, 'storeCategory'])->name('store');
+
+            Route::delete('/destroy/{id}', [BlogController::class, 'destroyCategory'])->name('destroy');
         });
     });
 

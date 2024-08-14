@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Concern\Blog;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
@@ -13,7 +14,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $posts = Post::where('status', 'PUBLISH')->paginate(3);
+        $posts = Post::where('status', 'PUBLISH')->with('categories')->paginate(3);
         return view('blog.my-universe', ['posts' => $posts]);
     }
 
@@ -44,7 +45,17 @@ class BlogController extends Controller
     }
 
     public function showCategory(string $slug) {
-        $posts = Post::where('status', 'PUBLISH')->paginate(3);
-        return view('blog.category', ['posts' => $posts]);
+        $category = Category::where('slug', $slug)->select('id', 'name')->firstOrFail();
+        // Récupère les articles qui appartiennent à cette catégorie et qui sont publiés
+        $posts = Post::where('status', 'PUBLISH')
+        ->whereHas('categories', function($query) use ($category) {
+            $query->where('category_id', $category->id);
+        })
+        ->with('categories')
+        ->paginate(3);
+        return view('blog.category', [
+            'posts' => $posts,
+            'category' => $category
+        ]);
     }
 }

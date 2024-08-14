@@ -62,7 +62,7 @@
             <x-ui.card title="Articles">
                 <div class="text-xl font-bold">
                     <x-ui.link label="Rédiger un article" href="{{ route('admin.blog.post.create') }}" />
-                    <x-ui.link label="Catégories" href="{{ route('admin.blog.post.create') }}" />
+                    <x-ui.link label="Catégories" href="{{ route('admin.blog.category.index') }}" />
                 </div>
                 <x-slot:actions>
                     <x-ui.link label="Voir tous les articles" href="{{ route('admin.blog.post.index') }}" />

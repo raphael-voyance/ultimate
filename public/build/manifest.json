@@ -1,7 +1,7 @@
 {
-  "_alert-!~{00o}~.js": {
+  "_alert-!~{00p}~.js": {
     "file": "assets/alert-BTnCFOkF.css",
-    "src": "_alert-!~{00o}~.js"
+    "src": "_alert-!~{00p}~.js"
   },
   "_alert-maf5A8O9.js": {
     "file": "assets/alert-maf5A8O9.js",
@@ -42,7 +42,7 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-BBdPvW97.css",
+    "file": "assets/app-CLuZSsP1.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -180,6 +180,19 @@
       "_utils-DPqQJ3U5.js",
       "_alert-maf5A8O9.js",
       "_image-CZRH7lL6.js"
+    ],
+    "css": [
+      "assets/alert-BTnCFOkF.css"
+    ]
+  },
+  "resources/js/add/universe/blog/category.js": {
+    "file": "assets/category-BkoKTXVR.js",
+    "name": "category",
+    "src": "resources/js/add/universe/blog/category.js",
+    "isEntry": true,
+    "imports": [
+      "_axios-B4uVmeYG.js",
+      "_alert-maf5A8O9.js"
     ],
     "css": [
       "assets/alert-BTnCFOkF.css"

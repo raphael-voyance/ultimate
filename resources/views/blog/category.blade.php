@@ -5,9 +5,12 @@
     @endsection
 
         <x-slot name="header">
-            <h2 class="font-semibold text-xl leading-tight">
-                Mon univers
+            <h2 class="font-semibold text-xl leading-tight mb-2">
+                <i class="fa-thin fa-stars -rotate-12"></i> Dans mon univers...
             </h2>
+            <h4 class="font-semibold text-base leading-tight">
+                <i class="fa-thin fa-solid fa-solar-system"></i> Galaxie : {{ $category->name }}
+            </h4>
         </x-slot>
 
     <section class="blog">
@@ -45,7 +48,7 @@
                         @endif
                         
                         @can('admin')
-                            <a href="{{ route('admin.blog.post.edit', $post->id) }}" class="absolute right-3 top-3 badge badge-secondary hover:text-inherit focus:text-inherit">Modifier l'article</a> 
+                            <a href="{{ route('admin.blog.post.edit', $post->id) }}" class="absolute z-10 right-3 top-3 badge badge-secondary hover:text-inherit focus:text-inherit">Modifier l'article</a> 
                         @endcan
                     </div>
                 </article>

@@ -5,8 +5,8 @@
     @endsection
 
         <x-slot name="header">
-            <h2 class="font-semibold text-xl leading-tight">
-                Mon univers
+            <h2 class="font-semibold text-xl leading-tight mb-2">
+                <i class="fa-thin fa-stars -rotate-12"></i> Dans mon univers...
             </h2>
         </x-slot>
 
