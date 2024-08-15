@@ -16,6 +16,9 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <x-ui.card id='card-save-bdd' title="Sauvegarde des données du site">
                 <button id="btn-save-bdd" class="btn btn-circle"><i class="fa-thin fa-floppy-disk fa-xl"></i></button>
+                <x-slot:actions>
+                <x-ui.link label="Voir toutes les sauvegardes" href="{{ route('admin.list-backups') }}" />
+            </x-slot:actions>
             </x-ui.card>
         </div>
     </div>

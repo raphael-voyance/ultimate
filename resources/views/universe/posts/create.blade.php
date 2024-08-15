@@ -23,7 +23,7 @@
         </h2>
     </x-slot>
 
-    <section id="blog-create"">
+    <section id="blog-create">
         <header class="mb-6">
             <a href="{{ route('admin.blog.post.index') }}" class="btn">Voir tous les articles</a>
         </header>

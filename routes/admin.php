@@ -1,11 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Universe\BlogController;
 use App\Http\Controllers\Universe\AdminController;
+use App\Http\Controllers\Universe\BackupsController;
 use App\Http\Controllers\Universe\DrawsController;
 use App\Http\Controllers\Universe\TarotController;
 use App\Http\Controllers\Universe\MessagingController;
@@ -81,26 +80,9 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     });
 
     // Backups Routes
-    Route::post('/run-backup', function() {
-        try {
-            $exitCode = Artisan::call('backup:run');
-            $output = Artisan::output();
-    
-            Log::info('Backup Command Output: ', ['output' => $output]);
-    
-            return response()->json([
-                'success' => $exitCode === 0,
-                'message' => $exitCode === 0 ? 'Backup successfully initiated.' : 'Backup failed to run.',
-                'output' => $output,
-                'exit_code' => $exitCode
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Backup Command Error: ', ['message' => $e->getMessage()]);
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
-        }
-    })->name('run-backup');
+    Route::post('/run-backup', [BackupsController::class, 'run'])->name('run-backup');
+    Route::get('/list-backups', [BackupsController::class, 'index'])->name('list-backups');
 
-    
 });
 
     //--------------TIPS--------------
