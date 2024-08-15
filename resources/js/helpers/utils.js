@@ -18,7 +18,7 @@ const loader = {
     show: ($appendToId = null, callback = null, addClass = []) => {
         // Créer un élément de chargement
         const $loaderContainer = document.createElement('div');
-        $loaderContainer.classList.add('loader_container');
+        $loaderContainer.classList.add('loader_container', 'absolute', 'top-1/2', 'left-1/2', '-translate-x-1/2');
         const $loader = document.createElement('span');
         $loader.classList.add('loader');
         $loaderContainer.classList.add('text-center')

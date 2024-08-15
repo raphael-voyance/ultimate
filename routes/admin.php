@@ -1,9 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Universe\AdminController;
 use App\Http\Controllers\Universe\BlogController;
+use App\Http\Controllers\Universe\AdminController;
 use App\Http\Controllers\Universe\DrawsController;
 use App\Http\Controllers\Universe\TarotController;
 use App\Http\Controllers\Universe\MessagingController;
@@ -70,19 +72,35 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
 
         Route::prefix('category')->as('category.')->group(function() {
             Route::get('/all', [BlogController::class, 'indexCategory'])->name('index');
-
             Route::get('/create', [BlogController::class, 'createCategory'])->name('create');
-            
             Route::post('/store', [BlogController::class, 'storeCategory'])->name('store');
-
             Route::get('/edit/{id}', [BlogController::class, 'editCategory'])->name('edit');
-
             Route::post('/update/{id}', [BlogController::class, 'updateCategory'])->name('update');
-
             Route::delete('/destroy/{id}', [BlogController::class, 'destroyCategory'])->name('destroy');
         });
     });
 
+    // Backups Routes
+    Route::post('/run-backup', function() {
+        try {
+            $exitCode = Artisan::call('backup:run');
+            $output = Artisan::output();
+    
+            Log::info('Backup Command Output: ', ['output' => $output]);
+    
+            return response()->json([
+                'success' => $exitCode === 0,
+                'message' => $exitCode === 0 ? 'Backup successfully initiated.' : 'Backup failed to run.',
+                'output' => $output,
+                'exit_code' => $exitCode
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Backup Command Error: ', ['message' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    })->name('run-backup');
+
+    
 });
 
     //--------------TIPS--------------

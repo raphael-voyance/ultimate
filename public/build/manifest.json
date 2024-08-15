@@ -1,7 +1,7 @@
 {
-  "_alert-!~{00p}~.js": {
+  "_alert-!~{00q}~.js": {
     "file": "assets/alert-BTnCFOkF.css",
-    "src": "_alert-!~{00p}~.js"
+    "src": "_alert-!~{00q}~.js"
   },
   "_alert-maf5A8O9.js": {
     "file": "assets/alert-maf5A8O9.js",
@@ -22,8 +22,8 @@
     "file": "assets/index-DjKJqAo0.js",
     "name": "index"
   },
-  "_utils-DPqQJ3U5.js": {
-    "file": "assets/utils-DPqQJ3U5.js",
+  "_utils-CCH-PrqN.js": {
+    "file": "assets/utils-CCH-PrqN.js",
     "name": "utils"
   },
   "resources/css/add/hero_home.css": {
@@ -137,12 +137,12 @@
     "src": "resources/js/add/previsions/moonImgs/premier-quartier.svg"
   },
   "resources/js/add/previsions/numerology.js": {
-    "file": "assets/numerology-C6dQQSHx.js",
+    "file": "assets/numerology-1HMkhZOt.js",
     "name": "numerology",
     "src": "resources/js/add/previsions/numerology.js",
     "isEntry": true,
     "imports": [
-      "_utils-DPqQJ3U5.js",
+      "_utils-CCH-PrqN.js",
       "_axios-B4uVmeYG.js"
     ]
   },
@@ -171,13 +171,13 @@
     "isEntry": true
   },
   "resources/js/add/universe/blog/blog.js": {
-    "file": "assets/blog-Ckp7PfUz.js",
+    "file": "assets/blog-DptyrqJ7.js",
     "name": "blog",
     "src": "resources/js/add/universe/blog/blog.js",
     "isEntry": true,
     "imports": [
       "_axios-B4uVmeYG.js",
-      "_utils-DPqQJ3U5.js",
+      "_utils-CCH-PrqN.js",
       "_alert-maf5A8O9.js",
       "_image-CZRH7lL6.js"
     ],
@@ -204,6 +204,20 @@
     "src": "resources/js/add/universe/draws.js",
     "isEntry": true,
     "imports": [
+      "_alert-maf5A8O9.js"
+    ],
+    "css": [
+      "assets/alert-BTnCFOkF.css"
+    ]
+  },
+  "resources/js/add/universe/index.js": {
+    "file": "assets/index-BWkrwM8j.js",
+    "name": "index",
+    "src": "resources/js/add/universe/index.js",
+    "isEntry": true,
+    "imports": [
+      "_axios-B4uVmeYG.js",
+      "_utils-CCH-PrqN.js",
       "_alert-maf5A8O9.js"
     ],
     "css": [

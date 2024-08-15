@@ -1,10 +1,24 @@
 <x-admin-layout>
+
+    @section(('js'))
+        @vite("resources/js/add/universe/index.js")
+    @endsection
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
             <span class="">Bonjour {{ Auth::user()->fullName() }} </span>
             <span>Tableau d'administration</span>
         </h2>
     </x-slot>
+
+    <div>
+        <h2>Paramètres</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <x-ui.card id='card-save-bdd' title="Sauvegarde des données du site">
+                <button id="btn-save-bdd" class="btn btn-circle"><i class="fa-thin fa-floppy-disk fa-xl"></i></button>
+            </x-ui.card>
+        </div>
+    </div>
 
     <div>
         <h2>Relatif aux consultations :</h2>

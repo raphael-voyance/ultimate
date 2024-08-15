@@ -24,6 +24,7 @@ export default defineConfig({
                 'resources/js/add/blog/blog.js',
                 'resources/js/add/blog/blog.css',
                 
+                'resources/js/add/universe/index.js',
                 'resources/js/add/universe/draws.js',
                 'resources/js/add/universe/blog/category.js',
                 'resources/js/add/universe/blog/blog.js',

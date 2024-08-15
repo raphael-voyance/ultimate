@@ -31,6 +31,7 @@ Route::prefix('mon-univers')->as('my_universe.')->group(function() {
     Route::get('/categorie/{slug}', [BlogController::class, 'showCategory'])->name('show.category');
 });
 
+// Route d'accés aux images du storage public.posts.thumbnails.filename
 Route::get('/storage/public/posts/thumbnails/{filename}', function ($filename) {
     $path = 'posts/thumbnails/' . $filename;
 
