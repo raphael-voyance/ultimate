@@ -33,7 +33,11 @@ class BackupsController extends Controller
     }
 
     public function index() {
-        $zipFiles = collect(Storage::disk('backups')->files())
+
+        // Storage::disk('backups')->deleteDirectory('Raphaël Voyance');
+
+
+        $zipFiles = collect(Storage::disk('backups')->files('raphael_save_bdd'))
         ->filter(function($file) {
             return Str::endsWith($file, '.zip');
         })
@@ -42,9 +46,28 @@ class BackupsController extends Controller
                 'name' => $file,
                 'size' => Storage::disk('backups')->size($file),
                 'last_modified' => Storage::disk('backups')->lastModified($file),
+                'download_url' => url('admin/download-backup/' . $file),
             ];
         });
 
         return view('universe.backups', ['zipFiles' => $zipFiles]);
     }
+
+    public function download($filename) {
+        // Décoder le nom de fichier encodé dans l'URL
+        $file = urldecode($filename);
+    
+        // Afficher pour vérification
+        dd($file);
+    
+        // Vérifier si le fichier existe sur le disque 'backups'
+        if (Storage::disk('backups')->exists($file)) {
+            // Télécharger le fichier
+            return Storage::disk('backups')->download($file);
+        }
+    
+        // Retourner une erreur 404 si le fichier n'existe pas
+        return abort(404, 'File not found');
+    }
+    
 }
