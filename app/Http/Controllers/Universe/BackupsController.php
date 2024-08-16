@@ -34,7 +34,7 @@ class BackupsController extends Controller
 
     public function index() {
 
-        // Storage::disk('backups')->deleteDirectory('Raphaël Voyance');
+        Storage::disk('backups')->deleteDirectory('Raphaël Voyance');
 
 
         $zipFiles = collect(Storage::disk('backups')->files('raphael_save_bdd'))
@@ -43,7 +43,7 @@ class BackupsController extends Controller
         })
         ->map(function($file) {
             return [
-                'name' => $file,
+                'name' => basename($file),
                 'size' => Storage::disk('backups')->size($file),
                 'last_modified' => Storage::disk('backups')->lastModified($file),
                 'download_url' => url('admin/download-backup/' . $file),
@@ -54,18 +54,18 @@ class BackupsController extends Controller
     }
 
     public function download($filename) {
-        // Décoder le nom de fichier encodé dans l'URL
-        $file = urldecode($filename);
     
+        $file = 'raphael_save_bdd/' . $filename;
+
         // Afficher pour vérification
-        dd($file);
+        // dd($file);
     
         // Vérifier si le fichier existe sur le disque 'backups'
         if (Storage::disk('backups')->exists($file)) {
             // Télécharger le fichier
             return Storage::disk('backups')->download($file);
         }
-    
+        
         // Retourner une erreur 404 si le fichier n'existe pas
         return abort(404, 'File not found');
     }
