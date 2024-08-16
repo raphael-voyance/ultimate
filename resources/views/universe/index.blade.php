@@ -1,7 +1,7 @@
 <x-admin-layout>
 
     @section(('js'))
-        @vite("resources/js/add/universe/index.js")
+        @vite("resources/js/add/universe/backups.js")
     @endsection
 
     <x-slot name="header">
@@ -13,9 +13,10 @@
 
     <div>
         <h2>Paramètres</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <x-ui.card id='card-save-bdd' title="Sauvegarde des données du site">
-                <button id="btn-save-bdd" class="btn btn-circle"><i class="fa-thin fa-floppy-disk fa-xl"></i></button>
+        <div id="element-backup-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <x-ui.card title="Sauvegarde du site">
+                <button id="btn-save-backup" class="btn btn-circle"><i class="fa-thin fa-floppy-disk fa-xl"></i></button>
+                <button id="btn-clean-backup" class="btn btn-circle"><i class="fa-thin fa-recycle fa-xl"></i></button>
                 <x-slot:actions>
                 <x-ui.link label="Voir toutes les sauvegardes" href="{{ route('admin.list-backups') }}" />
             </x-slot:actions>

@@ -42,7 +42,7 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-Cr0M6b6h.css",
+    "file": "assets/app-DJI07htV.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -165,6 +165,20 @@
       "assets/tarot-Rq52TpHv.css"
     ]
   },
+  "resources/js/add/universe/backups.js": {
+    "file": "assets/backups-hcFGPmup.js",
+    "name": "backups",
+    "src": "resources/js/add/universe/backups.js",
+    "isEntry": true,
+    "imports": [
+      "_axios-B4uVmeYG.js",
+      "_utils-CCH-PrqN.js",
+      "_alert-maf5A8O9.js"
+    ],
+    "css": [
+      "assets/alert-BTnCFOkF.css"
+    ]
+  },
   "resources/js/add/universe/blog/blog.css": {
     "file": "assets/blog-pQK4kAfK.css",
     "src": "resources/js/add/universe/blog/blog.css",
@@ -204,20 +218,6 @@
     "src": "resources/js/add/universe/draws.js",
     "isEntry": true,
     "imports": [
-      "_alert-maf5A8O9.js"
-    ],
-    "css": [
-      "assets/alert-BTnCFOkF.css"
-    ]
-  },
-  "resources/js/add/universe/index.js": {
-    "file": "assets/index-BWkrwM8j.js",
-    "name": "index",
-    "src": "resources/js/add/universe/index.js",
-    "isEntry": true,
-    "imports": [
-      "_axios-B4uVmeYG.js",
-      "_utils-CCH-PrqN.js",
       "_alert-maf5A8O9.js"
     ],
     "css": [

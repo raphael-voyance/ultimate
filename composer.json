@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "alaminfirdows/laravel-editorjs": "^2.1",
         "fakerphp/faker": "^1.23",
         "laravel/cashier": "^15.3",
         "laravel/framework": "^11.0",
