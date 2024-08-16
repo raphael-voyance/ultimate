@@ -34,10 +34,10 @@ class BackupsController extends Controller
 
     public function index() {
 
-        Storage::disk('backups')->deleteDirectory('Raphaël Voyance');
+        Storage::disk('backups')->deleteDirectory('raphael_save_bdd');
 
 
-        $zipFiles = collect(Storage::disk('backups')->files('raphael_save_bdd'))
+        $zipFiles = collect(Storage::disk('backups')->files('raphael_save'))
         ->filter(function($file) {
             return Str::endsWith($file, '.zip');
         })
@@ -55,7 +55,7 @@ class BackupsController extends Controller
 
     public function download($filename) {
     
-        $file = 'raphael_save_bdd/' . $filename;
+        $file = 'raphael_save/' . $filename;
 
         // Afficher pour vérification
         // dd($file);
