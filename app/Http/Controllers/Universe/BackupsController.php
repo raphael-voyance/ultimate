@@ -21,7 +21,7 @@ class BackupsController extends Controller
     
             return response()->json([
                 'success' => $exitCode === 0,
-                'message' => $exitCode === 0 ? 'Backup successfully initiated.' : 'Backup failed to run.',
+                'message' => $exitCode === 0 ? 'Sauvegarde exécutée avec succés.' : 'Sauvegarde a rencontré une erreur est n\'a pas pu s\'exécuter correctement.',
                 'output' => $output,
                 'exit_code' => $exitCode
             ]);
