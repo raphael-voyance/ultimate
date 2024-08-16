@@ -6,6 +6,7 @@ use App\Http\Controllers\Universe\BlogController;
 use App\Http\Controllers\Universe\AdminController;
 use App\Http\Controllers\Universe\BackupsController;
 use App\Http\Controllers\Universe\DrawsController;
+use App\Http\Controllers\Universe\FilesController;
 use App\Http\Controllers\Universe\TarotController;
 use App\Http\Controllers\Universe\MessagingController;
 use App\Http\Controllers\Universe\NumerologyController;
@@ -83,6 +84,12 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     Route::post('/run-backup', [BackupsController::class, 'run'])->name('run-backup');
     Route::get('/list-backups', [BackupsController::class, 'index'])->name('list-backups');
     Route::get('/download-backup/raphael_save/{filename}', [BackupsController::class, 'download'])->name('download-backup');
+
+    // Folders & Files Routes
+    Route::get('/list-folders', [FilesController::class, 'index'])->name('list-folders');
+    Route::get('/get-files/{disk}/{folder?}', [FilesController::class, 'getFiles'])->name('get-files');
+    Route::get('/download-file/{folder}/{filename}', [FilesController::class, 'downloadFile'])->name('download-file');
+    Route::get('/remove-file/{folder}/{filename}', [FilesController::class, 'removeFile'])->name('remove-file');
 
 });
 

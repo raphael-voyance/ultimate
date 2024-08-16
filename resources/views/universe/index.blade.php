@@ -11,6 +11,18 @@
         </h2>
     </x-slot>
 
+    <div id="element-files-container">
+        <h2>Gestions des médias et des fichiers</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <x-ui.card title="Documents">
+                <button id="btn-add-file" class="btn btn-circle"><i class="fa-thin fa-plus fa-xl"></i></button>
+                <x-slot:actions>
+                <x-ui.link label="Voir tous les dossiers du site" href="{{ route('admin.list-folders') }}" />
+            </x-slot:actions>
+            </x-ui.card>
+        </div>
+    </div>
+
     <div>
         <h2>Paramètres</h2>
         <div id="element-backup-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
