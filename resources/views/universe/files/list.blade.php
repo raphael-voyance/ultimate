@@ -64,15 +64,15 @@
                 
                 @if (!in_array($extension, $extensionsNotVisibles))
                 <div class="mx-auto relative group">
-                    <div class="absolute w-full -top-4 flex flex-nowrap flex-row justify-around items-center">
-                        <button data-btn-download-file="{{ route('admin.download-file', ['disk' => $disk, 'folder' => $folder, 'file' => $filename]) }}" class="btn btn-xs btn-circle">
+                    <div class="absolute w-full -top-4 flex flex-nowrap flex-row justify-around items-center transition-all opacity-0 group-hover:opacity-100">
+                        <button data-btn-download-file="{{ route('admin.download-file', ['disk' => $disk, 'folder' => $folder, 'file' => $filename]) }}" class="btn hover:btn-warning hover:text-white btn-xs btn-circle">
                             <i class="fa-thin fa-download"></i>
                         </button>
                         <button data-btn-remove-file="{{ route('admin.remove-file', ['disk' => $disk, 'folder' => $folder, 'file' => $filename]) }}" class="btn hover:btn-error hover:text-white btn-xs btn-circle">
                             <i class="fa-thin fa-trash"></i>
                         </button>
                     </div>
-                    <div class="flex flex-col justify-center items-center w-20 group">
+                    <div class="flex flex-col justify-center items-center w-20">
                         @if(in_array($extension, $imageExtensions)) 
                             <!-- Si le fichier est une image, affiche l'image -->
                             @if($disk == 'private')
@@ -84,12 +84,10 @@
                             @endif
                         @elseif($extension == 'zip')
                             <!-- Si le fichier est un zip, affiche une icône de fichier zip -->
-                            <span class="text-7xl block group-hover:hidden"><i class="fa-thin fa-file-archive"></i></span>
-                            <span class="text-7xl hidden group-hover:block"><i class="fa-thin fa-file-arrow-down"></i></span>
+                            <span class="text-7xl"><i class="fa-thin fa-file-archive"></i></span>
                         @else
                             <!-- Icône générique pour les autres fichiers -->
-                            <span class="text-7xl block group-hover:hidden"><i class="fa-thin fa-file"></i></span>
-                            <span class="text-7xl hidden group-hover:block"><i class="fa-thin fa-file-arrow-down"></i></span>
+                            <span class="text-7xl"><i class="fa-thin fa-file"></i></span>
                         @endif
                         <span class="text-xs break-all">{{ basename($f) }}</span>
                     </div>

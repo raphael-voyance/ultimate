@@ -15,7 +15,7 @@ const createAlert = (textContent, type = 'default', callback) => {
     $contentText.classList = 'my-4';
     $elementClose.classList = 'alert-box-btn-close';
     $iconClose.classList = 'fal fa-times';
-    $footerElement.classList = 'flex flex-row gap-2 justify-end';
+    $footerElement.classList = 'flex flex-row flex-wrap gap-2 justify-center md:justify-end';
     $btnClose.classList = 'btn btn-sm btn-warning';
     $btnConfirm.classList = 'btn btn-sm btn-error';
 

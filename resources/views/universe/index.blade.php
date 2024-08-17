@@ -25,7 +25,7 @@
 
     <div>
         <h2>Paramètres</h2>
-        <div id="element-backup-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div id="element-save-backup-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <x-ui.card title="Sauvegarde du site">
                 <button id="btn-save-backup" class="btn btn-circle"><i class="fa-thin fa-floppy-disk fa-xl"></i></button>
                 <button id="btn-clean-backup" class="btn btn-circle"><i class="fa-thin fa-recycle fa-xl"></i></button>
