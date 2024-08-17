@@ -92,7 +92,7 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     Route::get('/list-folders', [FilesController::class, 'index'])->name('list-folders');
     Route::get('/get-files/{disk}/{folder?}', [FilesController::class, 'getFiles'])->where('folder', '.*')->name('get-files');
     Route::get('/download-file/{disk}/{folder?}/{file}', [FilesController::class, 'downloadFile'])->where('folder', '.*')->name('download-file');
-    Route::get('/remove-file/{folder}/{filename}', [FilesController::class, 'removeFile'])->name('remove-file');
+    Route::get('/remove-file/{disk}/{folder}/{file}', [FilesController::class, 'removeFile'])->where('folder', '.*')->name('remove-file');
 
 });
 

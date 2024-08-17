@@ -225,12 +225,13 @@
     ]
   },
   "resources/js/add/universe/files.js": {
-    "file": "assets/files-2dKe97zL.js",
+    "file": "assets/files-CokkEL_M.js",
     "name": "files",
     "src": "resources/js/add/universe/files.js",
     "isEntry": true,
     "imports": [
-      "_axios-B4uVmeYG.js"
+      "_axios-B4uVmeYG.js",
+      "_alert-maf5A8O9.js"
     ],
     "css": [
       "assets/alert-BTnCFOkF.css"

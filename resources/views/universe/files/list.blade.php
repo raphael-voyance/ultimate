@@ -57,29 +57,31 @@
                 @php
                     $extension = pathinfo($f, PATHINFO_EXTENSION);
                     $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+                    $extensionsNotVisibles = ['gitignore'];
                     $folder = dirname($f);  // Chemin du dossier
                     $filename = basename($f);  // Nom du fichier
                 @endphp
                 
+                @if (!in_array($extension, $extensionsNotVisibles))
                 <div class="mx-auto relative group">
                     <div class="absolute w-full -top-4 flex flex-nowrap flex-row justify-around items-center">
-                        <button data-btn-download-file="{{ route('admin.download-file', ['disk' => $disk, 'folder' => $folder, 'file' => $filename]) }}" class="btn btn-xs btn-circle"><i class="fa-thin fa-download"></i></button></button>
-                        <button data-btn-remove-file="btn-remove-file" class="btn hover:btn-error hover:text-white btn-xs btn-circle"><i class="fa-thin fa-trash"></i></button></button>
+                        <button data-btn-download-file="{{ route('admin.download-file', ['disk' => $disk, 'folder' => $folder, 'file' => $filename]) }}" class="btn btn-xs btn-circle">
+                            <i class="fa-thin fa-download"></i>
+                        </button>
+                        <button data-btn-remove-file="{{ route('admin.remove-file', ['disk' => $disk, 'folder' => $folder, 'file' => $filename]) }}" class="btn hover:btn-error hover:text-white btn-xs btn-circle">
+                            <i class="fa-thin fa-trash"></i>
+                        </button>
                     </div>
                     <div class="flex flex-col justify-center items-center w-20 group">
                         @if(in_array($extension, $imageExtensions)) 
-
                             <!-- Si le fichier est une image, affiche l'image -->
-
                             @if($disk == 'private')
-                            <img src="{{ route('admin.private-file', ['folder' => $folder, 'file' => $filename]) }}" alt="{{ basename($f) }}" class="w-full h-auto" />
+                                <img src="{{ route('admin.private-file', ['folder' => $folder, 'file' => $filename]) }}" alt="{{ basename($f) }}" class="w-full h-auto" />
                             @elseif ($disk == 'public')
-                            <img src="{{ route('admin.public-file', ['folder' => $folder, 'file' => $filename]) }}" alt="{{ basename($f) }}" class="w-full h-auto" />
+                                <img src="{{ route('admin.public-file', ['folder' => $folder, 'file' => $filename]) }}" alt="{{ basename($f) }}" class="w-full h-auto" />
                             @else
-                            Il semblerait que vous n'ayez pas accés à ce dossier
+                                Il semblerait que vous n'ayez pas accés à ce dossier
                             @endif
-                            
-
                         @elseif($extension == 'zip')
                             <!-- Si le fichier est un zip, affiche une icône de fichier zip -->
                             <span class="text-7xl block group-hover:hidden"><i class="fa-thin fa-file-archive"></i></span>
@@ -92,6 +94,7 @@
                         <span class="text-xs break-all">{{ basename($f) }}</span>
                     </div>
                 </div>
+            @endif
             @endforeach
         </div>
     @endif

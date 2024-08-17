@@ -71,8 +71,17 @@ class FilesController extends Controller
         // Récupère les sous-dossiers et fichiers dans le dossier spécifié
         $directories = Storage::disk($disk)->directories($folder);
         $files = Storage::disk($disk)->files($folder);
-
-        if($folder == '') {
+    
+        // Liste des extensions non visibles
+        $extensionsNotVisibles = ['gitignore'];
+    
+        // Filtrer les fichiers pour exclure ceux avec des extensions non visibles
+        $files = array_filter($files, function($file) use ($extensionsNotVisibles) {
+            $extension = pathinfo($file, PATHINFO_EXTENSION);
+            return !in_array($extension, $extensionsNotVisibles);
+        });
+    
+        if ($folder == '') {
             $folder = $disk;
         }
     
@@ -80,7 +89,7 @@ class FilesController extends Controller
         return view('universe.files.list', compact('disk', 'folder', 'directories', 'files'));
     }
 
-    public function downloadFile( string $disk, string $folder, string $file) {
+    public function downloadFile(string $disk, string $folder, string $file) {
 
         $file = $folder . '/' . $file;
 
@@ -90,15 +99,29 @@ class FilesController extends Controller
         // Vérifier si le fichier existe sur le disque 'backups'
         if (Storage::disk($disk)->exists($file)) {
             // Télécharger le fichier
-            Storage::disk($disk)->download($file);
-            return response(['message' => 'Le fichier s\'est téléchargé avec succés.']);
+            return Storage::disk($disk)->download($file);
         }
         
         // Retourner une erreur 404 si le fichier n'existe pas
         return abort(404, 'File not found');
     }
 
-    public function removeFile(string $folder, string $filename) {
+    public function removeFile(string $disk, string $folder, string $file)
+    {
+        $filePath = $folder . '/' . $file;
 
+        // dd($filePath);
+
+        // Vérifier si le fichier existe sur le disque spécifié
+        if (Storage::disk($disk)->exists($filePath)) {
+            // Suppression du fichier
+            Storage::disk($disk)->delete($filePath);
+
+            // Retourner une réponse de succès ou redirection
+            return response()->json(['message' => 'File deleted successfully'], 200);
+        }
+
+        // Retourner une erreur 404 si le fichier n'existe pas
+        return abort(404, 'File not found');
     }
 }
