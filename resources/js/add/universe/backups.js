@@ -46,7 +46,7 @@ window.addEventListener('load', () => {
                 if(confirmation) {
                     loader.show('element-save-backup-container');
     
-                    axios.post('/admin/run-backup')
+                    axios.post('/admin/run-clean')
                         .then(response => {
                             loader.hide();
                             if(response.data.success) {
