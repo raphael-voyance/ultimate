@@ -82,8 +82,6 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
 
     // Backups Routes
     Route::post('/run-backup', [BackupsController::class, 'run'])->name('run-backup');
-    Route::post('/run-clean', [BackupsController::class, 'clean'])->name('run-backup');
-    Route::get('/list-backups', [BackupsController::class, 'index'])->name('list-backups');
     Route::get('/download-backup/raphael_save/{filename}', [BackupsController::class, 'download'])->name('download-backup');
 
     // Folders & Files Routes

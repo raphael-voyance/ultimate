@@ -17,7 +17,6 @@
 
         <header id="element-save-backup-container" class="mb-6">
             <button id="btn-save-backup" class="btn"><i class="fa-thin fa-floppy-disk"></i> Créer une sauvegarde du site</button>
-            <button id="btn-clean-backup" class="btn"><i class="fa-thin fa-recycle"></i> Nettoyer les sauvegardes du site</button>
         </header>
 
         <div class="grid grid-cols-2 md:grid-cols-6 gap-2 align-middle justify-center items-center">
