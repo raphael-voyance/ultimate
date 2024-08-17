@@ -20,6 +20,7 @@ window.addEventListener('load', () => {
                             if(response.data.success) {
                                 console.log('Sauvegarde exécutée avec succés.');
                                 Toast.success(response.data.message);
+                                location.reload();
                             } else {
                                 console.error('Backup failed', response.data.message);
                                 Toast.danger(response.data.message);
@@ -51,6 +52,7 @@ window.addEventListener('load', () => {
                             if(response.data.success) {
                                 console.log('Nettoyage exécutée avec succés.');
                                 Toast.success(response.data.message);
+                                location.reload();
                             } else {
                                 console.error('Cleaning failed', response.data.message);
                                 Toast.danger(response.data.message);
