@@ -13,7 +13,8 @@
 
         <div class="grid grid-cols-2 md:grid-cols-6 gap-2 align-middle justify-center items-center">
         @foreach ($disks as $name => $disk)
-            <a class="m-auto" href="{{ route('admin.get-files', $name) }}">
+        {{-- {{ dd($disk) }} --}}
+            <a class="m-auto" href="{{ route('admin.get-files', ['disk' => $name]) }}">
                 <div class="flex flex-col justify-center items-center w-20 group">
                     <span class="text-7xl block group-hover:hidden"><i class="fa-thin fa-folder"></i></span>
                     <span class="text-7xl hidden group-hover:block"><i class="fa-thin fa-folder-open"></i></span>

@@ -1,7 +1,7 @@
 {
-  "_alert-!~{00q}~.js": {
+  "_alert-!~{00r}~.js": {
     "file": "assets/alert-BTnCFOkF.css",
-    "src": "_alert-!~{00q}~.js"
+    "src": "_alert-!~{00r}~.js"
   },
   "_alert-maf5A8O9.js": {
     "file": "assets/alert-maf5A8O9.js",
@@ -42,7 +42,7 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-DPcjFVMI.css",
+    "file": "assets/app-BBAGpaL7.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -219,6 +219,18 @@
     "isEntry": true,
     "imports": [
       "_alert-maf5A8O9.js"
+    ],
+    "css": [
+      "assets/alert-BTnCFOkF.css"
+    ]
+  },
+  "resources/js/add/universe/files.js": {
+    "file": "assets/files-2dKe97zL.js",
+    "name": "files",
+    "src": "resources/js/add/universe/files.js",
+    "isEntry": true,
+    "imports": [
+      "_axios-B4uVmeYG.js"
     ],
     "css": [
       "assets/alert-BTnCFOkF.css"
