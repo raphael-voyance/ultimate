@@ -15,7 +15,7 @@
         <h2>Gestions des médias et des fichiers</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <x-ui.card title="Documents">
-                <button id="btn-add-file" class="btn btn-circle"><i class="fa-thin fa-plus fa-xl"></i></button>
+                @livewire('admin.new-file-modal')
                 <x-slot:actions>
                 <x-ui.link label="Voir tous les dossiers du site" href="{{ route('admin.list-folders') }}" />
             </x-slot:actions>
