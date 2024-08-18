@@ -20,10 +20,10 @@
     </x-slot>
 
     <section>
-        <header class="mb-6">
-            <a href="{{ route('admin.blog.category.create') }}" class="btn">Nouvelle catégorie</a>
-            <a href="{{ route('admin.blog.category.index') }}" class="btn">Voir toutes les catégories</a>
-            <a href="#" data-btn-category-del="{{ route('admin.blog.category.destroy', $category->id) }}" class="btn btn-error hover:text-white focus:text-white">Supprimer la categorie</a>
+        <header class="mb-6 flex flex-wrap flex-row gap-3 justify-normal items-center">
+            <a href="{{ route('admin.blog.category.create') }}" class="btn btn-sm">Nouvelle catégorie</a>
+            <a href="{{ route('admin.blog.category.index') }}" class="btn btn-sm">Voir toutes les catégories</a>
+            <a href="#" data-btn-category-del="{{ route('admin.blog.category.destroy', $category->id) }}" class="btn btn-sm btn-error hover:text-white focus:text-white">Supprimer la categorie</a>
         </header>
 
         <section>

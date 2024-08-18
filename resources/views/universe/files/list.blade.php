@@ -15,18 +15,20 @@
 
     <section>
 
-        <header id="element-backup-container" class="mb-6">
+        <header class="mb-6 flex flex-wrap flex-row gap-3 justify-normal items-center">
             @php
                 // On utilise rtrim pour s'assurer qu'il n'y a pas de barre oblique à la fin
                 $parentFolder = rtrim(dirname($folder), '/');
             @endphp
         
+            @livewire('admin.new-file-modal')
+            
             @if ($folder && $folder !== $disk)  <!-- Assurez-vous que $folder n'est pas vide et ne correspond pas à la racine du disque -->
-                <a class="btn" href="{{ route('admin.get-files', ['disk' => $disk, 'folder' => $parentFolder]) }}">
+                <a class="btn btn-sm" href="{{ route('admin.get-files', ['disk' => $disk, 'folder' => $parentFolder]) }}">
                     <i class="fa-thin fa-arrow-up"></i> Remonter d'un cran
                 </a>
             @else
-                <a class="btn" href="{{ route('admin.list-folders') }}">
+                <a class="btn btn-sm" href="{{ route('admin.list-folders') }}">
                     <i class="fa-thin fa-arrow-up"></i> Remonter d'un cran
                 </a>
             @endif

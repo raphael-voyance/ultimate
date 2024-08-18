@@ -13,8 +13,8 @@
 
     <section>
         <header>
-            <a href="{{ route('admin.draw.create') }}" class="btn">Créer un tirage</a>
-            <a href="{{ route('admin.tarot.index') }}" class="btn">Accéder aux interprétations des cartes</a>
+            <a href="{{ route('admin.draw.create') }}" class="btn btn-sm">Créer un tirage</a>
+            <a href="{{ route('admin.tarot.index') }}" class="btn btn-sm">Accéder aux interprétations des cartes</a>
         </header>
 
         <section>

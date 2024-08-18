@@ -19,8 +19,8 @@
     </x-slot>
 
     <section id="create-category">
-        <header class="mb-6">
-            <a href="{{ route('admin.blog.category.index') }}" class="btn">Voir toutes les catégories</a>
+        <header class="mb-6 flex flex-wrap flex-row gap-3 justify-normal items-center">
+            <a href="{{ route('admin.blog.category.index') }}" class="btn btn-sm">Voir toutes les catégories</a>
         </header>
 
         <section>

@@ -11,6 +11,10 @@
 
     <section>
 
+        <header class="mb-6 flex flex-wrap flex-row gap-3 justify-normal items-center">
+            @livewire('admin.new-file-modal')
+        </header>
+
         <div class="grid grid-cols-2 md:grid-cols-6 gap-2 align-middle justify-center items-center">
         @foreach ($disks as $name => $disk)
         {{-- {{ dd($disk) }} --}}

@@ -12,8 +12,8 @@
     </x-slot>
 
     <section id="category-index">
-        <header class="mb-6">
-            <a href="{{ route('admin.blog.category.create') }}" class="btn">Nouvelle catégorie</a>
+        <header class="mb-6 flex flex-wrap flex-row gap-3 justify-normal items-center">
+            <a href="{{ route('admin.blog.category.create') }}" class="btn btn-sm">Nouvelle catégorie</a>
         </header>
 
         <section>

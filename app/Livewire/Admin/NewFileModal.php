@@ -10,6 +10,7 @@ class NewFileModal extends Component
 {
     use WithFileUploads;
 
+    public $btnMd;
     public $newFileModal = false;
     public $allFolders;
     public $folder;
@@ -33,8 +34,10 @@ class NewFileModal extends Component
     public function saveFile() {
         $this->validate([
             'folder' => 'required|string',
-            'file' => 'required|file|max:10240', // Limite à 10MB
+            'file' => 'required|file',
         ]);
+
+        
 
         $this->file->storeAs($this->folder, $this->file->getClientOriginalName());
 

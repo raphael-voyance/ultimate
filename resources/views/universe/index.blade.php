@@ -11,20 +11,9 @@
         </h2>
     </x-slot>
 
-    <div id="element-files-container">
-        <h2>Gestions des médias et des fichiers</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <x-ui.card title="Documents">
-                @livewire('admin.new-file-modal')
-                <x-slot:actions>
-                <x-ui.link label="Voir tous les dossiers du site" href="{{ route('admin.list-folders') }}" />
-            </x-slot:actions>
-            </x-ui.card>
-        </div>
-    </div>
-
-    <div>
-        <h2>Paramètres</h2>
+    {{-- Paramètres --}}
+    <div class="mb-8 py-4 px-6 bg-base-300">
+        <h2 class="mb-4">Gestion du site</h2>
         <div id="element-save-backup-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <x-ui.card title="Sauvegarde du site">
                 <button id="btn-save-backup" class="btn btn-circle"><i class="fa-thin fa-floppy-disk fa-xl"></i></button>
@@ -32,70 +21,67 @@
                 <x-ui.link label="Voir toutes les sauvegardes" href="{{ route('admin.list-backups') }}" />
             </x-slot:actions>
             </x-ui.card>
+
+            <x-ui.card title="Utilisateurs">
+                
+                <div class="font-bold">
+                    Derniers utilisateurs inscrits :
+                </div>
+                <ul>
+                    <li><x-ui.link label="Florent P." href="#" /></li>
+                    <li><x-ui.link label="Joy N." href="#" /></li>
+                    <li><x-ui.link label="Patrice V." href="#" /></li>
+                </ul>
+    
+                <x-slot:actions>
+                    <x-ui.link label="Voir tous les utilisateurs" href="{{ route('home') }}" />
+                </x-slot:actions>
+            </x-ui.card>
+
         </div>
     </div>
 
-    <div>
-        <h2>Relatif aux consultations :</h2>
+    {{-- Relatif aux consultations --}}
+    <div class="mb-8 py-4 px-6 bg-base-300">
+        <h2 class="mb-4">Gestion des consultations</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-            <x-ui.card title="Séances passées">
-                <div class="text-xl font-bold">
-                    Séances passées :
-                </div>
+            <x-ui.card title="Dernières consultations">
                 <ul>
-                    <li>le : 18/05/2023</li>
-                    <li>le : 08/03/2023</li>
-                    <li>le : 02/12/2022</li>
+                    <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="08/05/2024" href="#" /> avec Mathilde</li>
+                    <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="14/04/2024" href="#" /> avec Brigitte</li>
+                    <li><i class="fa-thin fa-pen-nib mr-2"></i> le <x-ui.link label="19/03/2024" href="#" /> pour Gérard</li>
                 </ul>
     
                 <x-slot:actions>
-                    <x-ui.link label="Voir toutes les séances" href="{{ route('home') }}" />
+                    <x-ui.link label="Toutes les consultations passées" href="{{ route('home') }}" />
                 </x-slot:actions>
             </x-ui.card>
 
-            <x-ui.card title="Séances à venir :">
-                <div class="text-xl font-bold">
-                    Séances à venir :
-                </div>
+            <x-ui.card title="Consultations à venir">
                 <ul>
-                    <li>le : 27/10/2023</li>
-                    <li>le : 30/12/2023</li>
+                    <li><i class="fa-thin fa-pen-nib mr-2"></i> le <x-ui.link label="08/09/2024" href="#" /> avec Brune</li>
+                    <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="14/09/2024" href="#" /> avec Louis</li>
+                    <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="19/09/2024" href="#" /> avec Jean-Gaspard</li>
                 </ul>
                 <x-slot:actions>
-                    <x-ui.link label="Voir toutes les séances" href="{{ route('home') }}" />
-                </x-slot:actions>
-            </x-ui.card>
-
-            <x-ui.card title="Consultants">
-                <div class="text-xl font-bold">
-                    Listes des derniers consultants :
-                </div>
-                <ul>
-                    <li>Thierry P.</li>
-                    <li>Margueritte N.</li>
-                    <li>Jean-Lou M.</li>
-                </ul>
-    
-                <x-slot:actions>
-                    <x-ui.link label="Voir tous les consultants" href="{{ route('home') }}" />
+                    <x-ui.link label="Toutes les consultations à venir" href="{{ route('home') }}" />
                 </x-slot:actions>
             </x-ui.card>
         </div>
     </div>
 
-    <div>
-        <h2>Relatif au blog :</h2>
+    {{-- Relatif au blog --}}
+    <div class="mb-8 py-4 px-6 bg-base-300">
+        <h2 class="mb-4">Gestion du blog</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
             <x-ui.card title="Articles">
-                <div class="text-xl font-bold">
-                    <x-ui.link label="Rédiger un article" href="{{ route('admin.blog.post.create') }}" />
-                    <x-ui.link label="Catégories" href="{{ route('admin.blog.category.index') }}" />
-                </div>
-                <x-slot:actions>
-                    <x-ui.link label="Voir tous les articles" href="{{ route('admin.blog.post.index') }}" />
-                </x-slot:actions>
+                <ul>
+                    <li><x-ui.link label="Rédiger un article" href="{{ route('admin.blog.post.create') }}" /></li>
+                    <li><x-ui.link label="Catégories" href="{{ route('admin.blog.category.index') }}" /></li>
+                    <li><x-ui.link label="Voir tous les articles" href="{{ route('admin.blog.post.index') }}" /></li>
+                </ul>
             </x-ui.card>
 
             <x-ui.card title="Commentaires">
@@ -112,18 +98,37 @@
         
     </div>
 
-    <div>
-        <h2>Relatif aux interprétations :</h2>
+    {{-- Gestions des médias et des fichiers --}}
+    <div class="mb-8 py-4 px-6 bg-base-300">
+        <h2 class="mb-4">Gestions des médias et des fichiers</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <x-ui.card title="Documents">
+                @livewire('admin.new-file-modal', ['btnMd' => true])
+                <x-slot:actions>
+                <x-ui.link label="Parcourir les dossiers du site" href="{{ route('admin.list-folders') }}" />
+            </x-slot:actions>
+            </x-ui.card>
+        </div>
+    </div>
+
+    {{-- Relatif aux interprétations --}}
+    <div class="mb-8 py-4 px-6 bg-base-300">
+        <h2 class="mb-4">Gestion des prévisions</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <x-ui.card title="Les tirages">
-                <x-ui.link label="Voir tous les tirages" href="{{ route('admin.draw.index') }}" />
-                <x-ui.link label="Interprétations des cartes" href="{{ route('admin.tarot.index') }}" />
-                <x-ui.link label="Créer un tirage" href="{{ route('admin.draw.create') }}" />
+                <ul>
+                    <li><x-ui.link label="Voir tous les tirages" href="{{ route('admin.draw.index') }}" /></li>
+                    <li></li><x-ui.link label="Interprétations des cartes" href="{{ route('admin.tarot.index') }}" /></li>
+                    <li><x-ui.link label="Créer un tirage" href="{{ route('admin.draw.create') }}" /></li>
+                </ul>
             </x-ui.card>
             
 
             <x-ui.card title="Numérologie">
-                <x-ui.link label="Interprétations des nombres" href="{{ route('admin.numerology.index') }}" />
+                <ul>
+                    <li><x-ui.link label="Interprétations des nombres" href="{{ route('admin.numerology.index') }}" /></li>
+                </ul>
+                
             </x-ui.card>
 
             <x-ui.card title="Les saisons">
@@ -142,9 +147,16 @@
         </div>
     </div>
 
-    <div>
-        <h2>Relatif à la trésorerie :</h2>
+    {{-- Relatif à la comptabilité --}}
+    <div class="py-4 px-6 bg-base-300">
+        <h2 class="mb-4">Comptabilité</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+            <x-ui.card title="Gestion du temps">
+                Nombre de consultation(s) du jour : 2 <br>
+                Nombre de consultation(s) du mois : 28 <br>
+                Nombre d'heures moyen de consultation sur l'année : 360 heures 
+            </x-ui.card>
 
             <x-ui.card title="Trésorerie">
                 Chiffre d'affaire du jour : 100€ <br>
@@ -172,42 +184,6 @@
                     <li class="flex flex-row justify-between">
                         <a href="#">Paiement 1</a>
                         <x-mary-badge value="Gratuit" class="badge-primary"/>
-                    </li>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="Gratuit" class="badge-primary"/>
-                    </li>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="Annulé" class="badge-error"/>
-                    </li>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="Annulé" class="badge-error"/>
-                    </li>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="Gratuit" class="badge-primary"/>
-                    </li>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="Gratuit" class="badge-primary"/>
-                    </li>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="Payé" class="badge-success"/>
-                    </li>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="Remboursé" class="badge-secondary"/>
-                    </li>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="Gratuit" class="badge-primary"/>
-                    </li>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="Payé" class="badge-success"/>
                     </li>
                 </ul>
                 <x-slot:actions>

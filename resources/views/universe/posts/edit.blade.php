@@ -39,11 +39,11 @@
     </x-slot>
 
     <section id="blog-edit" data-post-id="{{ $post->id }}">
-        <header class="mb-6">
-            <a href="{{ route('admin.blog.post.index') }}" class="btn">Voir tous les articles</a>
+        <header class="mb-6 flex flex-wrap flex-row gap-3 justify-normal items-center">
+            <a href="{{ route('admin.blog.post.index') }}" class="btn btn-sm">Voir tous les articles</a>
             <a href="{{ route('my_universe.show', $post->slug) }}" target="_blank" class="btn">Voir l'article</a>
-            <a href="{{ route('admin.blog.post.create') }}" class="btn">Nouvel article</a>
-            <a href="#" data-btn-post-del="{{ route('admin.blog.post.destroy', $post->id) }}" class="btn btn-error hover:text-white">Supprimer l'article</a>
+            <a href="{{ route('admin.blog.post.create') }}" class="btn btn-sm">Nouvel article</a>
+            <a href="#" data-btn-post-del="{{ route('admin.blog.post.destroy', $post->id) }}" class="btn btn-sm btn-error hover:text-white">Supprimer l'article</a>
         </header>
 
         <section>

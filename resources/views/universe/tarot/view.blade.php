@@ -14,7 +14,7 @@
 
     <section data-update-route="{{ route('admin.tarot.update', $card->slug) }}">
         <header class="relative flex justify-center flex-wrap gap-2 mb-8 pb-8 after:absolute after:w-1/2 after:-translate-x-1/2 after:h-[2px] after:rounded after:bottom-0 after:left-1/2 after:bg-white/50">
-            <a href="{{ route('admin.tarot.index') }}" class="btn">Toutes les cartes</a>
+            <a href="{{ route('admin.tarot.index') }}" class="btn btn-sm">Toutes les cartes</a>
         </header>
 
         <section class="grid grid-cols-4 gap-2 relative md:-left-12">

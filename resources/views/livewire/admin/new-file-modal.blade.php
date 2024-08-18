@@ -3,17 +3,20 @@
     <script>
         document.addEventListener('livewire:init', () => {
             Livewire.on('fileSaved', () => {
-                console.log('salcccccy')
-                Toast.success('Fichier enregistré avec succès !');
+                Toast.success('Fichier enregistré avec succès.');
             });
         })
     </script>
     <a href="#" wire:click.prevent="openModal()"
-        class="btn btn-circle"><i class="fa-thin fa-plus fa-xl"></i></a>
+        @class([
+            'btn btn-circle',
+            'btn-md' => $btnMd,
+            'btn-sm' => !$btnMd,
+        ])><i class="fa-thin fa-plus fa-xl"></i></a>
 
     <x-mary-modal wire:model="newFileModal">
 
-        <section class="p-4 bg-base-200">
+        <section class="p-4 mb-4 bg-base-200">
             <details class="collapse collapse-arrow bg-base-200">
                 <summary class="collapse-title text-xl font-medium">Dossier d'enregistrement du fichier</summary>
                 <div class="collapse-content">
@@ -49,10 +52,8 @@
         </section>
 
         <section>
-
             <input id="file" type="file" wire:model="file" class="file-input w-full max-w-xs" />
-
-            <button wire:click="saveFile" class="btn btn-primary mt-4">Enregistrer le fichier</button>
+            <button wire:click="saveFile" class="btn btn-sm btn-primary float-right mt-4">Enregistrer le fichier</button>
         </section>
         
     </x-mary-modal>

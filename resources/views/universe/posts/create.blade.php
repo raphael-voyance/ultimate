@@ -24,8 +24,8 @@
     </x-slot>
 
     <section id="blog-create">
-        <header class="mb-6">
-            <a href="{{ route('admin.blog.post.index') }}" class="btn">Voir tous les articles</a>
+        <header class="mb-6 flex flex-wrap flex-row gap-3 justify-normal items-center">
+            <a href="{{ route('admin.blog.post.index') }}" class="btn btn-sm">Voir tous les articles</a>
         </header>
 
         <section>
