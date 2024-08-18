@@ -44,7 +44,7 @@ window.addEventListener('load', () => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 let url = this.getAttribute('data-btn-remove-file');
-                createAlert('Vous êtes sur le point de supprimer un tirage, êtes-vous sûr(e) ?', 'default', function(confirmation) {
+                createAlert('Vous êtes sur le point de supprimer un fichier, êtes-vous sûr(e) ?', 'default', function(confirmation) {
                     if (confirmation) {
                     axios.get(url)
                     .then(function (response) {

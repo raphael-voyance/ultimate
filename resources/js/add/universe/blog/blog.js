@@ -89,6 +89,21 @@ window.addEventListener('load', () => {
         const publishedAtInputCancelBtn = document.getElementById('published_at_input_cancel_btn');
         const publishedAtText = document.getElementById('published_at_text');
         const publishedAtElement = document.getElementById('published_at');
+        const thumbnailElement = document.getElementById('thumbnail');
+
+        // Afficher la preview de la Thumbnail
+        thumbnailElement.addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.getElementById('thumbnail-preview').src = e.target.result;
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        });
 
         // Ajout d'une catégorie
         // Afficher le formulaire

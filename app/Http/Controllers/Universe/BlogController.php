@@ -68,7 +68,7 @@ class BlogController extends Controller
             if($post->status == 'PRIVATE') {
                 $thumbnailPath = $request->file('thumbnail')->store('images', 'private');
                 $validated['thumbnail'] = $thumbnailPath;
-                $post->image = storage_path();
+                $post->image = url("/storage/private/{$thumbnailPath}");
             }else {
                 $thumbnailPath = $request->file('thumbnail')->store('posts/thumbnails', 'public');
                 $validated['thumbnail'] = $thumbnailPath;

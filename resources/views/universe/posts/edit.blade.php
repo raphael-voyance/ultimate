@@ -41,7 +41,7 @@
     <section id="blog-edit" data-post-id="{{ $post->id }}">
         <header class="mb-6 flex flex-wrap flex-row gap-3 justify-normal items-center">
             <a href="{{ route('admin.blog.post.index') }}" class="btn btn-sm">Voir tous les articles</a>
-            <a href="{{ route('my_universe.show', $post->slug) }}" target="_blank" class="btn">Voir l'article</a>
+            <a href="{{ route('my_universe.show', $post->slug) }}" target="_blank" class="btn btn-sm">Voir l'article</a>
             <a href="{{ route('admin.blog.post.create') }}" class="btn btn-sm">Nouvel article</a>
             <a href="#" data-btn-post-del="{{ route('admin.blog.post.destroy', $post->id) }}" class="btn btn-sm btn-error hover:text-white">Supprimer l'article</a>
         </header>
@@ -109,11 +109,11 @@
                             <div class="w-20 rounded-full">
                                 @if(Str::contains(basename($post->image), 'pending'))
                                     <!-- Affichage spécifique si le nom de l'image contient "pending" -->
-                                    <img src="{{ asset('imgs/pending.jpg') }}" alt="Pending Thumbnail" />
+                                    <img id="thumbnail-preview" src="{{ asset('imgs/pending.jpg') }}" alt="Pending Thumbnail" />
                                 @elseif($post->status == 'PRIVATE')
-                                    <img src="{{ route('image.private', ['filename' => basename($post->image)]) }}" alt="Thumbnail">
+                                    <img id="thumbnail-preview" src="{{ route('image.private', ['filename' => basename($post->image)]) }}" alt="Thumbnail">
                                 @else
-                                    <img src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" />
+                                    <img id="thumbnail-preview" src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" />
                                 @endif
                             </div>
                           </div>
