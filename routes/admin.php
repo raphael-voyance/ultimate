@@ -94,6 +94,8 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     Route::get('/download-file/{disk}/{folder?}/{file}', [FilesController::class, 'downloadFile'])->where('folder', '.*')->name('download-file');
     Route::get('/remove-file/{disk}/{folder}/{file}', [FilesController::class, 'removeFile'])->where('folder', '.*')->name('remove-file');
 
+    
+
 });
 
     //--------------TIPS--------------

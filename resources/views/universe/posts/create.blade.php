@@ -76,8 +76,7 @@
                         x-ref="excerpt"
                         id="excerpt"
                         rows="4" 
-                        class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror" 
-                        required 
+                        class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror"
                         name="excerpt" 
                         placeholder="Résumé de l'article"
                         @input="wordCount = $event.target.value.split(/\s+/).filter(word => word.length > 0).length">{{ old('excerpt') ? old('excerpt') : '' }}</textarea>
@@ -102,7 +101,7 @@
 
                         <div class="avatar">
                             <div class="w-20 rounded-full">
-                              <img id="thumbnail-preview" src="{{ asset('imgs/pending.jpg') }}" />
+                              <img id="thumbnail-preview" src="{{ asset('imgs/' . config('siteconfig.pending', 'pending.jpg')) }}" />
                             </div>
                           </div>
 

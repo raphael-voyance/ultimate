@@ -48,7 +48,7 @@
             <div class="thumbnail">
                 @if(Str::contains(basename($post->image), 'pending'))
                     <!-- Affichage spécifique si le nom de l'image contient "pending" -->
-                    <img src="{{ asset('imgs/pending.jpg') }}" alt="Pending Thumbnail" />
+                    <img src="{{ asset('imgs/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="Pending Thumbnail" />
                 @elseif($post->status == 'PRIVATE')
                     <img src="{{ route('image.private', ['filename' => basename($post->image)]) }}" alt="Thumbnail">
                 @else

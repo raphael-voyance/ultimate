@@ -9,7 +9,7 @@
         <title>{{ config('app.name', 'Raphaël Voyance') }}</title>
         <meta name="description" content="">
 
-        {{-- <link rel="apple-touch-icon" href="apple-touch-icon.png"> --}}
+        <link rel="icon" type="image/vnd.icon" href="{{ asset(config('siteconfig.favicon', 'favicon.ico')) }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">

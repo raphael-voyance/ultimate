@@ -40,7 +40,7 @@
         
                     <div data-alt="{{ $post->title }}" class="thumbnail">
                         @if(Str::contains(basename($post->image), 'pending'))
-                                    <img src="{{ asset('imgs/pending.jpg') }}" alt="{{ $post->title }}" />
+                                    <img src="{{ asset('imgs/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="{{ $post->title }}" />
                                 @else
                                     <img src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="{{ $post->title }}" />
                                 @endif

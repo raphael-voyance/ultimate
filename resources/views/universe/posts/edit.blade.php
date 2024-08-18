@@ -82,8 +82,7 @@
                         x-ref="excerpt"
                         id="excerpt"
                         rows="4" 
-                        class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror" 
-                        required 
+                        class="textarea textarea-primary w-full peer @error('excerpt') border-error @enderror"
                         name="excerpt" 
                         placeholder="Résumé de l'article"
                         @input="wordCount = $event.target.value.split(/\s+/).filter(word => word.length > 0).length">{{ old('excerpt') ? old('excerpt') : $post->excerpt }}</textarea>
@@ -109,7 +108,7 @@
                             <div class="w-20 rounded-full">
                                 @if(Str::contains(basename($post->image), 'pending'))
                                     <!-- Affichage spécifique si le nom de l'image contient "pending" -->
-                                    <img id="thumbnail-preview" src="{{ asset('imgs/pending.jpg') }}" alt="Pending Thumbnail" />
+                                    <img id="thumbnail-preview" src="{{ asset('imgs/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="Pending Thumbnail" />
                                 @elseif($post->status == 'PRIVATE')
                                     <img id="thumbnail-preview" src="{{ route('image.private', ['filename' => basename($post->image)]) }}" alt="Thumbnail">
                                 @else

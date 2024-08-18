@@ -12,14 +12,14 @@ class FilesController extends Controller
 
     // Lister les dossiers public / private ....
     public function index() {
-    $disks = Config::get('filesystems.disks');
+        $disks = Config::get('filesystems.disks');
 
-    // Filtrer les disques cachés
-    $visibleDisks = array_filter($disks, function ($disk) {
-        return !($disk['hidden'] ?? false); // N'affiche pas les disques où 'hidden' est true
-    });
-    // dd($visibleDisks);
-    return view('universe.files.list-folders', ['disks' => $visibleDisks]);
+        // Filtrer les disques cachés
+        $visibleDisks = array_filter($disks, function ($disk) {
+            return !($disk['hidden'] ?? false); // N'affiche pas les disques où 'hidden' est true
+        });
+        // dd($visibleDisks);
+        return view('universe.files.list-folders', ['disks' => $visibleDisks]);
 
     }
 

@@ -36,9 +36,7 @@ class NewFileModal extends Component
             'folder' => 'required|string',
             'file' => 'required|file',
         ]);
-
         
-
         $this->file->storeAs($this->folder, $this->file->getClientOriginalName());
 
         $this->resetForm();

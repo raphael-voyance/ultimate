@@ -2,6 +2,7 @@
 
     @section(('js'))
         @vite("resources/js/add/universe/backups.js")
+        @vite("resources/js/add/universe/files.js")
     @endsection
 
     <x-slot name="header">
@@ -108,6 +109,10 @@
                 <x-slot:actions>
                 <x-ui.link label="Parcourir les dossiers du site" href="{{ route('admin.list-folders') }}" />
             </x-slot:actions>
+            </x-ui.card>
+
+            <x-ui.card title="Images par défaut">
+                @livewire('admin.add-site-imgs-component')
             </x-ui.card>
         </div>
     </div>
