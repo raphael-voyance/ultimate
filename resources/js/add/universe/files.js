@@ -5,6 +5,7 @@ import { createAlert } from "../../Alert/alert.js";
 window.addEventListener('load', () => {
     const dataBtnDownloadFile = document.querySelectorAll('[data-btn-download-file]');
     const dataBtnRemoveFile = document.querySelectorAll('[data-btn-remove-file]');
+    const uploaderImgElements = document.querySelectorAll('[data-uploader-img]');
 
     if(dataBtnDownloadFile.length >= 1) {
         dataBtnDownloadFile.forEach((btn) => {
@@ -61,6 +62,43 @@ window.addEventListener('load', () => {
                     }
                 })
             })
+        });
+    }
+
+    if(uploaderImgElements.length >= 1) {
+        uploaderImgElements.forEach((uploader) => {
+            const inputFileElement = uploader.querySelector('[data-input-file]');
+            const imgsPreviewElement = uploader.querySelector('[data-img-preview]');
+            const saveButtonElement = uploader.querySelector('[data-save-button]');
+            const infoImgElement = uploader.querySelector('[data-info-img]');
+
+            // Initialement masquer le bouton
+            saveButtonElement.style.display = 'none';
+
+            inputFileElement.addEventListener('change', function(event) {
+                var file = event.target.files[0];
+                if (file) {
+
+                    var reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        imgsPreviewElement.src = e.target.result;
+                    }
+                    
+                    reader.readAsDataURL(file);
+
+                    // Afficher le bouton lorsqu'un fichier est sélectionné
+                    saveButtonElement.style.display = 'block';
+                    saveButtonElement.style.margin = 'auto';
+                    saveButtonElement.style.marginTop = '15px';
+
+                    infoImgElement.style.display = 'none';
+                } else {
+                    // Masquer le bouton si aucun fichier n'est sélectionné
+                    saveButtonElement.style.display = 'none';
+                    infoImgElement.style.display = 'block';
+                }
+            });
         });
     }
     

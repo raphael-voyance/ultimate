@@ -1,7 +1,4 @@
 <div>
-
-  
- 
     {{-- You can use any `$wire.METHOD` on `@row-click` --}}
     @php
       $categories = DB::table('categories')->orderBy('name', 'desc')->paginate(8);

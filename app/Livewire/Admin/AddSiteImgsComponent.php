@@ -53,21 +53,39 @@ class AddSiteImgsComponent extends Component
 
     public $pending;
     public $favicon;
+    public $logo;
 
     public function saveFile($fileName)
     {
         if ($fileName == 'pending' && $this->pending) {
             Log::info('Pending file exists: ' . $this->pending->getClientOriginalName());
             $this->pending->storeAs('public/site-images', $fileName . '.jpg');
-            $this->dispatch('fileSaved');
+            toast()
+                ->success('Image enregistrée avec succès.')
+                ->pushOnNextPage();
             $this->dispatch('refreshPage');
         } elseif ($fileName == 'favicon' && $this->favicon) {
             Log::info('Favicon exists: ' . $this->favicon->getClientOriginalName());
             $this->favicon->storeAs('public/site-images', $fileName . '.ico');
-            $this->dispatch('fileSaved');
+            // Affiche un message de succès
+            toast()
+                ->success('Favicon enregistrée avec succès.')
+                ->pushOnNextPage();
+            $this->dispatch('refreshPage');
+        }  elseif ($fileName == 'logo' && $this->logo) {
+            Log::info('Logo exists: ' . $this->logo->getClientOriginalName());
+            $this->logo->storeAs('public/site-images', $fileName . '.png');
+            // Affiche un message de succès
+            toast()
+                ->success('Logo enregistrée avec succès.')
+                ->pushOnNextPage();
             $this->dispatch('refreshPage');
         } else {
-            Log::error('No file was uploaded.');
+            // Affiche un message d'erreur
+            toast()
+                ->warning('L\'image n\'a pa pu s\'enregistrée.')
+                ->pushOnNextPage();
+            Log::error('L\'image n\'a pa pu s\'enregistrée.');
         }
     }
 

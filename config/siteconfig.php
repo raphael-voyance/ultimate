@@ -3,5 +3,7 @@
 return [
     'favicon' => 'favicon.ico',
 
-    'pending_img' => 'pending.jpg',
+    'pending' => 'pending.jpg',
+
+    'logo' => 'logo.png',
 ];

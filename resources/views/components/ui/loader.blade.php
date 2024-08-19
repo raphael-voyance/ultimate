@@ -1,6 +1,9 @@
-@props(['overlay' => true, 'loadingText' => true])
+@props(['overlay' => true, 'loadingText' => true, 'fixed' => true])
 
-<div @class(['fixed top-0 bottom-0 left-0 right-0 h-screen md:h-full rounded-md z-20',
+<div @class([
+    'top-0 bottom-0 left-0 right-0 h-screen md:h-full rounded-md z-20',
+    'fixed' => $fixed,
+    'absolute' => !$fixed,
     'bg-base-200/60' => $overlay]) >
 
     @if($overlay)
