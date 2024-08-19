@@ -222,7 +222,7 @@
 
                 {{-- Soumission --}}
                 <div class="flex justify-end mt-2">
-                    <button id="btn-submit-post" type="submit" class="btn btn-primary btn-sm">Poster l'article</button>
+                    <button id="btn-submit-post" type="submit" class="btn btn-primary btn-sm">Enregistrer l'article</button>
                 </div>
             </form>
         </section>
