@@ -270,13 +270,19 @@ class BlogController extends Controller
         $validated = $request->validate([
             'name' => 'required|unique:categories|max:255',
             'description' => 'nullable|string',
-            'slug' => 'required|unique:categories|max:255',
+            'slug' => 'unique:categories|max:255',
         ]);
 
         $category = new Category();
         $category->name = $request->name;
         $category->description = $request->description;
-        $category->slug = $request->slug;
+
+        if(empty($request->slug)) {
+            $category->slug = Str::slug($request->name);
+        }else {
+            $category->slug = $request->slug;
+        }
+        
         $category->save();
 
         $redirectRoute = route('admin.blog.category.edit', $category->id);
@@ -306,7 +312,7 @@ class BlogController extends Controller
                 'max:255',
                 Rule::unique('categories')->ignore($category->id),
             ],
-            'description' => 'required',
+            'description' => 'nullable|string',
             'slug' => [
                 'required',
                 'max:255',

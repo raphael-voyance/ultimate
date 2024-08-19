@@ -14,7 +14,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $posts = Post::where('status', 'PUBLISH')->with('categories')->paginate(3);
+        $posts = Post::where('status', 'PUBLISH')->orderByDesc('published_at')->with('categories')->paginate(3);
         return view('blog.my-universe', ['posts' => $posts]);
     }
 
