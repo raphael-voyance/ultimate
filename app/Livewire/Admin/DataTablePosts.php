@@ -15,7 +15,9 @@ class DataTablePosts extends Component
     
         $this->headers = [
             ['key' => 'id', 'label' => '#'],
+            ['key' => 'thumbnail', 'label' => 'Image à la une'],
             ['key' => 'title', 'label' => 'Titre'],
+            ['key' => 'excerpt', 'label' => 'Description'],
             ['key' => 'status', 'label' => 'Status'],
             ['key' => 'actions', 'label' => 'Actions'],
         ];

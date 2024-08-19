@@ -8,17 +8,12 @@
 @endphp
 <x-mary-table :headers="$headers" :rows="$posts" striped with-pagination>
 
-  @scope('cell_title', $post)
-  <div class="group">
-    <div class="transition-all translate-y-2 group-hover:translate-y-0">
-      {{ $post->title }}
-    </div>
-    
-    <div class="transition-all py-2 h-0 opacity-0 -translate-y-4 group-hover:h-auto group-hover:translate-y-0 group-hover:opacity-85">
-      <a class="badge cursor-pointer hover:badge-outline" target="_blank" href="{{ route('my_universe.show', $post->slug) }}">Voir l'article</a> <span class="badge cursor-pointer hover:badge-outline" data-copy-link="{{ route('my_universe.show', $post->slug) }}">Copier le lien</span>
-    </div>
-    
-  </div>
+  @scope('cell_excerpt', $post)
+  @if($post->excerpt)
+          {{ $post->excerpt }}
+        @else
+          <span class="text-gray-500 italic">Aucune description renseignée</span>
+        @endif
   @endscope
 
   @scope('cell_status', $post)
@@ -41,8 +36,28 @@
 
   @scope('cell_actions', $post)
   <div class="flex flex-nowrap gap-2">
-      <a href="{{ route('admin.blog.post.edit', $post->id) }}" class="btn btn-sm btn-circle btn-info btn-outline"><x-mary-icon name="o-pencil-square" /></a>
+      <a href="{{ route('admin.blog.post.edit', $post->id) }}" class="btn btn-sm btn-circle btn-warning btn-outline"><x-mary-icon name="o-pencil-square" /></a>
+      <a href="{{ route('my_universe.show', $post->slug) }}" class="btn btn-sm btn-circle btn-info btn-outline"><i class="fa-light fa-eye"></i></a>
+      <a href="#" data-copy-link="{{ route('my_universe.show', $post->slug) }}" class="btn btn-sm btn-circle btn-info btn-outline"><i class="fa-light fa-copy"></i></a>
       <x-mary-button data-btn-post-del="{{ route('admin.blog.post.destroy', $post->id) }}" icon="o-trash" spinner class="btn-sm btn-circle btn-error btn-outline" />
+  </div>
+  @endscope
+
+  @scope('cell_thumbnail', $post)
+  <div class="flex flex-nowrap gap-2">
+    <div class="avatar">
+                            
+      <div class="w-20 rounded-full">
+          @if(Str::contains(basename($post->image), 'pending'))
+              <!-- Affichage spécifique si le nom de l'image contient "pending" -->
+              <img id="thumbnail-preview" src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="Pending Thumbnail" />
+          @elseif($post->status == 'PRIVATE')
+              <img id="thumbnail-preview" src="{{ route('image.private', ['filename' => basename($post->image)]) }}" alt="Thumbnail">
+          @else
+              <img id="thumbnail-preview" src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" />
+          @endif
+      </div>
+  </div>
   </div>
   @endscope
 

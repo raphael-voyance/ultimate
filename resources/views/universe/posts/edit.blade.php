@@ -115,7 +115,7 @@
                                     <img id="thumbnail-preview" src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" />
                                 @endif
                             </div>
-                          </div>
+                        </div>
 
                           <input id="thumbnail" type="file" class="file-input w-full max-w-xs" />
                     </div>
