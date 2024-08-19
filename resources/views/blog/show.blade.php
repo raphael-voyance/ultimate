@@ -35,7 +35,7 @@
             @endcan
 
             {{-- Si la date de publication de l'article n'est pas passée --}}
-            @if(\Carbon\Carbon::parse($post->published_at)->isFuture() && Auth::guest() || Auth::user()->cannot('admin'))
+            @if(\Carbon\Carbon::parse($post->published_at)->isFuture() && Auth::guest() || Auth::user() &&Auth::user()->cannot('admin'))
             <section>
                 <div class="card bg-base-300 max-w-xl shadow-xl mx-auto mb-8">
                     <div class="card-body">
