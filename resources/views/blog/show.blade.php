@@ -19,12 +19,12 @@
             @can('admin')
                 <div class="card bg-base-300 shadow-xl mx-auto mb-8">
                     <div class="card-body text-center">
-                        <div class="flex flex-row justify-center items-center mb-3">
+                        <div class="flex flex-row justify-center items-center">
                             <a href="{{ route('admin.blog.post.edit', $post->id) }}" class="badge badge-secondary hover:text-inherit focus:text-inherit">Modifier l'article</a>
                         </div>
                         
                         @if(\Carbon\Carbon::parse($post->published_at)->isFuture())
-                        <p class="published_at text-red-500">
+                        <p class=" mt-3 published_at text-red-500">
                             Cet article n'est pas encore publié. <br>
                             Sa date de publication estimée est le {{ \Carbon\Carbon::parse($post->published_at)->translatedFormat('l d F Y') }}
                         </p>
