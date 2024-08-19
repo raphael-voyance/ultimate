@@ -16,11 +16,28 @@
     <article class="blog">
         <section class="post-content">
 
-            {{-- Sinon la date de publication de l'article n'est pas passée --}}
-            @if(\Carbon\Carbon::parse($post->published_at)->isFuture())
-            {{-- @if(\Carbon\Carbon::parse($post->published_at)->isFuture()) --}}
+            @can('admin')
+                <div class="card bg-base-300 shadow-xl mx-auto mb-8">
+                    <div class="card-body text-center">
+                        <div class="flex flex-row justify-center items-center mb-3">
+                            <a href="{{ route('admin.blog.post.edit', $post->id) }}" class="badge badge-secondary hover:text-inherit focus:text-inherit">Modifier l'article</a>
+                        </div>
+                        
+                        @if(\Carbon\Carbon::parse($post->published_at)->isFuture())
+                        <p class="published_at text-red-500">
+                            Cet article n'est pas encore publié. <br>
+                            Sa date de publication estimée est le {{ \Carbon\Carbon::parse($post->published_at)->translatedFormat('l d F Y') }}
+                        </p>
+                        @endif
+                    </div>
+                    
+                </div>
+            @endcan
+
+            {{-- Si la date de publication de l'article n'est pas passée --}}
+            @if(\Carbon\Carbon::parse($post->published_at)->isFuture() && Auth::guest() || Auth::user()->cannot('admin'))
             <section>
-                <div class="card bg-base-100 max-w-xl shadow-xl mx-auto mb-8">
+                <div class="card bg-base-300 max-w-xl shadow-xl mx-auto mb-8">
                     <div class="card-body">
 
                         <p class="published_at text-red-500">
@@ -34,16 +51,8 @@
                     </div>
                   </div>
             </section>
-
-            {{-- Sinon la date de publication de l'article est passée --}}
-            @elseif(!\Carbon\Carbon::parse($post->published_at)->isFuture() || Auth::check() && Auth::user()->can('admin'))
-
-            @if(\Carbon\Carbon::parse($post->published_at)->isFuture())
-            <p class="published_at text-red-500">
-                Cet article n'est pas encore publié.
-            </p>
-            @endif
-
+            
+            @else
 
             <div class="thumbnail">
                 @if(Str::contains(basename($post->image), 'pending'))
@@ -57,6 +66,7 @@
             </div>
             
             <div data-post-id="{{ $post->id }}" class="the-post" id="editor-view"></div>
+
             @endif
         </section>
 
