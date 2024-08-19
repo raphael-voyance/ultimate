@@ -34,7 +34,7 @@
                 <ul>
                     <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="08/05/2024" href="#" /> par téléphone</li>
                     <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="14/04/2024" href="#" /> par tchat</li>
-                    <li><i class="fa-thin fa-pen-nib mr-2"></i> le <x-ui.link label="19/03/2024" href="#" /> par écrit</li>
+                    <li><i class="fa-thin fa-pen-nib mr-2"></i> répondu le <x-ui.link label="19/03/2024" href="#" /> par écrit</li>
                 </ul>
 
                 <x-slot:actions>
