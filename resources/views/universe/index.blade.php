@@ -61,7 +61,7 @@
 
             <x-ui.card title="Consultations à venir">
                 <ul>
-                    <li><i class="fa-thin fa-pen-nib mr-2"></i> le <x-ui.link label="08/09/2024" href="#" /> pour Brune</li>
+                    <li><i class="fa-thin fa-pen-nib mr-2"></i> demandée le <x-ui.link label="08/09/2024" href="#" /> pour Brune</li>
                     <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="14/09/2024" href="#" /> avec Louis</li>
                     <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="19/09/2024" href="#" /> avec Jean-Gaspard</li>
                 </ul>
