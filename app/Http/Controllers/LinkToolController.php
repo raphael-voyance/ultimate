@@ -20,10 +20,10 @@ class LinkToolController extends Controller
 
         try {
             // $url = $request->query('url');
-            dd(Http::get($url));
+            //dd(Http::get($url));
 
             // Effectuer une requête HTTP GET vers l'URL spécifiée
-            $response = Http::withoutVerifying($url);
+            $response = Http::get($url);
 
             // Vérifiez le code de statut HTTP
             if ($response->serverError()) {
