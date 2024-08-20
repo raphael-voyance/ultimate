@@ -227,6 +227,32 @@ class BlogController extends Controller
     }
 
     /**
+     * Duplicate the specified resource from storage.
+     */
+    public function duplicate(int $postId)
+    {
+        // Charger l'article original
+        $post = Post::where('id', $postId)->firstOrFail();
+
+        // Dupliquer l'article
+        $newPost = $post->replicate(); // Cloner l'article sans l'ID
+        $newPost->title = $post->title . ' - duplicate';
+        $newPost->slug = $post->slug . '-duplicate';
+
+        // Sauvegarder le nouvel article
+        $newPost->save();
+
+        // Retourner le nouvel article
+        // Affiche un message de succès
+        toast()
+        ->success('L\'article "' . $post->title . '" a bien été dupliqué.')
+        ->pushOnNextPage();
+
+        // Redirige vers la page d'édition de l'article
+        return redirect(route('admin.blog.post.edit', $newPost->id));
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)

@@ -37,8 +37,13 @@
   @scope('cell_actions', $post)
   <div class="flex flex-nowrap gap-2">
       <a href="{{ route('admin.blog.post.edit', $post->id) }}" class="btn btn-sm btn-circle btn-warning btn-outline"><x-mary-icon name="o-pencil-square" /></a>
+
       <a href="{{ route('my_universe.show', $post->slug) }}" class="btn btn-sm btn-circle btn-info btn-outline"><i class="fa-light fa-eye"></i></a>
+
       <a href="#" data-copy-link="{{ route('my_universe.show', $post->slug) }}" class="btn btn-sm btn-circle btn-info btn-outline"><i class="fa-light fa-copy"></i></a>
+
+      <a href="{{ route('admin.blog.post.duplicate', $post->id) }}" class="btn btn-sm btn-circle btn-info btn-outline"><i class="fa-light fa-clone"></i></a>
+
       <x-mary-button data-btn-post-del="{{ route('admin.blog.post.destroy', $post->id) }}" icon="o-trash" spinner class="btn-sm btn-circle btn-error btn-outline" />
   </div>
   @endscope

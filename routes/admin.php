@@ -61,6 +61,7 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
         Route::prefix('post')->as('post.')->group(function() {
             Route::get('/all', [BlogController::class, 'index'])->name('index');
             Route::get('/create', [BlogController::class, 'create'])->name('create');
+            Route::get('/duplicate/{id}', [BlogController::class, 'duplicate'])->name('duplicate');
             Route::get('/edit/{id}', [BlogController::class, 'edit'])->name('edit');
             Route::post('/update/{id}', [BlogController::class, 'update'])->name('update');
             Route::post('/store', [BlogController::class, 'store'])->name('store');

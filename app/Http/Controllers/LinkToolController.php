@@ -19,20 +19,7 @@ class LinkToolController extends Controller
             ], 400);
         }
 
-        // try {
-        //     $response = Http::withoutVerifying()->get('https://raphael-voyance.fr');
-        
-        //     dd($response->body()); // Vérifiez le contenu de la réponse
-        // } catch (\Exception $e) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'error' => 'Failed to fetch the URL: ' . $e->getMessage()
-        //     ], 500);
-        // }
-
         try {
-            // $url = $request->query('url');
-            //dd(Http::get($url));
 
             // Effectuer une requête HTTP GET vers l'URL spécifiée
             if (App::environment('local')) {
