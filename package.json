@@ -13,6 +13,7 @@
         "autoprefixer": "^10.4.19",
         "axios": "^1.6.4",
         "daisyui": "^4.12.2",
+        "editorjs-toggle-block": "^0.3.16",
         "laravel-vite-plugin": "^1.0",
         "postcss": "^8.4.38",
         "sass": "^1.72.0",

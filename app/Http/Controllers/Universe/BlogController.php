@@ -223,7 +223,6 @@ class BlogController extends Controller
 
     public function getPostDataContent(int $postId) {
         $blog = new Blog;
-        // dd($blog->getPostContentData($postId));
         return $blog->getPostContentData($postId);
     }
 

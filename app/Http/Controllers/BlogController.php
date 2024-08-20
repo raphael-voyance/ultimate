@@ -39,10 +39,10 @@ class BlogController extends Controller
     return view('blog.show', ['post' => $post]);
 }
 
-    public function getPostDataContent(int $postId) {
-        $blog = new Blog;
-        dd($blog->getPostContentData($postId));
-    }
+public function getPostDataContent(int $postId) {
+    $blog = new Blog;
+    return $blog->getPostContentData($postId);
+}
 
     public function showCategory(string $slug) {
         $category = Category::where('slug', $slug)->select('id', 'name', 'description')->firstOrFail();

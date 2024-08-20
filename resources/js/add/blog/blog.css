@@ -125,6 +125,16 @@
     height: 2px!important;
     margin: 10px auto;
 }
+
+/* TOOGLE */
+.toggle-block__selector {
+    display: flex;
+    align-items: center;
+}
+.toggle-block__selector > span {
+    margin-right: 5px;
+}
+
 /* FIN POST CONTENT EDITOR VIEW */
 
 

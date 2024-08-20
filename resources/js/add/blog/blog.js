@@ -12,6 +12,7 @@ import Table from '@editorjs/table';
 import CheckList from '@editorjs/checklist';
 import LinkTool from '@editorjs/link';
 import ImageTool from '@editorjs/image';
+import ToggleBlock from 'editorjs-toggle-block';
 
 // PAGES //
 
@@ -22,13 +23,12 @@ window.addEventListener('load', () => {
     
     (async function(id) {
         try {
-            let url = window.location.origin + '/admin/blog/post/get-data-editor/' + postId;
+            let url = window.location.origin + '/mon-univers/get-data-editor/' + postId;
             const response = await axios.get(url, {
                 params: {
                     postId: postId
                 }
             });
-            // console.log('response.data : ', response.data)
             dataPostContent = response.data;
             initializeEditor(dataPostContent);
         } catch (err) {
@@ -38,7 +38,7 @@ window.addEventListener('load', () => {
     })(postId);
 
     function initializeEditor(data) {
-        console.log('initializeEditor(data)', data);
+        // console.log('initializeEditor(data)', data);
         let contentData = data.length ? JSON.parse(data) : {};
 
         const editor = new EditorJS({
@@ -53,7 +53,12 @@ window.addEventListener('load', () => {
                 warning: Warning,
                 marker: Marker,
                 delimiter: Delimiter,
-                linkTool: LinkTool,
+                linkTool: {
+                    class: LinkTool,
+                    config: {
+                      endpoint: '/mon-univers/fetchUrl', // Your backend endpoint for url data fetching,
+                    }
+                },
                 embed: Embed,
                 table: Table,
                 image: {
@@ -65,9 +70,26 @@ window.addEventListener('load', () => {
                         }
                     }
                 },
+                toggle: {
+                    class: ToggleBlock,
+                    inlineToolbar: true,
+                },
             },
     
             data: JSON.parse(contentData),
+
+            onReady: () => {
+                const quoteCaptionElements = document.querySelectorAll('.cdx-quote__caption');
+                if (quoteCaptionElements.length > 0) {
+                    // Masque l'auteur d'une citation si il n'est pas renseigné
+                    quoteCaptionElements.forEach((el) => {
+                        if(el.innerText == '') {
+                            el.style.display = 'none'
+                        }
+                    })
+                    
+                }
+            },
     
         });
     }

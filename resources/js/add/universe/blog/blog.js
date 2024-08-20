@@ -13,6 +13,7 @@ import Table from '@editorjs/table';
 import CheckList from '@editorjs/checklist';
 import LinkTool from '@editorjs/link';
 import ImageTool from '@editorjs/image';
+import ToggleBlock from 'editorjs-toggle-block';
 
 // import { createComponent } from "../../../Blogging/components.js";
 
@@ -255,7 +256,12 @@ window.addEventListener('load', () => {
                 warning: Warning,
                 marker: Marker,
                 delimiter: Delimiter,
-                linkTool: LinkTool,
+                linkTool: {
+                    class: LinkTool,
+                    config: {
+                      endpoint: '/mon-univers/fetchUrl', // Your backend endpoint for url data fetching,
+                    }
+                },
                 embed: Embed,
                 table: Table,
                 image: {
@@ -266,6 +272,10 @@ window.addEventListener('load', () => {
                             byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
                         }
                     }
+                },
+                toggle: {
+                    class: ToggleBlock,
+                    inlineToolbar: true,
                 },
             },
     

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\Honeypot\ProtectAgainstSpam;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\LinkToolController;
 use App\Http\Controllers\Galaxy\ProfileController;
 use App\Http\Controllers\Galaxy\PrevisionsController;
 use App\Http\Controllers\Galaxy\AppointmentsController;
@@ -28,6 +29,8 @@ Route::get('/me-contacter', [PublicController::class, 'contact'])->name('contact
 Route::prefix('mon-univers')->as('my_universe.')->group(function() {
     Route::get('/', [BlogController::class, 'index'])->name('index');
     Route::get('/{slug}', [BlogController::class, 'show'])->name('show');
+    Route::get('/get-data-editor/{id}', [BlogController::class, 'getPostDataContent'])->name('getPostData');
+    Route::get('/fetchUrl', [LinkToolController::class, 'fetchUrlData']);
     Route::get('/categorie/{slug}', [BlogController::class, 'showCategory'])->name('show.category');
 });
 

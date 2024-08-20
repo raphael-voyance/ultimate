@@ -35,3 +35,12 @@
 .ce-block--selected .ce-block__content {
     background-color: transparent;
 }
+
+/* TOOGLE */
+.toggle-block__selector {
+    display: flex;
+    align-items: center;
+}
+.toggle-block__selector > span {
+    margin-right: 5px;
+}
