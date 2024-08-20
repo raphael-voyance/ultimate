@@ -259,7 +259,7 @@ window.addEventListener('load', () => {
                 linkTool: {
                     class: LinkTool,
                     config: {
-                      endpoint: '/mon-univers/fetchUrl', // Your backend endpoint for url data fetching,
+                      endpoint: '/mon-univers/fetch-url', // Your backend endpoint for url data fetching,
                     }
                 },
                 embed: Embed,

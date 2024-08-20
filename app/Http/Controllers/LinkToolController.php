@@ -19,8 +19,19 @@ class LinkToolController extends Controller
         }
 
         try {
+            // $url = $request->query('url');
+            dd(Http::get($url));
+
             // Effectuer une requête HTTP GET vers l'URL spécifiée
-            $response = Http::get($url);
+            $response = Http::withoutVerifying($url);
+
+            // Vérifiez le code de statut HTTP
+            if ($response->serverError()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Failed to fetch the URL. Status Code: ' . $response->status()
+                ], 500);
+            }
 
             // Extraire les métadonnées de la réponse HTML
             $html = $response->body();
@@ -50,7 +61,7 @@ class LinkToolController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Failed to fetch the URL'
+                'error' => 'Failed to fetch the URL, error : ' . $e 
             ], 500);
         }
     }

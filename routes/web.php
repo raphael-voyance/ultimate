@@ -28,9 +28,9 @@ Route::get('/me-contacter', [PublicController::class, 'contact'])->name('contact
 
 Route::prefix('mon-univers')->as('my_universe.')->group(function() {
     Route::get('/', [BlogController::class, 'index'])->name('index');
-    Route::get('/{slug}', [BlogController::class, 'show'])->name('show');
+    Route::get('/article/{slug}', [BlogController::class, 'show'])->name('show');
     Route::get('/get-data-editor/{id}', [BlogController::class, 'getPostDataContent'])->name('getPostData');
-    Route::get('/fetchUrl', [LinkToolController::class, 'fetchUrlData']);
+    Route::get('/fetch-url', [LinkToolController::class, 'fetchUrlData']);
     Route::get('/categorie/{slug}', [BlogController::class, 'showCategory'])->name('show.category');
 });
 
