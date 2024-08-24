@@ -39,7 +39,7 @@
             @foreach ($posts as $post)
                 <article class="post-item relative">
         
-                    <div class="thumbnail">
+                    <div data-alt="{{ $post->title }}" class="thumbnail">
                         <div class="parallax">
                             @if(Str::contains(basename($post->image), 'pending'))
                                 <img src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="{{ $post->title }}" />
