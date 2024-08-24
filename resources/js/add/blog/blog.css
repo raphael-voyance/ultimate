@@ -14,11 +14,8 @@
 .blog .posts-list .post-item .thumbnail {
     height: 288px;
     overflow: hidden;
+    position: relative;
 }
-.blog .posts-list .post-item .thumbnail img {
-}
-
-.blog .posts-list .post-item:hover .thumbnail {}
 
 .blog .posts-list .post-item .post-info {
     min-height: 230px;
@@ -74,6 +71,27 @@
         background-color: rgba(0, 0, 0, 0.3);
         z-index: 1;
     }
+
+    .blog .posts-list .post-item .thumbnail .parallax {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        /* z-index: -1; */
+    }
+    .blog .posts-list .post-item .thumbnail .parallax img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        object-fit: cover; /* Ajuste l'image pour remplir le container */
+        transform: translate(-50%, -50%) scale(1.5);
+        transition: transform 0.1s ease-out;
+    }
+    
     .blog .posts-list .post-item .thumbnail img {
         width: 100%;
         transform: translateY(-30%);

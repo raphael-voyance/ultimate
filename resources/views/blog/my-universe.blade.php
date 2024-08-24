@@ -2,6 +2,7 @@
 
     @section('css')
         @vite('resources/js/add/blog/blog.css')
+        @vite('resources/js/add/blog/blog.js')
     @endsection
 
         <x-slot name="header">
@@ -14,12 +15,14 @@
         <section class="posts-list">
             @foreach ($posts as $post)
                 <article class="post-item relative">
-                    <div data-alt="{{ $post->title }}" class="thumbnail">
-                        @if(Str::contains(basename($post->image), 'pending'))
-                            <img src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="{{ $post->title }}" />
-                        @else
-                            <img src="{{ asset($post->image) }}" alt="{{ $post->title }}" />
-                        @endif
+                    <div class="thumbnail">
+                        <div class="parallax">
+                            @if(Str::contains(basename($post->image), 'pending'))
+                                <img src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="{{ $post->title }}" />
+                            @else
+                                <img src="{{ asset($post->image) }}" alt="{{ $post->title }}" />
+                            @endif
+                        </div>
                     </div>
         
                     <div class="post-info">

@@ -19,23 +19,39 @@ import ToggleBlock from 'editorjs-toggle-block';
 window.addEventListener('load', () => {
     let dataPostContent = {};
     let bodyElement = document.getElementById('editor-view');
-    const postId = bodyElement.getAttribute('data-post-id');
     
-    (async function(id) {
-        try {
-            let url = window.location.origin + '/mon-univers/get-data-editor/' + postId;
-            const response = await axios.get(url, {
-                params: {
-                    postId: postId
-                }
-            });
-            dataPostContent = response.data;
-            initializeEditor(dataPostContent);
-        } catch (err) {
-            console.error("Erreur lors de la requête au serveur :", err.message);
-            throw err;
+    if(bodyElement) {
+        const postId = bodyElement.getAttribute('data-post-id');
+        (async function(id) {
+            try {
+                let url = window.location.origin + '/mon-univers/get-data-editor/' + postId;
+                const response = await axios.get(url, {
+                    params: {
+                        postId: postId
+                    }
+                });
+                dataPostContent = response.data;
+                initializeEditor(dataPostContent);
+            } catch (err) {
+                console.error("Erreur lors de la requête au serveur :", err.message);
+                throw err;
+            }
+        })(postId);
+    }
+    
+
+
+    window.addEventListener('scroll', function () {
+        if (window.innerWidth >= 768) { // Vérifie si la largeur de la fenêtre est de 768px ou plus
+            const parallaxEls = document.querySelectorAll('.parallax img');
+            if(parallaxEls.length > 0) {
+                let offset = window.scrollY;
+                parallaxEls.forEach((el) => {
+                    el.style.transform = 'translate(-50%, -50%) scale(1.5) translateY(' + offset * 0.5 + 'px)';
+                });
+            }
         }
-    })(postId);
+    });
 
     function initializeEditor(data) {
         // console.log('initializeEditor(data)', data);
