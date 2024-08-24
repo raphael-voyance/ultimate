@@ -84,8 +84,8 @@
                         <x-ui.form.input-error :messages="$message" class="mt-2" />
                     @enderror
                 
-                    <div :class="wordCount > 67 ? 'text-red-600' : (wordCount < 55 ? 'text-orange-600' : 'text-green-600')" class="mt-2">
-                        <span x-text="wordCount"></span> mot<span x-text="wordCount > 1 ? 's' : ''"></span> / 66
+                    <div :class="wordCount > 100 ? 'text-red-600' : (wordCount < 70 ? 'text-orange-600' : 'text-green-600')" class="mt-2">
+                        <span x-text="wordCount"></span> mot<span x-text="wordCount > 1 ? 's' : ''"></span> / 100
                     </div>
                 </div>
 
@@ -105,7 +105,7 @@
                             </div>
                           </div>
 
-                        <input id="thumbnail" type="file" class="file-input w-full max-w-xs" />
+                        <input name="thumbnail" id="thumbnail" type="file" class="file-input w-full max-w-xs" />
                     </div>
                 </div>
 

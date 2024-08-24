@@ -53,15 +53,16 @@
     <div class="avatar">
                             
       <div class="w-20 rounded-full">
-          @if(Str::contains(basename($post->image), 'pending'))
-              <!-- Affichage spécifique si le nom de l'image contient "pending" -->
-              <img id="thumbnail-preview" src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="Pending Thumbnail" />
-          @elseif($post->status == 'PRIVATE')
-              <img id="thumbnail-preview" src="{{ route('image.private', ['filename' => basename($post->image)]) }}" alt="Thumbnail">
-          @else
-              <img id="thumbnail-preview" src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" />
-          @endif
-      </div>
+        @if(Str::contains(basename($post->image), 'pending'))
+            <!-- Affichage spécifique si le nom de l'image contient "pending" -->
+            <img id="thumbnail-preview" src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="{{ asset($post->title) }}" />
+        @elseif($post->status == 'PRIVATE')
+            <img id="thumbnail-preview" src="{{ route('image.private', ['postSlug' => $post->slug, 'filename' => basename($post->image)]) }}" alt="{{ asset($post->title) }}">
+        @else
+            <img id="thumbnail-preview" src="{{ asset($post->image) }}" alt="{{ asset($post->title) }}" />
+            {{-- <img id="thumbnail-preview" src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" /> --}}
+        @endif
+    </div>
   </div>
   </div>
   @endscope

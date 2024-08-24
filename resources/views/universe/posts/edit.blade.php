@@ -41,8 +41,13 @@
     <section id="blog-edit" data-post-id="{{ $post->id }}">
         <header class="mb-6 flex flex-wrap flex-row gap-3 justify-normal items-center">
             <a href="{{ route('admin.blog.post.index') }}" class="btn btn-sm">Voir tous les articles</a>
+
             <a href="{{ route('my_universe.show', $post->slug) }}" target="_blank" class="btn btn-sm">Voir l'article</a>
+
+            <a href="{{ route('admin.blog.post.duplicate', $post->id) }}" target="_blank" class="btn btn-sm">Dupliquer l'article</a>
+
             <a href="{{ route('admin.blog.post.create') }}" class="btn btn-sm">Nouvel article</a>
+
             <a href="#" data-btn-post-del="{{ route('admin.blog.post.destroy', $post->id) }}" class="btn btn-sm btn-error hover:text-white">Supprimer l'article</a>
         </header>
 
@@ -108,16 +113,20 @@
                             <div class="w-20 rounded-full">
                                 @if(Str::contains(basename($post->image), 'pending'))
                                     <!-- Affichage spécifique si le nom de l'image contient "pending" -->
-                                    <img id="thumbnail-preview" src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="Pending Thumbnail" />
+                                    <img id="thumbnail-preview" src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="{{ asset($post->title) }}" />
                                 @elseif($post->status == 'PRIVATE')
-                                    <img id="thumbnail-preview" src="{{ route('image.private', ['filename' => basename($post->image)]) }}" alt="Thumbnail">
+                                <img id="thumbnail-preview" src="{{ route('image.private', ['postSlug' => $post->slug, 'filename' => basename($post->image)]) }}" alt="{{ $post->title }}">
+                                {{basename($post->image)}}
+                                {{route('image.private', ['postSlug' => $post->slug, 'filename' => basename($post->image)])}}
+                                    {{-- <img id="thumbnail-preview" src="{{ route('image.private', ['filename' => basename(str_replace('/storage/', '', $post->image)), 'postSlug' => $post->slug]) }}" alt="{{ $post->title }}"> --}}
                                 @else
-                                    <img id="thumbnail-preview" src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" />
+                                    <img id="thumbnail-preview" src="{{ asset($post->image) }}" alt="{{ $post->title }}" />
+                                    {{-- <img id="thumbnail-preview" src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" /> --}}
                                 @endif
                             </div>
                         </div>
 
-                          <input id="thumbnail" type="file" class="file-input w-full max-w-xs" />
+                          <input name="thumbnail" id="thumbnail" type="file" class="file-input w-full max-w-xs" />
                     </div>
                     
                 </div>

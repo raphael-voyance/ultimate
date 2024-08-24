@@ -5,15 +5,26 @@ namespace App\Http\Controllers\Universe;
 use Carbon\Carbon;
 use App\Models\Post;
 use App\Concern\Blog;
+use App\Models\Media;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Concern\MediaManager;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Mockery\Undefined;
 
 class BlogController extends Controller
 {
+
+    protected $mediaManager;
+
+    public function __construct()
+    {
+        $this->mediaManager = new MediaManager();
+    }
+    
     /**
      * Display a listing of the resource.
      */
@@ -44,49 +55,44 @@ class BlogController extends Controller
             'slug' => 'required|unique:posts|max:255',
             'status' => 'string',
             'excerpt' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'categories.*' => 'integer|exists:categories,id',
             'categories' => 'nullable|array',
             'publishedAt' => 'nullable|string',
         ]);
 
-        $post = new Post();
-
-        $post->title = $request->get('title');
-        $post->content = json_encode($request->get('content'));
-        $post->slug = $request->get('slug');
-        $post->excerpt = $request->get('excerpt');
-        $post->status = Str::upper($request->get('status'));
-
-        if ($request->get('publishedAt') === 'now') {
-            $post->published_at = Carbon::now();
-        } else {
-            $post->published_at = Carbon::createFromFormat('d/m/Y', $request->get('publishedAt'));
+        if ($request->filled('thumbnail') && $request->thumbnail != 'undefined') {
+            $request->validate([
+                'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
         }
+
+        $post = new Post();
+        $post->title = $validated['title'];
+        $post->content = json_encode($validated['content']);
+        $post->slug = $validated['slug'];
+        $post->excerpt = $validated['excerpt'];
+        $post->status = Str::upper($validated['status']);
+        $post->published_at = $validated['publishedAt'] === 'now' ? Carbon::now() : Carbon::createFromFormat('d/m/Y', $validated['publishedAt']);
 
         if ($request->hasFile('thumbnail')) {
-            if($post->status == 'PRIVATE') {
-                $thumbnailPath = $request->file('thumbnail')->store('images', 'private');
-                $validated['thumbnail'] = $thumbnailPath;
-                $post->image = url("/storage/private/{$thumbnailPath}");
-            }else {
-                $thumbnailPath = $request->file('thumbnail')->store('posts/thumbnails', 'public');
-                $validated['thumbnail'] = $thumbnailPath;
-                $post->image = asset('storage/' . $thumbnailPath);
-            }
-        }else {
+            $disk = $post->status == 'PRIVATE' ? 'private' : 'public';
+            $uploadPath = "media/{$post->slug}/thumbnails";
+            $thumbnail = $this->mediaManager->upload($request->file('thumbnail'), null, $post, $disk, $uploadPath);
+
+            $post->image = $this->mediaManager->getUrl($thumbnail, $post->slug);
+            
+            //dd($post->image);
+        } else {
             $post->image = asset('storage/site-images/pending.jpg');
         }
- 
+
         $post->save();
 
-        $post->categories()->sync($request->get('categories'));
+        if ($request->filled('categories')) {
+            $post->categories()->sync($validated['categories']);
+        }
 
-        //dd($request->publishedAt);
-
-        toast()
-            ->success('L\'article "' . $post->title . '" a bien été ajouté.')
-            ->pushOnNextPage();
+        toast()->success('L\'article "' . $post->title . '" a bien été ajouté.')->pushOnNextPage();
 
         $redirectRoute = route('admin.blog.post.edit', $post->id);
         return response()->json(['status' => 'success', 'redirectRoute' => $redirectRoute]);
@@ -137,88 +143,105 @@ class BlogController extends Controller
             ],
             'status' => 'string',
             'excerpt' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'categories.*' => 'integer|exists:categories,id',
             'categories' => 'nullable|array',
             'publishedAt' => 'nullable|string',
         ]);
 
+        if ($request->filled('thumbnail') && $request->thumbnail != 'undefined') {
+            $request->validate([
+                'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+        }
+
         // Met à jour les attributs de l'article
-        $post->title = $request->get('title');
-        $post->content = json_encode($request->get('content'));
-        $post->slug = $request->get('slug');
-        $post->excerpt = $request->get('excerpt');
-        $post->status = Str::upper($request->get('status'));
+        $post->title = $validated['title'];
+        $post->content = json_encode($validated['content']);
+        $post->slug = $validated['slug'];
+        $post->excerpt = $validated['excerpt'];
+        $post->status = Str::upper($validated['status']);
 
         // Met à jour la date de publication
-        if ($request->get('publishedAt') === 'now') {
+        if ($validated['publishedAt'] === 'now') {
             $post->published_at = Carbon::now();
         } else {
-            $post->published_at = Carbon::createFromFormat('d/m/Y', $request->get('publishedAt'));
+            $post->published_at = Carbon::createFromFormat('d/m/Y', $validated['publishedAt']);
         }
 
-        // Initialiser $filename pour qu'il soit disponible même si aucune nouvelle image n'est téléchargée
-        $filename = null;
-
-        if ($post->image && !str_contains($post->image, 'pending.jpg')) {
-            // Extrait le chemin relatif de l'image actuelle
-            $oldPath = parse_url($post->image, PHP_URL_PATH);
-            $oldPath = ltrim($oldPath, '/');
-            $filename = basename($oldPath);
-        }
-
-        // Vérifie si une nouvelle image a été téléchargée
+        // Gérer la suppression de l'image précédente si elle a été remplacée
         if ($request->hasFile('thumbnail')) {
-            // Supprime l'ancienne image si elle existe
-            if ($filename) {
-                // Détermine le disque actuel de l'image
-                if (Storage::disk('private')->exists('images/' . $filename)) {
-                    Storage::disk('private')->delete('images/' . $filename);
-                } elseif (Storage::disk('public')->exists('posts/thumbnails/' . $filename)) {
-                    Storage::disk('public')->delete('posts/thumbnails/' . $filename);
+            // Supprime l'ancienne image si elle existe et n'est pas l'image par défaut
+            if ($post->image && !str_contains($post->image, 'pending.jpg')) {
+                $cleanedPath = str_replace('/storage/', '', parse_url($post->image, PHP_URL_PATH));
+                $oldMedia = Media::where('file_name', $cleanedPath)
+                                ->where('model_type', Post::class)
+                                ->where('model_id', $post->id)
+                                ->first();
+
+                // dd(['oldMedia' => $oldMedia, 
+                //     'basename(parse_url($post->image, PHP_URL_PATH)' => parse_url($post->image, PHP_URL_PATH),
+                // ]);
+
+                if ($oldMedia) {
+                    $this->mediaManager->delete($oldMedia);
                 }
             }
 
             // Téléchargement de la nouvelle image selon la visibilité
-            if ($post->status == 'PRIVATE') {
-                $thumbnailPath = $request->file('thumbnail')->store('images', 'private');
-                $post->image = url("/storage/private/{$thumbnailPath}");
-            } else {
-                $thumbnailPath = $request->file('thumbnail')->store('posts/thumbnails', 'public');
-                $post->image = asset('storage/' . $thumbnailPath);
-            }
+            $disk = $post->status == 'PRIVATE' ? 'private' : 'public';
+            
+            $thumbnail = $this->mediaManager->upload($request->file('thumbnail'), null, $post, $disk, "media/$post->slug/thumbnails");
+            $post->image = $this->mediaManager->getUrl($thumbnail, $post->slug);
+        } else {
+            
+            // Si aucune nouvelle image n'est téléchargée, déplacez l'image existante si la visibilité change
+            if ($post->image && !str_contains($post->image, 'pending.jpg')) {
 
-            } else {
-                // Si aucune nouvelle image n'est téléchargée, déplacez l'image existante si la visibilité change
-                if ($filename) {
-                    if ($post->status == 'PRIVATE' && Storage::disk('public')->exists('posts/thumbnails/' . $filename)) {
-                        // Déplacer du disque public au disque privé
-                        Storage::disk('private')->put('images/' . $filename, Storage::disk('public')->get('posts/thumbnails/' . $filename));
-                        Storage::disk('public')->delete('posts/thumbnails/' . $filename);
-                        $post->image = url("/storage/private/images/{$filename}");
-                    } elseif ($post->status != 'PRIVATE' && Storage::disk('private')->exists('images/' . $filename)) {
-                        // Déplacer du disque privé au disque public
-                        Storage::disk('public')->put('posts/thumbnails/' . $filename, Storage::disk('private')->get('images/' . $filename));
-                        Storage::disk('private')->delete('images/' . $filename);
-                        $post->image = asset('storage/posts/thumbnails/' . $filename);
+                // Si l'article est privé
+                if ($post->status == 'PRIVATE') {
+                    $filePath = str_replace('/storage/', '', parse_url($post->image, PHP_URL_PATH));
+            
+                    if (Storage::disk('public')->exists($filePath)) {
+                        // Déplacer de public à privé
+                        Storage::disk('private')->put($filePath, Storage::disk('public')->get($filePath));
+                        Storage::disk('public')->delete($filePath);
+            
+                        // Mise à jour du chemin de l'image
+                        $post->image = url("/storage/private/{$filePath}");
+                    }
+            
+                // Si l'article devient public
+                } elseif ($post->status != 'PRIVATE') {
+                    $filePath = str_replace('/storage/private/', '', parse_url($post->image, PHP_URL_PATH));
+            
+                    if (Storage::disk('private')->exists($filePath)) {
+                        // Déplacer de privé à public
+                        Storage::disk('public')->put($filePath, Storage::disk('private')->get($filePath));
+                        Storage::disk('private')->delete($filePath);
+            
+                        // Mise à jour du chemin de l'image
+                        $post->image = asset('storage/' . $filePath);
                     }
                 }
             }
+        }
 
-            // Enregistre les modifications
-            $post->save();
+        //dd($post);
 
-            // Met à jour les catégories associées
-            $post->categories()->sync($request->get('categories'));
+        // Enregistre les modifications
+        $post->save();
 
-            // Affiche un message de succès
-            toast()
-                ->success('L\'article "' . $post->title . '" a bien été mis à jour.')
-                ->pushOnNextPage();
+        // Met à jour les catégories associées
+        $post->categories()->sync($request->get('categories'));
 
-            // Redirige vers la page d'édition de l'article
-            $redirectRoute = route('admin.blog.post.edit', $id);
-            return response()->json(['status' => 'success', 'redirectRoute' => $redirectRoute]);
+        // Affiche un message de succès
+        toast()
+            ->success('L\'article "' . $post->title . '" a bien été mis à jour.')
+            ->pushOnNextPage();
+
+        // Redirige vers la page d'édition de l'article
+        $redirectRoute = route('admin.blog.post.edit', $id);
+        return response()->json(['status' => 'success', 'redirectRoute' => $redirectRoute]);
     }
 
     public function getPostDataContent(int $postId) {

@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use AlAminFirdows\LaravelEditorJs\Facades\LaravelEditorJs;
 
 class Post extends Model
 {
@@ -25,17 +23,9 @@ class Post extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    public function getBodyAttribute()
+    public function media()
     {
-        //dd($this->attributes['content']);
-        if($this->attributes['content']) {
-            // $i = htmlspecialchars_decode($this->attributes['content']);
-            // dd(LaravelEditorJs::render($i));
-            return LaravelEditorJs::render($this->attributes['content']);
-        }
-        return;
-        
+        return $this->morphMany(Media::class, 'model');
     }
 
-    
 }

@@ -56,7 +56,7 @@
                         <!-- Affichage spécifique si le nom de l'image contient "pending" -->
                         <img src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="Pending Thumbnail" />
                     @elseif($post->status == 'PRIVATE')
-                        <img src="{{ route('image.private', ['filename' => basename($post->image)]) }}" alt="Thumbnail">
+                        <img src="{{ route('image.private', ['postSlug' => $post->slug, 'filename' => basename($post->image)]) }}" alt="Thumbnail">
                     @else
                         <img src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" />
                     @endif

@@ -105,25 +105,23 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     // 2 - Créer la route associée comme la suivante
     // 3 - Pour accéder à la ressource <img src="{{ route('image.private', ['filename' => 'image.svg']) }}" alt="Votre Image Protégée">
     
-    Route::get('/storage/private/images/{filename}', function ($filename) {
-        $path = 'images/' . $filename;  // Assure-toi d'utiliser le bon chemin relatif
-    
-        // Vérification des extensions autorisées
-        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+    Route::get('/private/posts/{postSlug}/{filename}', function ($postSlug, $filename) {
+
+        $path = 'media/' . $postSlug . '/thumbnails/' . $filename; // Retrait du / au début du chemin
+        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
         $allowedExtensions = ['webp', 'jpg', 'jpeg', 'png', 'gif', 'svg'];
     
-        if (!in_array($extension, $allowedExtensions)) {
-            abort(404);
-        }
-    
-        // Vérification de l'existence du fichier
-        if (!Storage::disk('private')->exists($path)) {
+        $absolutePath = storage_path('app/private/media/test-thumbnail-1/bg-bloc.png');
+// dd(file_exists($absolutePath));
+
+    // dd(Storage::disk('private')->exists($path));
+
+        // Test du chemin
+        if (!in_array($extension, $allowedExtensions) || !Storage::disk('private')->exists($path)) {
             abort(404);
         }
     
         $image = Storage::disk('private')->get($path);
-    
-        // Détection du type de contenu
         $contentType = $extension === 'svg' ? 'image/svg+xml' : 'image/' . $extension;
     
         return response($image)->header('Content-Type', $contentType);

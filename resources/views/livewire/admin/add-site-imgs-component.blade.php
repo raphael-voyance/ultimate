@@ -18,7 +18,10 @@
                 
                     <!-- Label stylisé agissant comme déclencheur -->
                     <label for="favicon" class="cursor-pointer w-full h-full flex flex-col items-center justify-center p-4 transition-all opacity-0 bg-black/50 rounded-lg hover:opacity-100">
-
+                    <!-- Icône d'upload -->
+                    <span>
+                        <i class="fa-thin fa-upload fa-xl"></i>
+                    </span>
                     <!-- Texte optionnel pour une meilleure accessibilité -->
                     <span class="mt-2 text-center text-xs text-white">Charger une image...</span>
 
