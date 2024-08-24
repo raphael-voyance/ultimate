@@ -18,7 +18,7 @@
                         @if(Str::contains(basename($post->image), 'pending'))
                             <img src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="{{ $post->title }}" />
                         @else
-                            <img src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="{{ $post->title }}" />
+                            <img src="{{ asset($post->image) }}" alt="{{ $post->title }}" />
                         @endif
                     </div>
         

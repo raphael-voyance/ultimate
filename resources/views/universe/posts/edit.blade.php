@@ -116,8 +116,6 @@
                                     <img id="thumbnail-preview" src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="{{ asset($post->title) }}" />
                                 @elseif($post->status == 'PRIVATE')
                                 <img id="thumbnail-preview" src="{{ route('image.private', ['postSlug' => $post->slug, 'filename' => basename($post->image)]) }}" alt="{{ $post->title }}">
-                                {{basename($post->image)}}
-                                {{route('image.private', ['postSlug' => $post->slug, 'filename' => basename($post->image)])}}
                                     {{-- <img id="thumbnail-preview" src="{{ route('image.private', ['filename' => basename(str_replace('/storage/', '', $post->image)), 'postSlug' => $post->slug]) }}" alt="{{ $post->title }}"> --}}
                                 @else
                                     <img id="thumbnail-preview" src="{{ asset($post->image) }}" alt="{{ $post->title }}" />
