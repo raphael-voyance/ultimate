@@ -10,7 +10,6 @@ import Delimiter from '@editorjs/delimiter';
 import Embed from '@editorjs/embed';
 import Table from '@editorjs/table';
 import CheckList from '@editorjs/checklist';
-import LinkTool from '@editorjs/link';
 import ImageTool from '@editorjs/image';
 import ToggleBlock from 'editorjs-toggle-block';
 
@@ -30,7 +29,7 @@ window.addEventListener('load', () => {
                         postId: postId
                     }
                 });
-                dataPostContent = response.data;
+                dataPostContent = response.data.content;
                 initializeEditor(dataPostContent);
             } catch (err) {
                 console.error("Erreur lors de la requête au serveur :", err.message);
@@ -38,8 +37,6 @@ window.addEventListener('load', () => {
             }
         })(postId);
     }
-    
-
 
     window.addEventListener('scroll', function () {
         if (window.innerWidth >= 768) { // Vérifie si la largeur de la fenêtre est de 768px ou plus
@@ -54,7 +51,7 @@ window.addEventListener('load', () => {
     });
 
     function initializeEditor(data) {
-        // console.log('initializeEditor(data)', data);
+        console.log('initializeEditor(data)', data);
         let contentData = data.length ? JSON.parse(data) : {};
 
         const editor = new EditorJS({
@@ -69,20 +66,13 @@ window.addEventListener('load', () => {
                 warning: Warning,
                 marker: Marker,
                 delimiter: Delimiter,
-                linkTool: {
-                    class: LinkTool,
-                    config: {
-                      endpoint: '/mon-univers/fetchUrl', // Your backend endpoint for url data fetching,
-                    }
-                },
                 embed: Embed,
                 table: Table,
                 image: {
                     class: ImageTool,
                     config: {
                         endpoints: {
-                            byFile: 'http://localhost:8008/uploadFile', // Your backend file uploader endpoint
-                            byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
+                            byUrl: 'http://ultimate.test/mon-univers/article/getImage', // Your endpoint that provides uploading by Url
                         }
                     }
                 },
@@ -96,6 +86,9 @@ window.addEventListener('load', () => {
 
             onReady: () => {
                 const quoteCaptionElements = document.querySelectorAll('.cdx-quote__caption');
+                const imageCaptionElements = document.querySelectorAll('.image-tool__caption');
+                let bodyLinks = document.querySelectorAll('.ce-paragraph a');
+
                 if (quoteCaptionElements.length > 0) {
                     // Masque l'auteur d'une citation si il n'est pas renseigné
                     quoteCaptionElements.forEach((el) => {
@@ -103,7 +96,23 @@ window.addEventListener('load', () => {
                             el.style.display = 'none'
                         }
                     })
-                    
+                }
+                if (imageCaptionElements.length > 0) {
+                    // Masque l'auteur d'une citation si il n'est pas renseigné
+                    imageCaptionElements.forEach((el) => {
+                        if(el.innerText == '') {
+                            el.style.display = 'none'
+                        }
+                    })
+                }
+
+                if(bodyLinks.length > 0) {
+                    bodyLinks.forEach((link) => {
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            window.open(link.href, '_blank');
+                        });
+                    });
                 }
             },
     

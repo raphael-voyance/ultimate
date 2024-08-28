@@ -122,8 +122,12 @@
 .blog .post-header h2 {}
 
 .blog .post-content {}
-.blog .post-content .thumbnail {}
-.blog .post-content .thumbnail img {}
+.blog .post-content .thumbnail {
+    max-width: 100%;
+    width: 100%;
+    margin: 25px auto auto;
+}
+.blog .post-content .thumbnail img {width: 100%;}
 .blog .post-content .the-post {}
 
 /* DEBUT POST CONTENT EDITOR VIEW */
@@ -151,6 +155,17 @@
 }
 .toggle-block__selector > span {
     margin-right: 5px;
+}
+
+/* IMAGES */
+.image-tool__image-picture, .image-tool__caption {
+    max-width: 100%;
+    width: 450px;
+    margin: 25px auto auto;
+}
+.image-tool__caption {
+    margin-top: auto;
+    margin-bottom: 25px;
 }
 
 /* FIN POST CONTENT EDITOR VIEW */

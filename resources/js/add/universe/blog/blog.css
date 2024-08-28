@@ -44,3 +44,8 @@
 .toggle-block__selector > span {
     margin-right: 5px;
 }
+
+/* ADD LINK TO TEXT */
+.ce-inline-tool-input.ce-inline-tool-input--showed {
+    color: #27283F;
+}

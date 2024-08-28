@@ -4,10 +4,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Universe\BlogController;
 use App\Http\Controllers\Universe\AdminController;
-use App\Http\Controllers\Universe\BackupsController;
 use App\Http\Controllers\Universe\DrawsController;
 use App\Http\Controllers\Universe\FilesController;
+use App\Http\Controllers\Universe\ImageController;
 use App\Http\Controllers\Universe\TarotController;
+use App\Http\Controllers\Universe\BackupsController;
 use App\Http\Controllers\Universe\MessagingController;
 use App\Http\Controllers\Universe\NumerologyController;
 
@@ -69,6 +70,9 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
             Route::get('/get-data-editor/{id}', [BlogController::class, 'getPostDataContent'])->name('getPostData');
         });
 
+        Route::post('/uploadFile', [ImageController::class, 'uploadFile']);
+        Route::post('/fetchUrl', [ImageController::class, 'fetchUrl']);
+
         Route::prefix('category')->as('category.')->group(function() {
             Route::get('/all', [BlogController::class, 'indexCategory'])->name('index');
             Route::get('/create', [BlogController::class, 'createCategory'])->name('create');
@@ -77,6 +81,7 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
             Route::post('/update/{id}', [BlogController::class, 'updateCategory'])->name('update');
             Route::delete('/destroy/{id}', [BlogController::class, 'destroyCategory'])->name('destroy');
         });
+
     });
 
     // Backups Routes
@@ -110,11 +115,6 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
         $path = 'media/' . $postSlug . '/thumbnails/' . $filename; // Retrait du / au début du chemin
         $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
         $allowedExtensions = ['webp', 'jpg', 'jpeg', 'png', 'gif', 'svg'];
-    
-        $absolutePath = storage_path('app/private/media/test-thumbnail-1/bg-bloc.png');
-// dd(file_exists($absolutePath));
-
-    // dd(Storage::disk('private')->exists($path));
 
         // Test du chemin
         if (!in_array($extension, $allowedExtensions) || !Storage::disk('private')->exists($path)) {

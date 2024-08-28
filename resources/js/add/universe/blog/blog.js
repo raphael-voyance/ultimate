@@ -11,7 +11,6 @@ import Delimiter from '@editorjs/delimiter';
 import Embed from '@editorjs/embed';
 import Table from '@editorjs/table';
 import CheckList from '@editorjs/checklist';
-import LinkTool from '@editorjs/link';
 import ImageTool from '@editorjs/image';
 import ToggleBlock from 'editorjs-toggle-block';
 
@@ -37,8 +36,6 @@ window.addEventListener('load', () => {
                 });
             });
         }
-
-        
 
         if(btnsPostDel) {
             //console.log(btnsDrawDel)
@@ -193,7 +190,7 @@ window.addEventListener('load', () => {
                         postId: postId
                     }
                 });
-                dataPostContent = response.data;
+                dataPostContent = response.data.content;
                 initializeEditor(dataPostContent, postId);
             } catch (err) {
                 console.error("Erreur lors de la requête au serveur :", err.message);
@@ -256,20 +253,18 @@ window.addEventListener('load', () => {
                 warning: Warning,
                 marker: Marker,
                 delimiter: Delimiter,
-                linkTool: {
-                    class: LinkTool,
-                    config: {
-                      endpoint: '/mon-univers/fetch-url', // Your backend endpoint for url data fetching,
-                    }
-                },
                 embed: Embed,
                 table: Table,
                 image: {
                     class: ImageTool,
                     config: {
                         endpoints: {
-                            byFile: 'http://localhost:8008/uploadFile', // Your backend file uploader endpoint
-                            byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
+                            // window.location.origin + '/admin/blog/uploadFile'
+                            byFile: window.location.origin + '/admin/blog/uploadFile', // Your backend file uploader endpoint
+                            byUrl: window.location.origin + '/admin/blog/fetchUrl', // Your endpoint that provides uploading by Url
+                        },
+                        additionalRequestHeaders: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         }
                     }
                 },
