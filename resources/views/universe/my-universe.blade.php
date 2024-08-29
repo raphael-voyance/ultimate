@@ -7,20 +7,19 @@
 
         <x-slot name="header">
             <h2 class="font-semibold text-xl leading-tight">
-                <i class="fa-thin fa-stars -rotate-12"></i> Dans mon univers...
+                <i class="fa-thin fa-stars -rotate-12"></i> Dans mon univers...privée
             </h2>
         </x-slot>
 
     <section class="blog">
-        @can('admin')
-            <div class="card bg-base-300 shadow-xl mx-auto mb-8">
-                <div class="card-body text-center">
-                    <div class="flex flex-row justify-center items-center">
-                        <a href="{{ route('admin.blog.privateIndex') }}" class="badge badge-secondary hover:text-inherit focus:text-inherit">Accéder aux articles privées</a>
-                    </div>
+
+        <div class="card bg-base-300 shadow-xl mx-auto mb-8">
+            <div class="card-body text-center">
+                <div class="flex flex-row justify-center items-center">
+                    <a href="{{ route('my_universe.index') }}" class="badge badge-secondary hover:text-inherit focus:text-inherit">Accéder aux articles publics</a>
                 </div>
             </div>
-        @endcan
+        </div>
 
         <section class="posts-list">
             @foreach ($posts as $post)

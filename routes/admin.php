@@ -73,6 +73,8 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
         Route::post('/uploadFile', [ImageController::class, 'uploadFile']);
         Route::post('/fetchUrl', [ImageController::class, 'fetchUrl']);
 
+        Route::get('/private', [BlogController::class, 'privateIndex'])->name('privateIndex');
+
         Route::prefix('category')->as('category.')->group(function() {
             Route::get('/all', [BlogController::class, 'indexCategory'])->name('index');
             Route::get('/create', [BlogController::class, 'createCategory'])->name('create');

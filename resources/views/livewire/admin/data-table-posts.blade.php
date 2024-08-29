@@ -10,7 +10,7 @@
 
   @scope('cell_excerpt', $post)
   @if($post->excerpt)
-          {{ $post->excerpt }}
+          {{ Str::excerpt($post->excerpt) }}
         @else
           <span class="text-gray-500 italic">Aucune description renseignée</span>
         @endif

@@ -33,6 +33,18 @@ class BlogController extends Controller
         return view('universe.posts.index');
     }
 
+        /**
+     * Display a listing of the resource.
+     */
+    public function privateIndex()
+    {
+        $posts = Post::where('status', 'PRIVATE')->orderByDesc('published_at')->with('categories')->paginate(3);
+
+        return view('universe.my-universe', [
+            'posts' => $posts
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
