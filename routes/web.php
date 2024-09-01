@@ -65,6 +65,11 @@ Route::middleware([ProtectAgainstSpam::class])->group(function() {
     Route::post('/me-contacter', [PublicController::class, 'store_contact'])->name('store_contact');
 });
 
+Route::prefix('tarot')->as('tarot.')->group(function() {
+    Route::get('/', [PrevisionsController::class, 'tarotPage'])->name('index');
+    Route::get('/interpretation', [PrevisionsController::class, 'getDrawInterpretation'])->name('interpretation');
+});
+
 Route::middleware(['auth', 'verified'])->prefix('mon-espace')->as('my_space.')->group(function() {
     Route::get('/', [ProfileController::class, 'index'])->name('index');
 
@@ -75,9 +80,6 @@ Route::middleware(['auth', 'verified'])->prefix('mon-espace')->as('my_space.')->
     Route::get('/previsions', [PrevisionsController::class, 'index'])->name('previsions');
     Route::get('/get-previsions', [PrevisionsController::class, 'getPrevisions']);
     Route::post('/post-birthdate', [PrevisionsController::class, 'postBirthdate']);
-
-    Route::get('/previsions/tarot', [PrevisionsController::class, 'tarotPage'])->name('previsions.tarot');
-    Route::get('/previsions/tarot/interpretation', [PrevisionsController::class, 'getDrawInterpretation'])->name('previsions.tarot.interpretation');
 
     Route::get('/mes-rendez-vous', [AppointmentsController::class, 'index'])->name('appointments.index');
 

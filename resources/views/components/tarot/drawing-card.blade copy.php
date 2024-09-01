@@ -1,30 +1,14 @@
-<div id="drawing-cards" class="flex flex-col items-center">
-    <section class="relative w-full max-w-full max-h-full min-h-[375px] flex justify-evenly h-full flex-col m-auto">
-        {{-- <section class="relative w-full max-w-full max-h-full bg-violet-700 flex justify-evenly items-center h-full flex-col mb-20"> --}}
+<div>
+    <section id="drawing-cards" class="w-full max-w-full max-h-full">
 
-        <header id="header-drawing-cards" class="relative p-4 flex flex-col md:flex-row gap-4 justify-between items-center bg-violet-900/55 hidden">
+        <header id="header-drawing-cards" class="relative h-20 p-4 flex flex-col md:flex-row justify-between items-center bg-gradient-to-b from-violet-900 to-violet-700 hidden">
 
-            <div class="mb-4 md:mb-0 md:max-w-[50%]">
-                <h3 class="mb-2 md:mb-auto" id="name-of-drawing-cards"></h3>
-                <p id="notice-of-drawing-cards"></p>
-            </div>
-
+            <h3 class="mb-2 md:mb-auto" id="name-of-drawing-cards"></h3>
             <span class="hidden" id="total-cards-for-drawing-cards"></span>
-
-            <div id="draw-actions" class="hidden md:max-w-[50%] flex flex-row gap-2">
-                <a href="#" id="save-draw" class="w-1/2 flex flex-col justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
-                    <i class="fa-thin fa-save fa-2xl"></i>
-                    <span class="text-center">Enregistrer votre tirage sur votre espace</span>
-                </a>
-                <a href="#" id="send-draw" class="w-1/2 flex flex-col justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
-                    <i class="fa-thin fa-envelope fa-2xl"></i>
-                    <span class="text-center">Demander une interprétation personnalisée</span>
-                </a>
-            </div>
 
         </header>
 
-        <div class="w-full">
+        <div class="w-full bg-violet-700 flex justify-center items-center h-full">
 
             <div data-step="DRAWING_CARD_INTRO"
                 class="m-auto w-full h-full max-w-md p-6 flex flex-col justify-center gap-6">

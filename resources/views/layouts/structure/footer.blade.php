@@ -1,6 +1,6 @@
 @props(['fullWidth' => false])
 
-<footer
+<footer id="footer"
     {{
         $attributes->class([
             "mx-auto w-full",

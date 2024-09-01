@@ -4,8 +4,9 @@ import "./tarot.css";
 
 document.addEventListener("DOMContentLoaded", () => {
     // VARIABLES
-    const drawingCardsPage = document.getElementById("drawing-cards");
-    if (drawingCardsPage) {
+    const drawingCardsMatElement = document.getElementById("drawing-cards");
+
+    if (drawingCardsMatElement) {
         let anchor = window.location.hash;
 
         const header = document.getElementById("header-drawing-cards");
@@ -50,8 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
             isMobile = true;
         else isMobile = false;
 
-        let screenSize = window.innerWidth;
-
         let cardWidth;
         let cardHeight;
         if(isMobile) {
@@ -70,6 +69,18 @@ document.addEventListener("DOMContentLoaded", () => {
         let selectIsOpen = false;
         let cardsSelected = [];
         let cardsCutSelected = [];
+
+        // STYLES
+        const headerPageElements = [document.getElementById("sticky-header"), document.getElementById("sub-header")];
+        const FooterPageElement = document.getElementById("footer");
+
+        let headerHeight = 0;
+        headerPageElements.forEach((el) => {
+            headerHeight += Number(el.offsetHeight);
+        });
+        let footerHeight = Number(FooterPageElement.offsetHeight);
+
+        drawingCardsMatElement.style.minHeight = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
 
         // FONCTIONS GLOBALES
         const createDrawingCardsList = function () {
@@ -211,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 changeGameBlocTitle.innerText = "Changer de tirage :";
 
-                changeGameBtnsContainer.classList.add("p-4", "bg-base-100", "relative", "-top-20");
+                changeGameBtnsContainer.classList.add("p-4", "bg-base-100", "absolute", "bottom-0", "translate-y-full", "w-full");
                 changeGameBlocTitle.classList.add(
                     "text-xl",
                     "mb-3",
@@ -221,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 changeGameBtnsContainer.append(changeGameBlocTitle);
                 changeGameBtnsContainer.append(changeGameBtnsUl);
-                drawingCardsPage.append(changeGameBtnsContainer);
+                drawingCardsMatElement.append(changeGameBtnsContainer);
             } else {
                 header.classList.add("hidden");
             }
@@ -295,6 +306,9 @@ document.addEventListener("DOMContentLoaded", () => {
             selectIsOpen = true;
             spreadBtn.classList.add("hidden");
             totalCardsForDrawingCardsEl.parentElement.classList.remove("hidden");
+
+            nextDrawStep();
+
             return;
 
         };
@@ -338,6 +352,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
                 });
             })
+
+            nextDrawStep();
             
         };
 
@@ -371,6 +387,8 @@ document.addEventListener("DOMContentLoaded", () => {
             cutBtn.classList.add("hidden");
             spreadBtn.classList.remove("hidden");
             spreadBtn.addEventListener("click", spreadDeck);
+
+            nextDrawStep();
         };
 
         const closeDeck = function () {
@@ -419,6 +437,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (cardsSelected.length == totalCards) {
                 selectIsOpen = false;
                 interpretationDrawingCardBtn.classList.remove('hidden');
+                nextDrawStep();
             } else {
                 interpretationDrawingCardBtn.classList.add("hidden");
             }
@@ -469,7 +488,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const getDrawInterpretation = async (drawCards, drawSlug) => {
             try {
-                let url = window.location.origin + '/mon-espace/previsions/tarot/interpretation'
+                let url = window.location.origin + '/tarot/interpretation'
                 return axios({
                     method: 'get',
                     url: url,
@@ -490,6 +509,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // TIRAGES
         interpretationDrawingCardBtn.addEventListener("click", () => {
             totalCardsForDrawingCardsEl.style.display = 'none';
+            nextDrawStep();
             //console.log(cardsSelected)
             launchGetDrawInterpretation(cardsSelected);
         });
@@ -951,6 +971,36 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // CONSTRUCTION DU TIRAGE
+
+        let drawStep = 0;
+        let noticeDrawElement = document.getElementById("notice-of-drawing-cards");
+        let drawActionsElement = document.getElementById("draw-actions");
+        let notice = {
+            0: "Faites le vide dans votre esprit et respirez tranquillement trois fois puis mélangez les cartes en cliquant sur le bouton \"Mélanger\"",
+            1: "Parfait, maintenant, concentrez-vous sur votre question puis coupez les cartes en cliquant sur le bouton \"Couper\"",
+            2: "Maintenant, étalez le jeu en cliquant sur le bouton \"Etaler\"",
+            3: "Parmis les cartes qui se présentent à vous, sélectionnez celles qui vous inspirent en cliquant sur chacune d'elles, vous pouvez en changer, mais sachez que votre première intuition est souvent la bonne, restez léger.",
+            4: "Bien, maintenant que vous avez sélectionné toutes vos cartes pour votre tirage, cliquez sur le bouton \"Interpréter mon tirage\" pour obtenir votre interprétation.",
+        }
+
+        function updateNotice() {
+            noticeDrawElement.textContent = notice[drawStep];
+        }
+        
+        // Fonction pour passer à l'étape suivante
+        function nextDrawStep() {
+            if (drawStep < Object.keys(notice).length) {
+                drawStep++;
+                updateNotice();
+            }
+            console.log('drawStep', drawStep)
+            if(drawStep > 4) {
+                noticeDrawElement.classList.add('hidden');
+                drawActionsElement.classList.remove('hidden');
+            }
+        }
+
+        updateNotice();
 
         if (anchor) {
             let found = false;

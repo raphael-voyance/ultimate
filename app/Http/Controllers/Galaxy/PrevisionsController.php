@@ -36,7 +36,7 @@ class PrevisionsController extends Controller
             $user->load('profile');
         }
 
-        return view('galaxy.tarot', [
+        return view('tarot', [
             'user' => $user
         ]);
     }

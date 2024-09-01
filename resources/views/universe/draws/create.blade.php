@@ -12,7 +12,7 @@
     </x-slot>
 
     <section>
-        <header>
+        <header class="mb-6 flex flex-wrap flex-row gap-3 justify-normal items-center">
             <a href="{{ route('admin.draw.index') }}" class="btn btn-sm">Voir tous les tirages</a>
             <a href="{{ route('admin.tarot.index') }}" class="btn btn-sm">Accéder aux interprétations des cartes</a>
         </header>

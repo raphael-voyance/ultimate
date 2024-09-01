@@ -104,7 +104,7 @@
                     <li>Votre chemin de vie : {{ $numerology->lifePath }}</li>
                     <li>Votre année personnelle : {{ $numerology->annualPath }}</li>
                     @endif
-                    <li><a href="{{ route('my_space.previsions.tarot') }}">Faire un tirage de Tarot</a></li>
+                    <li><a href="{{ route('tarot.index') }}">Faire un tirage de Tarot</a></li>
                 </ul>
                 <x-slot:actions>
                     <x-ui.link label="En découvrir plus" href="{{ route('my_space.previsions') }}" />

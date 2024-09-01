@@ -137,7 +137,7 @@
                                         <p class="my-4 text-sm">
                                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni, maiores esse facere saepe aut illum ducimus officia quisquam!
                                         </p>
-                                        <a href="{{ route('my_space.previsions.tarot') }}#{{ $draw->slug }}" class="btn btn-primary btn-outline btn-sm delay-300 hover:delay-0 duration-500 scale-0 group-hover:scale-100">Réaliser un tirage</a>
+                                        <a href="{{ route('tarot.index') }}#{{ $draw->slug }}" class="btn btn-primary btn-outline btn-sm delay-300 hover:delay-0 duration-500 scale-0 group-hover:scale-100">Réaliser un tirage</a>
                                     </div>
                                 </div>
                             </div>

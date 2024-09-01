@@ -1,3 +1,11 @@
+#drawing-cards {
+    background-image: url('./bg-draw.webp');
+    background-size: contain;
+    background-position: center top;
+    max-width: 936px;
+    margin: 45px auto auto;
+}
+
 .tarot-cards-container {
     position: relative;
     width: 100%; height: 100%;
