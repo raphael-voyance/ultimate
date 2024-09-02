@@ -100,8 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 let descEl = document.createElement("p");
                 descEl.textContent = desc;
 
-                nameEl.classList = "bg-accent";
-                descEl.classList = "bg-secondary px-2";
+                nameEl.classList = "bg-accent/65";
+                descEl.classList = "bg-[#2800ff78] px-2";
 
                 li.append(nameEl);
                 li.append(descEl);
