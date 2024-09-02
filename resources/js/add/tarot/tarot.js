@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let selectIsOpen = false;
         let cardsSelected = [];
         let cardsCutSelected = [];
+        let finalDrawToSave = {};
 
         // STYLES
         const headerPageElements = [document.getElementById("sticky-header"), document.getElementById("sub-header")];
@@ -426,7 +427,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         (item) => item != numberArcane
                         
                     );
-                    selectIsOpen = true;console.log(cardsSelected, selectIsOpen)
+                    selectIsOpen = true;
                 }
                 afterSelectCard(cardsSelected, totalCards);
                 return;
@@ -435,10 +436,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const afterSelectCard = function () {
             if (cardsSelected.length == totalCards) {
+                // if(selectIsOpen) {
+                //     nextDrawStep();
+                // }
                 selectIsOpen = false;
                 interpretationDrawingCardBtn.classList.remove('hidden');
-                nextDrawStep();
             } else {
+                selectIsOpen = true;
                 interpretationDrawingCardBtn.classList.add("hidden");
             }
             restCards = cardsSelected.length;
@@ -466,7 +470,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 closeDeck();
 
-                //console.log(finalDraw, interpretationCardDraw.drawSlug);
+                nextDrawStep();
+
+                finalDrawToSave = finalDraw;
+
+                // console.log(finalDraw, interpretationCardDraw.drawSlug);
 
                 let drawS = interpretationCardDraw.drawSlug;
                 if(drawS == 'tirage-de-la-journee') {
@@ -965,12 +973,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         blockContainerDraw.appendChild(containerCards);
                         cardMap.firstElementChild.appendChild(blockContainerDraw);
 
-                    }, 500)
+                    }, 500);
                 }
             });
         }
 
         // CONSTRUCTION DU TIRAGE
+
+        let dateOfDrawingCards = document.getElementById("date-of-drawing-cards");
+        let drawDate = new Date();
+        drawDate = drawDate.toLocaleDateString();
+        dateOfDrawingCards.innerText = 'Le : ' + drawDate;
 
         let drawStep = 0;
         let noticeDrawElement = document.getElementById("notice-of-drawing-cards");
@@ -991,16 +1004,43 @@ document.addEventListener("DOMContentLoaded", () => {
         function nextDrawStep() {
             if (drawStep < Object.keys(notice).length) {
                 drawStep++;
-                updateNotice();
+                if(drawStep <= 4) {
+                    updateNotice();
+                }
             }
             console.log('drawStep', drawStep)
-            if(drawStep > 4) {
+            if(drawStep > 4 && selectIsOpen == false) {
                 noticeDrawElement.classList.add('hidden');
                 drawActionsElement.classList.remove('hidden');
+                dateOfDrawingCards.classList.remove('hidden');
             }
         }
 
         updateNotice();
+
+        // SAVE DRAW
+        const saveDrawElement = document.getElementById('save-draw');
+        const drawerSaveInput = document.getElementById('drawer-save');
+        const drawerSaveCloseElement = document.getElementById('drawer-save-close');
+        
+        saveDrawElement.addEventListener('click', (e) => {
+            e.preventDefault();
+            drawerSaveInput.setAttribute('checked', true);
+            saveDraw(finalDrawToSave);
+        });
+
+        drawerSaveCloseElement.addEventListener('click', (e) => {
+            e.preventDefault();
+            drawerSaveInput.removeAttribute('checked');
+        });
+
+        const saveDraw = function(finalDraw) {
+            //add properties to finalDraw
+            finalDraw.date = drawDate;
+            console.log('save draw', finalDraw)
+        }
+
+        // demander l'interpretation en ouvrant un modal
 
         if (anchor) {
             let found = false;

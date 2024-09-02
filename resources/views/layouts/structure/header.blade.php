@@ -54,7 +54,7 @@
                     before:w-full before:h-full before:bg-white before:bg-opacity-30 before:absolute before:-skew-y-12 before:scale-x-0 before:scale-y-0 before:transition-all ease-in-out before:origin-center
                     hover:before:scale-y-150 hover:before:scale-x-125 hover:before:skew-y-6
                     "
-                    href="{{ route('my_universe.index') }}"><i class="fa-thin fa-moon-stars mr-1"></i> Mon univers</a>
+                    href="{{ route('my_universe.index') }}"><i class="fa-thin fa-stars mr-1"></i> Mon univers</a>
 
                     <a class="{{ request()->routeIs('tarot.index') ? 'active' : '' }}
                         text-white hover:text-white active:text-white focus:text-white transition-all relative

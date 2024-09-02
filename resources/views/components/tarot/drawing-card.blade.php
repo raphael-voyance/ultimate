@@ -5,19 +5,20 @@
         <header id="header-drawing-cards" class="relative p-4 flex flex-col md:flex-row gap-4 justify-between items-center bg-violet-900/55 hidden">
 
             <div class="mb-4 md:mb-0 md:max-w-[50%]">
-                <h3 class="mb-2 md:mb-auto" id="name-of-drawing-cards"></h3>
+                <h3 class="mb-2" id="name-of-drawing-cards"></h3>
                 <p id="notice-of-drawing-cards"></p>
+                <p class="hidden" id="date-of-drawing-cards"></p>
             </div>
 
             <span class="hidden" id="total-cards-for-drawing-cards"></span>
 
             <div id="draw-actions" class="hidden md:max-w-[50%] flex flex-row gap-2">
-                <a href="#" id="save-draw" class="w-1/2 flex flex-col justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
+                <a href="#" id="save-draw" class="w-1/2 max-w-[160px] flex flex-col justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
                     <i class="fa-thin fa-save fa-2xl"></i>
-                    <span class="text-center">Enregistrer votre tirage sur votre espace</span>
+                    <span class="text-center">Enregistrer et/ou annoter son tirage</span>
                 </a>
-                <a href="#" id="send-draw" class="w-1/2 flex flex-col justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
-                    <i class="fa-thin fa-envelope fa-2xl"></i>
+                <a href="#" id="send-draw" class="w-1/2 max-w-[160px] flex flex-col justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
+                    <i class="fa-thin fa-feather fa-2xl"></i>
                     <span class="text-center">Demander une interprétation personnalisée</span>
                 </a>
             </div>
@@ -29,7 +30,7 @@
             <div data-step="DRAWING_CARD_INTRO"
                 class="m-auto w-full h-full max-w-md p-6 flex flex-col justify-center gap-6">
 
-                <p class="text-center">Bienvenue sur votre assistant virtuel de tirage de cartes. J'ai créé cet outil en intégrant ma propre interprétation du Tarot de Marseille.</p>
+                < class="text-center">Bienvenue sur votre assistant virtuel de tirage de cartes. J'ai créé cet outil en intégrant ma propre interprétation du Tarot de Marseille.</p>
 
                 <button class="btn btn-sm btn-primary text-white w-1/2 mx-auto"
                 data-to-step="SELECT_GAME">Commencer</button>
@@ -188,4 +189,22 @@
         </footer>
 
     </section>
+
+    <div class="drawer drawer-end">
+        <input id="drawer-save" type="checkbox" checked class="drawer-toggle" />
+        <div class="drawer-side z-50">
+          <div class="drawer-overlay !cursor-default"></div>
+
+          <div class="relative bg-base-200 text-base-content min-h-full w-full md:w-96 p-4">
+            <span id="drawer-save-close" class="absolute z-10 text-lg w-9 h-9 border leading-9 border-white rounded-full text-center top-3 cursor-pointer right-6 text-white transition-all hover:scale-110"><i class="fa-thin fa-xmark"></i></span>
+
+            <div class="mt-16">
+                FORMULAIRE D'ANNOTATION & ENREGISTREMENT
+            </div>
+            
+          </div>
+          
+        </div>
+      </div>
+
 </div>
