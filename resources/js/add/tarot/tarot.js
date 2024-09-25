@@ -108,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 selectDrawingCardEl.append(li);
 
                 li.addEventListener("click", () => {
+
                     let otherLi =
                         document.querySelectorAll("[data-total-cards]");
 
@@ -140,6 +141,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 "DRAWING_CARD",
                 "FINALY_STEP",
             ];
+
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
 
             //Elements
             const stepsEls = document.querySelectorAll("[data-step]");
@@ -1002,13 +1008,18 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Fonction pour passer à l'étape suivante
         function nextDrawStep() {
+
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
             if (drawStep < Object.keys(notice).length) {
                 drawStep++;
                 if(drawStep <= 4) {
                     updateNotice();
                 }
             }
-            console.log('drawStep', drawStep)
             if(drawStep > 4 && selectIsOpen == false) {
                 noticeDrawElement.classList.add('hidden');
                 drawActionsElement.classList.remove('hidden');

@@ -19,6 +19,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rules\Password;
 use App\Concern\Invoice as ConcernInvoice;
+use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
 use App\Concern\Tarot;
 
 class AppointmentModal extends Component
@@ -182,7 +183,6 @@ class AppointmentModal extends Component
         $totalSlotDays = TimeSlotDay::all()->count();
 
         $this->totalOffsetTimeSlot = ceil($totalSlotDays / 5);
-
         $this->loadTimeSlotDays();
     }
 
@@ -206,6 +206,7 @@ class AppointmentModal extends Component
             ->whereHas('time_slots', function(Builder $query) {
                 return $query->where('available', true);
             })
+            ->where('day', '>', Carbon::now()->startOfDay())
             ->orderBy('day')
             ->skip($this->offsetTimeSlot)
             ->limit(5)
@@ -362,16 +363,7 @@ class AppointmentModal extends Component
             $invoice_token = $create_invoice->get_token();
 
             //2 - Créer une invoice en bdd avec les valeurs : 
-            //== total_price payment_invoice_token appointment_id ref
-
-            // $this->validate([
-            //     'total_price' => ['required', 'numeric'],
-            //     'payment_invoice_token' => ['required', 'string', 'unique:' . Invoice::class],
-            //     'appointment_id' => ['nullable', 'numeric', 'unique:' . Invoice::class],
-            //     'user_id' => ['required', 'numeric', 'unique:' . Invoice::class],
-            // ]);
-            //== liée au user connecté == user_id
-            //== liée à un appointment == appointment_id
+            //== total_price payment_invoice_token appointment_id ref user_id
 
             $appointmentInformations = [
                 "type" => $this->appointmentType,
@@ -390,9 +382,8 @@ class AppointmentModal extends Component
                 'ref' => $create_invoice->get_ref(),
             ]);
 
-            //dd(Product::where('slug', $this->appointmentType)->first()->id);
             $invoice->products()->attach(Product::where('slug', $this->appointmentType)->first()->id);
-            //== lié à un product == attach(product_id)
+            //== lier à un product == attach(product_id)
 
             //dd($invoice);
 
@@ -435,8 +426,10 @@ class AppointmentModal extends Component
 
             // in work
             if($invoice) {
-                $this->resetModal();
+                ConcernNotifications::sendNotification($invoice, 'confirmed');
                 
+                $this->resetModal();
+
                 $this->redirectRoute('payment.create', [
                     'payment_invoice_token' => $invoice->payment_invoice_token
                 ]);

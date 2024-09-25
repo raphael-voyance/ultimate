@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
 
 class User extends Authenticatable implements Searchable, MustVerifyEmail
 {
