@@ -2,8 +2,10 @@
 
 namespace App\Concern;
 
+use App\Models\Invoice;
 use App\Concern\UserAdmin;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use App\Notifications\AppointmentNotification;
 
 class StatusAppointmentNotifications
@@ -64,9 +66,12 @@ class StatusAppointmentNotifications
                     break;
             }
         }
-        // $message, $details, $status
-        return $user->notify(new AppointmentNotification($message, $invoiceInformations, $status));
+        // $message, $details, $status, $invoice_token
+        return $user->notify(new AppointmentNotification($message, $invoiceInformations, $status, $invoice->payment_invoice_token));
 
     }
 
+    public function redirectToAppointment($invoice_token) {
+        return redirect()->route('invoice.view', ['payment_invoice_token' => $invoice_token]);
+    }
 }

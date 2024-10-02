@@ -6,6 +6,7 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PublicController;
+use App\Concern\StatusAppointmentNotifications;
 use App\Http\Controllers\Galaxy\ProfileController;
 use App\Http\Controllers\Galaxy\PrevisionsController;
 use App\Http\Controllers\Galaxy\AppointmentsController;
@@ -72,7 +73,6 @@ Route::prefix('tarot')->as('tarot.')->group(function() {
 
 Route::middleware(['auth', 'verified'])->prefix('mon-espace')->as('my_space.')->group(function() {
     Route::get('/', [ProfileController::class, 'index'])->name('index');
-
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profil', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profil', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -82,6 +82,7 @@ Route::middleware(['auth', 'verified'])->prefix('mon-espace')->as('my_space.')->
     Route::post('/post-birthdate', [PrevisionsController::class, 'postBirthdate']);
 
     Route::get('/mes-rendez-vous', [AppointmentsController::class, 'index'])->name('appointments.index');
+    Route::get('/mes-rendez-vous/{invoice_token}', [StatusAppointmentNotifications::class, 'redirectToAppointment'])->name('appointment.view');
 
 });
 

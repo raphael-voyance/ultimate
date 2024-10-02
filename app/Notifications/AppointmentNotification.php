@@ -14,15 +14,17 @@ class AppointmentNotification extends Notification
     private $details;
     private $message;
     private $status;
+    private $token;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($message, $details, $status)
+    public function __construct($message, $details, $status, $token)
     {
         $this->message = $message;
         $this->status = $status;
         $this->details = $details;
+        $this->token = $token;
     }
 
     /**
@@ -45,7 +47,7 @@ class AppointmentNotification extends Notification
                     ->line('The status of your appointment is: ' . $this->status)
                     ->line('Details: ' . json_encode($this->details))
                     ->line($this->message)
-                    ->action('Notification Action', url('/'))
+                    ->action('Notification Action', url(route('my_space.appointment.view', $this->token)))
                     ->line('Thank you for using our application!');
     }
 

@@ -6,7 +6,7 @@
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight">
-            Page de paiement
+            Votre rendez-vous :
         </h2>
     </x-slot>
 
@@ -108,49 +108,55 @@
         </div>
 
         @if ($invoice->status == 'PENDING')
-
-        @if (json_decode($checkRequest)->hasErrors == true)
-            <div class="alert mb-4">
-                <div>
-                    <p>
-                        Pour pouvoir régler votre facture et confirmer votre demande de consultation vous devez saisir toutes les informations requises :
-                    </p>
-                    <ul class="list-disc list-inside pt-2">
-                        <template x-for="e in checkRequest.errors">
-                            <li x-text="e"></li>
-                        </template>
-                    </ul>
+            @if (json_decode($checkRequest)->hasErrors == true)
+                <div class="alert mb-4">
+                    <div>
+                        <p>
+                            Pour pouvoir régler votre facture et confirmer votre demande de consultation vous devez saisir toutes les informations requises :
+                        </p>
+                        <ul class="list-disc list-inside pt-2">
+                            <template x-for="e in checkRequest.errors">
+                                <li x-text="e"></li>
+                            </template>
+                        </ul>
+                    </div>
+                    
+                    
                 </div>
+            @endif
+            
+            {{-- @if ($checkRequest['hasErrors'] == true)
+            @foreach ($checkRequest['errors'] as $e)
+
+            {{$e}}
                 
-                
+            @endforeach
+            @endif --}}
+
+            <footer class="text-center text-xl mt-6">
+                <h2 class="mb-6">Actions sur votre demande :</h2>
+                <form method="POST"
+                    action="{{ route('payment.store', ['payment_invoice_token' => $invoice->payment_invoice_token]) }}">
+                    @csrf
+                    <input type="hidden" id="payment_delete_route" value="{{ route('payment.delete', ['payment_invoice_token' => $invoice->payment_invoice_token ]) }}" />
+                    <div class="flex flex-row gap-4 justify-center">
+                        <button id="cancel_request" class="btn btn-warning">
+                            Modifier ma demande
+                        </button>
+                        <button id="cancel_request" class="btn btn-error">
+                            Annuler ma demande
+                        </button>
+                        <template x-if="!checkRequest.hasErrors">
+                            <button class="btn btn-primary" type="submit">
+                                Payer ma facture
+                            </button>
+                        </template>
+                    </div>
+                    
+                </form>
+            </footer>
             </div>
         @endif
-            {{-- @if ($checkRequest['hasErrors'] == true)
-         @foreach ($checkRequest['errors'] as $e)
-
-         {{$e}}
-             
-         @endforeach
-        @endif --}}
-
-            <form method="POST"
-                action="{{ route('payment.store', ['payment_invoice_token' => $invoice->payment_invoice_token]) }}">
-                @csrf
-                <input type="hidden" id="payment_delete_route" value="{{ route('payment.delete', ['payment_invoice_token' => $invoice->payment_invoice_token ]) }}" />
-                <div class="flex flex-row gap-4 justify-end">
-                    <button id="cancel_request" class="btn btn-error">
-                        Annuler ma demande
-                    </button>
-                    <template x-if="!checkRequest.hasErrors">
-                        <button class="btn btn-primary" type="submit">
-                            Payer ma facture
-                        </button>
-                    </template>
-                </div>
-                
-            </form>
-    </div>
-    @endif
     </div>
 
 
