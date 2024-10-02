@@ -5,6 +5,8 @@ window.addEventListener('load', () => {
     const cancelBtn = document.getElementById("cancel_request");
     const cancelRoute = document.getElementById("payment_delete_route").value;
 
+    const editBtn = document.getElementById("edit_request");
+
     cancelBtn.addEventListener('click', function(e) {
         e.preventDefault();
         createAlert('Vous êtes sur le point d\'annuler votre demande, êtes-vous sûr(e) ?', 'default', function(confirmation) {
@@ -27,5 +29,10 @@ window.addEventListener('load', () => {
         });
         
         
+    });
+
+    editBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        alert('Modification du RDV');
     });
 });

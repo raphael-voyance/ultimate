@@ -11,6 +11,7 @@ import './primaryNavigation';
 import './loadingPage';
 import './appointmentCalendar';
 import './refreshPage';
+import './notifications';
 
 Alpine.plugin(ToastComponent);
 Livewire.start();

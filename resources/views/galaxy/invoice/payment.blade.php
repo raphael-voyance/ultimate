@@ -132,31 +132,33 @@
                 
             @endforeach
             @endif --}}
-
-            <footer class="text-center text-xl mt-6">
-                <h2 class="mb-6">Actions sur votre demande :</h2>
-                <form method="POST"
-                    action="{{ route('payment.store', ['payment_invoice_token' => $invoice->payment_invoice_token]) }}">
-                    @csrf
-                    <input type="hidden" id="payment_delete_route" value="{{ route('payment.delete', ['payment_invoice_token' => $invoice->payment_invoice_token ]) }}" />
-                    <div class="flex flex-row gap-4 justify-center">
-                        <button id="cancel_request" class="btn btn-warning">
-                            Modifier ma demande
-                        </button>
-                        <button id="cancel_request" class="btn btn-error">
-                            Annuler ma demande
-                        </button>
-                        <template x-if="!checkRequest.hasErrors">
-                            <button class="btn btn-primary" type="submit">
-                                Payer ma facture
-                            </button>
-                        </template>
-                    </div>
-                    
-                </form>
-            </footer>
-            </div>
         @endif
+
+        <footer class="text-center text-xl mt-6">
+            <h2 class="mb-6">Actions sur votre demande :</h2>
+            <form method="POST"
+                action="{{ route('payment.store', ['payment_invoice_token' => $invoice->payment_invoice_token]) }}">
+                @csrf
+                <input type="hidden" id="payment_delete_route" value="{{ route('payment.delete', ['payment_invoice_token' => $invoice->payment_invoice_token ]) }}" />
+                <div class="flex flex-row gap-4 justify-center">
+                    <button id="edit_request" class="btn btn-warning">
+                        Modifier ma demande
+                    </button>
+                    <button id="cancel_request" class="btn btn-error">
+                        Annuler ma demande
+                    </button>
+                    @if ($invoice->status == 'PENDING')
+                    <template x-if="!checkRequest.hasErrors">
+                        <button class="btn btn-primary" type="submit">
+                            Payer ma facture
+                        </button>
+                    </template>
+                    @endif
+
+                </div>
+                
+            </form>
+        </footer>
     </div>
 
 
