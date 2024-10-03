@@ -13,7 +13,7 @@
     <div x-data="{
         checkRequest: {{ $checkRequest }}
     }">
-        <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 
             {{-- Début 1ère colonne --}}
             <div>
@@ -140,7 +140,7 @@
                 action="{{ route('payment.store', ['payment_invoice_token' => $invoice->payment_invoice_token]) }}">
                 @csrf
                 <input type="hidden" id="payment_delete_route" value="{{ route('payment.delete', ['payment_invoice_token' => $invoice->payment_invoice_token ]) }}" />
-                <div class="flex flex-row gap-4 justify-center">
+                <div class="flex flex-row flex-wrap gap-4 justify-center">
                     <button id="edit_request" class="btn btn-warning">
                         Modifier ma demande
                     </button>

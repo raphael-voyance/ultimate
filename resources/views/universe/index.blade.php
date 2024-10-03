@@ -203,7 +203,7 @@
             <x-ui.card title="Paiements & facturations">
                 <ul>
                     @foreach ($invoices as $invoice)
-                    <li class="flex flex-row justify-between">
+                    <li class="flex flex-row justify-between gap-2">
                         <a href="{{ route('invoice.view', $invoice->payment_invoice_token) }}">{{ Str::limit($invoice->ref, 15) }}</a>
                         @php
                             $status = '';
@@ -221,6 +221,7 @@
                         @endphp
                         <x-mary-badge value="{{ $status }}"
                         @class([
+                            'min-w-[90px]',
                             'badge-success' => $invoice->status == 'PAID',
                             'badge-warning' => $invoice->status == 'PENDING',
                             'badge-secondary' => $invoice->status == 'REFUNDED',

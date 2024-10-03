@@ -10,6 +10,7 @@ use App\Concern\StatusAppointmentNotifications;
 use App\Http\Controllers\Galaxy\ProfileController;
 use App\Http\Controllers\Galaxy\PrevisionsController;
 use App\Http\Controllers\Galaxy\AppointmentsController;
+use App\Http\Controllers\Galaxy\NotificationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +84,8 @@ Route::middleware(['auth', 'verified'])->prefix('mon-espace')->as('my_space.')->
 
     Route::get('/mes-rendez-vous', [AppointmentsController::class, 'index'])->name('appointments.index');
     Route::get('/mes-rendez-vous/{invoice_token}', [StatusAppointmentNotifications::class, 'redirectToAppointment'])->name('appointment.view');
+
+    Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index');
 
 });
 

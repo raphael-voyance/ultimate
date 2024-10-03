@@ -13,23 +13,20 @@
 </div>
 
 @if(auth()->check())
-    <div class="fixed right-4 bottom-4 z-10">
-        <div id="notification_btn" class="relative bg-primary w-12 h-12 flex justify-center items-center text-white rounded-full cursor-pointer transition-all hover:ring-2 hover:ring-offset-base-100 hover:ring-white hover:ring-offset-4">
-            <i class="fa-light fa-bell-ring fa-xl"></i>
+    <div x-data="notificationComponent" class="fixed right-4 bottom-4 z-10">
+        <div x-on:click="toggle" class="relative bg-primary w-12 h-12 flex justify-center items-center text-white rounded-full cursor-pointer transition-all hover:ring-2 hover:ring-offset-base-100 hover:ring-white hover:ring-offset-4">
+            <i class="fa-light fa-xl" :class="open ? 'fa-times' : 'fa-bell-ring'"></i>
             <div class="absolute -top-1 -right-1 badge badge-accent badge-md text-xs">1</div>
         </div>
-        <div id="notifications_block" class="absolute translate-x-full invisible opacity-0 transition-all bottom-14 right-4 bg-primary rounded-md">
-            @foreach(auth()->user()->notifications as $notification)
+        <div x-ref="notificationsBlock" class="absolute min-w-[100vw] md:min-w-[550px] translate-x-full invisible opacity-0 transition-all bottom-14 -right-4 bg-primary rounded-md">
+            <template x-for="notification in notifications" :key="notification.id">
                 <div class="border-b-2 border-white text-white last-of-type:border-b-0 py-1 px-2 flex flex-nowrap flex-row gap-2 justify-evenly items-center">
-                    <span>{{ $notification->type }}</span>
+                    <span class="p-2" x-text="notification.data.message"></span>
                     <div class="flex flex-nowrap flex-row gap-2 justify-evenly items-center">
-                        <span>Voir</span>
-                        <span>Vu</span>
-                        <span>Supprimer</span>
+                        <button class="btn btn-xs text-white btn-accent">D'accord</button>
                     </div>
-                    
                 </div>
-            @endforeach
+            </template>
         </div>
     </div>
 @endif

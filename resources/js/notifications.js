@@ -1,15 +1,22 @@
-window.addEventListener('load', () => {
-    const notificationBtn = document.getElementById("notification_btn");
-    const notificationsBlock = document.getElementById("notifications_block");
+import axios from "axios";
 
-    if(notificationBtn == null || notificationsBlock == null) {
-        return;
-    }
-
-    notificationBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        notificationsBlock.classList.toggle('translate-x-full');
-        notificationsBlock.classList.toggle('invisible');
-        notificationsBlock.classList.toggle('opacity-0');
-    });
-});
+document.addEventListener('alpine:init', () => {
+    Alpine.data('notificationComponent', () => ({
+        notifications: [],
+        open: false,
+        async init() {
+            try {
+                const response = await axios.get("/mon-espace/notifications");
+                this.notifications = response.data || [];
+            } catch (error) {
+                console.error("Erreur lors du chargement des notifications :", error);
+            }
+        },
+        toggle() {
+            this.open = !this.open;
+            this.$refs.notificationsBlock.classList.toggle('translate-x-full');
+            this.$refs.notificationsBlock.classList.toggle('invisible');
+            this.$refs.notificationsBlock.classList.toggle('opacity-0');
+        },
+    }))
+})

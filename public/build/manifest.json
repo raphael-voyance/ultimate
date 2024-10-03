@@ -14,12 +14,12 @@
       "assets/alert-BTnCFOkF.css"
     ]
   },
-  "_axios-C8DqakIB.js": {
-    "file": "assets/axios-C8DqakIB.js",
+  "_axios-CCb-kr4I.js": {
+    "file": "assets/axios-CCb-kr4I.js",
     "name": "axios"
   },
-  "_bundle-C_Ig5n8c.js": {
-    "file": "assets/bundle-C_Ig5n8c.js",
+  "_bundle-Cokl53mf.js": {
+    "file": "assets/bundle-Cokl53mf.js",
     "name": "bundle",
     "imports": [
       "__commonjsHelpers-Cpj98o6Y.js"
@@ -49,7 +49,7 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-BIvJBo9M.css",
+    "file": "assets/app-CxKGOniX.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -59,12 +59,12 @@
     "isEntry": true
   },
   "resources/js/add/blog/blog.js": {
-    "file": "assets/blog-CzGQs0rT.js",
+    "file": "assets/blog-DRFuNFAU.js",
     "name": "blog",
     "src": "resources/js/add/blog/blog.js",
     "isEntry": true,
     "imports": [
-      "_bundle-C_Ig5n8c.js",
+      "_bundle-Cokl53mf.js",
       "__commonjsHelpers-Cpj98o6Y.js"
     ],
     "css": [
@@ -85,12 +85,12 @@
     ]
   },
   "resources/js/add/payment.js": {
-    "file": "assets/payment-C_Dp5Dtt.js",
+    "file": "assets/payment-CXSljzKt.js",
     "name": "payment",
     "src": "resources/js/add/payment.js",
     "isEntry": true,
     "imports": [
-      "_axios-C8DqakIB.js",
+      "_axios-CCb-kr4I.js",
       "_alert-BjNJBOmD.js"
     ],
     "css": [
@@ -146,13 +146,13 @@
     "src": "resources/js/add/previsions/moonImgs/premier-quartier.svg"
   },
   "resources/js/add/previsions/numerology.js": {
-    "file": "assets/numerology-B7nGWr9c.js",
+    "file": "assets/numerology-BI0VSo0_.js",
     "name": "numerology",
     "src": "resources/js/add/previsions/numerology.js",
     "isEntry": true,
     "imports": [
       "_utils-CCH-PrqN.js",
-      "_axios-C8DqakIB.js"
+      "_axios-CCb-kr4I.js"
     ]
   },
   "resources/js/add/sticky_nav_messaging.js": {
@@ -166,13 +166,13 @@
     "src": "resources/js/add/tarot/bg-draw.webp"
   },
   "resources/js/add/tarot/tarot.js": {
-    "file": "assets/tarot-CwbwX8qL.js",
+    "file": "assets/tarot-BjZKEXKy.js",
     "name": "tarot",
     "src": "resources/js/add/tarot/tarot.js",
     "isEntry": true,
     "imports": [
       "_index-DjKJqAo0.js",
-      "_axios-C8DqakIB.js"
+      "_axios-CCb-kr4I.js"
     ],
     "css": [
       "assets/tarot-DACM9XSU.css"
@@ -182,12 +182,12 @@
     ]
   },
   "resources/js/add/universe/backups.js": {
-    "file": "assets/backups-BvM52dQz.js",
+    "file": "assets/backups-B3Yvratl.js",
     "name": "backups",
     "src": "resources/js/add/universe/backups.js",
     "isEntry": true,
     "imports": [
-      "_axios-C8DqakIB.js",
+      "_axios-CCb-kr4I.js",
       "_utils-CCH-PrqN.js",
       "_alert-BjNJBOmD.js"
     ],
@@ -201,15 +201,15 @@
     "isEntry": true
   },
   "resources/js/add/universe/blog/blog.js": {
-    "file": "assets/blog-CtX8yYUr.js",
+    "file": "assets/blog-DwAQZ5h9.js",
     "name": "blog",
     "src": "resources/js/add/universe/blog/blog.js",
     "isEntry": true,
     "imports": [
-      "_axios-C8DqakIB.js",
+      "_axios-CCb-kr4I.js",
       "_utils-CCH-PrqN.js",
       "_alert-BjNJBOmD.js",
-      "_bundle-C_Ig5n8c.js",
+      "_bundle-Cokl53mf.js",
       "__commonjsHelpers-Cpj98o6Y.js"
     ],
     "css": [
@@ -217,12 +217,12 @@
     ]
   },
   "resources/js/add/universe/blog/category.js": {
-    "file": "assets/category-EV8JkpGE.js",
+    "file": "assets/category-CdddOuCs.js",
     "name": "category",
     "src": "resources/js/add/universe/blog/category.js",
     "isEntry": true,
     "imports": [
-      "_axios-C8DqakIB.js",
+      "_axios-CCb-kr4I.js",
       "_alert-BjNJBOmD.js"
     ],
     "css": [
@@ -242,12 +242,12 @@
     ]
   },
   "resources/js/add/universe/files.js": {
-    "file": "assets/files-4M84uB73.js",
+    "file": "assets/files-j-BiR14E.js",
     "name": "files",
     "src": "resources/js/add/universe/files.js",
     "isEntry": true,
     "imports": [
-      "_axios-C8DqakIB.js",
+      "_axios-CCb-kr4I.js",
       "_alert-BjNJBOmD.js"
     ],
     "css": [
@@ -256,7 +256,7 @@
   },
   "resources/js/add/universe/numerology/numerology.css": {
     "file": "assets/tarot-DXQIpJhJ.css",
-    "src": "resources/js/add/universe/numerology/numerology.css",
+    "src": "resources/js/add/universe/tarot/tarot.css",
     "isEntry": true
   },
   "resources/js/add/universe/numerology/numerology.js": {
@@ -270,7 +270,7 @@
   },
   "resources/js/add/universe/tarot/tarot.css": {
     "file": "assets/tarot-DXQIpJhJ.css",
-    "src": "resources/js/add/universe/numerology/numerology.css",
+    "src": "resources/js/add/universe/tarot/tarot.css",
     "isEntry": true
   },
   "resources/js/add/universe/tarot/tarot.js": {
@@ -283,12 +283,12 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-BnYZhgLd.js",
+    "file": "assets/app-DWoPOdpd.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_axios-C8DqakIB.js"
+      "_axios-CCb-kr4I.js"
     ]
   }
 }

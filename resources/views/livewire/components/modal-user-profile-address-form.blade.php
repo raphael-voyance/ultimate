@@ -61,5 +61,5 @@
 
     </x-mary-modal>
     
-    <button @click="$wire.ModalUserProfileAddressForm = true" class="btn btn-sm btn-accent">{{ $btnText }}</button>
+    <button @click="$wire.ModalUserProfileAddressForm = true" class="btn btn-sm h-auto btn-accent">{{ $btnText }}</button>
 </div>

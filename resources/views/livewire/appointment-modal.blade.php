@@ -556,7 +556,7 @@
                         @if ($appointmentType)
                             <button class="btn btn-sm btn-secondary btn-outline mt-4 float-left"
                                     @click="$wire.prevStep()">Modifier</button>
-                            <x-ui.primary-button class="btn-sm mt-4 float-right"
+                            <x-ui.primary-button class="btn-sm h-12 md:h-8 mt-4 float-right"
                                     @click="$wire.nextStep({{ $totalStep }})">Valider ma demande et accéder au paiement</x-ui.primary-button>
                         @endif
                     @endauth
