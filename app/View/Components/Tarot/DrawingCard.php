@@ -12,6 +12,7 @@ class DrawingCard extends Component
     private $tc;
     public $cards;
     public $drawCards;
+    public $draw;
     /**
      * Create a new component instance.
      */

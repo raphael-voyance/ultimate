@@ -175,4 +175,8 @@ class User extends Authenticatable implements Searchable, MustVerifyEmail
     public function sent_messages(): HasMany {
         return $this->hasMany(Message::class, 'sender_id');
     }
+
+    public function draws(): HasMany {
+        return $this->hasMany(UserDraw::class, 'user_id');
+    }
 }

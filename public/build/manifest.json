@@ -3,9 +3,9 @@
     "file": "assets/_commonjsHelpers-Cpj98o6Y.js",
     "name": "_commonjsHelpers"
   },
-  "_alert-!~{00s}~.js": {
+  "_alert-!~{00t}~.js": {
     "file": "assets/alert-BTnCFOkF.css",
-    "src": "_alert-!~{00s}~.js"
+    "src": "_alert-!~{00t}~.js"
   },
   "_alert-BjNJBOmD.js": {
     "file": "assets/alert-BjNJBOmD.js",
@@ -49,7 +49,7 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-CxKGOniX.css",
+    "file": "assets/app-BiUyr8DI.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -161,12 +161,18 @@
     "src": "resources/js/add/sticky_nav_messaging.js",
     "isEntry": true
   },
+  "resources/js/add/tarot/actions-tarot.js": {
+    "file": "assets/actions-tarot-BGS7ikn6.js",
+    "name": "actions-tarot",
+    "src": "resources/js/add/tarot/actions-tarot.js",
+    "isEntry": true
+  },
   "resources/js/add/tarot/bg-draw.webp": {
     "file": "assets/bg-draw-AHr4U7ih.webp",
     "src": "resources/js/add/tarot/bg-draw.webp"
   },
   "resources/js/add/tarot/tarot.js": {
-    "file": "assets/tarot-BjZKEXKy.js",
+    "file": "assets/tarot-BLu_Fs7E.js",
     "name": "tarot",
     "src": "resources/js/add/tarot/tarot.js",
     "isEntry": true,
@@ -283,7 +289,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-DWoPOdpd.js",
+    "file": "assets/app-D8zGSmCs.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,

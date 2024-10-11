@@ -1,14 +1,19 @@
 <x-full-screen-layout>
     @section('js')
         @vite(['resources/js/add/tarot/tarot.js'])
+        @vite(['resources/js/add/tarot/actions-tarot.js'])
     @endsection
 
     <article class="relative -top-8">
 
         <section class="mb-4">
             
-            <x-tarot.drawing-card/>
-
+            @if (isset($draw))
+                <x-tarot.drawing-card :draw="$draw"/>
+            @else
+                <x-tarot.drawing-card/>
+            @endif
+            
         </section>
 
     </article>

@@ -1,5 +1,7 @@
+@props(['draw'])
+
 <div id="drawing-cards" class="flex flex-col items-center">
-    <section class="relative w-full max-w-full max-h-full min-h-[375px] flex justify-evenly h-full flex-col m-auto">
+    <section @if($draw) data-user-draw="{{ $draw }}" @endif class="relative w-full max-w-full max-h-full min-h-[375px] flex justify-evenly h-full flex-col m-auto">
         {{-- <section class="relative w-full max-w-full max-h-full bg-violet-700 flex justify-evenly items-center h-full flex-col mb-20"> --}}
 
         <header id="header-drawing-cards" class="relative p-4 flex flex-col md:flex-row gap-4 justify-between items-center bg-violet-900/55 hidden">
@@ -13,7 +15,7 @@
             <span class="hidden" id="total-cards-for-drawing-cards"></span>
 
             <div id="draw-actions" class="hidden md:max-w-[50%] flex flex-row gap-2">
-                <a href="#" id="save-draw" class="w-1/2 max-w-[160px] flex flex-col justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
+                <a href="#" id="open-save-draw" class="w-1/2 max-w-[160px] flex flex-col justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
                     <i class="fa-thin fa-save fa-2xl"></i>
                     <span class="text-center">Enregistrer et/ou annoter son tirage</span>
                 </a>
@@ -190,10 +192,26 @@
           <div class="drawer-overlay !cursor-default"></div>
 
           <div class="relative bg-base-200 text-base-content min-h-full w-full md:w-96 p-4">
+
             <span id="drawer-save-close" class="absolute z-10 text-lg w-9 h-9 border leading-9 border-white rounded-full text-center top-3 cursor-pointer right-6 text-white transition-all hover:scale-110"><i class="fa-thin fa-xmark"></i></span>
 
             <div class="mt-16">
-                FORMULAIRE D'ANNOTATION & ENREGISTREMENT
+                @guest
+                    <div role="alert" class="mb-4 alert alert-info">
+                        <i class="fa-duotone fa-message"></i>
+                        <span>Vous devez vous connecter pour poursuivre</span>
+                    </div>
+
+                    @livewire('components.form-register-user')
+
+                @endguest
+
+                @auth
+                    FORMULAIRE D'ANNOTATION & ENREGISTREMENT
+
+                    <button id="save-draw-btn" class="btn btn-sm btn-primary text-white w-full mt-4">Enregistrer</button>
+                @endauth
+
             </div>
             
           </div>

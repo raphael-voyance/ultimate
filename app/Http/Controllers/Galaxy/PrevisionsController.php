@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Numerology as ModelsNumerology;
 use App\Models\TarotCard as ModelsTarology;
+use App\Models\UserDraw;
 
 class PrevisionsController extends Controller
 {
@@ -41,9 +42,54 @@ class PrevisionsController extends Controller
         ]);
     }
 
+    public function getDrawCards(Request $request, $id) {
+        // dd($id);
+        $user = $request->user();
+        // dd($user);
+        if(!$user) {
+            return abort(401);
+        }
+        $draw = UserDraw::where('user_id', $user->id)->where('id', $id)->firstOrFail();
+
+        $i_creator = new Tarot();
+        //dd(json_decode($draw->draw, true));
+        // $draw = $i_creator->loadInterpretations(json_decode($draw->draw, true), 'tirage-de-la-journee');
+        
+        $draw->makeHidden(['user_id']);
+
+        // dd($draw);
+
+        return view('tarot', [
+            'user' => $user,
+            'draw' => json_encode($draw)
+        ]);
+    }
+
     public function getDrawInterpretation(Request $request) {
         $i_creator = new Tarot();
         return $i_creator->loadInterpretations($request->drawCards, $request->drawSlug);
+    }
+
+    public function saveDraw(Request $request) {
+        $user = $request->user();
+
+        if(!$user) {
+            return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 401);
+        }
+
+        // dd($user->id);
+        // dd(json_encode($request->notes));
+        // dd($request->draw);
+        if($request->draw == []) {
+            return response()->json(['error' => 'Vous devez effectuer un tirage pour l\'enregistrer.'], 400);
+        }
+
+        $draw = UserDraw::create([
+            'user_id' => $user->id,
+            'draw' => json_encode($request->draw),
+            'notes' => $request->notes
+        ]);
+        return response()->json($draw);
     }
 
     public function getPrevisions() {

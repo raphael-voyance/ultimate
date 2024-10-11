@@ -70,6 +70,8 @@ Route::middleware([ProtectAgainstSpam::class])->group(function() {
 Route::prefix('tarot')->as('tarot.')->group(function() {
     Route::get('/', [PrevisionsController::class, 'tarotPage'])->name('index');
     Route::get('/interpretation', [PrevisionsController::class, 'getDrawInterpretation'])->name('interpretation');
+    Route::get('/tirage/{id}', [PrevisionsController::class, 'getDrawCards'])->name('get-draw-cards');
+    Route::post('/save-draw-cards', [PrevisionsController::class, 'saveDraw'])->name('save-draw-cards');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('mon-espace')->as('my_space.')->group(function() {
@@ -86,6 +88,8 @@ Route::middleware(['auth', 'verified'])->prefix('mon-espace')->as('my_space.')->
     Route::get('/mes-rendez-vous/{invoice_token}', [StatusAppointmentNotifications::class, 'redirectToAppointment'])->name('appointment.view');
 
     Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/get', [NotificationsController::class, 'get'])->name('notifications.get');
+    Route::post('/notification/mark-as-read', [NotificationsController::class, 'markAsRead'])->name('notifications.markasread');
 
 });
 

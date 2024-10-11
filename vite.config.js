@@ -21,6 +21,7 @@ export default defineConfig({
                 'resources/js/add/previsions/lunar.js',
                 'resources/js/add/previsions/numerology.js',
                 'resources/js/add/tarot/tarot.js',
+                'resources/js/add/tarot/actions-tarot.js',
                 'resources/js/add/blog/blog.js',
                 'resources/js/add/blog/blog.css',
                 
@@ -35,7 +36,7 @@ export default defineConfig({
                 'resources/js/add/universe/numerology/numerology.js',
                 'resources/js/add/universe/numerology/numerology.css',
             ],
-            refresh: true,
+            refresh: false,
         }),
     ],
 });

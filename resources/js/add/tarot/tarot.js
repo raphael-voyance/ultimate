@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const header = document.getElementById("header-drawing-cards");
         const footer = document.getElementById("footer-drawing-cards");
+        let drawDate = new Date();
+        drawDate = drawDate.toLocaleDateString();
         const nameOfDrawingCardsEl = document.getElementById(
             "name-of-drawing-cards"
         );
@@ -70,6 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let cardsSelected = [];
         let cardsCutSelected = [];
         let finalDrawToSave = {};
+
+        let launchGetDrawInterpretationURL = null;
 
         // STYLES
         const headerPageElements = [document.getElementById("sticky-header"), document.getElementById("sub-header")];
@@ -165,7 +169,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 stepsEls.forEach((step) => {
                     step.classList.add("hidden");
                 });
-                activeStepEl.classList.remove("hidden");
+                
+                if(activeStepEl) {
+                    activeStepEl.classList.remove("hidden");
+                }
             } else {
                 activeStep = btn.getAttribute("data-to-step");
                 activeStepEl = document.querySelector(
@@ -479,6 +486,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 nextDrawStep();
 
                 finalDrawToSave = finalDraw;
+                finalDrawToSave.date = drawDate;
+                finalDrawToSave.name = nameOfDrawingCards;
+                localStorage.setItem('finalDrawToSave', JSON.stringify(finalDrawToSave));
 
                 // console.log(finalDraw, interpretationCardDraw.drawSlug);
 
@@ -524,7 +534,7 @@ document.addEventListener("DOMContentLoaded", () => {
         interpretationDrawingCardBtn.addEventListener("click", () => {
             totalCardsForDrawingCardsEl.style.display = 'none';
             nextDrawStep();
-            //console.log(cardsSelected)
+            // console.log(cardsSelected)
             launchGetDrawInterpretation(cardsSelected);
         });
 
@@ -690,8 +700,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         //DRAW spread
         const drawSpread = function(finalDraw) {
-
-            console.log('process draw', finalDraw)
             
             gsap.to(tarotCardsContainer, {
                 duration: 1,
@@ -883,14 +891,14 @@ document.addEventListener("DOMContentLoaded", () => {
         //DRAW DAY
         const drawDay = function(finalDraw) {
             gsap.to(tarotCardsContainer, {
-                duration: 1,
-                scale: .8,
-                opacity: 0,
-                ease: "power1.out",
-                onComplete: () => {
-                    setTimeout(() => {
-                        tarotCardsContainer.remove();
-                        cardMap.classList.add('draw-day');
+                    duration: 1,
+                    scale: .8,
+                    opacity: 0,
+                    ease: "power1.out",
+                    onComplete: () => {
+                        setTimeout(() => {
+                            tarotCardsContainer.remove();
+                            cardMap.classList.add('draw-day');
 
                         // CUT
                         getDrawCut(finalDraw.cut);
@@ -978,17 +986,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         containerCards.classList.add('block-cards-draw');
                         blockContainerDraw.appendChild(containerCards);
                         cardMap.firstElementChild.appendChild(blockContainerDraw);
-
-                    }, 500);
-                }
-            });
+                        }, 500);
+                    }
+                });
         }
 
         // CONSTRUCTION DU TIRAGE
-
         let dateOfDrawingCards = document.getElementById("date-of-drawing-cards");
-        let drawDate = new Date();
-        drawDate = drawDate.toLocaleDateString();
         dateOfDrawingCards.innerText = 'Le : ' + drawDate;
 
         let drawStep = 0;
@@ -1029,15 +1033,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateNotice();
 
-        // SAVE DRAW
-        const saveDrawElement = document.getElementById('save-draw');
+        // SAVE / NOTE DRAW
+        const openSaveDrawElement = document.getElementById('open-save-draw');
         const drawerSaveInput = document.getElementById('drawer-save');
         const drawerSaveCloseElement = document.getElementById('drawer-save-close');
+
+        const saveDrawBtn = document.getElementById('save-draw-btn');
+
+        //a supprimer
+        // drawerSaveInput.setAttribute('checked', true);
         
-        saveDrawElement.addEventListener('click', (e) => {
+        openSaveDrawElement.addEventListener('click', (e) => {
             e.preventDefault();
             drawerSaveInput.setAttribute('checked', true);
-            saveDraw(finalDrawToSave);
         });
 
         drawerSaveCloseElement.addEventListener('click', (e) => {
@@ -1045,13 +1053,49 @@ document.addEventListener("DOMContentLoaded", () => {
             drawerSaveInput.removeAttribute('checked');
         });
 
-        const saveDraw = function(finalDraw) {
-            //add properties to finalDraw
-            finalDraw.date = drawDate;
-            console.log('save draw', finalDraw)
+        if(saveDrawBtn) {
+            saveDrawBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                saveDraw(finalDrawToSave);
+            });
+        }
+        
+        const saveDraw = function(finalDrawToSave) {
+            let notes = null;
+            
+            const localStorageDraw = localStorage.getItem('finalDrawToSave');
+
+            const drawToSave = localStorageDraw ? localStorageDraw : finalDrawToSave;
+
+            console.log('name', nameOfDrawingCards);
+            // localStorage.removeItem('finalDrawToSave');
+            
+            // return;
+
+            // console.log('save draw', JSON.parse(drawToSave));
+
+            //envoie de la requete pour l'enregistrement du tirage
+            axios({
+                method: 'post',
+                url: '/tarot/save-draw-cards',
+                data: {
+                  draw: JSON.parse(drawToSave),
+                }
+              }).then(function (response) {
+                if(response.status == 200) {
+                    console.log('Tirage enregistré avec succès', response.data.id);
+                    localStorage.removeItem('finalDrawToSave');
+                    // console.log('response', response.data);
+                    window.location = window.location.origin + '/tarot/tirage/' + response.data.id;
+                }else {
+                    console.error('Erreur lors de l\'enregistrement du tirage');
+                }
+              });
+
         }
 
         // demander l'interpretation en ouvrant un modal
+        //....
 
         if (anchor) {
             let found = false;
@@ -1082,6 +1126,136 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         shuffleBtn.addEventListener("click", shuffleDeck);
+
+        // INIT
+        const init = function () {
+            const drawContainerDraw = document.querySelector('[data-user-draw]');
+            // Si la page en cours possède un élément data-user-draw --> affichage d'un tirage
+            if (drawContainerDraw) {
+                const draw = drawContainerDraw.getAttribute('data-user-draw');
+                if (draw !== '') {
+                    try {
+                        steping(null, "FINALY_STEP");
+                        cardMap.classList.remove('hidden');
+                        header.classList.remove("hidden");
+                        noticeDrawElement.classList.add('hidden');
+                        drawActionsElement.classList.remove('hidden');
+
+                        // Déséchapper le JSON initial
+                        const unescapedDraw = draw.replace(/&quot;/g, '"');
+                        const parsedDraw = JSON.parse(unescapedDraw);
+        
+                        // Maintenant, traiter le contenu du champ "draw" qui est encore un JSON
+                        const nestedDraw = parsedDraw.draw;
+                        const unescapedNestedDraw = JSON.parse(nestedDraw.replace(/&quot;/g, '"').replace(/&#039;/g, "'"));
+
+                        let dateOfDrawingCardsEl = document.getElementById("date-of-drawing-cards");
+                        dateOfDrawingCardsEl.innerText = 'Le : ' + unescapedNestedDraw.date;
+                        dateOfDrawingCardsEl.classList.remove('hidden');
+                        console.log('unescapedNestedDraw', unescapedNestedDraw);
+
+                        //DRAWS
+                        const finalNestedDraw = unescapedNestedDraw;
+                        const theDraw = finalNestedDraw.draw;
+                        const theDrawSlug = theDraw.drawSlug;
+
+                        //DRAW INFORMATIONS
+                        const dateOfDrawingCards = parsedDraw.created_at;
+                        const dateOfUpdateDrawingCards = parsedDraw.updated_at;
+
+                        nameOfDrawingCardsEl.innerText = finalNestedDraw.name;
+        
+                        // console.log('finalNestedDraw', finalNestedDraw);
+                        // console.log('dateOfUpdateDrawingCards', dateOfUpdateDrawingCards);
+                        // console.log('dateOfDrawingCards', dateOfDrawingCards);
+
+                        // console.log('theDraw', theDraw);
+                        // console.log('theCut', theCut);
+                        // console.log('theDrawSlug', theDrawSlug);
+        
+                        // Utiliser finalNestedDraw pour vos fonctions de tirage
+                        if(theDrawSlug == 'tirage-de-la-journee') {
+                            drawDay(finalNestedDraw);
+                        }else if(theDrawSlug == 'tirage-de-l-annee') {
+                            drawYear(finalNestedDraw);
+                        }else if(theDrawSlug == 'tirage-en-croix') {
+                            drawCross(finalNestedDraw);
+                        }else {
+                            drawSpread(finalNestedDraw);
+                        }
+
+                        return;
+
+                    } catch (error) {
+                        console.error('Erreur lors du parsing JSON :', error);
+                    }
+                }
+            }
+        
+            const savedFinalDraw = JSON.parse(localStorage.getItem('finalDrawToSave'));
+            // Si il y a un tirage en cours (enregistré dans le localstorage)
+            if (savedFinalDraw) {
+                console.log('savedFinalDraw', savedFinalDraw);
+                try {
+
+                    steping(null, "FINALY_STEP");
+                    cardMap.classList.remove('hidden');
+                    header.classList.remove("hidden");
+                    noticeDrawElement.classList.add('hidden');
+                    drawActionsElement.classList.remove('hidden');
+                    dateOfDrawingCards.classList.remove('hidden');
+                    nameOfDrawingCardsEl.innerText = savedFinalDraw.name;
+
+                    // Déséchapper le JSON initial
+                    // const unescapedDraw = draw.replace(/&quot;/g, '"');
+                    // const parsedDraw = JSON.parse(unescapedDraw);
+    
+                    // Maintenant, traiter le contenu du champ "draw" qui est encore un JSON
+                    // const nestedDraw = parsedDraw.draw;
+                    // const unescapedNestedDraw = nestedDraw.replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+
+                    // console.log('unescapedNestedDraw', unescapedNestedDraw);
+
+                    //DRAWS
+                    // const finalNestedDraw = JSON.parse(unescapedNestedDraw);
+                    const theDraw = savedFinalDraw.draw;
+                    const theDrawSlug = theDraw.drawSlug;
+
+                    //DRAW INFORMATIONS
+                    // const dateOfDrawingCards = parsedDraw.created_at;
+                    // const dateOfUpdateDrawingCards = parsedDraw.updated_at;
+    
+                    // console.log('finalNestedDraw', finalNestedDraw);
+                    // console.log('dateOfUpdateDrawingCards', dateOfUpdateDrawingCards);
+                    // console.log('dateOfDrawingCards', dateOfDrawingCards);
+
+                    // console.log('theDraw', theDraw);
+                    // console.log('theCut', theCut);
+                    // console.log('theDrawSlug', theDrawSlug);
+    
+                    // Utiliser finalNestedDraw pour vos fonctions de tirage
+                    if(theDrawSlug == 'tirage-de-la-journee') {
+                        drawDay(savedFinalDraw);
+                    }else if(theDrawSlug == 'tirage-de-l-annee') {
+                        drawYear(savedFinalDraw);
+                    }else if(theDrawSlug == 'tirage-en-croix') {
+                        drawCross(savedFinalDraw);
+                    }else {
+                        drawSpread(savedFinalDraw);
+                    }
+
+                    return;
+
+                } catch (error) {
+                    console.error('Erreur lors du parsing JSON :', error);
+                }
+
+                return;
+            }
+
+        };
+        init();
+        
 
     }
 });
