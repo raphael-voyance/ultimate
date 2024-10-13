@@ -14,7 +14,7 @@
 
             <span class="hidden" id="total-cards-for-drawing-cards"></span>
 
-            <div id="draw-actions" class="hidden md:max-w-[50%] flex flex-row gap-2">
+            {{-- <div id="draw-actions" class="hidden md:max-w-[50%] flex flex-row gap-2">
                 <a href="#" id="open-save-draw" class="w-1/2 max-w-[160px] flex flex-col justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
                     <i class="fa-thin fa-save fa-2xl"></i>
                     <span class="text-center">Enregistrer et/ou annoter son tirage</span>
@@ -23,8 +23,34 @@
                     <i class="fa-thin fa-feather fa-2xl"></i>
                     <span class="text-center">Demander une interprétation personnalisée</span>
                 </a>
-            </div>
+                <a href="{{ route('tarot.index') }}" id="new-draw" class="w-full flex flex-raw justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
+                    <i class="fa-thin fa-thin fa-cards fa-2xl"></i>
+                    <span class="text-center">Faire un nouveau tirage</span>
+                </a>
+            </div> --}}
 
+            <div id="draw-actions" class="hidden md:max-w-[50%] flex flex-col gap-2">
+
+                <div>
+                    <a href="{{ route('tarot.index') }}" id="new-draw" class="w-full flex flex-col md:flex-row justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
+                    <i class="fa-thin fa-thin fa-cards fa-2xl"></i>
+                    <span class="text-center">Faire un nouveau tirage</span>
+                    </a>
+                </div>
+                
+                <div class="flex flex-row gap-2">
+                    <a href="#" id="open-save-draw" class="w-full md:w-1/2 max-w-[160px] flex flex-col justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
+                        <i class="fa-thin fa-save fa-2xl"></i>
+                        <span class="text-center">Enregistrer et/ou annoter son tirage</span>
+                    </a>
+                    <a href="#" id="send-draw" class="w-full md:w-1/2 max-w-[160px] flex flex-col justify-center items-center gap-6 p-6 pt-8 rounded-sm bg-accent/100 text-white hover:text-white focus:text-white active:text-white active:bg-accent/85 hover:bg-accent/85 focus:bg-accent/85">
+                        <i class="fa-thin fa-feather fa-2xl"></i>
+                        <span class="text-center">Demander une interprétation personnalisée</span>
+                    </a>
+                </div>
+
+                
+            </div>
         </header>
 
         <div class="w-full">
@@ -50,12 +76,12 @@
                 data-to-step="DRAWING_CARD">Passer au tirage</button>
             </div>
 
-            <div id="card_map" data-step="DRAWING_CARD" class="m-auto py-4 w-full h-full relative hidden">
+            <div id="card_map" data-games="{{ $drawCards }}" data-step="DRAWING_CARD" class="m-auto py-4 w-full h-full relative hidden">
 
                 <div class="flex flex-col w-full h-full max-w-full min-h-[400px] md:min-h-[550px]">
                     <ul id="tarot-cards"
                     class="tarot-cards-container transition-all"
-                    data-cards="{{ $cards }}" data-games="{{ $drawCards }}"></ul>
+                    data-cards="{{ $cards }}"></ul>
 
 
 

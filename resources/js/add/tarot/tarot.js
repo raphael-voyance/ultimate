@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         const drawingCards = JSON.parse(
-            tarotCardsContainer.getAttribute("data-games")
+            cardMap.getAttribute("data-games")
         );
 
         let isMobile;
@@ -138,6 +138,66 @@ document.addEventListener("DOMContentLoaded", () => {
         };
         createDrawingCardsList();
 
+        const createChangeGameBtns = function (changeGameBlocTitleTxt = "Réaliser un nouveau tirage :") {
+                
+                let changeGameBtnsContainer = document.createElement("div");
+                let changeGameBtnsUl = document.createElement("ul");
+
+                let changeGameBlocTitle = document.createElement("span");
+
+                let drawingCardBtns = drawingCards.filter(
+                    (d) => d.slug != anchor
+                );
+
+                drawingCardBtns.forEach((d) => {
+                    let changeGameBtnsLi = document.createElement("li");
+                    let changeGameBtnsA = document.createElement("a");
+
+                    let origin = window.location.origin;
+                    let pathname = "/tarot";
+                    let hash = "#" + d.slug;
+                    let url = origin + pathname;
+
+                    changeGameBtnsA.setAttribute("href", url + hash);
+                    changeGameBtnsA.innerText = d.name;
+                    changeGameBtnsA.classList.add(
+                        "btn",
+                        "md:btn-sm",
+                        "btn-primary",
+                        "text-white/70",
+                        "hover:text-white/70",
+                        "active:text-white/70",
+                        "focus:text-white/70"
+                    );
+
+                    changeGameBtnsLi.append(changeGameBtnsA);
+                    changeGameBtnsUl.append(changeGameBtnsLi);
+
+                    changeGameBtnsA.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        localStorage.removeItem('finalDrawToSave');
+                        window.location = this.href;
+                        if(location.pathname == '/tarot') location.reload();
+                        return;
+                    });
+                });
+
+                changeGameBlocTitle.innerText = changeGameBlocTitleTxt;
+
+                changeGameBtnsContainer.classList.add("p-4", "bg-base-100", "absolute", "bottom-0", "translate-y-full", "w-full");
+                changeGameBtnsContainer.setAttribute("id", "change_game_btns_container");
+                changeGameBlocTitle.classList.add(
+                    "text-xl",
+                    "mb-3",
+                    "inline-block"
+                );
+                changeGameBtnsUl.classList.add("flex", "gap-4", "flex-wrap");
+
+                changeGameBtnsContainer.append(changeGameBlocTitle);
+                changeGameBtnsContainer.append(changeGameBtnsUl);
+                drawingCardsMatElement.append(changeGameBtnsContainer);
+        };
+
         const steping = function (btn = null, to = null) {
             const steps = [
                 "DRAWING_CARD_INTRO",
@@ -194,59 +254,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     createDeck(tarotCards, tarotCardsContainer);
                 }
 
-                let changeGameBtnsContainer = document.createElement("div");
-                let changeGameBtnsUl = document.createElement("ul");
-
-                let changeGameBlocTitle = document.createElement("span");
-
-                let drawingCardBtns = drawingCards.filter(
-                    (d) => d.slug != anchor
-                );
-
-                drawingCardBtns.forEach((d) => {
-                    let changeGameBtnsLi = document.createElement("li");
-                    let changeGameBtnsA = document.createElement("a");
-
-                    let origin = window.location.origin;
-                    let pathname = window.location.pathname;
-                    let hash = "#" + d.slug;
-                    let url = origin + pathname;
-
-                    changeGameBtnsA.setAttribute("href", url + hash);
-                    changeGameBtnsA.innerText = d.name;
-                    changeGameBtnsA.classList.add(
-                        "btn",
-                        "md:btn-sm",
-                        "btn-primary",
-                        "text-white/70",
-                        "hover:text-white/70",
-                        "active:text-white/70",
-                        "focus:text-white/70"
-                    );
-
-                    changeGameBtnsLi.append(changeGameBtnsA);
-                    changeGameBtnsUl.append(changeGameBtnsLi);
-
-                    changeGameBtnsA.addEventListener("click", function (e) {
-                        e.preventDefault();
-                        window.location.hash = hash;
-                        location.reload();
-                    });
-                });
-
-                changeGameBlocTitle.innerText = "Changer de tirage :";
-
-                changeGameBtnsContainer.classList.add("p-4", "bg-base-100", "absolute", "bottom-0", "translate-y-full", "w-full");
-                changeGameBlocTitle.classList.add(
-                    "text-xl",
-                    "mb-3",
-                    "inline-block"
-                );
-                changeGameBtnsUl.classList.add("flex", "gap-4", "flex-wrap");
-
-                changeGameBtnsContainer.append(changeGameBlocTitle);
-                changeGameBtnsContainer.append(changeGameBtnsUl);
-                drawingCardsMatElement.append(changeGameBtnsContainer);
+                createChangeGameBtns();
+                
             } else {
                 header.classList.add("hidden");
             }
@@ -1033,15 +1042,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateNotice();
 
-        // SAVE / NOTE DRAW
+        // Actions SAVE / NOTE / NEW DRAW
         const openSaveDrawElement = document.getElementById('open-save-draw');
         const drawerSaveInput = document.getElementById('drawer-save');
+        const newDraw =  document.getElementById('new-draw');
         const drawerSaveCloseElement = document.getElementById('drawer-save-close');
 
         const saveDrawBtn = document.getElementById('save-draw-btn');
 
-        //a supprimer
+        // a supprimer
         // drawerSaveInput.setAttribute('checked', true);
+
+        newDraw.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        
+            // Vérifiez si l'élément cliqué est un enfant du lien
+            let target = e.target;
+            while (target && target !== newDraw) {
+                target = target.parentNode;
+            }
+        
+            // Si nous avons trouvé le lien parent, récupérez l'attribut href
+            if (target === newDraw) {
+                const url = newDraw.getAttribute('href');
+                localStorage.removeItem('finalDrawToSave');
+                window.location = url;
+            }
+        });
         
         openSaveDrawElement.addEventListener('click', (e) => {
             e.preventDefault();
@@ -1138,6 +1166,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         steping(null, "FINALY_STEP");
                         cardMap.classList.remove('hidden');
                         header.classList.remove("hidden");
+                        createChangeGameBtns("Réaliser un nouveau tirage :");
                         noticeDrawElement.classList.add('hidden');
                         drawActionsElement.classList.remove('hidden');
 
@@ -1191,6 +1220,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             }
+
+            // const changeGameBtnsContainerEl = document.getElementById('change_game_btns_container');
+            // if(!changeGameBtnsContainerEl) {
+            //     createChangeGameBtns("Réaliser un nouveau tirage :");
+            // }else {
+            //     console.log('changeGameBtnsContainerEl', changeGameBtnsContainerEl);
+            // }
         
             const savedFinalDraw = JSON.parse(localStorage.getItem('finalDrawToSave'));
             // Si il y a un tirage en cours (enregistré dans le localstorage)
@@ -1201,6 +1237,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     steping(null, "FINALY_STEP");
                     cardMap.classList.remove('hidden');
                     header.classList.remove("hidden");
+                    footer.classList.add("hidden");
                     noticeDrawElement.classList.add('hidden');
                     drawActionsElement.classList.remove('hidden');
                     dateOfDrawingCards.classList.remove('hidden');
