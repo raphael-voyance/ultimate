@@ -119,7 +119,7 @@
         <section>
             <div class="flex-col flex-wrap items-center bg-secondary p-6 pt-3 justify-center md:justify-between gap-4 max-w-full mb-4 mt-6 mx-auto rounded">
                 <div>
-                    <h2 class="mb-2">Espace tirage de Tarot :</h2>
+                    <h2 class="mb-2">Espace tirage du tarot :</h2>
                     <p>Vous souhaitez poser une question au tarot ? Vous pouvez lancer un tirage en le sélectionnant dans la liste suivante :</p>
 
                     <div class="divider mb-auto w-3/4 mx-auto"></div>
@@ -135,7 +135,7 @@
                                     <div class="text-center p-2 flex flex-col items-center justify-center h-full">
                                         <h3>{{ $draw->name }}</h3>
                                         <p class="my-4 text-sm">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni, maiores esse facere saepe aut illum ducimus officia quisquam!
+                                            {{ Str::limit($draw->description, 120) }}
                                         </p>
                                         <a href="{{ route('tarot.index') }}#{{ $draw->slug }}" class="btn btn-primary btn-outline btn-sm delay-300 hover:delay-0 duration-500 scale-0 group-hover:scale-100">Réaliser un tirage</a>
                                     </div>
