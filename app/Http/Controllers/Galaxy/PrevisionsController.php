@@ -70,7 +70,7 @@ class PrevisionsController extends Controller
         if(!$user) {
             return abort(401);
         }
-        $draws = $user->draws()->get();
+        $draws = $user->draws()->latest()->get();
         return view('galaxy.tarot.index', [
             'draws' => $draws
         ]);
