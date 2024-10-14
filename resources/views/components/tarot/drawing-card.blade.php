@@ -127,7 +127,7 @@
                     {{-- DRAW DAY --}}
                     <template id="draw-interpretation-block-draw-day">
                         <div class="tarot-cards-container tarot-cards-container-draw-day">
-                            <div class="block-interpretation max-w-md ml-4">
+                            <div class="block-interpretation max-w-md">
                                 <p>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit eligendi pariatur officia, iusto dolorum tenetur totam et officiis quidem laboriosam, placeat, a itaque eum vero voluptatum fugit! Voluptatem, magnam quo.
                                 </p>
