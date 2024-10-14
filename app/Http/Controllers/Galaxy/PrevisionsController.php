@@ -100,6 +100,7 @@ class PrevisionsController extends Controller
             'draw' => json_encode($request->draw),
             'notes' => $request->notes
         ]);
+        toast()->success('Votre tirage a bien été enregistré dans votre espace.')->pushOnNextPage();
         return response()->json($draw);
     }
 
