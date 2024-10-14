@@ -27,10 +27,13 @@ class ProfileController extends Controller
 
         $numerology = json_decode($user->profile->numerology);
 
+        $draws = $user->draws()->latest()->limit(5)->get();
+
         return view('galaxy.dashboard', [
             'user' => $user,
             'invoices' => $invoices,
-            'numerology' => $numerology
+            'numerology' => $numerology,
+            'draws' => $draws,
         ]);
     }
 

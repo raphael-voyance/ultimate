@@ -65,6 +65,17 @@ class PrevisionsController extends Controller
         ]);
     }
 
+    public function drawCardsIndex(Request $request) {
+        $user = $request->user();
+        if(!$user) {
+            return abort(401);
+        }
+        $draws = $user->draws()->get();
+        return view('galaxy.tarot.index', [
+            'draws' => $draws
+        ]);
+    }
+
     public function getDrawInterpretation(Request $request) {
         $i_creator = new Tarot();
         return $i_creator->loadInterpretations($request->drawCards, $request->drawSlug);

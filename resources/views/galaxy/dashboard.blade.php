@@ -105,10 +105,25 @@
                     <li>Votre chemin de vie : {{ $numerology->lifePath }}</li>
                     <li>Votre année personnelle : {{ $numerology->annualPath }}</li>
                     @endif
-                    <li><a href="{{ route('tarot.index') }}">Faire un tirage de Tarot</a></li>
                 </ul>
                 <x-slot:actions>
                     <x-ui.link label="En découvrir plus" href="{{ route('my_space.previsions') }}" />
+                </x-slot:actions>
+            </x-ui.card>
+
+            {{-- Tarot --}}
+            <x-ui.card title="Tirage de Tarot">
+            
+                <ul>
+                    @if ($draws->count() > 0)
+                        @foreach ($draws as $draw)
+                            <li><a href="{{ route('tarot.get-draw-cards', $draw->id) }}">{{ $draw->created_at->format('d/m/Y') }}</a></li>
+                        @endforeach
+                        <li><a href="{{ route('tarot.draw-cards-index') }}">Voir tous vos tirages enregistrés</a></li>
+                    @endif
+                </ul>
+                <x-slot:actions>
+                    <x-ui.link label="Faire un tirage de Tarot" href="{{ route('tarot.index') }}" />
                 </x-slot:actions>
             </x-ui.card>
     

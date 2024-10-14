@@ -3,9 +3,9 @@
     "file": "assets/_commonjsHelpers-Cpj98o6Y.js",
     "name": "_commonjsHelpers"
   },
-  "_alert-!~{00t}~.js": {
+  "_alert-!~{00s}~.js": {
     "file": "assets/alert-BTnCFOkF.css",
-    "src": "_alert-!~{00t}~.js"
+    "src": "_alert-!~{00s}~.js"
   },
   "_alert-BjNJBOmD.js": {
     "file": "assets/alert-BjNJBOmD.js",
@@ -159,12 +159,6 @@
     "file": "assets/sticky_nav_messaging-pKNktpt7.js",
     "name": "sticky_nav_messaging",
     "src": "resources/js/add/sticky_nav_messaging.js",
-    "isEntry": true
-  },
-  "resources/js/add/tarot/actions-tarot.js": {
-    "file": "assets/actions-tarot-BGS7ikn6.js",
-    "name": "actions-tarot",
-    "src": "resources/js/add/tarot/actions-tarot.js",
     "isEntry": true
   },
   "resources/js/add/tarot/bg-draw.webp": {

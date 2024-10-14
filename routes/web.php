@@ -71,6 +71,7 @@ Route::prefix('tarot')->as('tarot.')->group(function() {
     Route::get('/', [PrevisionsController::class, 'tarotPage'])->name('index');
     Route::get('/interpretation', [PrevisionsController::class, 'getDrawInterpretation'])->name('interpretation');
     Route::get('/tirage/{id}', [PrevisionsController::class, 'getDrawCards'])->name('get-draw-cards');
+    Route::get('/tirages', [PrevisionsController::class, 'drawCardsIndex'])->name('draw-cards-index');
     Route::post('/save-draw-cards', [PrevisionsController::class, 'saveDraw'])->name('save-draw-cards');
 });
 

@@ -1,7 +1,6 @@
 <x-full-screen-layout>
     @section('js')
         @vite(['resources/js/add/tarot/tarot.js'])
-        @vite(['resources/js/add/tarot/actions-tarot.js'])
     @endsection
 
     <article class="relative -top-8">
