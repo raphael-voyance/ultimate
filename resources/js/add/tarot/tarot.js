@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     changeGameBtnsA.addEventListener("click", function (e) {
                         e.preventDefault();
-                        localStorage.removeItem('finalDrawToSave');
+                        sessionStorage.removeItem('finalDrawToSave');
                         window.location = this.href;
                         if(location.pathname == '/tarot') location.reload();
                         return;
@@ -497,7 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 finalDrawToSave = finalDraw;
                 finalDrawToSave.date = drawDate;
                 finalDrawToSave.name = nameOfDrawingCards;
-                localStorage.setItem('finalDrawToSave', JSON.stringify(finalDrawToSave));
+                sessionStorage.setItem('finalDrawToSave', JSON.stringify(finalDrawToSave));
 
                 // console.log(finalDraw, interpretationCardDraw.drawSlug);
 
@@ -1066,7 +1066,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Si nous avons trouvé le lien parent, récupérez l'attribut href
             if (target === newDraw) {
                 const url = newDraw.getAttribute('href');
-                localStorage.removeItem('finalDrawToSave');
+                sessionStorage.removeItem('finalDrawToSave');
                 window.location = url;
             }
         });
@@ -1089,30 +1089,49 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         const saveDraw = function(finalDrawToSave) {
-            let notes = null;
-            
-            const localStorageDraw = localStorage.getItem('finalDrawToSave');
+            let feeling = null;
+            let question = null;
 
-            const drawToSave = localStorageDraw ? localStorageDraw : finalDrawToSave;
+            const feelingEl = document.getElementById('feeling');
+            const questionEl = document.getElementById('question');
+
+            if(feelingEl.value) {
+                feeling = feelingEl.value;
+            }
+            if(questionEl.value) {
+                question = questionEl.value;
+            }
+
+            console.log('feelingEl', feeling);
+            console.log('questionEl', question);
+
+            // return;
+            
+            const sessionStorageDraw = sessionStorage.getItem('finalDrawToSave');
+
+            const drawToSave = sessionStorageDraw ? sessionStorageDraw : finalDrawToSave;
 
             console.log('name', nameOfDrawingCards);
-            // localStorage.removeItem('finalDrawToSave');
+            // sessionStorage.removeItem('finalDrawToSave');
             
             // return;
 
             // console.log('save draw', JSON.parse(drawToSave));
 
             //envoie de la requete pour l'enregistrement du tirage
+
             axios({
                 method: 'post',
                 url: '/tarot/save-draw-cards',
                 data: {
                   draw: JSON.parse(drawToSave),
+                  feeling: feeling,
+                  question: question
                 }
               }).then(function (response) {
                 if(response.status == 200) {
                     console.log('Tirage enregistré avec succès', response.data.id);
-                    localStorage.removeItem('finalDrawToSave');
+                    sessionStorage.removeItem('finalDrawToSave');
                     // console.log('response', response.data);
                     window.location = window.location.origin + '/tarot/tirage/' + response.data.id;
                 }else {
@@ -1228,7 +1247,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //     console.log('changeGameBtnsContainerEl', changeGameBtnsContainerEl);
             // }
         
-            const savedFinalDraw = JSON.parse(localStorage.getItem('finalDrawToSave'));
+            const savedFinalDraw = JSON.parse(sessionStorage.getItem('finalDrawToSave'));
             // Si il y a un tirage en cours (enregistré dans le localstorage)
             if (savedFinalDraw) {
                 console.log('savedFinalDraw', savedFinalDraw);
@@ -1292,7 +1311,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         };
         init();
-        
+    }
+});
 
+window.addEventListener('beforeunload', function (e) {
+    let isNavigatingAway = document.referrer && new URL(document.referrer).origin !== window.location.origin;
+
+    console.log('isNavigatingAway', isNavigatingAway);
+
+    if (isNavigatingAway) {
+        sessionStorage.removeItem('finalDrawToSave');
     }
 });
