@@ -13,7 +13,8 @@ class UserDraw extends Model
     protected $fillable = [
         'user_id',
         'draw',
-        'notes'
+        'question',
+        'feeling'
     ];
 
     public function user(): BelongsTo {

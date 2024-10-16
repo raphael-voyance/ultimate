@@ -243,19 +243,25 @@
                     @auth
 
                         <form id="form-save-draw">
+
+                            @php
+                                $jsonString = html_entity_decode($draw);
+                                $decodedDraw = json_decode($jsonString, true);
+                            @endphp
+
                             <div class="form-control mb-4">
                                 <label for="question" class="label">
                                     <span class="label-text">Votre question au moment du tirage :</span>
                                 </label>
                                 <input type="text" id="question" name="question" class="input input-bordered"
-                                    placeholder="Votre question...">
+                                    placeholder="Votre question..." value="{{ $decodedDraw['question'] ?? old('question') }}">
                             </div>
                             <div class="form-control mb-4">
                                 <label for="feeling" class="label">
                                     <span class="label-text">Votre ressenti personnel du tirage :</span>
                                 </label>
                                 <textarea id="feeling" name="feeling" rows="8" class="textarea textarea-bordered"
-                                    placeholder="Votre ressenti personnel..."></textarea>
+                                    placeholder="Votre ressenti personnel...">{{ $decodedDraw['feeling'] ?? old('feeling') }}</textarea>
                             </div>
                         </form>
 

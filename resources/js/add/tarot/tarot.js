@@ -75,6 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let launchGetDrawInterpretationURL = null;
 
+        let drawId = null;
+
         // STYLES
         const headerPageElements = [document.getElementById("sticky-header"), document.getElementById("sub-header")];
         const FooterPageElement = document.getElementById("footer");
@@ -1111,6 +1113,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const drawToSave = sessionStorageDraw ? sessionStorageDraw : finalDrawToSave;
 
+            console.log('drawToSave', drawToSave);
+
             console.log('name', nameOfDrawingCards);
             // sessionStorage.removeItem('finalDrawToSave');
             
@@ -1124,9 +1128,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: 'post',
                 url: '/tarot/save-draw-cards',
                 data: {
-                  draw: JSON.parse(drawToSave),
+                  draw: JSON.parse(JSON.stringify(drawToSave)),
                   feeling: feeling,
-                  question: question
+                  question: question,
+                  drawId: drawId
                 }
               }).then(function (response) {
                 if(response.status == 200) {
@@ -1192,10 +1197,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         // Déséchapper le JSON initial
                         const unescapedDraw = draw.replace(/&quot;/g, '"');
                         const parsedDraw = JSON.parse(unescapedDraw);
+
+                        drawId = parsedDraw.id;
+                        console.log('parsedDraw', drawId);
         
                         // Maintenant, traiter le contenu du champ "draw" qui est encore un JSON
                         const nestedDraw = parsedDraw.draw;
-                        const unescapedNestedDraw = JSON.parse(nestedDraw.replace(/&quot;/g, '"').replace(/&#039;/g, "'"));
+                        const unescapedNestedDraw = JSON.parse(JSON.parse(nestedDraw.replace(/&quot;/g, '"').replace(/&#039;/g, "'")));
 
                         let dateOfDrawingCardsEl = document.getElementById("date-of-drawing-cards");
                         dateOfDrawingCardsEl.innerText = 'Le : ' + unescapedNestedDraw.date;
@@ -1205,7 +1213,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         //DRAWS
                         const finalNestedDraw = unescapedNestedDraw;
                         const theDraw = finalNestedDraw.draw;
+                        console.log('finalNestedDraw', finalNestedDraw.draw);
+                        // return
                         const theDrawSlug = theDraw.drawSlug;
+                        finalDrawToSave = finalNestedDraw;
+                        
 
                         //DRAW INFORMATIONS
                         const dateOfDrawingCards = parsedDraw.created_at;
@@ -1221,7 +1233,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         // console.log('theCut', theCut);
                         // console.log('theDrawSlug', theDrawSlug);
         
-                        // Utiliser finalNestedDraw pour vos fonctions de tirage
+                        // Utiliser finalNestedDraw pour les fonctions de tirage
                         if(theDrawSlug == 'tirage-de-la-journee') {
                             drawDay(finalNestedDraw);
                         }else if(theDrawSlug == 'tirage-de-l-annee') {
@@ -1239,13 +1251,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             }
-
-            // const changeGameBtnsContainerEl = document.getElementById('change_game_btns_container');
-            // if(!changeGameBtnsContainerEl) {
-            //     createChangeGameBtns("Réaliser un nouveau tirage :");
-            // }else {
-            //     console.log('changeGameBtnsContainerEl', changeGameBtnsContainerEl);
-            // }
         
             const savedFinalDraw = JSON.parse(sessionStorage.getItem('finalDrawToSave'));
             // Si il y a un tirage en cours (enregistré dans le localstorage)

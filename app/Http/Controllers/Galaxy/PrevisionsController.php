@@ -88,19 +88,33 @@ class PrevisionsController extends Controller
             return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 401);
         }
 
-        // dd($user->id);
-        // dd($request);
-        // dd($request->draw);
+        $validated = $request->validate([
+            'draw' => 'required',
+            'question' => 'string|nullable',
+            'feeling' => 'string|nullable'
+        ]);
+        
         if($request->draw == []) {
             return response()->json(['error' => 'Vous devez effectuer un tirage pour l\'enregistrer.'], 400);
         }
 
-        $draw = UserDraw::create([
-            'user_id' => $user->id,
-            'draw' => json_encode($request->draw),
-            'question' => $request->question,
-            'feeling' => $request->feeling
-        ]);
+        if($request->drawId != null) {
+
+            $draw = UserDraw::where('user_id', $user->id)->where('id', $request->drawId)->firstOrFail();
+
+            $draw->update([
+                'question' => $request->question,
+                'feeling' => $request->feeling
+            ]);
+        }else {
+            $draw = UserDraw::create([
+                'user_id' => $user->id,
+                'draw' => json_encode($request->draw),
+                'question' => $request->question,
+                'feeling' => $request->feeling
+            ]);
+        }
+
         toast()->success('Votre tirage a bien été enregistré dans votre espace.')->pushOnNextPage();
         return response()->json($draw);
     }
