@@ -61,6 +61,7 @@ const loader = {
     }
 }
 
+// Fonction pour formater la date
 function formatDateString(event) {
     const input = event.target;
     const value = input.value.replace(/\D/g, ''); // Remove non-digit characters
@@ -90,10 +91,23 @@ function formatDateString(event) {
     input.value = formattedValue;
 }
 
+// Fonction pour formater la date et l'heure
+function formatDateTime(dateTime) {
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    };
+    return new Date(dateTime).toLocaleDateString('fr-FR', options);
+}
+
 
 
 
 
 export {
-    wrapElements, loader, formatDateString
+    wrapElements, loader, formatDateString, formatDateTime
 };

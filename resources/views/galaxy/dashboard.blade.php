@@ -117,7 +117,8 @@
                 <ul>
                     @forelse ($draws as $draw)
                     @php
-                        $drawDatas = json_decode($draw->draw);
+                        $jsonString = html_entity_decode(json_decode($draw->draw));
+                        $drawDatas = json_decode($jsonString);
                     @endphp
                         <li><a class="inline-flex items-center gap-2 px-1 pt-1 text-sm font-medium leading-5 text-gray-400 hover:text-gray-200 hover:border-gray-300 focus:outline-none focus:text-gray-200 focus:border-gray-300 transition duration-150 ease-in-out" href="{{ route('tarot.get-draw-cards', $draw->id) }}"><i class="fa-thin fa-thin fa-cards" aria-hidden="true"></i> {{ $drawDatas->name }} du {{ $draw->created_at->format('d/m/Y') }}</a></li>
                     @empty

@@ -21,13 +21,17 @@
         <div x-ref="notificationsBlock" class="absolute min-w-[100vw] md:min-w-[550px] translate-x-full invisible opacity-0 transition-all bottom-14 -right-4 bg-primary rounded-md">
             <template x-for="notification in notifications" :key="notification.id">
                 <div class="border-b-2 border-white text-white last-of-type:border-b-0 py-1 px-2 flex flex-nowrap flex-row gap-2 justify-evenly items-center">
-                    <span class="p-2" x-text="notification.data.message"></span>
+
+                    <div class="p-2">
+                        <p  x-text="notification.data.message"></p>
+                        <span class="text-xs justify-start text-white/70" x-text="'Le ' + formatDateTime(notification.created_at)"></span>
+                    </div>
                     <div class="flex flex-nowrap flex-row gap-2 justify-evenly items-center">
                         <button x-on:click="markAsRead(notification)" class="btn btn-xs text-white btn-accent">D'accord</button>
                     </div>
                 </div>
             </template>
-            <a href="{{ route('my_space.notifications.index') }}" class="border-white text-white active:text-white focus:text-white hover:text-white border-b-0 border-t-2 rounded-t-none mt-2 active:focus:scale-100 flex flex-nowrap flex-row gap-2 justify-evenly items-center btn btn-accent">
+            <a href="{{ route('my_space.notifications.index') }}" class="text-white active:text-white focus:text-white hover:text-white rounded-t-none mt-2 active:focus:scale-100 flex flex-nowrap flex-row gap-2 justify-evenly items-center btn btn-accent">
                 Voir toutes les notifications
             </a>
         </div>

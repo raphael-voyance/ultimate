@@ -1,4 +1,5 @@
 import axios from "axios";
+import {formatDateTime} from "./helpers/utils";
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('notificationComponent', () => ({
@@ -15,6 +16,8 @@ document.addEventListener('alpine:init', () => {
                 const countEl = this.$refs.count;
                 if (this.count > 0) {
                     countEl.classList.remove('opacity-0');
+                }else if(this.count < 1) {
+                    countEl.remove();
                 }
             } catch (error) {
                 console.error("Erreur lors du chargement des notifications :", error);
@@ -44,5 +47,8 @@ document.addEventListener('alpine:init', () => {
                     console.error("Erreur lors de la mise à jour de la notification :", error);
                 });
         },
+        formatDateTime(dateTime) {
+            return formatDateTime(dateTime);
+        }
     }));
 })
