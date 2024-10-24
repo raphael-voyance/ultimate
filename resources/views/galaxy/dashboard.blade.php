@@ -32,9 +32,22 @@
             {{-- Dernières consultations --}}
             <x-ui.card title="Dernières consultations">
                 <ul>
-                    <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="08/05/2024" href="#" /> par téléphone</li>
-                    <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="14/04/2024" href="#" /> par tchat</li>
-                    <li><i class="fa-thin fa-pen-nib mr-2"></i> répondu le <x-ui.link label="19/03/2024" href="#" /> par écrit</li>
+                    @foreach ($pastsAppointments as $appointment)
+                        <li><i @class([
+                            'fa-thin mr-2',
+                            'fa-phone' => $appointment['type'] == 'phone',
+                            'fa-sharp fa-comments' => $appointment['type'] == 'tchat',
+                            'fa-thin fa-pen-nib' => $appointment['type'] == 'writing'])></i> 
+
+                            @if($appointment['type'] == 'writing')
+                                demandée le <x-ui.link label="{{ $appointment['date'] }}" href="#" /> par écrit
+                            @elseif ($appointment['type'] == 'tchat')
+                                le <x-ui.link label="{{ $appointment['date'] }}" href="#" /> par tchat
+                            @else
+                                le <x-ui.link label="{{ $appointment['date'] }}" href="#" /> par téléphone
+                            @endif
+                        </li>
+                    @endforeach
                 </ul>
 
                 <x-slot:actions>
@@ -45,9 +58,22 @@
             {{-- Consultations à venir --}}
             <x-ui.card title="Consultations à venir">
                 <ul>
-                    <li><i class="fa-thin fa-pen-nib mr-2"></i> demandée le <x-ui.link label="08/09/2024" href="#" /> par écrit</li>
-                    <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="14/09/2024" href="#" /> par tchat</li>
-                    <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="19/09/2024" href="#" /> par téléphone</li>
+                    @foreach ($futursAppointments as $appointment)
+                        <li><i @class([
+                            'fa-thin mr-2',
+                            'fa-phone' => $appointment['type'] == 'phone',
+                            'fa-sharp fa-comments' => $appointment['type'] == 'tchat',
+                            'fa-thin fa-pen-nib' => $appointment['type'] == 'writing'])></i> 
+
+                            @if($appointment['type'] == 'writing')
+                                demandée le <x-ui.link label="{{ $appointment['date'] }}" href="#" /> par écrit
+                            @elseif ($appointment['type'] == 'tchat')
+                                le <x-ui.link label="{{ $appointment['date'] }}" href="#" /> par tchat
+                            @else
+                                le <x-ui.link label="{{ $appointment['date'] }}" href="#" /> par téléphone
+                            @endif
+                        </li>
+                    @endforeach
                 </ul>
                 <x-slot:actions>
                     <x-ui.link label="Toutes les consultations à venir" href="{{ route('home') }}" />

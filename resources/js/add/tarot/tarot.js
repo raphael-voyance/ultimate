@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 navigator.userAgent
             )
         )
-            isMobile = true;
+        isMobile = true;
         else isMobile = false;
 
         let cardWidth;
@@ -1321,8 +1321,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener('beforeunload', function (e) {
     let isNavigatingAway = document.referrer && new URL(document.referrer).origin !== window.location.origin;
-
-    console.log('isNavigatingAway', isNavigatingAway);
 
     if (isNavigatingAway) {
         sessionStorage.removeItem('finalDrawToSave');

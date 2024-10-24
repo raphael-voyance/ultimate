@@ -16,32 +16,6 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function index(Request $request): View
-    {
-        $user = $request->user();
-        if($user) {
-            $user->load('profile');
-        }
-
-        $invoices = $user->invoices()->latest()->limit(5)->get();
-
-        $numerology = json_decode($user->profile->numerology);
-
-        $draws = $user->draws()->latest()->limit(5)->get();
-        $drawsCount = count($user->draws()->get());
-
-        return view('galaxy.dashboard', [
-            'user' => $user,
-            'invoices' => $invoices,
-            'numerology' => $numerology,
-            'draws' => $draws,
-            'drawsCount' => $drawsCount,
-        ]);
-    }
-
-    /**
-     * Display the user's profile form.
-     */
     public function edit(Request $request): View
     {
         $user = $request->user();

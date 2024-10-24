@@ -25,8 +25,11 @@ class Appointment extends Model
         return Carbon::parse($this->timeSlot->start_time)->format('H\hi');
     }
 
+    // public function user() {
+    //     return $this->belongsTo(User::class);
+    // }
     public function user() {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 
     public function timeSlotDay() {

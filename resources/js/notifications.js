@@ -1,5 +1,5 @@
 import axios from "axios";
-import {formatDateTime} from "./helpers/utils";
+import { formatDateTime } from "./helpers/utils";
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('notificationComponent', () => ({

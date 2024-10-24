@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 class AppointmentsController extends Controller
 {
     public function index() {
-    
-        return view("galaxy.appointments");
+        return view("galaxy.appointments.index");
     }
 }

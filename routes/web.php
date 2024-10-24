@@ -10,6 +10,7 @@ use App\Concern\StatusAppointmentNotifications;
 use App\Http\Controllers\Galaxy\ProfileController;
 use App\Http\Controllers\Galaxy\PrevisionsController;
 use App\Http\Controllers\Galaxy\AppointmentsController;
+use App\Http\Controllers\Galaxy\DashboardController;
 use App\Http\Controllers\Galaxy\NotificationsController;
 
 /*
@@ -76,7 +77,7 @@ Route::prefix('tarot')->as('tarot.')->group(function() {
 });
 
 Route::middleware(['auth', 'verified'])->prefix('mon-espace')->as('my_space.')->group(function() {
-    Route::get('/', [ProfileController::class, 'index'])->name('index');
+    Route::get('/', [DashboardController::class, 'index'])->name('index');
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profil', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profil', [ProfileController::class, 'destroy'])->name('profile.destroy');
