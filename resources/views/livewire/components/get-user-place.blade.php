@@ -18,7 +18,8 @@
             
             {{ isset($userContact->address->facturation->country) ? $userContact->address->facturation->country : '' }}
         </p>
-        @elseif(json_decode($checkRequest)->errors->facturation_address)
+        
+        @elseif($checkRequest != true && json_decode($checkRequest)->errors->facturation_address)
             {{ json_decode($checkRequest)->errors->facturation_address }}
         @endif
     

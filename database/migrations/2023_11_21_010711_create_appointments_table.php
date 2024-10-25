@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
 
-            $table->enum('status',['pending', 'approved', 'confirmed', 'passed', 'concelled'])->default('pending');
+            $table->enum('status',['pending', 'approved', 'confirmed', 'passed', 'cancelled'])->default('pending');
             $table->enum('appointment_type', ['phone', 'tchat', 'writing'])->default('phone');
 
             $table->text('request_reason')->nullable();

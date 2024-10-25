@@ -124,9 +124,12 @@ class PaymentController extends Controller
             $timeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => true]);
         }
 
-        $appointment->delete();
-        $invoice->products()->detach();
-        $invoice->delete();
+        $appointment->invoice_id = null;
+        $appointment->save();
+        // $invoice->products()->detach();
+
+        $invoice->status = 'CANCELLED';
+        $invoice->save();
 
         toast()
             ->success('Votre demande de consultation a été annulée avec succés.')

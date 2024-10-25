@@ -1,4 +1,10 @@
 window.addEventListener('load', () => {
+    
+
+
+})
+
+window.addEventListener('DOMContentLoaded', () => {
     const overlay_element = document.getElementById('overlay_loadingpage');
 
     if(overlay_element) {
@@ -12,10 +18,4 @@ window.addEventListener('load', () => {
             }, 200);
         }
     }
-
-
-})
-
-window.addEventListener('DOMContentLoaded', () => {
-    //console.log('En cours de chargement...')
 })

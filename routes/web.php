@@ -24,11 +24,13 @@ use App\Http\Controllers\Galaxy\NotificationsController;
 |
 */
 
+//Public
 Route::get('/', [PublicController::class, 'home'])->name('home');
 Route::get('/me-consulter', [PublicController::class, 'consultations'])->name('consultations');
 Route::get('/temoignages', [PublicController::class, 'testimonies'])->name('testimonies');
 Route::get('/me-contacter', [PublicController::class, 'contact'])->name('contact');
 
+//Blog
 Route::prefix('mon-univers')->as('my_universe.')->group(function() {
     Route::get('/', [BlogController::class, 'index'])->name('index');
     Route::get('/article/{slug}', [BlogController::class, 'show'])->name('show');
@@ -68,6 +70,7 @@ Route::middleware([ProtectAgainstSpam::class])->group(function() {
     Route::post('/me-contacter', [PublicController::class, 'store_contact'])->name('store_contact');
 });
 
+//Tarot
 Route::prefix('tarot')->as('tarot.')->group(function() {
     Route::get('/', [PrevisionsController::class, 'tarotPage'])->name('index');
     Route::get('/interpretation', [PrevisionsController::class, 'getDrawInterpretation'])->name('interpretation');
@@ -77,18 +80,24 @@ Route::prefix('tarot')->as('tarot.')->group(function() {
 });
 
 Route::middleware(['auth', 'verified'])->prefix('mon-espace')->as('my_space.')->group(function() {
+    //Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('index');
+    //Profile
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profil', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    //Previsions
     Route::get('/previsions', [PrevisionsController::class, 'index'])->name('previsions');
     Route::get('/get-previsions', [PrevisionsController::class, 'getPrevisions']);
     Route::post('/post-birthdate', [PrevisionsController::class, 'postBirthdate']);
 
+    //RDV
     Route::get('/mes-rendez-vous', [AppointmentsController::class, 'index'])->name('appointments.index');
-    Route::get('/mes-rendez-vous/{invoice_token}', [StatusAppointmentNotifications::class, 'redirectToAppointment'])->name('appointment.view');
+    Route::get('/mes-rendez-vous/{invoice_token}', [StatusAppointmentNotifications::class, 'redirectToAppointment']);
+    Route::get('/rendez-vous/{user_name}/{appointment_id}', [AppointmentsController::class, 'show'])->name('appointment.show');
 
+    //Notifications
     Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index');
     Route::get('/notifications/get', [NotificationsController::class, 'get'])->name('notifications.get');
     Route::post('/notification/mark-as-read', [NotificationsController::class, 'markAsRead'])->name('notifications.markasread');

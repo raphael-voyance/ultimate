@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Galaxy;
 
 use Carbon\Carbon;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -41,6 +42,7 @@ class DashboardController extends Controller
             ->get();
 
         $futursAppointmentsModel = $user->appointments()
+            ->where('invoice_id', '!=', null)
             ->where(function ($query) use ($now) {
                 // Cas avec timeSlotDay
                 $query->whereHas('timeSlotDay', function ($query) use ($now) {
@@ -60,8 +62,8 @@ class DashboardController extends Controller
             ->with(['timeSlotDay', 'timeSlot'])
             ->get();
 
-        // dump('$pastsAppointmentsModel : ', $pastsAppointmentsModel);
-        // dump('$futursAppointmentsModel : ', $futursAppointmentsModel);
+        dump('$pastsAppointmentsModel : ', $pastsAppointmentsModel);
+        dump('$futursAppointmentsModel : ', $futursAppointmentsModel);
 
         $pastsAppointments = [];
         $futursAppointments = [];
@@ -73,13 +75,15 @@ class DashboardController extends Controller
             $futursAppointments[] = $a->toArray();
         }
 
-        // dump('$pastsAppointments before : ', $pastsAppointments);
-        // dump('$futursAppointments before : ', $futursAppointments);
+        dump('$pastsAppointments before : ', $pastsAppointments);
+        dump('$futursAppointments before : ', $futursAppointments);
 
         foreach ($pastsAppointments as $i => $appointment) {
             if (isset($appointment['time_slot_day'])) {
                 // Cas où le rendez-vous a un timeSlotDay (rendez-vous classique)
                 $pastsAppointments[$i] = [
+                    'id' => $appointment['id'],
+                    'authUserName' => Str::slug($user->first_name . '-' . $user->last_name),
                     'date' => $this->transformDate($appointment['time_slot_day']['day']),
                     'time' => $this->transformTime($appointment['time_slot']['start_time']),
                     'type' => $appointment['appointment_type'],
@@ -89,6 +93,8 @@ class DashboardController extends Controller
                 $date = isset($appointment['request_reply']) ? $this->transformDate($appointment['updated_at']) : $this->transformDate($appointment['created_at']);
         
                 $pastsAppointments[$i] = [
+                    'id' => $appointment['id'],
+                    'authUserName' => Str::slug($user->first_name . '-' . $user->last_name),
                     'date' => $date,
                     'time' => 'N/A', // Pas d'heure spécifique pour les demandes par email
                     'type' => $appointment['appointment_type'],
@@ -100,6 +106,8 @@ class DashboardController extends Controller
             if (isset($appointment['time_slot_day'])) {
                 // Cas où le rendez-vous a un timeSlotDay (rendez-vous classique)
                 $futursAppointments[$i] = [
+                    'id' => $appointment['id'],
+                    'authUserName' => Str::slug($user->first_name . '-' . $user->last_name),
                     'date' => $this->transformDate($appointment['time_slot_day']['day']),
                     'time' => $this->transformTime($appointment['time_slot']['start_time']),
                     'type' => $appointment['appointment_type'],
@@ -109,6 +117,8 @@ class DashboardController extends Controller
                 $date = isset($appointment['request_reply']) ? $this->transformDate($appointment['updated_at']) : $this->transformDate($appointment['created_at']);
         
                 $futursAppointments[$i] = [
+                    'id' => $appointment['id'],
+                    'authUserName' => Str::slug($user->first_name . '-' . $user->last_name),
                     'date' => $date,
                     'time' => 'N/A', // Pas d'heure spécifique pour les demandes par email
                     'type' => $appointment['appointment_type'],
@@ -119,8 +129,8 @@ class DashboardController extends Controller
 
 
 
-        // dump('$pastsAppointments after : ', $pastsAppointments);
-        // dump('$futursAppointments after : ', $futursAppointments);
+        dump('$pastsAppointments after : ', $pastsAppointments);
+        dump('$futursAppointments after : ', $futursAppointments);
 
 
         $invoices = $user->invoices()->latest()->limit(5)->get();

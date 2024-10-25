@@ -49,7 +49,7 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-CdBkIpLa.css",
+    "file": "assets/app-0-EMxHdl.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -166,7 +166,7 @@
     "src": "resources/js/add/tarot/bg-draw.webp"
   },
   "resources/js/add/tarot/tarot.js": {
-    "file": "assets/tarot-zn2AC_RO.js",
+    "file": "assets/tarot-DbfdtHIj.js",
     "name": "tarot",
     "src": "resources/js/add/tarot/tarot.js",
     "isEntry": true,
@@ -283,7 +283,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-C4psVQMJ.js",
+    "file": "assets/app-QBWLS29R.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
