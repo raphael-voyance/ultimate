@@ -30,7 +30,7 @@
             </x-ui.card>
 
             {{-- Dernières consultations --}}
-            <x-ui.card title="Dernières consultations">
+            <x-ui.card title="Vos dernières consultations">
                 @if (count($pastsAppointments) >= 1)
                 <ul>
                     @foreach ($pastsAppointments as $appointment)
@@ -60,7 +60,7 @@
             </x-ui.card>
 
             {{-- Consultations à venir --}}
-            <x-ui.card title="Consultations à venir">
+            <x-ui.card title="Vos consultations à venir">
                 @if (count($futursAppointments) >= 1)
                 <ul>
                     @foreach($futursAppointments as $appointment)

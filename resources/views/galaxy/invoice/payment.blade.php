@@ -88,8 +88,7 @@
                     
                     <div class="mt-4">
                         @php
-                            $cr = json_decode($checkRequest);
-                            $btnText = $cr && isset($cr->phone) ? 'Ajouter votre numéro de téléphone' : 'Modifier vos coordonnées';
+                            $btnText = !isset($userContact->phone) ? 'Ajouter votre numéro de téléphone' : 'Modifier vos coordonnées';
                         @endphp
                         @livewire('modal-user-profile-contact-form', ['btnText' => $btnText])
                     </div>
@@ -120,18 +119,8 @@
                             </template>
                         </ul>
                     </div>
-                    
-                    
                 </div>
             @endif
-            
-            {{-- @if ($checkRequest['hasErrors'] == true)
-            @foreach ($checkRequest['errors'] as $e)
-
-            {{$e}}
-                
-            @endforeach
-            @endif --}}
         @endif
 
         <footer class="text-center text-xl mt-6">

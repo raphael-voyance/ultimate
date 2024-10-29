@@ -1,7 +1,7 @@
 <x-app-layout>
 
     @section('js')
-        @vite(['resources/js/add/payment.js'])
+        @vite(['resources/js/add/appointment.js'])
     @endsection
 
     <x-slot name="header">
@@ -21,15 +21,58 @@
 
                     <div class="mb-2">
                         <p>Votre demande a été enregistrée le :</p> 
-                        <p>{{ $appointment->created_at }}</p>
+                        <p>{{ $ic->getInvoiceDateForHuman($appointment->created_at) }}</p>
+                    </div>
+
+                    <div class="mb-2">
+                        <p>Mode de consultation :</p> 
+                        @switch($appointment->appointment_type)
+                            @case('tchat')
+                                <p>Par tchat</p>
+                            @break
+                        
+                            @case('phone')
+                                <p>Par téléphone</p>
+                            @break
+
+                            @case('writing')
+                                <p>Par écrit</p>
+                            @break
+                                
+                        @endswitch
+                    </div>
+
+                    <div class="mb-2"><p>Statut de votre demande :</p> 
+                        @switch($appointment->status)
+                            @case('CANCELLED')
+                                <p>Annulé</p>
+                            @break
+                        
+                            @case('PENDING')
+                                <p>En attente</p>
+                            @break
+
+                            @case('APPROVED')
+                                <p>Approuvé</p>
+                            @break
+
+                            @case('CONFIRMED')
+                                <p>Confirmé</p>
+                            @break
+
+                            @case('PASSED')
+                                <p>Passé</p>
+                            @break
+                                
+                        @endswitch
                     </div>
                         
                     @if($appointment->appointment_type != 'writing')
                     <p>Votre rendez-vous aura lieu le :</p>
-                    <p> $invoice_informations->time_slot_day_for_human à
-                     $invoice_informations->time_slot_for_human </p>
+                    <p> {{ $appointment_informations->time_slot_day_for_human }} à
+                     {{ $appointment_informations->time_slot_for_human }} </p>
                     @else
-                    <p>Rappel de votre question :</p>
+                    <p>Rappel de votre question par email :</p>
                     <p class="p-4">" {{ $appointment->appointment_message }} "</p>
                     @endif
                         
@@ -40,28 +83,24 @@
             {{-- Début 2ème colonne --}}
             <div>
                 <div class="py-6 px-4 mb-4 rounded bg-base-300/75">
+                    @php
+                        $userContact = json_decode($user->profile->contact);
+                    @endphp
                     <h3 class="mb-2">Contact : </h3>
                     <div>
                     Tel :
-                    {{-- @if(isset(json_decode($checkRequest)->errors->phone))
-                        {{ json_decode($checkRequest)->errors->phone }}
-                    @endif
-                    {{ isset($userContact->phone) ? $userContact->phone : '' }} --}}
+                    {{ isset($userContact->phone) ? $userContact->phone : 'Merci de renseigner votre numéro de téléphone.' }}
                     </div>
                     <div class="break-words">
-                        Email : $user->email
+                        Email : {{ $user->email }}
                     </div>
-                    
-                    {{-- @if ($invoice->status == 'PENDING')
+
                     <div class="mt-4">
                         @php
-                            $cr = json_decode($checkRequest);
-                            $btnText = $cr && isset($cr->phone) ? 'Ajouter votre numéro de téléphone' : 'Modifier vos coordonnées';
+                            $btnText = !isset($userContact->phone) ? 'Ajouter votre numéro de téléphone' : 'Modifier vos coordonnées';
                         @endphp
                         @livewire('modal-user-profile-contact-form', ['btnText' => $btnText])
                     </div>
-                    @endif --}}
-
                 </div>
                 
             </div>
@@ -70,27 +109,38 @@
 
         <footer class="text-center text-xl mt-6">
             <h2 class="mb-6">Actions sur votre demande :</h2>
-            <form method="POST"
-                action="#">
-                @csrf
-                <input type="hidden" id="payment_delete_route" value="#" />
-                <div class="flex flex-row flex-wrap gap-4 justify-center">
-                    <button id="edit_request" class="btn btn-warning">
-                        Modifier ma demande
-                    </button>
-                    <button id="cancel_request" class="btn btn-error">
-                        Annuler ma demande
-                    </button>
-                   
-                    <template x-if="!checkRequest.hasErrors">
-                        <button class="btn btn-primary" type="submit">
-                            Voir ma facture
-                        </button>
-                    </template>
 
-                </div>
-                
-            </form>
+            @if($appointment->status == 'CANCELLED' || $appointment->status == 'PASSED')
+
+                <a href="{{ route('invoice.view', ['payment_invoice_token' => $appointment->invoice->payment_invoice_token]) }}" class="btn btn-primary hover:text-black active::text-black focus:text-black">
+                    Accéder à ma facture
+                </a>
+
+            @elseif ($appointment->status == 'PENDING' || $appointment->status == 'APPROVED' || $appointment->status == 'CONFIRMED')
+
+                <form method="POST" action="#">
+                    @csrf
+                    <input type="hidden" id="appoitment_delete_route" value="{{ route('my_space.appointment.delete', ['payment_invoice_token' => $appointment->invoice->payment_invoice_token])}}" />
+                    <div class="flex flex-row flex-wrap gap-4 justify-center">
+
+                        @livewire('modal-edit-appointment', ['appointment' => $appointment])
+
+                        <button id="cancel_request" class="btn btn-error">
+                            Annuler ma demande
+                        </button>
+                    
+                        <a href="{{ route('invoice.view', ['payment_invoice_token' => $appointment->invoice->payment_invoice_token]) }}" class="btn btn-primary hover:text-black active::text-black focus:text-black">
+                            @if($appointment->invoice->status == 'PENDING')
+                                Payer ma facture
+                            @else
+                                Accéder à ma facture
+                            @endif
+                        </a>
+                    </div>
+                </form>
+
+            @endif
+
         </footer>
     </div>
 

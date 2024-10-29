@@ -3,9 +3,9 @@
     "file": "assets/_commonjsHelpers-Cpj98o6Y.js",
     "name": "_commonjsHelpers"
   },
-  "_alert-!~{00t}~.js": {
+  "_alert-!~{00u}~.js": {
     "file": "assets/alert-BTnCFOkF.css",
-    "src": "_alert-!~{00t}~.js"
+    "src": "_alert-!~{00u}~.js"
   },
   "_alert-BjNJBOmD.js": {
     "file": "assets/alert-BjNJBOmD.js",
@@ -49,9 +49,22 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-0-EMxHdl.css",
+    "file": "assets/app-BcOBsTzD.css",
     "src": "resources/css/app.css",
     "isEntry": true
+  },
+  "resources/js/add/appointment.js": {
+    "file": "assets/appointment-C9jTVOi6.js",
+    "name": "appointment",
+    "src": "resources/js/add/appointment.js",
+    "isEntry": true,
+    "imports": [
+      "_axios-CCb-kr4I.js",
+      "_alert-BjNJBOmD.js"
+    ],
+    "css": [
+      "assets/alert-BTnCFOkF.css"
+    ]
   },
   "resources/js/add/blog/blog.css": {
     "file": "assets/blog-DSvyQl0C.css",

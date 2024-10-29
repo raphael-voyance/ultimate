@@ -12,7 +12,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request): View
     {
-        $now = Carbon::now();
+        $now = Carbon::now()->endOfDay();
         $user = $request->user();
         if ($user) {
             $user->load('profile');

@@ -155,7 +155,11 @@ class AppointmentModal extends Component
                 ->toArray();
 
             // Décoder la chaîne JSON de la clé 'astrology'
+            if($userProfileData['astrology']) {
             $astrologyData = json_decode($userProfileData['astrology']);
+            } else {
+                $astrologyData = [];
+            }
 
             // Recréer un nouvel objet avec 'birthday' et 'astrology' comme propriétés
             $this->userProfile = (object)[

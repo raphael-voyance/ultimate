@@ -94,8 +94,9 @@ Route::middleware(['auth', 'verified'])->prefix('mon-espace')->as('my_space.')->
 
     //RDV
     Route::get('/mes-rendez-vous', [AppointmentsController::class, 'index'])->name('appointments.index');
-    Route::get('/mes-rendez-vous/{invoice_token}', [StatusAppointmentNotifications::class, 'redirectToAppointment']);
+    Route::get('/mes-rendez-vous/{invoice_token}', [StatusAppointmentNotifications::class, 'redirectToAppointment'])->name('appointment.view');
     Route::get('/rendez-vous/{user_name}/{appointment_id}', [AppointmentsController::class, 'show'])->name('appointment.show');
+    Route::delete('/mes-rendez-vous/{payment_invoice_token}', [AppointmentsController::class, 'delete'])->name('appointment.delete');
 
     //Notifications
     Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index');

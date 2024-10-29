@@ -20,7 +20,7 @@ class AppointmentFactory extends Factory
             'user_id' => fake()->numberBetween(2,11),
             // invoice_id
             //'appointment_message' => ['message' => fake()->sentence],
-            'status' => fake()->randomElement(['pending', 'approved', 'confirmed', 'passed', 'concelled']),
+            'status' => fake()->randomElement(['PENDING', 'APPROVED', 'CONFIRMED', 'PASSED', 'CANCELLED']),
             'appointment_type' => fake()->randomElement(['phone', 'tchat', 'writing']),
             // 'request_reason' => fake()->sentence,
             // 'request_message' => fake()->paragraph,

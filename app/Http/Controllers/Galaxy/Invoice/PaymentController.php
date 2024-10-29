@@ -125,6 +125,9 @@ class PaymentController extends Controller
         }
 
         $appointment->invoice_id = null;
+        $appointment->status = 'CANCELLED';
+        $appointment->time_slot_day_id = null;
+        $appointment->time_slot_id = null;
         $appointment->save();
         // $invoice->products()->detach();
 
