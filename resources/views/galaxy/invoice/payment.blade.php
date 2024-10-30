@@ -42,7 +42,7 @@
 
                     <div class="mb-2">
                         <p>Votre demande a été enregistrée le :</p> 
-                        <p>{{ $ic->getInvoiceDateForHuman($invoice->created_at) }}</p>
+                        <p>{{ $ic->getInvoiceDateForHuman($invoice->updated_at) }}</p>
                     </div>
                         
 

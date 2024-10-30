@@ -87,7 +87,8 @@ class AppointmentsController extends Controller
         $appointment = Appointment::where('invoice_id', $invoice->id)->firstOrFail();
 
         if($appointment->appointment_type != 'writing' && $appointment) {
-            $timeSlot = TimeSlot::where('id', $appointment->time_slot_id)->firstOrFail();
+            $timeSlot = TimeSlot::where('id', $appointment->time_slot_id)
+            ->firstOrFail();
 
             $timeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => true]);
         }

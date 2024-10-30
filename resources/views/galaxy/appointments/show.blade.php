@@ -21,7 +21,7 @@
 
                     <div class="mb-2">
                         <p>Votre demande a été enregistrée le :</p> 
-                        <p>{{ $ic->getInvoiceDateForHuman($appointment->created_at) }}</p>
+                        <p>{{ $ic->getInvoiceDateForHuman($appointment->updated_at) }}</p>
                     </div>
 
                     <div class="mb-2">

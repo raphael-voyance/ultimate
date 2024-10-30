@@ -4,8 +4,11 @@ namespace App\Livewire;
 
 use Carbon\Carbon;
 use Livewire\Component;
+use App\Models\TimeSlot;
 use App\Models\TimeSlotDay;
+use Livewire\Attributes\On;
 use Illuminate\Database\Eloquent\Builder;
+use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
 
 class ModalEditAppointment extends Component
 {
@@ -14,6 +17,15 @@ class ModalEditAppointment extends Component
     public $appointmentDay;
     public $appointmentTime;
     public $initialeDate;
+    public $initialAppointmentType;
+    public $appointmentType;
+    public $appointmentTypeHasChanged = false;
+
+    public bool $timeSlotIsSelected = false;
+    public int|null $timeSlotDayId = null;
+    public int|null $timeSlotId = null;
+    public string|null $timeSlotForHuman = null;
+    public string|null $timeSlotDayForHuman = null;
     public $timeSlotDays;
     public int $offsetTimeSlot = 0;
     public $totalOffsetTimeSlot;
@@ -21,6 +33,8 @@ class ModalEditAppointment extends Component
     public function mount($appointment)
     {
         $this->appointment = $appointment;
+        $this->appointmentType = $appointment->appointment_type;
+        $this->initialAppointmentType = $appointment->appointment_type;
         $this->appointmentDay = $appointment->timeSlotDay->day;
         $this->appointmentTime = $appointment->timeSlot->start_time;
         $this->initialeDate = $this->completeInitialeDate();
@@ -65,6 +79,99 @@ class ModalEditAppointment extends Component
 
                 return $timeSlotDay;
             })->toArray();
+    }
+
+    public function updated($propertyName)
+    {
+        if ($propertyName === 'appointmentType') {
+            $this->updatedAppointmentType();
+        }
+    }
+
+    public function updatedAppointmentType()
+    {
+        if($this->appointmentType != $this->initialAppointmentType) {
+            $this->appointmentTypeHasChanged = true;
+        } else {
+            $this->appointmentTypeHasChanged = false;
+        }
+    }
+
+    //Navigate Timeslot -NEXT-
+    public function nextTimeSlots(): void
+    {
+        $this->offsetTimeSlot += 5;
+        $this->loadTimeSlotDays();
+    }
+    //Navigate Timeslot -PREV-
+    public function prevTimeSlots(): void
+    {
+        if ($this->offsetTimeSlot == 0) {
+            $this->offsetTimeSlot = 0;
+        } else {
+            $this->offsetTimeSlot -= 5;
+        }
+        $this->loadTimeSlotDays();
+    }
+
+    // Consultation Tchat Or Phone >>>>>>
+    //Select Timeslot
+    public function selectTimeSlot(int $timeSlotDayId, int $timeSlotId): void
+    {
+        $this->timeSlotDayId = $timeSlotDayId;
+        $this->timeSlotId = $timeSlotId;
+
+        $this->timeSlotDayForHuman = Carbon::parse(TimeSlotDay::where('id', $timeSlotDayId)->firstOrFail()->day)->translatedFormat('l j F Y');
+        
+        $this->timeSlotForHuman = Carbon::parse(TimeSlot::where('id', $timeSlotId)->firstOrFail()->start_time)->format('H\hi');
+
+        $this->appointment["time_slot_day"] = $this->timeSlotDayId;
+        $this->appointment["time_slot"] = $this->timeSlotId;
+
+        $this->appointment["time_slot_day_for_human"] = $this->timeSlotDayForHuman;
+        $this->appointment["time_slot_for_human"] = $this->timeSlotForHuman;
+        
+        $this->timeSlotIsSelected = true;
+    }
+
+    //Update Appointment
+    public function updateAppointment(): void {
+
+        $appointment = $this->appointment;
+        $invoice = $appointment->invoice()->firstOrFail();
+        $lastTimeSlot = TimeSlot::where('id', $appointment->time_slot_id)->firstOrFail();
+        $newTimeSlot = TimeSlot::where('id', $this->timeSlotId)->firstOrFail();
+
+        //Mettre à jour l'appointment
+        $appointment->appointment_type = $this->appointmentType;
+        $appointment->time_slot_day_id = $this->timeSlotDayId;
+        $appointment->time_slot_id = $this->timeSlotId;
+        $appointment->save();
+
+        //Mettre à jour le timeslot
+        $lastTimeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => true]);
+        $newTimeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => false]);
+
+        //Mettre à jour la invoice
+        $invoiceInformations = [
+            "type" => $this->appointmentType,
+            "time_slot_day" => $this->timeSlotDayId,
+            "time_slot" => $this->timeSlotId,
+            "time_slot_day_for_human" => $this->timeSlotDayForHuman,
+            "time_slot_for_human" => $this->timeSlotForHuman
+        ];
+        $invoice->invoice_informations = json_encode($invoiceInformations);
+        $invoice->save();
+
+        if($appointment && $invoice) {
+            ConcernNotifications::sendNotification($invoice, 'updated');
+            $this->redirectRoute('payment.create', [
+                'payment_invoice_token' => $invoice->payment_invoice_token
+            ]);
+        }
+
+        //dd($appointment, $invoice, '$lastTimeSlot : ' . $lastTimeSlot, '$newTimeSlot : ' . $newTimeSlot, $this->appointmentType);
+            
     }
 
     public function render()
