@@ -25,7 +25,7 @@ class PaymentController extends Controller
 
         // Invoice
         $invoice_token = $request->payment_invoice_token;
-        $invoice = Invoice::where('payment_invoice_token', $invoice_token)->firstOrFail();
+        $invoice = Invoice::where('payment_invoice_token', $invoice_token)->with('appointment')->firstOrFail();
         $invoice_informations = json_decode($invoice->invoice_informations);
         $servicesProducts = $invoice->products->where('type', 'SERVICE_PRODUCT');
         $physicalsProducts = $invoice->products->where('type', 'PHYSICAL_PRODUCT');

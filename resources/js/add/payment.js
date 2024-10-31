@@ -31,8 +31,4 @@ window.addEventListener('load', () => {
         
     });
 
-    editBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        alert('Modification du RDV');
-    });
 });

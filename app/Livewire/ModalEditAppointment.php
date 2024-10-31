@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
+use App\Models\Product;
 use Livewire\Component;
 use App\Models\TimeSlot;
 use App\Models\TimeSlotDay;
@@ -139,38 +140,66 @@ class ModalEditAppointment extends Component
 
         $appointment = $this->appointment;
         $invoice = $appointment->invoice()->firstOrFail();
-        $lastTimeSlot = TimeSlot::where('id', $appointment->time_slot_id)->firstOrFail();
-        $newTimeSlot = TimeSlot::where('id', $this->timeSlotId)->firstOrFail();
 
-        //Mettre à jour l'appointment
-        $appointment->appointment_type = $this->appointmentType;
-        $appointment->time_slot_day_id = $this->timeSlotDayId;
-        $appointment->time_slot_id = $this->timeSlotId;
-        $appointment->save();
+        //dd($invoice->products);
 
-        //Mettre à jour le timeslot
-        $lastTimeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => true]);
-        $newTimeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => false]);
+        if(!$this->timeSlotIsSelected) {
 
-        //Mettre à jour la invoice
-        $invoiceInformations = [
-            "type" => $this->appointmentType,
-            "time_slot_day" => $this->timeSlotDayId,
-            "time_slot" => $this->timeSlotId,
-            "time_slot_day_for_human" => $this->timeSlotDayForHuman,
-            "time_slot_for_human" => $this->timeSlotForHuman
-        ];
-        $invoice->invoice_informations = json_encode($invoiceInformations);
-        $invoice->save();
+            //Mettre à jour l'appointment
+            $appointment->appointment_type = $this->appointmentType;
+            $appointment->save();
+
+            //Mettre à jour la invoice
+            $invoiceInformations = json_decode($invoice->invoice_informations, true);
+            $invoiceInformations["type"] = $this->appointmentType;
+
+            $invoice->invoice_informations = json_encode($invoiceInformations);
+            $invoice->save();
+
+            $invoice->products()->detach();
+            $invoice->products()->attach(Product::where('slug', $this->appointmentType)->first()->id);
+
+        }elseif($this->timeSlotIsSelected) {
+            $lastTimeSlot = TimeSlot::where('id', $appointment->time_slot_id)->firstOrFail();
+            $newTimeSlot = TimeSlot::where('id', $this->timeSlotId)->firstOrFail();
+
+            //Mettre à jour l'appointment
+            $appointment->appointment_type = $this->appointmentType;
+            $appointment->time_slot_day_id = $this->timeSlotDayId;
+            $appointment->time_slot_id = $this->timeSlotId;
+            $appointment->save();
+
+            //Mettre à jour le timeslot
+            $lastTimeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => true]);
+            $newTimeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => false]);
+
+            //Mettre à jour la invoice
+            $invoiceInformations = [
+                "type" => $this->appointmentType,
+                "time_slot_day" => $this->timeSlotDayId,
+                "time_slot" => $this->timeSlotId,
+                "time_slot_day_for_human" => $this->timeSlotDayForHuman,
+                "time_slot_for_human" => $this->timeSlotForHuman
+            ];
+            $invoice->invoice_informations = json_encode($invoiceInformations);
+            $invoice->save();
+
+            $invoice->products()->detach();
+            $invoice->products()->attach(Product::where('slug', $this->appointmentType)->first()->id);
+        }
 
         if($appointment && $invoice) {
+            toast()
+            ->success('Votre consultation a été mise à jour avec succès.')
+            ->pushOnNextPage();
+
             ConcernNotifications::sendNotification($invoice, 'updated');
             $this->redirectRoute('payment.create', [
                 'payment_invoice_token' => $invoice->payment_invoice_token
             ]);
         }
 
-        //dd($appointment, $invoice, '$lastTimeSlot : ' . $lastTimeSlot, '$newTimeSlot : ' . $newTimeSlot, $this->appointmentType);
+        
             
     }
 

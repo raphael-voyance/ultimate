@@ -402,6 +402,10 @@ class AppointmentModal extends Component
                 'appointment_type' => $this->appointmentType,
             ]);
 
+            // Mettre à jour l'invoice avec l'appointment_id
+            $invoice->appointment_id = $appointment->id;
+            $invoice->save();
+
 
             if($this->appointmentType != 'writing' && $appointment) {
                 $timeSlot = TimeSlot::where('id', $this->timeSlotId)

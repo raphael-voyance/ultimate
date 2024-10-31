@@ -130,9 +130,9 @@
                 @csrf
                 <input type="hidden" id="payment_delete_route" value="{{ route('payment.delete', ['payment_invoice_token' => $invoice->payment_invoice_token ]) }}" />
                 <div class="flex flex-row flex-wrap gap-4 justify-center">
-                    <button id="edit_request" class="btn btn-warning">
-                        Modifier ma demande
-                    </button>
+                    
+                    @livewire('modal-edit-appointment', ['appointment' => $invoice->appointment])
+
                     <button id="cancel_request" class="btn btn-error">
                         Annuler ma demande
                     </button>

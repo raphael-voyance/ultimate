@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('ref');
             $table->json('invoice_informations')->nullable();
             $table->foreignId('user_id');
+            $table->foreignId('appointment_id')->nullable();
             $table->enum('status', ['PENDING', 'PAID', 'REFUNDED', 'CANCELLED', 'FREE'])->default('PENDING');
             $table->timestamps();
         });

@@ -3,8 +3,7 @@
         <i class="fa-thin fa-calendar"></i> Modifier le RDV</button>
 
 
-    <x-mary-modal wire:model="ModalEditAppointment" title="Modifier votre rendez-vous"
-        subtitle="Gestion de votre rendez-vous programmé le {{ $initialeDate }}" class="text-left">
+    <x-ui.dialog wire:model="ModalEditAppointment" title="Modifier votre rendez-vous" subtitle="Gestion de votre rendez-vous programmé le {{ $initialeDate }}" class="text-left">
 
         {{-- Loader --}}
         <div class="relative" wire:loading>

@@ -20,6 +20,7 @@ class InvoiceFactory extends Factory
         $invoice_maker = new Invoice(1);
         return [
             'user_id' => fake()->numberBetween(2, 10),
+            'appointment_id' => fake()->numberBetween(2, 10),
             'ref' => $invoice_maker->get_ref(),
             'total_price' => fake()->randomNumber(4),
             'payment_invoice_token' => fake()->unique()->uuid,
