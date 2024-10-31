@@ -60,16 +60,16 @@ class AppointmentsController extends Controller
         // A FAIRE
         // Lorsqu'on annule un RDV ou INVOICE, détacher le timeslot de l'appointment et le remettre en dispo + mettre l'appointment en status 'CANCELLED'
 
-        dump([
-            'URL appointment_id' => $appointmentId,
-            'URL user_name' => $userName,
-            'user' => $user, 
-            'userId' => $userId, 
-            'authUserName' => $authUserName, 
-            'invoice' => $appointment->invoice()->firstOrFail(),
-            'appointment' => $appointment,
-            'appointment_informations' => $appointment_informations,
-        ]);
+        // dump([
+        //     'URL appointment_id' => $appointmentId,
+        //     'URL user_name' => $userName,
+        //     'user' => $user, 
+        //     'userId' => $userId, 
+        //     'authUserName' => $authUserName, 
+        //     'invoice' => $appointment->invoice()->firstOrFail(),
+        //     'appointment' => $appointment,
+        //     'appointment_informations' => $appointment_informations,
+        // ]);
 
         return view("galaxy.appointments.show", [
             'appointment' => $appointment,

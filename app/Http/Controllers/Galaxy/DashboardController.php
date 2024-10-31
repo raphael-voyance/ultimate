@@ -62,8 +62,8 @@ class DashboardController extends Controller
             ->with(['timeSlotDay', 'timeSlot'])
             ->get();
 
-        dump('$pastsAppointmentsModel : ', $pastsAppointmentsModel);
-        dump('$futursAppointmentsModel : ', $futursAppointmentsModel);
+        // dump('$pastsAppointmentsModel : ', $pastsAppointmentsModel);
+        // dump('$futursAppointmentsModel : ', $futursAppointmentsModel);
 
         $pastsAppointments = [];
         $futursAppointments = [];
@@ -75,8 +75,8 @@ class DashboardController extends Controller
             $futursAppointments[] = $a->toArray();
         }
 
-        dump('$pastsAppointments before : ', $pastsAppointments);
-        dump('$futursAppointments before : ', $futursAppointments);
+        // dump('$pastsAppointments before : ', $pastsAppointments);
+        // dump('$futursAppointments before : ', $futursAppointments);
 
         foreach ($pastsAppointments as $i => $appointment) {
             if (isset($appointment['time_slot_day'])) {
@@ -129,8 +129,8 @@ class DashboardController extends Controller
 
 
 
-        dump('$pastsAppointments after : ', $pastsAppointments);
-        dump('$futursAppointments after : ', $futursAppointments);
+        // dump('$pastsAppointments after : ', $pastsAppointments);
+        // dump('$futursAppointments after : ', $futursAppointments);
 
 
         $invoices = $user->invoices()->latest()->limit(5)->get();
