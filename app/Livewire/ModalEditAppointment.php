@@ -193,7 +193,7 @@ class ModalEditAppointment extends Component
             ->success('Votre consultation a été mise à jour avec succès.')
             ->pushOnNextPage();
 
-            ConcernNotifications::sendNotification($invoice, 'updated');
+            ConcernNotifications::sendNotification($invoice, 'UPDATED');
             $this->redirectRoute('payment.create', [
                 'payment_invoice_token' => $invoice->payment_invoice_token
             ]);

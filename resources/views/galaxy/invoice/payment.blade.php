@@ -44,6 +44,11 @@
                         <p>Votre demande a été enregistrée le :</p> 
                         <p>{{ $ic->getInvoiceDateForHuman($invoice->updated_at) }}</p>
                     </div>
+
+                    <div class="mb-2">
+                        <p>Status de votre facture :</p> 
+                        <p>{{ $invoice->status }}</p>
+                    </div>
                         
 
                         @if ($invoice_informations->type != 'writing')
@@ -133,15 +138,23 @@
                     
                     @livewire('modal-edit-appointment', ['appointment' => $invoice->appointment])
 
+                    @if ($invoice->status == 'PENDING' || $invoice->status == 'FREE')
                     <button id="cancel_request" class="btn btn-error">
                         Annuler ma demande
                     </button>
+                    @endif
+    
                     @if ($invoice->status == 'PENDING')
                     <template x-if="!checkRequest.hasErrors">
                         <button class="btn btn-primary" type="submit">
                             Payer ma facture
                         </button>
                     </template>
+                    @endif
+                    @if ($invoice->status == 'PAID')
+                        <button class="btn btn-error">
+                            Annuler ma demande et demander le remboursement
+                        </button>
                     @endif
 
                 </div>

@@ -434,7 +434,7 @@ class AppointmentModal extends Component
 
             // in work
             if($invoice) {
-                ConcernNotifications::sendNotification($invoice, 'confirmed');
+                ConcernNotifications::sendNotification($invoice, 'CONFIRMED');
                 
                 $this->resetModal();
 
