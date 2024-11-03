@@ -6,7 +6,12 @@
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight">
-            Votre rendez-vous :
+            @if ($invoice_informations->type != 'writing')
+            Votre facture pour votre consultation du {{ $invoice_informations->time_slot_day_for_human }} :
+            @else
+            Votre facture pour votre consultation par écrit :
+            @endif
+            
         </h2>
     </x-slot>
 
@@ -129,18 +134,30 @@
         @endif
 
         <footer class="text-center text-xl mt-6">
-            <h2 class="mb-6">Actions sur votre demande :</h2>
+            @if ($invoice->status == 'PENDING' || $invoice->status == 'FREE' || $invoice->status == 'PAID' || $invoice->status == 'REFUNDED')
+                <h2 class="mb-6">Actions sur votre demande :</h2>
+            @endif
+            
+            @php
+                $passed = true;
+            @endphp
+            @if(!$passed)
             <form method="POST"
                 action="{{ route('payment.store', ['payment_invoice_token' => $invoice->payment_invoice_token]) }}">
                 @csrf
                 <input type="hidden" id="payment_delete_route" value="{{ route('payment.delete', ['payment_invoice_token' => $invoice->payment_invoice_token ]) }}" />
                 <div class="flex flex-row flex-wrap gap-4 justify-center">
                     
+                    @if ($invoice->status == 'PENDING' || $invoice->status == 'FREE' || $invoice->status == 'PAID')
                     @livewire('modal-edit-appointment', ['appointment' => $invoice->appointment])
-
-                    @if ($invoice->status == 'PENDING' || $invoice->status == 'FREE')
                     <button id="cancel_request" class="btn btn-error">
                         Annuler ma demande
+                    </button>
+                    @endif
+
+                    @if ($invoice->status == 'PAID' || $invoice->status == 'REFUNDED')
+                    <button class="btn btn-accent">
+                        Télécharger ma facture
                     </button>
                     @endif
     
@@ -151,15 +168,17 @@
                         </button>
                     </template>
                     @endif
-                    @if ($invoice->status == 'PAID')
-                        <button class="btn btn-error">
-                            Annuler ma demande et demander le remboursement
-                        </button>
-                    @endif
 
                 </div>
                 
             </form>
+            @else
+                @if ($invoice->status == 'PAID' || $invoice->status == 'REFUNDED')
+                <button class="btn btn-accent">
+                    Télécharger ma facture
+                </button>
+                @endif
+            @endif
         </footer>
     </div>
 
