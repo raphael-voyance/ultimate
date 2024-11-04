@@ -34,6 +34,7 @@ class PaymentController extends Controller
         $user = Auth::user();
         $userContact = json_decode($user->profile->contact);
 
+        $appointmentPassed = $invoice->appointment->status == 'PASSED' ? true : false;
         //$this->addContactInformationToUser($user);
 
         //Check if user can access to invoice
@@ -78,6 +79,7 @@ class PaymentController extends Controller
             'invoice' => $invoice,
             'invoice_informations' => $invoice_informations,
             'servicesProducts' => $servicesProducts,
+            'appointmentPassed' => $appointmentPassed,
             'physicalsProducts' => $physicalsProducts,
             'hasPhysicalsProducts' => $hasPhysicalsProducts,
             'user' => $user,

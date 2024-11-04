@@ -54,10 +54,13 @@
                         <p>Status de votre facture :</p> 
                         <p>{{ $invoice->status }}</p>
                     </div>
-                        
 
                         @if ($invoice_informations->type != 'writing')
+                            @if(!$appointmentPassed)
                             <p>Votre rendez-vous aura lieu le :</p>
+                            @else
+                            <p>Votre rendez-vous a eu lieu le :</p>
+                            @endif
                             <p>{{ $invoice_informations->time_slot_day_for_human }} à
                             {{ $invoice_informations->time_slot_for_human }}</p> 
                         @endif
@@ -138,10 +141,7 @@
                 <h2 class="mb-6">Actions sur votre demande :</h2>
             @endif
             
-            @php
-                $passed = true;
-            @endphp
-            @if(!$passed)
+            @if(!$appointmentPassed)
             <form method="POST"
                 action="{{ route('payment.store', ['payment_invoice_token' => $invoice->payment_invoice_token]) }}">
                 @csrf

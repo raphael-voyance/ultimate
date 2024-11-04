@@ -171,17 +171,17 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        $invoices = Invoice::factory()
-            ->count(50)
-            ->create();
+        // $invoices = Invoice::factory()
+        //     ->count(50)
+        //     ->create();
 
-        foreach($invoices as $invoice) {
-            Appointment::factory()->create([
-                'invoice_id' => $invoice->id,
-                'time_slot_day_id' => TimeSlotDay::factory()->create()->id,
-                'time_slot_id' => TimeSlot::factory()->create()->id,
-            ]);
-        }
+        // foreach($invoices as $invoice) {
+        //     Appointment::factory()->create([
+        //         'invoice_id' => $invoice->id,
+        //         'time_slot_day_id' => TimeSlotDay::factory()->create()->id,
+        //         'time_slot_id' => TimeSlot::factory()->create()->id,
+        //     ]);
+        // }
 
         Product::factory()
             ->count(3)

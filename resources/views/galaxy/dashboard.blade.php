@@ -30,6 +30,7 @@
             </x-ui.card>
 
             {{-- Dernières consultations --}}
+            {{-- {{dd($pastsAppointments)}} --}}
             <x-ui.card title="Vos dernières consultations">
                 @if (count($pastsAppointments) >= 1)
                 <ul>

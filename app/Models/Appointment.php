@@ -43,4 +43,37 @@ class Appointment extends Model
     public function invoice() {
         return $this->belongsTo(Invoice::class);
     }
+
+    // Modifier le status de l'appointment à PASSED si besoin
+    public static function updatePassedAppointments()
+    {
+        // Get current date and time
+        $now = Carbon::now();
+
+        // Retrieve appointments with statuses other than CANCELLED or PASSED
+        $appointments = self::whereNotIn('status', ['CANCELLED', 'PASSED'])
+            ->with(['timeSlotDay', 'timeSlot'])
+            ->get();
+
+        foreach ($appointments as $appointment) {
+            // Check if the appointment type is 'writing'
+            if ($appointment->appointment_type === 'writing') {
+                $updatedAtThreshold = Carbon::parse($appointment->updated_at)->addDays(3);
+
+                // Check if the updated_at date is more than 3 days ago
+                if ($updatedAtThreshold->lessThan($now)) {
+                    $appointment->update(['status' => 'PASSED']);
+                }
+            } elseif ($appointment->timeSlotDay && $appointment->timeSlot) {
+                // Combine the date from timeSlotDay and time from timeSlot
+                $appointmentDateTime = Carbon::parse($appointment->timeSlotDay->day)
+                    ->setTimeFromTimeString($appointment->timeSlot->end_time); // Assuming end_time is the cutoff time
+
+                // Check if the appointment is in the past
+                if ($appointmentDateTime->lessThan($now)) {
+                    $appointment->update(['status' => 'PASSED']);
+                }
+            }
+        }
+    }
 }

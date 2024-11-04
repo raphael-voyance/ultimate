@@ -45,17 +45,6 @@ class AppointmentsController extends Controller
         if($appointment->user_id != $userId) {
             abort(403);
         }
-
-        $now = Carbon::now()->endOfDay();
-        // Vérifier si le statut n'est pas "CANCELLED"
-        if ($appointment->status !== 'CANCELLED') {
-            // Vérifier si la relation timeSlotDay existe et si elle est dans le passé
-            if ($appointment->timeSlotDay && Carbon::parse($appointment->timeSlotDay->day)->lessThan($now)) {
-                // Mettre à jour le statut à "PASSED"
-                $appointment->status = 'PASSED';
-                $appointment->save();
-            }
-        }
         
         // A FAIRE
         // Lorsqu'on annule un RDV ou INVOICE, détacher le timeslot de l'appointment et le remettre en dispo + mettre l'appointment en status 'CANCELLED'
