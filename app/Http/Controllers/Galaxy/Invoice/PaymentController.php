@@ -264,8 +264,13 @@ class PaymentController extends Controller
             'IC' => $this->IC,
         ];
         
-        $pdf = Pdf::loadView('galaxy.invoice.download', $data);
-        return $pdf->download($invoice->invoice_ref . '.pdf');
+        try {
+            $pdf = Pdf::loadView('galaxy.invoice.download', $data);
+            //dd($pdf->stream($invoice->invoice_ref . '.pdf'));
+            return $pdf->stream($invoice->invoice_ref . '.pdf');
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
 
     }
     
