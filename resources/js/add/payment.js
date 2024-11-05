@@ -12,17 +12,7 @@ window.addEventListener('load', () => {
 
         downloadBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            axios.get('/invoice/download/' + invoiceRef)
-                .then(function (response) {
-                if(response.data.status == 'success') {
-                    console.log(response.data);
-                    //window.location = response.data.redirectRoute;
-                }
-                })
-                .catch(function (error) {
-                console.log(error);
-                Toast.danger('Il y a eu une erreur dans le processus de téléchargement de votre facture, merci de réessayer après avoir rafraichi votre navigateur.');
-                });
+            window.location.href = '/invoice/download/' + invoiceRef;
         });
     }
 

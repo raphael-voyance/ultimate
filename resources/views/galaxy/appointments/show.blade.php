@@ -6,7 +6,11 @@
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight">
+            @if($appointment->appointment_type != 'writing')
             Votre rendez-vous :
+            @else
+            Votre demande de consultation par écrit :
+            @endif
         </h2>
     </x-slot>
 
@@ -80,6 +84,10 @@
                     <p> {{ $appointment_informations->time_slot_day_for_human }} à
                      {{ $appointment_informations->time_slot_for_human }} </p>
                     @else
+                        @if($appointment->invoice->status == 'PAID' || $appointment->invoice->status == 'FREE')
+                        <p>Date de réponse estimée :</p>
+                        <p class="mb-2">{{ \Carbon\Carbon::parse($appointment->updated_at)->add('3days')->translatedFormat('l d F Y') }}</p>
+                        @endif
                     <p>Rappel de votre question par email :</p>
                     <p class="p-4">" {{ $appointment->appointment_message }} "</p>
                     @endif

@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Galaxy\Invoice;
 use App\Models\User;
 use App\Models\Invoice;
 use App\Models\TimeSlot;
-use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
 use App\Concern\Invoice as InvoiceController;
 
 class PaymentController extends Controller
@@ -66,6 +66,8 @@ class PaymentController extends Controller
 
                     $appointment->status = 'APPROVED';
                     $appointment->save();
+
+                    ConcernNotifications::sendNotification($invoice, 'PAID');
 
                     toast()
                         ->success('Votre paiement a été un succés. Merci, à très bientôt.')
@@ -177,12 +179,12 @@ class PaymentController extends Controller
                 \Stripe\Refund::create([
                     'payment_intent' => $invoice->payment_intent,
                 ]);
+                ConcernNotifications::sendNotification($invoice, 'REFUNDED');
                 // Ajout d'un message de confirmation pour le remboursement
                 toast()->success('Le remboursement de votre consultation a été effectué avec succès.')->pushOnNextPage();
             } catch (\Exception $e) {
                 // Gestion d'erreur en cas de problème avec Stripe
                 report($e);
-                dd($e);
                 toast()->warning('Une erreur est survenue lors du remboursement. Veuillez réessayer plus tard.')->pushOnNextPage();
                 return response()->json(['status' => 'error', 'message' => 'Refund failed.'], 500);
             }
@@ -211,6 +213,8 @@ class PaymentController extends Controller
         }
         $invoice->save();
 
+        ConcernNotifications::sendNotification($invoice, 'CANCELLED');
+
         toast()->success('Votre demande de consultation a été annulée avec succés.')->pushOnNextPage();
     
         $redirectRoute = route('my_space.index');
@@ -230,7 +234,7 @@ class PaymentController extends Controller
 
         // dd(json_decode($user->profile->contact));
 
-        $userName = $user->profile->first_name . ' ' . $user->profile->last_name;
+        $userName = $user->first_name . ' ' . $user->last_name;
 
         $userEmail = $user->email;
 
@@ -267,7 +271,7 @@ class PaymentController extends Controller
         try {
             $pdf = Pdf::loadView('galaxy.invoice.download', $data);
             //dd($pdf->stream($invoice->invoice_ref . '.pdf'));
-            return $pdf->stream($invoice->invoice_ref . '.pdf');
+            return $pdf->download($invoice->ref . '.pdf');
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

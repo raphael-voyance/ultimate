@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Galaxy;
 
-use Carbon\Carbon;
+use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
 use App\Models\Invoice;
 use App\Models\TimeSlot;
 use App\Models\Appointment;
@@ -82,6 +82,7 @@ class AppointmentsController extends Controller
                 \Stripe\Refund::create([
                     'payment_intent' => $invoice->payment_intent,
                 ]);
+                ConcernNotifications::sendNotification($invoice, 'REFUNDED');
                 // Ajout d'un message de confirmation pour le remboursement
                 toast()->success('Le remboursement de votre consultation a été effectué avec succès.')->pushOnNextPage();
             } catch (\Exception $e) {
@@ -116,40 +117,12 @@ class AppointmentsController extends Controller
         }
         $invoice->save();
 
+        ConcernNotifications::sendNotification($invoice, 'CANCELLED');
+
         toast()->success('Votre demande de consultation a été annulée avec succés.')->pushOnNextPage();
     
         $redirectRoute = route('my_space.index');
         return response()->json(['status' => 'success', 'redirectRoute' => $redirectRoute]);
     }
 
-    // public function delete(Request $request) {
-    //     // Invoice
-    //     $invoice_token = $request->payment_invoice_token;
-    //     $invoice = Invoice::where('payment_invoice_token', $invoice_token)->firstOrFail();
-
-    //     $appointment = Appointment::where('invoice_id', $invoice->id)->firstOrFail();
-
-    //     if($appointment->appointment_type != 'writing' && $appointment) {
-    //         $timeSlot = TimeSlot::where('id', $appointment->time_slot_id)
-    //         ->firstOrFail();
-
-    //         $timeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => true]);
-    //     }
-
-    //     $appointment->invoice_id = null;
-    //     $appointment->status = 'CANCELLED';
-    //     $appointment->time_slot_day_id = null;
-    //     $appointment->time_slot_id = null;
-    //     $appointment->save();
-
-    //     $invoice->status = 'CANCELLED';
-    //     $invoice->save();
-
-    //     toast()
-    //         ->success('Votre demande de consultation a été annulée avec succés.')
-    //         ->pushOnNextPage();
-
-    //     $redirectRoute = route('my_space.index');
-    //     return response()->json(['status' => 'success', 'redirectRoute' => $redirectRoute]);
-    // }
 }

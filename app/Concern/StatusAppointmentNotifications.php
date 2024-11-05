@@ -24,13 +24,19 @@ class StatusAppointmentNotifications
         if($invoiceInformations['type'] == "writing") {
             switch ($status) {
                 case 'CONFIRMED':
-                    $message = 'Votre demande de consultation par email a été envoyé avec succès.';
+                    $message = 'Votre demande de consultation par email a été envoyée avec succès.';
                     break;
                 case 'CANCELLED':
-                    $message = 'Votre demande de consultation par email a été annulé avec succès.';
+                    $message = 'Votre demande de consultation par email a été annulée avec succès.';
                     break;
                 case 'UPDATED':
-                    $message = 'Votre demande de consultation par email a été modifié avec succès.';
+                    $message = 'Votre demande de consultation par email a été modifiée avec succès.';
+                    break;
+                case 'PAID':
+                    $message = 'Le paiement de votre consultation par email s\'est déroulé avec succès.';
+                    break;
+                case 'REFUNDED':
+                    $message = 'Le remboursement de votre consultation par tchat a été envoyé avec succès.';
                     break;
                 default:
                     $message = 'Votre rendez-vous a été mis à jour.';
@@ -39,13 +45,19 @@ class StatusAppointmentNotifications
         } else if($invoiceInformations['type'] == "phone") {
             switch ($status) {
                 case 'CONFIRMED':
-                    $message = 'Votre demande de rendez-vous par téléphone a été enregistré avec succès.';
+                    $message = 'Votre demande de rendez-vous par téléphone a été enregistrée avec succès.';
                     break;
                 case 'CANCELLED':
-                    $message = 'Votre demande de rendez-vous par téléphone a été annulé avec succès.';
+                    $message = 'Votre demande de rendez-vous par téléphone a été annulée avec succès.';
                     break;
                 case 'UPDATED':	
-                    $message = 'Votre demande de rendez-vous par téléphone a été modifié avec succès.';
+                    $message = 'Votre demande de rendez-vous par téléphone a été modifiée avec succès.';
+                    break;
+                case 'PAID':
+                    $message = 'Le paiement de votre consultation par téléphone s\'est déroulé avec succès.';
+                    break;
+                case 'REFUNDED':
+                    $message = 'Le remboursement de votre consultation par téléphone a été envoyé avec succès.';
                     break;
                 default:
                     $message = 'Votre rendez-vous a été mis à jour.';
@@ -54,13 +66,19 @@ class StatusAppointmentNotifications
         } else if($invoiceInformations['type'] == "tchat") {
             switch ($status) {
                 case 'CONFIRMED':
-                    $message = 'Votre demande de rendez-vous par tchat a été enregistré avec succès.';
+                    $message = 'Votre demande de rendez-vous par tchat a été enregistrée avec succès.';
                     break;
                 case 'CANCELLED':
-                    $message = 'Votre demande de rendez-vous par tchat a été annulé avec succès.';
+                    $message = 'Votre demande de rendez-vous par tchat a été annulée avec succès.';
                     break;
                 case 'UPDATED':
-                    $message = 'Votre demande de rendez-vous par tchat a été modifié avec succès.';
+                    $message = 'Votre demande de rendez-vous par tchat a été modifiée avec succès.';
+                    break;
+                case 'PAID':
+                    $message = 'Le paiement de votre consultation par tchat s\'est déroulé avec succès.';
+                    break;
+                case 'REFUNDED':
+                    $message = 'Le remboursement de votre consultation par tchat a été envoyé avec succès.';
                     break;
                 default:
                     $message = 'Votre rendez-vous a été mis à jour.';

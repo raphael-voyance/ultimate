@@ -73,7 +73,7 @@
                         </p>
                     </div>
 
-                        @if ($invoice_informations->type != 'writing' && $invoice->status == 'PAID' || $invoice->status == 'FREE' || $invoice->status == 'PENDING')
+                        @if ($invoice_informations->type != 'writing' && ($invoice->status == 'PAID' || $invoice->status == 'FREE' || $invoice->status == 'PENDING'))
                             @if(!$appointmentPassed)
                             <p>Votre rendez-vous aura lieu le :</p>
                             @else

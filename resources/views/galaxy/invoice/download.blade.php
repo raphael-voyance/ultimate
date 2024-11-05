@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facture</title>
     <style>
@@ -36,6 +36,11 @@
             border-collapse: collapse;
             margin-top: 20px;
         }
+        .clearfix {
+            clear: both;
+            display: inline-flex;
+            width: 100%;
+        }
         .invoice-table th, .invoice-table td {
             padding: 10px;
             text-align: left;
@@ -69,7 +74,24 @@
         <!-- Détails de la facture -->
         <div class="invoice-details">
             <h1>Facture N° {{ $invoice->ref }}</h1>
-            <p>Statut : {{ $invoice->status }}</p>
+            <p>Statut : @switch($invoice->status)
+                @case('REFUNDED')
+                    Remboursée
+                @break
+                @case('FREE')
+                    Gratuite
+                @break
+                @case('PAID')
+                    Payée
+                @break
+                @case('PENDING')
+                    En attente de paiement
+                @break
+                @case('CANCELLED')
+                    Annulée
+                @break
+            @endswitch</p>
+            
             <p>Date : {{ \Carbon\Carbon::parse($invoice->updated_at)->format('d/m/Y') }}</p>
         </div>
 
@@ -77,8 +99,8 @@
         <div class="client-details">
             <h2>Client :</h2>
             <p>{{ $userName }}</p>
-            <div>{!! $userAdress !!}</div>
-            <p>Email : client@example.com</p>
+            {!! $userAdress !!}
+            <p>Email : {{ $userEmail }}</p>
         </div>
 
         <!-- Table de produits/services -->
@@ -116,8 +138,14 @@
             </tr>
         </table>
 
+        <div class="clearfix"></div>
+
         <!-- Pied de page -->
         <div class="footer">
+            @if($invoice->status == 'REFUNDED')
+                <p>Votre facture a été remboursée en totalité soit {{ $totalPrice }}. </br>
+                    Votre remboursement apparaîtra sur votre moyen de paiement utilisé sous quelques jours.</p>
+            @endif
             <p>Merci pour votre confiance !</p>
             <p>Si vous avez des questions, n'hésitez pas à me contacter.</p>
         </div>
