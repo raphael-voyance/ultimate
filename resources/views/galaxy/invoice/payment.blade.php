@@ -51,19 +51,38 @@
                     </div>
 
                     <div class="mb-2">
-                        <p>Status de votre facture :</p> 
-                        <p>{{ $invoice->status }}</p>
+                        <p>Statut de votre facture :</p> 
+                        <p>
+                        @switch($invoice->status)
+                            @case('REFUNDED')
+                                Remboursée
+                            @break
+                            @case('FREE')
+                                Gratuite
+                            @break
+                            @case('PAID')
+                                Payée
+                            @break
+                            @case('PENDING')
+                                En attente de paiement
+                            @break
+                            @case('CANCELLED')
+                                Annulée
+                            @break
+                        @endswitch
+                        </p>
                     </div>
 
-                        @if ($invoice_informations->type != 'writing')
+                        @if ($invoice_informations->type != 'writing' && $invoice->status == 'PAID' || $invoice->status == 'FREE' || $invoice->status == 'PENDING')
                             @if(!$appointmentPassed)
                             <p>Votre rendez-vous aura lieu le :</p>
                             @else
                             <p>Votre rendez-vous a eu lieu le :</p>
                             @endif
                             <p>{{ $invoice_informations->time_slot_day_for_human }} à
-                            {{ $invoice_informations->time_slot_for_human }}</p> 
+                            {{ $invoice_informations->time_slot_for_human }}</p>
                         @endif
+
                         @if ($invoice_informations->type == 'writing')
                             <p>Rappel de votre question :</p>
                             <p class="p-4">"{{ $invoice_informations->writing_consultation->question }}"</p>
@@ -137,7 +156,7 @@
         @endif
 
         <footer class="text-center text-xl mt-6">
-            @if ($invoice->status == 'PENDING' || $invoice->status == 'FREE' || $invoice->status == 'PAID' || $invoice->status == 'REFUNDED')
+            @if (($invoice->status == 'PENDING' || $invoice->status == 'FREE' || $invoice->status == 'PAID' || $invoice->status == 'REFUNDED') && !$appointmentPassed)
                 <h2 class="mb-6">Actions sur votre demande :</h2>
             @endif
             
@@ -150,13 +169,13 @@
                     
                     @if ($invoice->status == 'PENDING' || $invoice->status == 'FREE' || $invoice->status == 'PAID')
                     @livewire('modal-edit-appointment', ['appointment' => $invoice->appointment])
-                    <button id="cancel_request" class="btn btn-error">
+                    <button type="button" id="cancel_request" class="btn btn-error">
                         Annuler ma demande
                     </button>
                     @endif
 
                     @if ($invoice->status == 'PAID' || $invoice->status == 'REFUNDED')
-                    <button class="btn btn-accent">
+                    <button id="download_invoice" data-invoice-ref="{{ $invoice->ref }}" type="button" class="btn btn-accent">
                         Télécharger ma facture
                     </button>
                     @endif
@@ -174,7 +193,7 @@
             </form>
             @else
                 @if ($invoice->status == 'PAID' || $invoice->status == 'REFUNDED')
-                <button class="btn btn-accent">
+                <button id="download_invoice" data-invoice-ref="{{ $invoice->ref }}" type="button" class="btn btn-accent">
                     Télécharger ma facture
                 </button>
                 @endif

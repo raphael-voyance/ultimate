@@ -45,23 +45,31 @@
                     <div class="mb-2"><p>Statut de votre demande :</p> 
                         @switch($appointment->status)
                             @case('CANCELLED')
-                                <p>Annulé</p>
+                                <p>Annulée</p>
                             @break
                         
                             @case('PENDING')
-                                <p>En attente</p>
+                                <p>En attente
+                                    <span class="text-slate-300 text-xs italic">(Facture en attente de paiement)</span>
+                                </p>
                             @break
 
                             @case('APPROVED')
-                                <p>Approuvé</p>
+                                <p>Validée
+                                    @if($appointment->appointment_type != 'writing')
+                                    <span class="text-slate-300 text-xs italic">(En attente de confirmation par Raphaël)</span>
+                                    @else
+                                    <span class="text-slate-300 text-xs italic">(En attente de réponse par Raphaël)</span>
+                                    @endif
+                                </p>
                             @break
 
                             @case('CONFIRMED')
-                                <p>Confirmé</p>
+                                <p>Confirmée</p>
                             @break
 
                             @case('PASSED')
-                                <p>Passé</p>
+                                <p>Passée</p>
                             @break
                                 
                         @endswitch
@@ -125,16 +133,12 @@
 
                         @livewire('modal-edit-appointment', ['appointment' => $appointment])
 
-                        <button id="cancel_request" class="btn btn-error">
+                        <button type="button" id="cancel_request" class="btn btn-error">
                             Annuler ma demande
                         </button>
                     
                         <a href="{{ route('invoice.view', ['payment_invoice_token' => $appointment->invoice->payment_invoice_token]) }}" class="btn btn-primary hover:text-black active::text-black focus:text-black">
-                            @if($appointment->invoice->status == 'PENDING')
-                                Payer ma facture
-                            @else
                                 Accéder à ma facture
-                            @endif
                         </a>
                     </div>
                 </form>

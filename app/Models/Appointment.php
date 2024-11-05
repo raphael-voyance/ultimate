@@ -52,10 +52,12 @@ class Appointment extends Model
 
         // Retrieve appointments with statuses other than CANCELLED or PASSED
         $appointments = self::whereNotIn('status', ['CANCELLED', 'PASSED'])
-            ->with(['timeSlotDay', 'timeSlot'])
+            ->with(['timeSlotDay', 'timeSlot', 'invoice'])
             ->get();
 
         foreach ($appointments as $appointment) {
+            $invoice = $appointment->invoice;
+            // dd($invoice);
             // Check if the appointment type is 'writing'
             if ($appointment->appointment_type === 'writing') {
                 $updatedAtThreshold = Carbon::parse($appointment->updated_at)->addDays(3);
@@ -63,7 +65,12 @@ class Appointment extends Model
                 // Check if the updated_at date is more than 3 days ago
                 if ($updatedAtThreshold->lessThan($now)) {
                     $appointment->update(['status' => 'PASSED']);
+                    if ($invoice->status == 'PENDING') {
+                        $invoice->status = 'CANCELLED';
+                        $invoice->save();
+                    }
                 }
+
             } elseif ($appointment->timeSlotDay && $appointment->timeSlot) {
                 // Combine the date from timeSlotDay and time from timeSlot
                 $appointmentDateTime = Carbon::parse($appointment->timeSlotDay->day)
@@ -72,7 +79,12 @@ class Appointment extends Model
                 // Check if the appointment is in the past
                 if ($appointmentDateTime->lessThan($now)) {
                     $appointment->update(['status' => 'PASSED']);
+                    if ($invoice->status == 'PENDING') {
+                        $invoice->status = 'CANCELLED';
+                        $invoice->save();
+                    }
                 }
+
             }
         }
     }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('total_price');
             $table->string('payment_invoice_token');
             $table->string('ref');
+            $table->string('payment_intent')->nullable();
             $table->json('invoice_informations')->nullable();
             $table->foreignId('user_id');
             $table->foreignId('appointment_id')->nullable();

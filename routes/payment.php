@@ -22,5 +22,6 @@ Route::middleware(['auth'])->prefix('payment')->as('payment.')->group(function()
 Route::middleware(['auth'])->prefix('invoice')->as('invoice.')->group(function() {
 
     Route::get('/{payment_invoice_token}', [PaymentController::class, 'create'])->name('view');
+    Route::get('/download/{invoice_ref}', [PaymentController::class, 'download'])->name('download');
     
 });

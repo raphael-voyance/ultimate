@@ -1,7 +1,9 @@
 <div>
     <button @click.prevent="$wire.ModalEditAppointment = true" class="btn btn-warning">
-        <i class="fa-thin fa-calendar"></i> Modifier le RDV
+        <i class="fa-thin fa-calendar"></i> {{ $appointment->appointment_type == 'writing' ? 'Modifier votre question' : 'Modifier le RDV' }}
     </button>
+
+    
 
     @if($appointment->appointment_type != 'writing')
         <x-ui.dialog wire:model="ModalEditAppointment" title="Modifier votre rendez-vous" subtitle="Gestion de votre rendez-vous programmé le {{ $initialeDate }}" class="text-left">
@@ -68,7 +70,7 @@
             </x-slot:actions>
         </x-ui.dialog>
     @else
-        <x-ui.dialog wire:model="ModalEditAppointment" title="Modifier votre rendez-vous" subtitle="Modification de votre question écrite" class="text-left">
+        <x-ui.dialog wire:model="ModalEditAppointment" title="Modifier votre demande" subtitle="Modification de votre question écrite" class="text-left">
             {{-- Loader --}}
             <div class="relative" wire:loading>
                 <x-ui.loader :loadingText="false" :overlay="false" />
@@ -76,7 +78,7 @@
             {{-- Fin Loader --}}
 
             <div>
-                <p class="mb-2">Vous pouvez modifier ou compléter votre question en la modifiant ci-après :</p>
+                <p class="mb-2">Vous pouvez modifier ou compléter votre question ci-après :</p>
                 <textarea wire:model.lazy="writingQuestion" class="textarea resize-none textarea-bordered block w-full" id="writingQuestion" rows="5">{{ $appointment->appointment_message }}</textarea>
             </div>
             <x-slot:actions>

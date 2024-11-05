@@ -12,7 +12,7 @@ class Invoice extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['total_price', 'payment_invoice_token', 'appointment_id', 'user_id', 'ref', 'invoice_informations'];
+    protected $fillable = ['total_price', 'payment_invoice_token', 'appointment_id', 'user_id', 'ref', 'invoice_informations', 'status', 'payment_id'];
 
     protected $casts = [
         'invoice_informations' => 'json',

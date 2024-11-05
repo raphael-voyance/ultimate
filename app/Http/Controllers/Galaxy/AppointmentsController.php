@@ -71,31 +71,85 @@ class AppointmentsController extends Controller
     public function delete(Request $request) {
         // Invoice
         $invoice_token = $request->payment_invoice_token;
-        $invoice = Invoice::where('payment_invoice_token', $invoice_token)->firstOrFail();
+        $invoice = Invoice::where('payment_invoice_token', $invoice_token)->with('appointment')->firstOrFail();
+        $appointment = $invoice->appointment;
+    
+        // Vérification et création du remboursement
+        if ($invoice->payment_intent) {
+            try {
+                \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 
-        $appointment = Appointment::where('invoice_id', $invoice->id)->firstOrFail();
-
-        if($appointment->appointment_type != 'writing' && $appointment) {
-            $timeSlot = TimeSlot::where('id', $appointment->time_slot_id)
-            ->firstOrFail();
-
-            $timeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => true]);
+                \Stripe\Refund::create([
+                    'payment_intent' => $invoice->payment_intent,
+                ]);
+                // Ajout d'un message de confirmation pour le remboursement
+                toast()->success('Le remboursement de votre consultation a été effectué avec succès.')->pushOnNextPage();
+            } catch (\Exception $e) {
+                // Gestion d'erreur en cas de problème avec Stripe
+                report($e);
+                dd($e);
+                toast()->warning('Une erreur est survenue lors du remboursement. Veuillez réessayer plus tard.')->pushOnNextPage();
+                return response()->json(['status' => 'error', 'message' => 'Refund failed.'], 500);
+            }
         }
-
+    
+        // Mise à jour des créneaux de rendez-vous si ce n'est pas un rendez-vous "writing"
+        if ($appointment && $appointment->appointment_type != 'writing') {
+            $timeSlot = TimeSlot::where('id', $appointment->time_slot_id)->first();
+            if ($timeSlot) {
+                $timeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => true]);
+            }
+        }
+    
+        // Mise à jour de l'état du rendez-vous
         $appointment->invoice_id = null;
         $appointment->status = 'CANCELLED';
         $appointment->time_slot_day_id = null;
         $appointment->time_slot_id = null;
         $appointment->save();
-
-        $invoice->status = 'CANCELLED';
+    
+        // Mise à jour de l'état de la facture
+        if ($invoice->payment_intent) {
+            $invoice->status = 'REFUNDED';
+        } else {
+            $invoice->status = 'CANCELLED';
+        }
         $invoice->save();
 
-        toast()
-            ->success('Votre demande de consultation a été annulée avec succés.')
-            ->pushOnNextPage();
-
+        toast()->success('Votre demande de consultation a été annulée avec succés.')->pushOnNextPage();
+    
         $redirectRoute = route('my_space.index');
         return response()->json(['status' => 'success', 'redirectRoute' => $redirectRoute]);
     }
+
+    // public function delete(Request $request) {
+    //     // Invoice
+    //     $invoice_token = $request->payment_invoice_token;
+    //     $invoice = Invoice::where('payment_invoice_token', $invoice_token)->firstOrFail();
+
+    //     $appointment = Appointment::where('invoice_id', $invoice->id)->firstOrFail();
+
+    //     if($appointment->appointment_type != 'writing' && $appointment) {
+    //         $timeSlot = TimeSlot::where('id', $appointment->time_slot_id)
+    //         ->firstOrFail();
+
+    //         $timeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => true]);
+    //     }
+
+    //     $appointment->invoice_id = null;
+    //     $appointment->status = 'CANCELLED';
+    //     $appointment->time_slot_day_id = null;
+    //     $appointment->time_slot_id = null;
+    //     $appointment->save();
+
+    //     $invoice->status = 'CANCELLED';
+    //     $invoice->save();
+
+    //     toast()
+    //         ->success('Votre demande de consultation a été annulée avec succés.')
+    //         ->pushOnNextPage();
+
+    //     $redirectRoute = route('my_space.index');
+    //     return response()->json(['status' => 'success', 'redirectRoute' => $redirectRoute]);
+    // }
 }
