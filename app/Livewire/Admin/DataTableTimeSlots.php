@@ -54,7 +54,7 @@ class DataTableTimeSlots extends Component
                     if ($timeSlotDay->appointments()->exists()) {
                         continue; 
                     }
-                    $timeslot->delete();
+                    $timeSlotDay->delete();
                     $timeslotDeleted = true;
                 }
             }
