@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\TimeSlot;
+use Carbon\Carbon;
 use Livewire\Component;
+use App\Models\TimeSlot;
 use App\Models\TimeSlotDay;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class DataTableTimeSlots extends Component
 {
@@ -24,10 +25,15 @@ class DataTableTimeSlots extends Component
             ['key' => 'actions', 'label' => 'Actions'],
         ];
 
-        $this->timeslots = TimeSlotDay::all();
-        foreach ($this->timeslots as $timeslot) {
-            if($timeslot->day < now()->toDateString()) {
-                $this->timeslotForDeleted = true;
+        $this->timeslots = TimeSlotDay::with('time_slots')->get();
+        foreach ($this->timeslots as $timeSlotDay) {
+            foreach ($timeSlotDay->time_slots as $timeslot) {
+                
+                $dateTime = Carbon::parse($timeSlotDay->day)->setTimeFromTimeString($timeslot->end_time);
+                
+                if ($dateTime->lessThan(now())) {
+                    $this->timeslotForDeleted = true;
+                }
             }
         }
     }
@@ -36,12 +42,18 @@ class DataTableTimeSlots extends Component
         
         $timeslotDeleted = false;
 
-        foreach ($this->timeslots as $timeslot) {
-            if($timeslot->day < now()->toDateString()) {
-                $timeslot->delete();
-                $timeslotDeleted = true;
+        foreach ($this->timeslots as $timeSlotDay) {
+            foreach ($timeSlotDay->time_slots as $timeslot) {
+                
+                $dateTime = Carbon::parse($timeSlotDay->day)->setTimeFromTimeString($timeslot->end_time);
+                
+                if ($dateTime->lessThan(now())) {
+                    $timeslot->delete();
+                    $timeslotDeleted = true;
+                }
             }
         }
+
         if($timeslotDeleted) {
             toast()->success('Les créneaux horaires antérieurs à aujourd\'hui ont bien été supprimés.')->pushOnNextPage();
             $this->dispatch('refreshPage');

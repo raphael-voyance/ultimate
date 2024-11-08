@@ -1,5 +1,5 @@
 <div>
-  <header class="flex flex-row justify-between mb-4 mt-6">
+  <header class="flex flex-col items-center gap-2 md:flex-row justify-center md:justify-between mb-4 mt-6">
     <div>
       <h3>Créneaux horaires existants</h3>
     </div>
