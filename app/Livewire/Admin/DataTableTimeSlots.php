@@ -32,6 +32,9 @@ class DataTableTimeSlots extends Component
                 $dateTime = Carbon::parse($timeSlotDay->day)->setTimeFromTimeString($timeslot->end_time);
                 
                 if ($dateTime->lessThan(now())) {
+                    if ($timeslot->appointments()->exists()) {
+                        continue; 
+                    }
                     $this->timeslotForDeleted = true;
                 }
             }
@@ -48,6 +51,9 @@ class DataTableTimeSlots extends Component
                 $dateTime = Carbon::parse($timeSlotDay->day)->setTimeFromTimeString($timeslot->end_time);
                 
                 if ($dateTime->lessThan(now())) {
+                    if ($timeslot->appointments()->exists()) {
+                        continue; 
+                    }
                     $timeslot->delete();
                     $timeslotDeleted = true;
                 }
