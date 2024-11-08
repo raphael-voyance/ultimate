@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
 
 class Appointment extends Model
 {
@@ -62,12 +63,15 @@ class Appointment extends Model
             if ($appointment->appointment_type === 'writing') {
                 $updatedAtThreshold = Carbon::parse($appointment->updated_at)->addDays(3);
 
+                // dump('w', $updatedAtThreshold);
+
                 // Check if the updated_at date is more than 3 days ago
                 if ($updatedAtThreshold->lessThan($now)) {
                     $appointment->update(['status' => 'PASSED']);
                     if ($invoice->status == 'PENDING') {
                         $invoice->status = 'CANCELLED';
                         $invoice->save();
+                        ConcernNotifications::sendNotification($invoice, 'CANCELLED');
                     }
                 }
 
@@ -76,12 +80,15 @@ class Appointment extends Model
                 $appointmentDateTime = Carbon::parse($appointment->timeSlotDay->day)
                     ->setTimeFromTimeString($appointment->timeSlot->end_time); // Assuming end_time is the cutoff time
 
+                    // dd('tp', $appointmentDateTime);
+
                 // Check if the appointment is in the past
                 if ($appointmentDateTime->lessThan($now)) {
                     $appointment->update(['status' => 'PASSED']);
                     if ($invoice->status == 'PENDING') {
                         $invoice->status = 'CANCELLED';
                         $invoice->save();
+                        ConcernNotifications::sendNotification($invoice, 'CANCELLED');
                     }
                 }
 

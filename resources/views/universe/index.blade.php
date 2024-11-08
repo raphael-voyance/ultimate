@@ -69,6 +69,10 @@
                     <x-ui.link label="Toutes les consultations à venir" href="{{ route('home') }}" />
                 </x-slot:actions>
             </x-ui.card>
+
+            <x-ui.card title="Gestion du temps">
+                    <a class="inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-400 hover:text-gray-200 hover:border-gray-300 focus:outline-none focus:text-gray-200 focus:border-gray-300 transition duration-150 ease-in-out" href="{{ route('admin.time-slots.index') }}"><i class="fa-thin fa-clock-two-thirty mr-2"></i> Gestion des créneaux de consultation</a>
+            </x-ui.card>
         </div>
     </div>
 

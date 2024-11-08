@@ -29,6 +29,35 @@
 
             </x-ui.card>
 
+            {{-- Consultations à venir --}}
+            <x-ui.card title="Vos consultations à venir">
+                @if (count($futursAppointments) >= 1)
+                <ul>
+                    @foreach($futursAppointments as $appointment)
+                    <li><i @class([
+                        'fa-thin mr-2',
+                        'fa-phone' => $appointment['type'] == 'phone',
+                        'fa-sharp fa-comments' => $appointment['type'] == 'tchat',
+                        'fa-thin fa-pen-nib' => $appointment['type'] == 'writing'])></i> 
+
+                        @if($appointment['type'] == 'writing')
+                            demandée le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par écrit
+                        @elseif ($appointment['type'] == 'tchat')
+                            le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par tchat
+                        @else
+                            le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par téléphone
+                        @endif
+                    </li>
+                    @endforeach
+                </ul>
+                <x-slot:actions>
+                    <x-ui.link label="Toutes les consultations programmées" href="{{ route('my_space.appointments.index', ['order' => 'desc']) }}" />
+                </x-slot:actions>
+                @else
+                <p class="text-white/65 italic">Vous n'avez pas de consultation programmée.</p>
+                @endif
+            </x-ui.card>
+
             {{-- Dernières consultations --}}
             {{-- {{dd($pastsAppointments)}} --}}
             <x-ui.card title="Vos dernières consultations">
@@ -53,39 +82,10 @@
                 </ul>
 
                 <x-slot:actions>
-                    <x-ui.link label="Toutes les consultations passées" href="{{ route('home') }}" />
+                    <x-ui.link label="Toutes les consultations passées" href="{{ route('my_space.appointments.index', ['order' => 'asc']) }}" />
                 </x-slot:actions>
                 @else
                 <p class="text-white/65 italic">Aucune consultation n'est enregistrée sur votre profil.</p>
-                @endif
-            </x-ui.card>
-
-            {{-- Consultations à venir --}}
-            <x-ui.card title="Vos consultations à venir">
-                @if (count($futursAppointments) >= 1)
-                <ul>
-                    @foreach($futursAppointments as $appointment)
-                    <li><i @class([
-                        'fa-thin mr-2',
-                        'fa-phone' => $appointment['type'] == 'phone',
-                        'fa-sharp fa-comments' => $appointment['type'] == 'tchat',
-                        'fa-thin fa-pen-nib' => $appointment['type'] == 'writing'])></i> 
-
-                        @if($appointment['type'] == 'writing')
-                            demandée le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par écrit
-                        @elseif ($appointment['type'] == 'tchat')
-                            le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par tchat
-                        @else
-                            le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par téléphone
-                        @endif
-                    </li>
-                    @endforeach
-                </ul>
-                <x-slot:actions>
-                    <x-ui.link label="Toutes les consultations programmées" href="{{ route('home') }}" />
-                </x-slot:actions>
-                @else
-                <p class="text-white/65 italic">Vous n'avez pas de consultation programmée.</p>
                 @endif
             </x-ui.card>
             

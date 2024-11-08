@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Galaxy;
 
-use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
+use Carbon\Carbon;
 use App\Models\Invoice;
 use App\Models\TimeSlot;
 use App\Models\Appointment;
@@ -11,13 +11,49 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Concern\Invoice as InvoiceController;
+use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
 
 class AppointmentsController extends Controller
 {
     public $IC;
 
-    public function index() {
-        return view("galaxy.appointments.index");
+    public function index(Request $request) {
+        $order = strtoupper($request->order);
+        $user = Auth::user();
+        $appointments = $user->appointments()
+            ->where('status', '!=', 'CANCELLED')
+            ->with('timeSlotDay', 'timeSlot')
+            ->orderBy('created_at', $order)
+            ->get();
+
+        $appointments = $appointments->map(function($appointment) {
+            $user = Auth::user();
+            $appointment->authUserName = Str::slug($user->first_name . '-' . $user->last_name);
+            if($appointment->appointment_type != 'writing' && !empty($appointment->time_slot_day_id)) {
+                $appointment->date = $this->transformDate($appointment->timeSlotDay->day);
+                $appointment->time = $this->transformTime($appointment->timeSlot->start_time);
+            }else {
+                $appointment->reply_date = $this->transformDate($appointment->updated_at, 3);
+            }
+            return $appointment;
+        });
+
+        // dd($appointments);
+
+        return view("galaxy.appointments.index", [
+            'appointments' => $appointments,
+        ]);
+    }
+
+    private function transformDate($dateString, $addDays = null) {
+        if($addDays) {
+            return Carbon::parse($dateString)->addDays($addDays)->translatedFormat('j F Y');
+        }
+        return Carbon::parse($dateString)->translatedFormat('j F Y');
+    }
+
+    private function transformTime($timeString) {
+        return Carbon::createFromFormat('H:i:s', $timeString)->format('H\hi');
     }
 
     /**

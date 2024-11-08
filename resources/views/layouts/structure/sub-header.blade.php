@@ -8,7 +8,7 @@
     </div>
     @guest
     <div>
-        <x-ui.dropdown :inlineDropdown="true" toggle-text="Se connecter" mobile-icon="fa-thin fa-user" class="min-w-[67px] sm:w-[138px]">
+        <x-ui.dropdown :inlineDropdown="true" toggle-text="S'enregistrer" mobile-icon="fa-thin fa-user" class="min-w-[67px] sm:w-[138px]">
                 <a href="{{ route('login') }}" class="block w-full px-4 py-2 text-left text-sm leading-5 text-white hover:text-white active:text-white focus:text-white bg-secondary hover:bg-[#3b76a0] active:bg-[#3b76a0] focus:bg-[#3b76a0] last:rounded-bl-md">
                     {{ __('Login') }}
                 </a>

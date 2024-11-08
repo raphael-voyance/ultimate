@@ -37,14 +37,7 @@ class DataTableDraw extends Component
             }
         }
     
-        $this->headers = [
-            ['key' => 'id', 'label' => '#'],
-            ['key' => 'name', 'label' => 'Nom du tirage'],
-            ['key' => 'slug', 'label' => 'Slug du tirage'],
-            ['key' => 'interpretations', 'label' => 'Interprétations complètes'],
-            ['key' => 'active', 'label' => 'Publié'],
-            ['key' => 'actions', 'label' => 'Actions'],
-        ];
+        
     }
 
     public function render()

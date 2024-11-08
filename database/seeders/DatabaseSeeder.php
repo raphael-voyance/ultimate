@@ -140,7 +140,7 @@ class DatabaseSeeder extends Seeder
 
         for($i = 0; $i < 100; $i++) {
 
-            $date = fake()->dateTimeBetween('now', '+110 days')->format('Y-m-d');
+            $date = fake()->dateTimeBetween('-30days', '+110days')->format('Y-m-d');
             if(!in_array($date, array_column($dates, 'day'))) {
                 $dates[] = ['day' => $date];
             }
@@ -157,17 +157,17 @@ class DatabaseSeeder extends Seeder
 
         foreach($timeSlotsDay as $tsd) {
             if($tsd->id <= 10) {
-                $tsd->time_slots()->attach([$timeSlot1->id, $timeSlot2->id, $timeSlot5->id], ['available' => false]);
+                $tsd->time_slots()->attach([$timeSlot1->id, $timeSlot2->id, $timeSlot5->id], ['available' => true]);
             }else if($tsd->id > 10 && $tsd->id <= 20) {
                 $tsd->time_slots()->attach([$timeSlot2->id, $timeSlot5->id], ['available' => true]);
             }else if($tsd->id > 20 && $tsd->id <= 30) {
-                $tsd->time_slots()->attach([$timeSlot1->id, $timeSlot2->id, $timeSlot3->id, $timeSlot4->id], ['available' => false]);
+                $tsd->time_slots()->attach([$timeSlot1->id, $timeSlot2->id, $timeSlot3->id, $timeSlot4->id], ['available' => true]);
             }else if($tsd->id > 30 && $tsd->id <= 40) {
                 $tsd->time_slots()->attach([$timeSlot3->id, $timeSlot5->id], ['available' => true]);
             }else if($tsd->id > 40 && $tsd->id <= 50) {
                 $tsd->time_slots()->attach([$timeSlot2->id, $timeSlot4->id], ['available' => true]);
             }else if($tsd->id > 50 && $tsd->id <= 60) {
-                $tsd->time_slots()->attach([$timeSlot2->id, $timeSlot4->id, $timeSlot5->id], ['available' => false]);
+                $tsd->time_slots()->attach([$timeSlot2->id, $timeSlot4->id, $timeSlot5->id], ['available' => true]);
             }
         }
 

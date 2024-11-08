@@ -64,8 +64,6 @@ class RegisteredUserController extends Controller
     }
 
     private function createAvatar($user) {
-        $firstLetter = substr($user->first_name, 0, 1);
-        $secondLetter = substr($user->last_name, 0, 1);
-        return "https://via.placeholder.com/480x480.png/00bb99?text=$firstLetter$secondLetter";
+        return "https://via.placeholder.com/480x480.png/00bb99";
     }
 }

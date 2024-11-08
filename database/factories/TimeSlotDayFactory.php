@@ -17,7 +17,7 @@ class TimeSlotDayFactory extends Factory
     public function definition(): array
     {
         return [
-            'day' => fake()->unique()->dateTimeBetween('now', '+110 days')->format('Y-m-d'),
+            'day' => fake()->unique()->dateTimeBetween('-30days', '+110days')->format('Y-m-d'),
         ];
     }
 }

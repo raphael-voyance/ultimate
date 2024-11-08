@@ -10,6 +10,7 @@ use App\Http\Controllers\Universe\ImageController;
 use App\Http\Controllers\Universe\TarotController;
 use App\Http\Controllers\Universe\BackupsController;
 use App\Http\Controllers\Universe\MessagingController;
+use App\Http\Controllers\Universe\TimeSlotsController;
 use App\Http\Controllers\Universe\NumerologyController;
 
 /*
@@ -84,6 +85,11 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
             Route::delete('/destroy/{id}', [BlogController::class, 'destroyCategory'])->name('destroy');
         });
 
+    });
+
+    // TIME SLOTS ROUTES
+    Route::prefix('time-slots')->as('time-slots.')->group(function() {
+        Route::get('/', [TimeSlotsController::class, 'index'])->name('index');
     });
 
     // Backups Routes

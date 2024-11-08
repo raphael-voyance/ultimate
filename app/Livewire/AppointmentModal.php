@@ -335,9 +335,7 @@ class AppointmentModal extends Component
             'password' => Hash::make($validatedData['password'],),
         ]);
 
-        $avatar = "https://via.placeholder.com/480x480.png/00bb99?text=";
-        $avatar .= substr($user->first_name, 0, 1);
-        $avatar .= substr($user->last_name, 0, 1);
+        $avatar = "https://via.placeholder.com/480x480.png/00bb99";
         $user->roles()->attach(2);
         $user->profile()->create([
             'avatar' => $avatar
