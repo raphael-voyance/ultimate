@@ -30,10 +30,10 @@ class DataTableTimeSlots extends Component
             foreach ($timeSlotDay->time_slots as $timeslot) {
                 
                 $dateTime = Carbon::parse($timeSlotDay->day)->setTimeFromTimeString($timeslot->end_time);
-                
-                if ($dateTime->lessThan(now())) {
+                //$dateTime->lessThan(now())
+                if ($dateTime->lessThan(Carbon::today())) {
                     if ($timeSlotDay->appointments()->exists()) {
-                        continue; 
+                        continue;
                     }
                     $this->timeslotForDeleted = true;
                 }
@@ -50,9 +50,11 @@ class DataTableTimeSlots extends Component
                 
                 $dateTime = Carbon::parse($timeSlotDay->day)->setTimeFromTimeString($timeslot->end_time);
                 
-                if ($dateTime->lessThan(now())) {
+                //si la date du créneau horaire est inférieure à la date actuelle
+                if ($dateTime->lessThan(Carbon::today())) {
+                    //si le créneau horaire a des rendez-vous
                     if ($timeSlotDay->appointments()->exists()) {
-                        continue; 
+                        continue;
                     }
                     $timeSlotDay->delete();
                     $timeslotDeleted = true;
@@ -68,7 +70,9 @@ class DataTableTimeSlots extends Component
 
     public function render()
     {
-        $timeSlotDays = TimeSlotDay::with('time_slots')->get()->sortBy('day');
+        $now = Carbon::now()->toDateString();
+
+        $timeSlotDays = TimeSlotDay::with('time_slots')->where('day', '>=', $now)->get()->sortBy('day');
         $rows = [];
 
         foreach ($timeSlotDays as $timeSlotDay) {
