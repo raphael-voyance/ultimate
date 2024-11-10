@@ -8,7 +8,7 @@
         <h2 class="font-semibold text-xl leading-tight flex flex-col sm:flex-row justify-between items-center">
             <a href="{{ route('admin.index') }}" class="btn btn-ghost btn-circle"><i class="fa-light fa-arrow-left"></i></a>
             <div class="text-center sm:pl-4 mt-2 sm:mt-0 sm:text-left">
-                <span class="block mb-2  sm:mb-1"> Gestion des créneaux horaires : </span>
+                <span class="block mb-2  sm:mb-1"> Gestion des créneaux horaires fdsq fsqdf dsqf sq : </span>
             </div>
         </h2>
     </x-slot>
