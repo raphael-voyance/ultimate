@@ -13,17 +13,34 @@ class Appointment extends Model
 
     protected $fillable = [
         'user_id', 'time_slot_day_id', 'time_slot_id', 'invoice_id', 'appointment_message', 'appointment_type',
-        'status', 'request_reason', 'request_message', 'request_approved', 'request_reply'
+        'status', 'request_reason', 'request_message', 'request_approved', 'request_reply', 'request_response_date'
     ];
 
     public function getFormattedDayAttribute()
     {
-        return Carbon::parse($this->timeSlotDay->day)->translatedFormat('l j F Y');
+        if($this->timeSlotDay) {
+            return Carbon::parse($this->timeSlotDay->day)->translatedFormat('l j F Y');
+        } else {
+            return Carbon::parse($this->updated_at)->translatedFormat('l j F Y');
+        }
+    }
+
+    public function getFormattedDateTimeAttribute()
+    {
+        if($this->timeSlotDay) {
+            return Carbon::create($this->timeSlotDay->day);
+        } else {
+            return Carbon::create($this->updated_at);
+        }
     }
 
     public function getFormattedTimeAttribute()
     {
-        return Carbon::parse($this->timeSlot->start_time)->format('H\hi');
+        if($this->timeSlot) {
+            return Carbon::parse($this->timeSlot->start_time)->format('H\hi');
+        } else {
+            return null;
+        }
     }
 
     // public function user() {

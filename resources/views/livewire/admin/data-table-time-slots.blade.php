@@ -52,7 +52,7 @@
     
     <div>
       @if (count($selected) > 0)
-      <x-mary-button wire:click="deleteSelectedTimeSlot()" spinner class="btn btn-sm float-left btn-danger">
+      <x-mary-button wire:click="deleteSelectedTimeSlot()" spinner class="btn btn-sm float-left h-auto">
         <i class='fa-thin fa-calendar-circle-minus'></i> Supprimer le(s) créneau(x) horaire(s) sélectionné(s)
       </x-mary-button>
       @endif

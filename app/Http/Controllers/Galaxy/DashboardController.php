@@ -79,8 +79,8 @@ class DashboardController extends Controller
                 return [
                     'id' => $appointment->id,
                     'authUserName' => Str::slug($user->first_name . '-' . $user->last_name),
-                    'date' => $this->transformDate($appointment->timeSlotDay->day),
-                    'time' => $this->transformTime($appointment->timeSlot->start_time),
+                    'date' => $appointment->formatted_day,
+                    'time' => $appointment->formatted_time,
                     'type' => $appointment->appointment_type,
                 ];
             } else {
@@ -103,8 +103,8 @@ class DashboardController extends Controller
                 return [
                     'id' => $appointment->id,
                     'authUserName' => Str::slug($user->first_name . '-' . $user->last_name),
-                    'date' => $this->transformDate($appointment->timeSlotDay->day),
-                    'time' => $this->transformTime($appointment->timeSlot->start_time),
+                    'date' => $appointment->formatted_day,
+                    'time' => $appointment->formatted_time,
                     'type' => $appointment->appointment_type,
                 ];
             } else {

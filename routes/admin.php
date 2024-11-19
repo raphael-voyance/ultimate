@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Universe\BlogController;
+use App\Http\Controllers\Universe\UserController;
 use App\Http\Controllers\Universe\AdminController;
 use App\Http\Controllers\Universe\DrawsController;
 use App\Http\Controllers\Universe\FilesController;
@@ -91,6 +92,16 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     Route::prefix('timeslots')->as('timeslots.')->group(function() {
         Route::get('/', [TimeSlotsController::class, 'index'])->name('index');
         Route::post('/create', [TimeSlotsController::class, 'create'])->name('create');
+    });
+
+    // USERS ROUTES
+    Route::prefix('users')->as('users.')->group(function() {
+        Route::get('/', [UserController::class, 'users'])->name('index');
+        Route::get('/create', [UserController::class, 'createUser'])->name('create');
+        Route::post('/store', [UserController::class, 'storeUser'])->name('store');
+        Route::get('/edit/{id}', [UserController::class, 'editUser'])->name('edit');
+        Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('update');
+        Route::delete('/destroy/{id}', [UserController::class, 'destroyUser'])->name('destroy');
     });
 
     // Backups Routes

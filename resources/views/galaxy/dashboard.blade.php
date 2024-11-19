@@ -43,9 +43,9 @@
                         @if($appointment['type'] == 'writing')
                             demandée le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par écrit
                         @elseif ($appointment['type'] == 'tchat')
-                            le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par tchat
+                            le <x-ui.link label="{{ $appointment['date'] }} à {{ $appointment['time'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par tchat
                         @else
-                            le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par téléphone
+                            le <x-ui.link label="{{ $appointment['date'] }} à {{ $appointment['time'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par téléphone
                         @endif
                     </li>
                     @endforeach

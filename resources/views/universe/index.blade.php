@@ -15,6 +15,7 @@
     {{-- Paramètres --}}
     <div class="mb-8 py-4 px-6 bg-base-300">
         <h2 class="mb-4">Gestion du site</h2>
+        {{-- {{dump($users)}} --}}
         <div id="element-save-backup-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <x-ui.card title="Sauvegarde du site">
                 <button id="btn-save-backup" class="btn btn-circle"><i class="fa-thin fa-floppy-disk fa-xl"></i></button>
@@ -29,9 +30,9 @@
                     Derniers utilisateurs inscrits :
                 </div>
                 <ul>
-                    <li><x-ui.link label="Florent P." href="#" /></li>
-                    <li><x-ui.link label="Joy N." href="#" /></li>
-                    <li><x-ui.link label="Patrice V." href="#" /></li>
+                    @foreach ($users as $user)
+                        <li><x-ui.link label="{{ $user->fullName() }}" href="{{ route('admin.users.edit', $user->id)}}" /></li>
+                    @endforeach
                 </ul>
     
                 <x-slot:actions>
@@ -47,31 +48,48 @@
         <h2 class="mb-4">Gestion des consultations</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
+            @if($pastsAppointments->count() > 0)
             <x-ui.card title="Dernières consultations">
                 <ul>
-                    <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="08/05/2024" href="#" /> avec Mathilde</li>
-                    <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="14/04/2024" href="#" /> avec Brigitte</li>
-                    <li><i class="fa-thin fa-pen-nib mr-2"></i> répondu le <x-ui.link label="19/03/2024" href="#" /> pour Gérard</li>
+                    @foreach ($pastsAppointments as $appointment)
+                        @if($appointment['type'] == 'writing')
+                            <li><i class="fa-thin fa-pen-nib mr-2"></i> répondue le <x-ui.link label="{{ $appointment['request_response_date'] }}" href="#" /> par <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.edit', $appointment['user_id']) }}" /></li>
+                        @elseif($appointment['type'] == 'tchat')
+                            <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="#" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.edit', $appointment['user_id']) }}" /></li>
+                        @elseif($appointment['type'] == 'phone')
+                            <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="#" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.edit', $appointment['user_id']) }}" /> </li>
+                        @endif
+                    @endforeach
                 </ul>
     
                 <x-slot:actions>
                     <x-ui.link label="Toutes les consultations passées" href="{{ route('home') }}" />
                 </x-slot:actions>
             </x-ui.card>
-
+            @endif
+            @if($futursAppointments->count() > 0)
             <x-ui.card title="Consultations à venir">
                 <ul>
-                    <li><i class="fa-thin fa-pen-nib mr-2"></i> demandée le <x-ui.link label="08/09/2024" href="#" /> par Brune</li>
-                    <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="14/09/2024" href="#" /> avec Louis</li>
-                    <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="19/09/2024" href="#" /> avec Jean-Gaspard</li>
+                    @foreach ($futursAppointments as $appointment)
+                        @if($appointment['type'] == 'writing')
+                        {{-- {{dd($appointment)}} --}}
+                            <li><i class="fa-thin fa-pen-nib mr-2"></i> demandée le <x-ui.link label="{{ $appointment['day'] }}" href="#" /> par <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.edit', $appointment['user_id']) }}" /></li>
+                        @elseif($appointment['type'] == 'tchat')
+                            <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="#" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.edit', $appointment['user_id']) }}" /></li>
+                        @elseif($appointment['type'] == 'phone')
+                            <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="#" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.edit', $appointment['user_id']) }}" /></li>
+                        @endif
+                    @endforeach
                 </ul>
                 <x-slot:actions>
                     <x-ui.link label="Toutes les consultations à venir" href="{{ route('home') }}" />
                 </x-slot:actions>
             </x-ui.card>
+            @endif
 
             <x-ui.card title="Gestion du temps">
                     <a class="inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-400 hover:text-gray-200 hover:border-gray-300 focus:outline-none focus:text-gray-200 focus:border-gray-300 transition duration-150 ease-in-out" href="{{ route('admin.timeslots.index') }}"><i class="fa-thin fa-clock-two-thirty mr-2"></i> Gestion des créneaux de consultation</a>
+                    <a class="inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-400 hover:text-gray-200 hover:border-gray-300 focus:outline-none focus:text-gray-200 focus:border-gray-300 transition duration-150 ease-in-out" href="{{ route('admin.timeslots.index') }}"><i class="fa-thin fa-calendar-plus mr-2"></i> Créer un rendez-vous</a>
             </x-ui.card>
         </div>
     </div>

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('request_reason')->nullable();
             $table->text('request_message')->nullable();
             $table->text('request_reply')->nullable();
+            $table->timestamp('request_response_date')->nullable();
 
             $table->text('appointment_message')->nullable();
 

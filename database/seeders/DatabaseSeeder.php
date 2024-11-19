@@ -115,61 +115,61 @@ class DatabaseSeeder extends Seeder
             ->has(Activity::factory()->count(5), 'activities')
             ->create();
 
-        $timeSlot1 = TimeSlot::create([
-            'start_time' => '09:30:00',
-            'end_time' => '10:30:00',
-        ]);
-        $timeSlot2 = TimeSlot::create([
-            'start_time' => '11:30:00',
-            'end_time' => '12:30:00',
-        ]);
-        $timeSlot3 = TimeSlot::create([
-            'start_time' => '14:30:00',
-            'end_time' => '15:30:00',
-        ]);
-        $timeSlot4 = TimeSlot::create([
-            'start_time' => '16:30:00',
-            'end_time' => '17:30:00',
-        ]);
-        $timeSlot5 = TimeSlot::create([
-            'start_time' => '18:30:00',
-            'end_time' => '19:30:00',
-        ]);
+        // $timeSlot1 = TimeSlot::create([
+        //     'start_time' => '09:30:00',
+        //     'end_time' => '10:30:00',
+        // ]);
+        // $timeSlot2 = TimeSlot::create([
+        //     'start_time' => '11:30:00',
+        //     'end_time' => '12:30:00',
+        // ]);
+        // $timeSlot3 = TimeSlot::create([
+        //     'start_time' => '14:30:00',
+        //     'end_time' => '15:30:00',
+        // ]);
+        // $timeSlot4 = TimeSlot::create([
+        //     'start_time' => '16:30:00',
+        //     'end_time' => '17:30:00',
+        // ]);
+        // $timeSlot5 = TimeSlot::create([
+        //     'start_time' => '18:30:00',
+        //     'end_time' => '19:30:00',
+        // ]);
 
-        $dates = [];
+        // $dates = [];
 
-        for($i = 0; $i < 100; $i++) {
+        // for($i = 0; $i < 100; $i++) {
 
-            $date = fake()->dateTimeBetween('-30days', '+110days')->format('Y-m-d');
-            if(!in_array($date, array_column($dates, 'day'))) {
-                $dates[] = ['day' => $date];
-            }
-        }
+        //     $date = fake()->dateTimeBetween('-30days', '+110days')->format('Y-m-d');
+        //     if(!in_array($date, array_column($dates, 'day'))) {
+        //         $dates[] = ['day' => $date];
+        //     }
+        // }
 
-        //dd($dates);
+        // //dd($dates);
 
-        foreach ($dates as $date) {
-            // dump($date);
-            TimeSlotDay::firstOrCreate($date);
-        }
+        // foreach ($dates as $date) {
+        //     // dump($date);
+        //     TimeSlotDay::firstOrCreate($date);
+        // }
 
-        $timeSlotsDay = TimeSlotDay::all();
+        // $timeSlotsDay = TimeSlotDay::all();
 
-        foreach($timeSlotsDay as $tsd) {
-            if($tsd->id <= 10) {
-                $tsd->time_slots()->attach([$timeSlot1->id, $timeSlot2->id, $timeSlot5->id], ['available' => true]);
-            }else if($tsd->id > 10 && $tsd->id <= 20) {
-                $tsd->time_slots()->attach([$timeSlot2->id, $timeSlot5->id], ['available' => true]);
-            }else if($tsd->id > 20 && $tsd->id <= 30) {
-                $tsd->time_slots()->attach([$timeSlot1->id, $timeSlot2->id, $timeSlot3->id, $timeSlot4->id], ['available' => true]);
-            }else if($tsd->id > 30 && $tsd->id <= 40) {
-                $tsd->time_slots()->attach([$timeSlot3->id, $timeSlot5->id], ['available' => true]);
-            }else if($tsd->id > 40 && $tsd->id <= 50) {
-                $tsd->time_slots()->attach([$timeSlot2->id, $timeSlot4->id], ['available' => true]);
-            }else if($tsd->id > 50 && $tsd->id <= 60) {
-                $tsd->time_slots()->attach([$timeSlot2->id, $timeSlot4->id, $timeSlot5->id], ['available' => true]);
-            }
-        }
+        // foreach($timeSlotsDay as $tsd) {
+        //     if($tsd->id <= 10) {
+        //         $tsd->time_slots()->attach([$timeSlot1->id, $timeSlot2->id, $timeSlot5->id], ['available' => true]);
+        //     }else if($tsd->id > 10 && $tsd->id <= 20) {
+        //         $tsd->time_slots()->attach([$timeSlot2->id, $timeSlot5->id], ['available' => true]);
+        //     }else if($tsd->id > 20 && $tsd->id <= 30) {
+        //         $tsd->time_slots()->attach([$timeSlot1->id, $timeSlot2->id, $timeSlot3->id, $timeSlot4->id], ['available' => true]);
+        //     }else if($tsd->id > 30 && $tsd->id <= 40) {
+        //         $tsd->time_slots()->attach([$timeSlot3->id, $timeSlot5->id], ['available' => true]);
+        //     }else if($tsd->id > 40 && $tsd->id <= 50) {
+        //         $tsd->time_slots()->attach([$timeSlot2->id, $timeSlot4->id], ['available' => true]);
+        //     }else if($tsd->id > 50 && $tsd->id <= 60) {
+        //         $tsd->time_slots()->attach([$timeSlot2->id, $timeSlot4->id, $timeSlot5->id], ['available' => true]);
+        //     }
+        // }
 
         // $invoices = Invoice::factory()
         //     ->count(50)
@@ -214,7 +214,8 @@ class DatabaseSeeder extends Seeder
                 'slug' => Str::of('Tirage en croix')->slug('-'), 
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
                 'totalSelectedCards' => 4,
-                'hasSumCards' => true
+                'hasSumCards' => true,
+                'active' => true,
             ]);
 
             $tirageDeux = DrawCard::create([
@@ -223,6 +224,7 @@ class DatabaseSeeder extends Seeder
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
                 'totalSelectedCards' => 12,
                 'hasSumCards' => false,
+                'active' => true,
                 'positionsKeywords' => json_encode([
                     [
                         'position' => 1,
@@ -293,6 +295,7 @@ class DatabaseSeeder extends Seeder
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse alias voluptatibus fugit nam odio perspiciatis saepe? Perferendis ratione et impedit fuga rerum fugiat delectus nihil consectetur, dolores ipsum laudantium!', 
                 'totalSelectedCards' => 1,
                 'hasSumCards' => false,
+                'active' => true,
                 'positionsKeywords' => json_encode([
                     [
                         'position' => 1,
