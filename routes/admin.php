@@ -88,8 +88,9 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     });
 
     // TIME SLOTS ROUTES
-    Route::prefix('time-slots')->as('time-slots.')->group(function() {
+    Route::prefix('timeslots')->as('timeslots.')->group(function() {
         Route::get('/', [TimeSlotsController::class, 'index'])->name('index');
+        Route::post('/create', [TimeSlotsController::class, 'create'])->name('create');
     });
 
     // Backups Routes

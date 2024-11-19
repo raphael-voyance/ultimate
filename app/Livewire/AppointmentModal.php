@@ -37,7 +37,7 @@ class AppointmentModal extends Component
     public string|null $timeSlotForHuman = null;
     public string|null $timeSlotDayForHuman = null;
     public int $offsetTimeSlot = 0;
-    public $totalOffsetTimeSlot;
+    public $hasMoreTimeSlots;
     public array $writingConsultation = [];
     public string|null $writingConsultationQuestion = null;
     public string $currentValidationForm = 'formQuestion';
@@ -183,10 +183,6 @@ class AppointmentModal extends Component
         }
 
         // Initialize SlotDays
-        // A faire : Déplacer ces fonction pour charger les timeslots dans la step concernée
-        $totalSlotDays = TimeSlotDay::all()->count();
-
-        $this->totalOffsetTimeSlot = ceil($totalSlotDays / 5);
         $this->loadTimeSlotDays();
     }
 
@@ -204,10 +200,33 @@ class AppointmentModal extends Component
 
     // # PRIVATE METHODS #
     //Load All TimeSlotDays to Array
+    // private function loadTimeSlotDays()
+    // {
+    //     $this->timeSlotDays = TimeSlotDay::with('time_slots')
+    //         ->whereHas('time_slots', function(Builder $query) {
+    //             return $query->where('available', true);
+    //         })
+    //         ->where('day', '>', Carbon::now()->startOfDay())
+    //         ->orderBy('day')
+    //         ->skip($this->offsetTimeSlot)
+    //         ->limit(5)
+    //         ->get()
+    //         ->map(function ($timeSlotDay) {
+    //             // Formater le timestamp 'day' pour chaque créneau horaire
+    //             $timeSlotDay->dayFormatte = Carbon::parse($timeSlotDay->day)->translatedFormat('l j F Y');
+
+    //             // creer une fonction qui retourne vrai ou faux en fonction de si un timeslotday possède au moins 1 timeslot actif
+
+    //             return $timeSlotDay;
+    //         })->toArray();
+
+    //         // dd($this->timeSlotDays);
+    // }
     private function loadTimeSlotDays()
     {
+        // Charger les créneaux horaires actuels
         $this->timeSlotDays = TimeSlotDay::with('time_slots')
-            ->whereHas('time_slots', function(Builder $query) {
+            ->whereHas('time_slots', function (Builder $query) {
                 return $query->where('available', true);
             })
             ->where('day', '>', Carbon::now()->startOfDay())
@@ -218,12 +237,25 @@ class AppointmentModal extends Component
             ->map(function ($timeSlotDay) {
                 // Formater le timestamp 'day' pour chaque créneau horaire
                 $timeSlotDay->dayFormatte = Carbon::parse($timeSlotDay->day)->translatedFormat('l j F Y');
-
-                // creer une fonction qui retourne vrai ou faux en fonction de si un timeslotday possède au moins 1 timeslot actif
-
                 return $timeSlotDay;
             })->toArray();
+
+        // Vérifier s'il y a des créneaux horaires supplémentaires
+        $nextSlots = TimeSlotDay::whereHas('time_slots', function (Builder $query) {
+                return $query->where('available', true);
+            })
+            ->where('day', '>', Carbon::now()->startOfDay())
+            ->orderBy('day')
+            ->skip($this->offsetTimeSlot + 5)
+            ->limit(5)
+            ->get()
+            ->count();
+
+        // Si $nextSlots est à 0, cela signifie qu'il n'y a plus de créneaux horaires disponibles
+        $this->hasMoreTimeSlots = $nextSlots > 0;
     }
+
+
 
     // Save Question For writing Consultation
     private function savewritingConsultationQuestion(): void

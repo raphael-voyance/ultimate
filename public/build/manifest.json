@@ -3,23 +3,23 @@
     "file": "assets/_commonjsHelpers-Cpj98o6Y.js",
     "name": "_commonjsHelpers"
   },
-  "_alert-!~{00u}~.js": {
-    "file": "assets/alert-BTnCFOkF.css",
-    "src": "_alert-!~{00u}~.js"
+  "_alert-!~{00v}~.js": {
+    "file": "assets/alert-2FVlMrq4.css",
+    "src": "_alert-!~{00v}~.js"
   },
-  "_alert-BjNJBOmD.js": {
-    "file": "assets/alert-BjNJBOmD.js",
+  "_alert-C7YwuTJn.js": {
+    "file": "assets/alert-C7YwuTJn.js",
     "name": "alert",
     "css": [
-      "assets/alert-BTnCFOkF.css"
+      "assets/alert-2FVlMrq4.css"
     ]
   },
   "_axios-CCb-kr4I.js": {
     "file": "assets/axios-CCb-kr4I.js",
     "name": "axios"
   },
-  "_bundle-Cokl53mf.js": {
-    "file": "assets/bundle-Cokl53mf.js",
+  "_bundle-DB3n0y8K.js": {
+    "file": "assets/bundle-DB3n0y8K.js",
     "name": "bundle",
     "imports": [
       "__commonjsHelpers-Cpj98o6Y.js"
@@ -34,58 +34,58 @@
     "name": "utils"
   },
   "resources/css/add/hero_home.css": {
-    "file": "assets/hero_home-Bh-ImbAz.css",
+    "file": "assets/hero_home-D3vv1toK.css",
     "src": "resources/css/add/hero_home.css",
     "isEntry": true
   },
   "resources/css/add/messaging.css": {
-    "file": "assets/messaging-BVtnyHzK.css",
+    "file": "assets/messaging-BL3WsQ52.css",
     "src": "resources/css/add/messaging.css",
     "isEntry": true
   },
   "resources/css/add/numerology_tree.css": {
-    "file": "assets/numerology_tree-VbePXNtN.css",
+    "file": "assets/numerology_tree-D8_yotx-.css",
     "src": "resources/css/add/numerology_tree.css",
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-DPggtWBU.css",
+    "file": "assets/app-Bpv5roXd.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/add/appointment.js": {
-    "file": "assets/appointment-C9jTVOi6.js",
+    "file": "assets/appointment-Zd5Vh1eC.js",
     "name": "appointment",
     "src": "resources/js/add/appointment.js",
     "isEntry": true,
     "imports": [
       "_axios-CCb-kr4I.js",
-      "_alert-BjNJBOmD.js"
+      "_alert-C7YwuTJn.js"
     ],
     "css": [
-      "assets/alert-BTnCFOkF.css"
+      "assets/alert-2FVlMrq4.css"
     ]
   },
   "resources/js/add/blog/blog.css": {
-    "file": "assets/blog-DSvyQl0C.css",
+    "file": "assets/blog-DAQpBFnf.css",
     "src": "resources/js/add/blog/blog.css",
     "isEntry": true
   },
   "resources/js/add/blog/blog.js": {
-    "file": "assets/blog-DRFuNFAU.js",
+    "file": "assets/blog-Qodx7Lv_.js",
     "name": "blog",
     "src": "resources/js/add/blog/blog.js",
     "isEntry": true,
     "imports": [
-      "_bundle-Cokl53mf.js",
+      "_bundle-DB3n0y8K.js",
       "__commonjsHelpers-Cpj98o6Y.js"
     ],
     "css": [
-      "assets/alert-BTnCFOkF.css"
+      "assets/alert-2FVlMrq4.css"
     ]
   },
   "resources/js/add/hero_home.js": {
-    "file": "assets/hero_home-Czru_N3Q.js",
+    "file": "assets/hero_home-u3c5pY-K.js",
     "name": "hero_home",
     "src": "resources/js/add/hero_home.js",
     "isEntry": true,
@@ -94,20 +94,20 @@
       "__commonjsHelpers-Cpj98o6Y.js"
     ],
     "css": [
-      "assets/hero_home-CnwGir1X.css"
+      "assets/hero_home-DXIWpZ1q.css"
     ]
   },
   "resources/js/add/payment.js": {
-    "file": "assets/payment-Cni9JU-P.js",
+    "file": "assets/payment-CH3TafDV.js",
     "name": "payment",
     "src": "resources/js/add/payment.js",
     "isEntry": true,
     "imports": [
       "_axios-CCb-kr4I.js",
-      "_alert-BjNJBOmD.js"
+      "_alert-C7YwuTJn.js"
     ],
     "css": [
-      "assets/alert-BTnCFOkF.css"
+      "assets/alert-2FVlMrq4.css"
     ]
   },
   "resources/js/add/previsions/lunar.js": {
@@ -179,7 +179,7 @@
     "src": "resources/js/add/tarot/bg-draw.webp"
   },
   "resources/js/add/tarot/tarot.js": {
-    "file": "assets/tarot-DbfdtHIj.js",
+    "file": "assets/tarot-B2s0vgCK.js",
     "name": "tarot",
     "src": "resources/js/add/tarot/tarot.js",
     "isEntry": true,
@@ -188,115 +188,128 @@
       "_axios-CCb-kr4I.js"
     ],
     "css": [
-      "assets/tarot-DACM9XSU.css"
+      "assets/tarot-kDOGeFu5.css"
     ],
     "assets": [
       "assets/bg-draw-AHr4U7ih.webp"
     ]
   },
   "resources/js/add/universe/backups.js": {
-    "file": "assets/backups-DfTN4zRq.js",
+    "file": "assets/backups-yiAlSR1w.js",
     "name": "backups",
     "src": "resources/js/add/universe/backups.js",
     "isEntry": true,
     "imports": [
       "_axios-CCb-kr4I.js",
       "_utils-Cf_47s1-.js",
-      "_alert-BjNJBOmD.js"
+      "_alert-C7YwuTJn.js"
     ],
     "css": [
-      "assets/alert-BTnCFOkF.css"
+      "assets/alert-2FVlMrq4.css"
     ]
   },
   "resources/js/add/universe/blog/blog.css": {
-    "file": "assets/blog-bE0vj7EE.css",
+    "file": "assets/blog-B8l4crF6.css",
     "src": "resources/js/add/universe/blog/blog.css",
     "isEntry": true
   },
   "resources/js/add/universe/blog/blog.js": {
-    "file": "assets/blog-CWMonRrZ.js",
+    "file": "assets/blog-B6JUaZ-Q.js",
     "name": "blog",
     "src": "resources/js/add/universe/blog/blog.js",
     "isEntry": true,
     "imports": [
       "_axios-CCb-kr4I.js",
       "_utils-Cf_47s1-.js",
-      "_alert-BjNJBOmD.js",
-      "_bundle-Cokl53mf.js",
+      "_alert-C7YwuTJn.js",
+      "_bundle-DB3n0y8K.js",
       "__commonjsHelpers-Cpj98o6Y.js"
     ],
     "css": [
-      "assets/alert-BTnCFOkF.css"
+      "assets/alert-2FVlMrq4.css"
     ]
   },
   "resources/js/add/universe/blog/category.js": {
-    "file": "assets/category-CdddOuCs.js",
+    "file": "assets/category-B0rwBI29.js",
     "name": "category",
     "src": "resources/js/add/universe/blog/category.js",
     "isEntry": true,
     "imports": [
       "_axios-CCb-kr4I.js",
-      "_alert-BjNJBOmD.js"
+      "_alert-C7YwuTJn.js"
     ],
     "css": [
-      "assets/alert-BTnCFOkF.css"
+      "assets/alert-2FVlMrq4.css"
     ]
   },
   "resources/js/add/universe/draws.js": {
-    "file": "assets/draws-Cdqev1wE.js",
+    "file": "assets/draws-TH6Xd68G.js",
     "name": "draws",
     "src": "resources/js/add/universe/draws.js",
     "isEntry": true,
     "imports": [
-      "_alert-BjNJBOmD.js"
+      "_alert-C7YwuTJn.js"
     ],
     "css": [
-      "assets/alert-BTnCFOkF.css"
+      "assets/alert-2FVlMrq4.css"
     ]
   },
   "resources/js/add/universe/files.js": {
-    "file": "assets/files-j-BiR14E.js",
+    "file": "assets/files-DGNvQnXm.js",
     "name": "files",
     "src": "resources/js/add/universe/files.js",
     "isEntry": true,
     "imports": [
       "_axios-CCb-kr4I.js",
-      "_alert-BjNJBOmD.js"
+      "_alert-C7YwuTJn.js"
     ],
     "css": [
-      "assets/alert-BTnCFOkF.css"
+      "assets/alert-2FVlMrq4.css"
     ]
   },
   "resources/js/add/universe/numerology/numerology.css": {
-    "file": "assets/tarot-DXQIpJhJ.css",
+    "file": "assets/tarot-BgFiQNkN.css",
     "src": "resources/js/add/universe/tarot/tarot.css",
     "isEntry": true
   },
   "resources/js/add/universe/numerology/numerology.js": {
-    "file": "assets/numerology-Cf9TGInO.js",
+    "file": "assets/numerology-BweUD_t-.js",
     "name": "numerology",
     "src": "resources/js/add/universe/numerology/numerology.js",
     "isEntry": true,
     "css": [
-      "assets/alert-BTnCFOkF.css"
+      "assets/alert-2FVlMrq4.css"
     ]
   },
   "resources/js/add/universe/tarot/tarot.css": {
-    "file": "assets/tarot-DXQIpJhJ.css",
+    "file": "assets/tarot-BgFiQNkN.css",
     "src": "resources/js/add/universe/tarot/tarot.css",
     "isEntry": true
   },
   "resources/js/add/universe/tarot/tarot.js": {
-    "file": "assets/tarot-_cU7DN-8.js",
+    "file": "assets/tarot-CtECrV6B.js",
     "name": "tarot",
     "src": "resources/js/add/universe/tarot/tarot.js",
     "isEntry": true,
     "css": [
-      "assets/alert-BTnCFOkF.css"
+      "assets/alert-2FVlMrq4.css"
+    ]
+  },
+  "resources/js/add/universe/timeslots.js": {
+    "file": "assets/timeslots-2SKWbSGU.js",
+    "name": "timeslots",
+    "src": "resources/js/add/universe/timeslots.js",
+    "isEntry": true,
+    "imports": [
+      "_axios-CCb-kr4I.js",
+      "_alert-C7YwuTJn.js"
+    ],
+    "css": [
+      "assets/alert-2FVlMrq4.css"
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-QBWLS29R.js",
+    "file": "assets/app-BMTnntuM.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,

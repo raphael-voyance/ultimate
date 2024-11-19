@@ -1,6 +1,6 @@
 import "./alert.css";
 
-const createAlert = (textContent, type = 'default', callback) => {
+const createAlert = (textContent, type = 'default', callback, withOutConfirmation = false) => {
     let $container = document.createElement('div');
     let $elementClose = document.createElement('button');
     let $iconClose = document.createElement('i');
@@ -16,8 +16,8 @@ const createAlert = (textContent, type = 'default', callback) => {
     $elementClose.classList = 'alert-box-btn-close';
     $iconClose.classList = 'fal fa-times';
     $footerElement.classList = 'flex flex-row flex-wrap gap-2 justify-center md:justify-end';
-    $btnClose.classList = 'btn btn-sm btn-warning';
-    $btnConfirm.classList = 'btn btn-sm btn-error';
+    $btnClose.classList = 'btn btn-sm btn-error';
+    $btnConfirm.classList = 'btn btn-sm btn-warning';
 
     if (type === 'success') {
         $container.classList.add('bg-green-500/20');
@@ -34,11 +34,18 @@ const createAlert = (textContent, type = 'default', callback) => {
     }
 
     $contentText.innerText = textContent;
-    $btnClose.innerText = 'Annuler';
-    $btnConfirm.innerText = 'Confirmer';
+    if(withOutConfirmation) {
+        $btnConfirm.innerText = 'Ok';
+    }else {
+        $btnClose.innerText = 'Annuler';
+        $btnConfirm.innerText = 'Confirmer';
+    }
+    
 
     $elementClose.append($iconClose);
-    $footerElement.append($btnClose);
+    if(!withOutConfirmation) {
+        $footerElement.append($btnClose);
+    }
     $footerElement.append($btnConfirm);
     $contentElement.append($elementClose);
     $contentElement.append($contentText);

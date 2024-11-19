@@ -4,7 +4,8 @@
         class="outline-none block w-full px-4 py-2 text-left text-sm leading-5 text-white hover:text-white active:text-white focus:text-white hover:opacity-75 active:opacity-75 focus:opacity-75 transition-all"><i
             class="fa-thin fa-calendar"></i> Prendre RDV</a>
 
-    <x-mary-modal wire:model="appointmentModal">
+            
+    <x-ui.dialog wire:model="appointmentModal">
 
         {{-- Loader --}}
         <div class="relative" wire:loading>
@@ -464,7 +465,7 @@
                                     class="block mx-auto w-64 max-w-full btn btn-sm btn-primary btn-outline col-start-1 col-end-2">Créneaux
                                     précédents</button>
                             @endif
-                            @if ($offsetTimeSlot <= $totalOffsetTimeSlot - 1)
+                            @if ($hasMoreTimeSlots)
                                 <button wire:click="nextTimeSlots()"
                                     class="block mx-auto w-64 max-w-full btn btn-sm btn-primary btn-outline col-start-2 col-end-3">Créneaux
                                     suivants</button>
@@ -567,5 +568,5 @@
 
             </div>
         </div>
-    </x-mary-modal>
+    </x-ui.dialog>
 </div>

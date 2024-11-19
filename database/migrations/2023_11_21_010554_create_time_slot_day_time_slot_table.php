@@ -18,8 +18,8 @@ return new class extends Migration
 
             $table->boolean('available')->default(true);
 
-            $table->foreign('time_slot_day_id')->references('id')->on('time_slot_days')->onDelete('cascade');
-            $table->foreign('time_slot_id')->references('id')->on('time_slots')->onDelete('cascade');
+            $table->foreign('time_slot_day_id')->references('id')->on('time_slot_days');
+            $table->foreign('time_slot_id')->references('id')->on('time_slots');
 
         });
     }
