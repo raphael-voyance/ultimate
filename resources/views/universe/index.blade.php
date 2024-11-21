@@ -133,9 +133,9 @@
             </x-slot:actions>
             </x-ui.card>
 
-            <x-ui.card title="Images par défaut">
+            {{-- <x-ui.card title="Images par défaut">
                 @livewire('admin.add-site-imgs-component')
-            </x-ui.card>
+            </x-ui.card> --}}
         </div>
     </div>
 
@@ -195,29 +195,44 @@
                 </x-slot:actions>
             </x-ui.card>
 
-            <x-ui.card title="Derniers paiements">
+            @if($invoices->count() >= 1)
+            <x-ui.card title="Facturations">
                 <ul>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="Payé" class="badge-success"/>
-                    </li>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="En attente" class="badge-warning"/>
-                    </li>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="Remboursé" class="badge-secondary"/>
-                    </li>
-                    <li class="flex flex-row justify-between">
-                        <a href="#">Paiement 1</a>
-                        <x-mary-badge value="Gratuit" class="badge-primary"/>
-                    </li>
+                    @foreach ($invoices as $invoice)
+                    <li class="flex flex-row justify-between gap-2">
+                        <a href="{{ route('admin.invoices.show', $invoice->id) }}">{{ Str::limit($invoice->ref, 13) }}</a>
+                        @php
+                            $status = '';
+                            if($invoice->status == 'PENDING') {
+                                $status = 'En attente';
+                            }elseif ($invoice->status == 'PAID') {
+                                $status = 'Payé';
+                            }elseif ($invoice->status == 'REFUNDED') {
+                                $status = 'Remboursé';
+                            }elseif ($invoice->status == 'CANCELLED') {
+                                $status = 'Annulé';
+                            }elseif ($invoice->status == 'FREE') {
+                                $status = 'Gratuit';
+                            }
+                        @endphp
+                        <x-mary-badge value="{{ $status }}"
+                        @class([
+                            'min-w-[90px]',
+                            'badge-success' => $invoice->status == 'PAID',
+                            'badge-warning' => $invoice->status == 'PENDING',
+                            'badge-secondary' => $invoice->status == 'REFUNDED',
+                            'badge-error' => $invoice->status == 'CANCELLED',
+                            'badge-primary' => $invoice->status == 'FREE']) 
+                            />
+                    </li>    
+                    @endforeach
+                    
                 </ul>
                 <x-slot:actions>
                     <x-ui.link label="Voir tous les paiements" href="{{ route('home') }}" />
                 </x-slot:actions>
             </x-ui.card>
+            @endif
     
         </div>
 

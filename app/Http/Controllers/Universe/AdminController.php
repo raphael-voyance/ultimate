@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Universe;
 
 use App\Models\User;
+use App\Models\Invoice;
 use Illuminate\View\View;
-use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
     public function index(): View {
+
+        // GET USERS
         $users = User::whereDoesntHave('roles', function($query) {
             $query->where('name', 'Admin');
         })->take(5)->orderBy('created_at', 'desc')->get();
@@ -18,15 +21,9 @@ class AdminController extends Controller
         //     $users->load('appointments.timeSlotDay', 'appointments.timeSlot');
         // }
 
+        // GET APPOINTMENTS
         $pastsAppointmentsModel = Appointment::where('invoice_id', '!=', null)
-            ->where('status', 'PASSED')->get();
-        $futursAppointmentsModel = Appointment::where('invoice_id', '!=', null)
-            ->where('status', '!=', 'PASSED')->get();
-
-        // dd($futursAppointmentsModel);
-
-        // $futursAppointmentsModel->load('timeSlotDay', 'timeSlot');
-
+            ->where('status', 'PASSED')->take(5)->get();
         $pastsAppointments = collect();
         foreach ($pastsAppointmentsModel as $appointment) {
             $customer = User::where('id', $appointment->user_id)->firstOrFail();
@@ -46,6 +43,8 @@ class AdminController extends Controller
         }
         $pastsAppointments = $pastsAppointments->sortBy('dateTime');
 
+        $futursAppointmentsModel = Appointment::where('invoice_id', '!=', null)
+            ->where('status', '!=', 'PASSED')->take(5)->get();
         $futursAppointments = collect();
         foreach ($futursAppointmentsModel as $appointment) {
             // dd($appointment->user_id);
@@ -64,13 +63,16 @@ class AdminController extends Controller
                 'user_name' => $customer->fullName(),
             ]);
         }
-        // dd($futursAppointments);
         $futursAppointments = $futursAppointments->sortBy('dateTime');
+
+        // GET INVOICES
+        $invoices = Invoice::take(5)->orderBy('created_at', 'desc')->get();
 
         return view('universe.index', [
             'users' => $users,
             'futursAppointments' => $futursAppointments,
-            'pastsAppointments' => $pastsAppointments
+            'pastsAppointments' => $pastsAppointments,
+            'invoices' => $invoices,
         ]);
     }
     

@@ -132,7 +132,7 @@
                         Annuler la demande
                     </button>
                 
-                    <a href="{{ route('invoice.view', ['payment_invoice_token' => $appointment->invoice->payment_invoice_token]) }}" class="btn btn-primary hover:text-black active::text-black focus:text-black">
+                    <a href="{{ route('admin.invoices.show', $appointment->invoice->id) }}" class="btn btn-primary hover:text-black active::text-black focus:text-black">
                             Accéder à la facture
                     </a>
                 </div>

@@ -10,6 +10,7 @@ use App\Http\Controllers\Universe\FilesController;
 use App\Http\Controllers\Universe\ImageController;
 use App\Http\Controllers\Universe\TarotController;
 use App\Http\Controllers\Universe\BackupsController;
+use App\Http\Controllers\Universe\InvoicesController;
 use App\Http\Controllers\Universe\MessagingController;
 use App\Http\Controllers\Universe\TimeSlotsController;
 use App\Http\Controllers\Universe\NumerologyController;
@@ -108,6 +109,16 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     // APPOINTMENTS ROUTES
     Route::prefix('appointments')->as('appointments.')->group(function() {
         Route::get('/{id}', [AppointmentsController::class, 'show'])->name('show');
+        
+        // Route::get('/create', [UserController::class, 'createUser'])->name('create');
+        // Route::post('/store', [UserController::class, 'storeUser'])->name('store');
+        // Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('update');
+        // Route::delete('/destroy/{id}', [UserController::class, 'destroyUser'])->name('destroy');
+    });
+
+    // INVOICES ROUTES
+    Route::prefix('invoices')->as('invoices.')->group(function() {
+        Route::get('/{id}', [InvoicesController::class, 'show'])->name('show');
         
         // Route::get('/create', [UserController::class, 'createUser'])->name('create');
         // Route::post('/store', [UserController::class, 'storeUser'])->name('store');
