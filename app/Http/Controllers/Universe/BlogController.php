@@ -95,7 +95,7 @@ class BlogController extends Controller
             
             //dd($post->image);
         } else {
-            $post->image = asset('storage/site-images/pending.jpg');
+            $post->image = asset('/site-images/pending.jpg');
         }
 
         $post->save();

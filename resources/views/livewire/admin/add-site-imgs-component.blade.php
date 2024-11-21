@@ -10,7 +10,7 @@
         {{-- Favicon --}}
         <li data-uploader-img class="max-w-[45%]" wire:ignore>
             <div class="max-w-full relative rounded-full overflow-hidden">
-                <img class="w-full h-full" data-img-preview id="favicon-preview" src="{{ asset('storage/site-images/' . config('siteconfig.favicon', 'favicon.ico')) }}" />
+                <img class="w-full h-full" data-img-preview id="favicon-preview" src="{{ asset('site-images/' . config('siteconfig.favicon', 'favicon.ico')) }}" />
 
                 <div class="absolute w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <!-- Champ input file masqué -->
@@ -38,7 +38,7 @@
         {{-- Image à la une --}}
         <li data-uploader-img class="max-w-[45%]" wire:ignore>
             <div class="max-w-full relative rounded-full overflow-hidden">
-                <img class="w-full h-full" data-img-preview id="pending-preview" src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" />
+                <img class="w-full h-full" data-img-preview id="pending-preview" src="{{ asset('site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" />
 
                 <div class="absolute w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <!-- Champ input file masqué -->
@@ -68,7 +68,7 @@
         {{-- Logo --}}
         <li data-uploader-img class="max-w-[45%]" wire:ignore>
             <div class="max-w-full relative rounded-full overflow-hidden">
-                <img class="w-full h-full" data-img-preview id="logo-preview" src="{{ asset('storage/site-images/' . config('siteconfig.logo', 'logo.png')) }}" />
+                <img class="w-full h-full" data-img-preview id="logo-preview" src="{{ asset('site-images/' . config('siteconfig.logo', 'logo.png')) }}" />
 
                 <div class="absolute w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <!-- Champ input file masqué -->

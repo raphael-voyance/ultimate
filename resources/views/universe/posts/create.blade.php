@@ -101,7 +101,7 @@
 
                         <div class="avatar">
                             <div class="w-20 rounded-full">
-                              <img id="thumbnail-preview" src="{{ asset('storage/site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" />
+                              <img id="thumbnail-preview" src="{{ asset('site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" />
                             </div>
                           </div>
 

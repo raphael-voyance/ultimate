@@ -68,11 +68,11 @@ class RegisteredUserController extends Controller
 
     private function createAvatar($sexe): string {
         if($sexe === 'M') {
-            return asset('storage/site-images/profile/man-profile-img.jpg');
+            return asset('/site-images/profile/man-profile-img.jpg');
         }elseif($sexe === 'F') {
-            return asset('storage/site-images/profile/female-profile-img.jpg');
+            return asset('/site-images/profile/female-profile-img.jpg');
         } else {
-            return asset('storage/site-images/profile/non-binary-profile-img.jpg');
+            return asset('/site-images/profile/non-binary-profile-img.jpg');
         }
     }
 }
