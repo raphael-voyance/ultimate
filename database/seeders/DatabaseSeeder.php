@@ -243,7 +243,7 @@ class DatabaseSeeder extends Seeder
                     ],
                     [
                         'position' => 4,
-                        'keywords' => 'Votre fammile / votre foyer',
+                        'keywords' => 'Votre famille / votre foyer',
                         'icone' => 'fa-thin fa-house',
                     ],
                     [

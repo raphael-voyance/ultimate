@@ -18,7 +18,7 @@ return new class extends Migration
             $table->json('numerology')->nullable();
             $table->json('astrology')->nullable();
             $table->json('tarology')->nullable();
-            $table->string('sexe', 255)->nullable();
+            $table->enum('sexe', ['M', 'F', 'NB'])->nullable();
             $table->integer('age')->nullable();
             $table->json('contact')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

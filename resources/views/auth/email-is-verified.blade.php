@@ -7,8 +7,9 @@
             @endif
 
         <div class="mb-4 text-sm text-gray-400">
-            Super ! Votre adresse email est validée. Vous pouvez maintenant découvrir les nouvelles fonctionnalités qui vous sont proposées telles que le calcul de votre arbre numérologique ou encore des tirages de tarot en ligne.
-            Vous pouvez désormais également prendre rendez-vous en ligne avec Raphaël.
+            Super ! Votre adresse email a bien été confirmée. </br>
+            Vous pouvez désormais prendre rendez-vous en ligne.</br>
+            Vous pouvez également découvrir des nouvelles fonctionnalités qui vous sont proposées telles que le calcul de votre chemin de vie numérologique ou encore des tirages de tarot en ligne interprétés directement par Raphaël.
             </div>
 
             <div class="mt-4 flex items-center justify-center">

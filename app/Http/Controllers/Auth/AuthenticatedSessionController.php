@@ -32,6 +32,9 @@ class AuthenticatedSessionController extends Controller
 
         Appointment::updatePassedAppointments();
 
+        if(Auth::user()->hasRole('admin')) {
+            return redirect()->intended(RouteServiceProvider::ADMIN);
+        }
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

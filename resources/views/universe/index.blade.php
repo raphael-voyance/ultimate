@@ -31,7 +31,7 @@
                 </div>
                 <ul>
                     @foreach ($users as $user)
-                        <li><x-ui.link label="{{ $user->fullName() }}" href="{{ route('admin.users.edit', $user->id)}}" /></li>
+                        <li><x-ui.link label="{{ $user->fullName() }}" href="{{ route('admin.users.show', $user->id)}}" /></li>
                     @endforeach
                 </ul>
     
@@ -53,11 +53,11 @@
                 <ul>
                     @foreach ($pastsAppointments as $appointment)
                         @if($appointment['type'] == 'writing')
-                            <li><i class="fa-thin fa-pen-nib mr-2"></i> répondue le <x-ui.link label="{{ $appointment['request_response_date'] }}" href="#" /> par <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.edit', $appointment['user_id']) }}" /></li>
+                            <li><i class="fa-thin fa-pen-nib mr-2"></i> répondue le <x-ui.link label="{{ $appointment['request_response_date'] }}" href="#" /> par <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
                         @elseif($appointment['type'] == 'tchat')
-                            <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="#" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.edit', $appointment['user_id']) }}" /></li>
+                            <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="#" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
                         @elseif($appointment['type'] == 'phone')
-                            <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="#" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.edit', $appointment['user_id']) }}" /> </li>
+                            <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="#" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /> </li>
                         @endif
                     @endforeach
                 </ul>
@@ -73,11 +73,11 @@
                     @foreach ($futursAppointments as $appointment)
                         @if($appointment['type'] == 'writing')
                         {{-- {{dd($appointment)}} --}}
-                            <li><i class="fa-thin fa-pen-nib mr-2"></i> demandée le <x-ui.link label="{{ $appointment['day'] }}" href="#" /> par <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.edit', $appointment['user_id']) }}" /></li>
+                            <li><i class="fa-thin fa-pen-nib mr-2"></i> demandée le <x-ui.link label="{{ $appointment['day'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> par <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
                         @elseif($appointment['type'] == 'tchat')
-                            <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="#" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.edit', $appointment['user_id']) }}" /></li>
+                            <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
                         @elseif($appointment['type'] == 'phone')
-                            <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="#" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.edit', $appointment['user_id']) }}" /></li>
+                            <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
                         @endif
                     @endforeach
                 </ul>

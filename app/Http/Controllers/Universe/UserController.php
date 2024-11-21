@@ -9,10 +9,10 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    public function editUser(Request $request): View {
+    public function show(Request $request): View {
         $user = User::where('id', $request->id)->firstOrFail()->load('profile');
 
-        return view('universe.users.edit', [
+        return view('universe.users.show', [
             'user' => $user
         ]);
     }

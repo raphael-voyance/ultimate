@@ -16,6 +16,27 @@
             <x-ui.form.input-error :messages="$errors->get('last_name')" class="mt-2" />
         </div>
 
+        <!-- Gender -->
+        <div class="mt-4">
+            <label class="pt-0 label label-text font-semibold block">Votre genre :</label>
+            <div class="form-control">
+                <label for="gender-m" class="label cursor-pointer">
+                  <span class="label-text">Homme</span>
+                  <input type="radio" id="gender-m" name="sexe" value="M" class="radio radio-primary checked:hover:bg-primary checked:focus:bg-primary" checked="checked" />
+                </label>
+                <label for="gender-f" class="label cursor-pointer">
+                    <span class="label-text">Femme</span>
+                    <input type="radio" id="gender-f" name="sexe" value="F" class="radio radio-primary checked:hover:bg-primary checked:focus:bg-primary" />
+                  </label>
+                  <label for="gender-nb" class="label cursor-pointer">
+                    <span class="label-text">Non-binaire</span>
+                    <input type="radio" id="gender-nb" name="sexe" value="NB" class="radio radio-primary checked:hover:bg-primary checked:focus:bg-primary" />
+                  </label>
+              </div>
+
+            <x-ui.form.input-error :messages="$errors->get('sexe')" class="mt-2" />
+        </div>
+
         <!-- Email Address -->
         <div class="mt-4">
             <x-ui.form.input id="email" class="block w-full focus:ring-primary-focus" type="email" name="email" :value="old('email')" required autofocus autocomplete="email" label="Votre adresse email de connexion" placeholder="Votre adresse email" icon="o-user" />

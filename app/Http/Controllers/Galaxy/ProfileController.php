@@ -16,11 +16,11 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function show(Request $request): View
     {
         $user = $request->user();
         $user->load('profile');
-        return view('galaxy.profile.edit', [
+        return view('galaxy.profile.show', [
             'user' => $user,
         ]);
     }
@@ -38,7 +38,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('galaxy.profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('my_space.profile.show')->with('status', 'profile-updated');
     }
 
     /**

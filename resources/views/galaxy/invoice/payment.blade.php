@@ -83,11 +83,6 @@
                             {{ $invoice_informations->time_slot_for_human }}</p>
                         @endif
 
-                        @if ($invoice_informations->type == 'writing')
-                            <p>Rappel de votre question :</p>
-                            <p class="p-4">"{{ $invoice_informations->writing_consultation->question }}"</p>
-                        @endif
-
                     @endif
 
                     @if ($physicalsProducts->isNotEmpty())

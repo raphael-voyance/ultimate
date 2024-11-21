@@ -89,7 +89,7 @@
                         <p class="mb-2">{{ \Carbon\Carbon::parse($appointment->updated_at)->add('3days')->translatedFormat('l d F Y') }}</p>
                         @endif
                     <p>Rappel de votre question par email :</p>
-                    <p class="p-4">" {{ $appointment->appointment_message }} "</p>
+                    <p class="p-4">" {!! nl2br(e($appointment->appointment_message)) !!} "</p>
                     @endif
                         
                 </div>

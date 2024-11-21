@@ -23,11 +23,13 @@ class AdminController extends Controller
         $futursAppointmentsModel = Appointment::where('invoice_id', '!=', null)
             ->where('status', '!=', 'PASSED')->get();
 
+        // dd($futursAppointmentsModel);
+
         // $futursAppointmentsModel->load('timeSlotDay', 'timeSlot');
 
         $pastsAppointments = collect();
         foreach ($pastsAppointmentsModel as $appointment) {
-            $customer = User::find($appointment->user_id)->firstOrFail();
+            $customer = User::where('id', $appointment->user_id)->firstOrFail();
 
             // dd($appointment->timeSlotDay);
 
@@ -46,8 +48,11 @@ class AdminController extends Controller
 
         $futursAppointments = collect();
         foreach ($futursAppointmentsModel as $appointment) {
-            $customer = User::find($appointment->user_id)->firstOrFail();
+            // dd($appointment->user_id);
+            $customer = User::where('id', $appointment->user_id)->firstOrFail();
             // dd($appointment->timeSlotDay);
+
+            // dd($customer);
 
             $futursAppointments->push([
                 'id' => $appointment->id,
@@ -59,6 +64,7 @@ class AdminController extends Controller
                 'user_name' => $customer->fullName(),
             ]);
         }
+        // dd($futursAppointments);
         $futursAppointments = $futursAppointments->sortBy('dateTime');
 
         return view('universe.index', [

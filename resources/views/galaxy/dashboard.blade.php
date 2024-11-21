@@ -24,7 +24,7 @@
                 </ul>
 
                 <x-slot:actions>
-                    <x-ui.link label="Modifier mes informations" href="{{ route('my_space.profile.edit') }}" />
+                    <x-ui.link label="Modifier mes informations" href="{{ route('my_space.profile.show') }}" />
                 </x-slot:actions>
 
             </x-ui.card>

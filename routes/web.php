@@ -83,7 +83,7 @@ Route::middleware(['auth', 'verified'])->prefix('mon-espace')->as('my_space.')->
     //Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('index');
     //Profile
-    Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profil', [ProfileController::class, 'show'])->name('profile.show');
     Route::patch('/profil', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 

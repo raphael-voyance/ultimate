@@ -13,6 +13,7 @@ use App\Http\Controllers\Universe\BackupsController;
 use App\Http\Controllers\Universe\MessagingController;
 use App\Http\Controllers\Universe\TimeSlotsController;
 use App\Http\Controllers\Universe\NumerologyController;
+use App\Http\Controllers\Universe\AppointmentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,12 +97,22 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
 
     // USERS ROUTES
     Route::prefix('users')->as('users.')->group(function() {
-        Route::get('/', [UserController::class, 'users'])->name('index');
-        Route::get('/create', [UserController::class, 'createUser'])->name('create');
-        Route::post('/store', [UserController::class, 'storeUser'])->name('store');
-        Route::get('/edit/{id}', [UserController::class, 'editUser'])->name('edit');
-        Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('update');
-        Route::delete('/destroy/{id}', [UserController::class, 'destroyUser'])->name('destroy');
+        Route::get('/show/{id}', [UserController::class, 'show'])->name('show');
+
+        // Route::get('/create', [UserController::class, 'createUser'])->name('create');
+        // Route::post('/store', [UserController::class, 'storeUser'])->name('store');
+        // Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('update');
+        // Route::delete('/destroy/{id}', [UserController::class, 'destroyUser'])->name('destroy');
+    });
+
+    // APPOINTMENTS ROUTES
+    Route::prefix('appointments')->as('appointments.')->group(function() {
+        Route::get('/{id}', [AppointmentsController::class, 'show'])->name('show');
+        
+        // Route::get('/create', [UserController::class, 'createUser'])->name('create');
+        // Route::post('/store', [UserController::class, 'storeUser'])->name('store');
+        // Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('update');
+        // Route::delete('/destroy/{id}', [UserController::class, 'destroyUser'])->name('destroy');
     });
 
     // Backups Routes

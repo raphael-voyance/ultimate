@@ -31,6 +31,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
+            'sexe' => ['required', 'string', 'in:M,F,NB'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
@@ -43,6 +44,7 @@ class RegisteredUserController extends Controller
                                                             ],
         ]);
 
+        // dd($request->all());
 
         $user = User::create([
             'first_name' => $request->first_name,
@@ -53,7 +55,8 @@ class RegisteredUserController extends Controller
 
         $user->roles()->attach(2);
         $user->profile()->create([
-            'avatar' => $this->createAvatar($user)
+            'avatar' => $this->createAvatar($request->sexe),
+            'sexe' => $request->sexe,
         ]);
 
         event(new Registered($user));
@@ -63,7 +66,13 @@ class RegisteredUserController extends Controller
         return redirect(RouteServiceProvider::HOME);
     }
 
-    private function createAvatar($user) {
-        return "https://via.placeholder.com/480x480.png/00bb99";
+    private function createAvatar($sexe): string {
+        if($sexe === 'M') {
+            return asset('storage/site-images/profile/man-profile-img.jpg');
+        }elseif($sexe === 'F') {
+            return asset('storage/site-images/profile/female-profile-img.jpg');
+        } else {
+            return asset('storage/site-images/profile/non-binary-profile-img.jpg');
+        }
     }
 }
