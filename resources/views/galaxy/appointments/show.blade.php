@@ -159,7 +159,7 @@
             @endif
 
             @if($appointment->status == 'PENDING' || $appointment->status == 'APPROVED' || $appointment->status == 'CONFIRMED')
-                <button type="button" id="cancel_request" class="btn btn-error">
+                <button type="button" id="cancel_request" class="btn btn-error mt-4">
                     Annuler ma demande
                 </button>
             @endif
