@@ -1,7 +1,7 @@
 <x-app-layout>
 
     @section('js')
-        @vite(['resources/js/add/payment.js'])
+        @vite(['resources/js/add/universe/invoice.js'])
     @endsection
 
     <x-slot name="header">
@@ -145,16 +145,17 @@
             {{-- Fin 2ème colonne --}}
         </div>
 
+        @if($invoice->status != 'CANCELLED')
         <footer class="text-center text-xl mt-6">
             <h2 class="mb-6">Actions sur la demande :</h2>
             
-            <form method="POST"
-                action="{{ route('payment.store', ['payment_invoice_token' => $invoice->payment_invoice_token]) }}">
+            <form method="POST" action="#">
                 @csrf
-                <input type="hidden" id="payment_delete_route" value="{{ route('payment.delete', ['payment_invoice_token' => $invoice->payment_invoice_token ]) }}" />
+                <input type="hidden" id="payment_delete_route" value="{{ route('admin.invoices.delete', ['payment_invoice_token' => $invoice->payment_invoice_token ]) }}" />
                 <div class="flex flex-row flex-wrap gap-4 justify-center">
                     
-                    @if ($invoice->status == 'PENDING' || $invoice->status == 'FREE' || $invoice->status == 'PAID')
+                    @if (($invoice->status == 'PENDING' || $invoice->status == 'FREE' || $invoice->status == 'PAID') && ($invoice->appointment->status != 'REPLY' && $invoice->appointment->status != 'PASSED'))
+                    
                     @livewire('admin.modal-edit-appointment', ['appointment' => $invoice->appointment, 'name' => $user->fullName()])
                     <button type="button" id="cancel_request" class="btn btn-error">
                         Annuler la demande
@@ -168,13 +169,19 @@
                     @endif
     
                     @if ($invoice->status == 'PAID')
-                        <button class="btn btn-primary" type="submit">
+                    <input type="hidden" id="payment_refund_route" value="{{ route('admin.invoices.refund', $invoice->id) }}" />
+                        <button class="btn btn-primary" id="refund_request" type="button">
                             Rembourser la facture
                         </button>
                     @endif
 
-                    @if (($invoice->status != 'REFUNDED' || $invoice->status != 'FREE') || ($invoice->status == 'PAID' || $invoice->status == 'PENDING'))
-                        <button class="btn btn-success" type="button">
+                    <a class="btn btn-info hover:text-black focus:text-black active:text-black" href="{{ route('admin.appointments.show', $invoice->appointment->id) }}">
+                        Accéder au RDV
+                    </a>
+
+                    @if (($invoice->status == 'PENDING'))
+                        <input type="hidden" id="passed_invoice_to_free_route" value="{{ route('admin.invoices.free', $invoice->id) }}" />
+                        <button id="passed_invoice_to_free" class="btn btn-success" type="button">
                             Mettre la facture en statut "Gratuit"
                         </button>
                     @endif
@@ -183,6 +190,7 @@
                 
             </form>
         </footer>
+        @endif
     </div>
 
 

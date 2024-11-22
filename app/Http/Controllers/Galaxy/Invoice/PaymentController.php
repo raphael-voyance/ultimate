@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Galaxy\Invoice;
 use App\Models\User;
 use App\Models\Invoice;
 use App\Models\TimeSlot;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
 use App\Concern\Invoice as InvoiceController;
+use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
 
 class PaymentController extends Controller
 {
@@ -35,6 +36,7 @@ class PaymentController extends Controller
 
         $user = Auth::user();
         $userContact = json_decode($user->profile->contact);
+        $authUserName = Str::slug($user->first_name . '-' . $user->last_name);
 
         $appointment = $invoice->appointment;
         $appointmentPassed = $appointment->status == 'PASSED' ? true : false;
@@ -64,7 +66,7 @@ class PaymentController extends Controller
                     $invoice->payment_intent = $checkoutSession->payment_intent;
                     $invoice->save();
 
-                    $appointment->status = 'APPROVED';
+                    $appointment->status = 'CONFIRMED';
                     $appointment->save();
 
                     ConcernNotifications::sendNotification($invoice, 'PAID');
@@ -94,6 +96,7 @@ class PaymentController extends Controller
             'hasPhysicalsProducts' => $hasPhysicalsProducts,
             'user' => $user,
             'userContact' => $userContact,
+            'authUserName' => $authUserName,
             'ic' => $this->IC,
             'checkRequest' => json_encode($this->checkRequest)
         ]);
@@ -128,44 +131,6 @@ class PaymentController extends Controller
         //dd($stripePriceId);
     }
 
-    // public function delete(Request $request) {
-    //     // Invoice
-    //     $invoice_token = $request->payment_invoice_token;
-    //     $invoice = Invoice::where('payment_invoice_token', $invoice_token)->with('appointment')->firstOrFail();
-
-    //     $appointment = $invoice->appointment;
-
-    //     if ($invoice->payment_id) {
-    //         \Stripe\Refund::create([
-    //             'payment_intent' => $invoice->payment_id,
-    //         ]);
-    //         dd($invoice->payment_id);
-    //     }
-
-    //     if($appointment->appointment_type != 'writing' && $appointment) {
-    //         $timeSlot = TimeSlot::where('id', $appointment->time_slot_id)->firstOrFail();
-
-    //         $timeSlot->time_slot_days()->updateExistingPivot($appointment->time_slot_day_id, ['available' => true]);
-    //     }
-
-    //     $appointment->invoice_id = null;
-    //     $appointment->status = 'CANCELLED';
-    //     $appointment->time_slot_day_id = null;
-    //     $appointment->time_slot_id = null;
-    //     $appointment->save();
-    //     // $invoice->products()->detach();
-
-    //     $invoice->status = 'CANCELLED';
-    //     $invoice->save();
-
-    //     toast()
-    //         ->success('Votre demande de consultation a été annulée avec succés.')
-    //         ->pushOnNextPage();
-
-    //     $redirectRoute = route('my_space.index');
-    //     return response()->json(['status' => 'success', 'redirectRoute' => $redirectRoute]);
-    // }
-
     public function delete(Request $request) {
         $invoice_token = $request->payment_invoice_token;
         $invoice = Invoice::where('payment_invoice_token', $invoice_token)->with('appointment')->firstOrFail();
@@ -181,7 +146,7 @@ class PaymentController extends Controller
                 ]);
                 ConcernNotifications::sendNotification($invoice, 'REFUNDED');
                 // Ajout d'un message de confirmation pour le remboursement
-                toast()->success('Le remboursement de votre consultation a été effectué avec succès.')->pushOnNextPage();
+                toast()->success('Le remboursement de la consultation a été effectué avec succès.')->pushOnNextPage();
             } catch (\Exception $e) {
                 // Gestion d'erreur en cas de problème avec Stripe
                 report($e);
@@ -296,36 +261,4 @@ class PaymentController extends Controller
         }
     }
 
-    private function addContactInformationToUser($user) {
-        if($user->profile->contact == null) {
-            $datas = [
-                'phone' => "0616577576",
-                'address' => [
-                    'facturation' => [
-                        'number_of_way' => '1bis',
-                        'type_of_way' => 'rue',
-                        'name_of_way' => 'Benjamin Franklin',
-                        'postal_code' => '66000',
-                        'city' => 'Perpignan',
-                        'country' => 'France',
-                    ],
-                    'delivery' => [
-                        'number_of_way' => '1bis',
-                        'type_of_way' => 'rue',
-                        'name_of_way' => 'Benjamin Franklin',
-                        'postal_code' => '66000',
-                        'city' => 'Perpignan',
-                        'country' => 'France',
-                    ]
-                ]
-            ];
-
-            return $user->profile->update([
-                'contact' => json_encode($datas)
-            ]);
-        }
-
-        return;
-        
-    }
 }

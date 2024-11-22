@@ -162,7 +162,7 @@
                 <input type="hidden" id="payment_delete_route" value="{{ route('payment.delete', ['payment_invoice_token' => $invoice->payment_invoice_token ]) }}" />
                 <div class="flex flex-row flex-wrap gap-4 justify-center">
                     
-                    @if ($invoice->status == 'PENDING' || $invoice->status == 'FREE' || $invoice->status == 'PAID')
+                    @if (($invoice->status == 'PENDING' || $invoice->status == 'FREE' || $invoice->status == 'PAID') && ($invoice->appointment->status != 'REPLY' && $invoice->appointment->status != 'PASSED'))
                     @livewire('modal-edit-appointment', ['appointment' => $invoice->appointment])
                     <button type="button" id="cancel_request" class="btn btn-error">
                         Annuler ma demande
@@ -182,6 +182,10 @@
                         </button>
                     </template>
                     @endif
+
+                    <a href="{{ route('my_space.appointment.show', ['appointment_id' => $invoice->appointment->id, 'user_name' => $authUserName]) }}" class="btn btn-info hover:text-black active::text-black focus:text-black">
+                        Accéder au RDV
+                    </a>
 
                 </div>
                 

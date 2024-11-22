@@ -83,7 +83,7 @@
             </div>
             <x-slot:actions>
                 <button class="btn btn-secondary btn-sm h-12 mr-auto md:h-8 mt-4" @click.prevent="$wire.ModalEditAppointment = false">Annuler</button>
-                @if (!isset($f))
+                @if (!empty($writingQuestion))
                     <x-ui.primary-button class="btn-sm h-12 md:h-8 mt-4" wire:click.prevent="updateAppointment()">Enregistrer votre question</x-ui.primary-button>
                 @endif
             </x-slot:actions>

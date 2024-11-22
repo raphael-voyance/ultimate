@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
+use App\Models\User;
 
 class ModalEditAppointment extends Component
 {
@@ -24,6 +25,7 @@ class ModalEditAppointment extends Component
     public $appointmentType;
     public $appointmentTypeHasChanged = false;
     public $writingQuestion = null;
+    public $replyWritingQuestion = null;
 
     public bool $timeSlotIsSelected = false;
     public int|null $timeSlotDayId = null;
@@ -49,7 +51,7 @@ class ModalEditAppointment extends Component
             $this->writingQuestion = $appointment->appointment_message;
         }
 
-        // Initialize SlotDays - JEN SUIS ICI -
+        // Initialize SlotDays
         $totalSlotDays = TimeSlotDay::all()->count();
         $this->totalOffsetTimeSlot = ceil($totalSlotDays / 5);
         $this->loadTimeSlotDays();
@@ -145,25 +147,28 @@ class ModalEditAppointment extends Component
     }
 
     //Update Appointment
-    public function updateAppointment(): void {
-
-
+    public function updateAppointment() {
         $appointment = $this->appointment;
         $invoice = $appointment->invoice()->firstOrFail();
+        $user = User::where('id', $invoice->user_id) ->firstOrFail();
 
-        //dd($invoice->products);
+        $hasReply = false;
 
         if($appointment->appointment_type == 'writing') {
-            //Mettre à jour la question
-            $appointment->appointment_message = $this->writingQuestion;
+            //Envoyer la réponse à la question
+            $appointment->request_reply = $this->replyWritingQuestion;
+            $appointment->status = 'REPLY';
+            $appointment->request_response_date = Carbon::now();
             $appointment->save();
 
             //Mettre à jour la invoice
             $invoiceInformations = json_decode($invoice->invoice_informations);
-            $invoiceInformations->writing_consultation->question = $this->writingQuestion;
+            $invoiceInformations->writing_consultation->reply = $this->replyWritingQuestion;
 
             $invoice->invoice_informations = json_encode($invoiceInformations);
             $invoice->save();
+
+            $hasReply = true;
 
         }else {
             if(!$this->timeSlotIsSelected) {
@@ -212,27 +217,24 @@ class ModalEditAppointment extends Component
             }
         }
 
-        
-
         if($appointment && $invoice) {
-            toast()
-            ->success('Votre consultation a été mise à jour avec succès.')
-            ->pushOnNextPage();
+            if($hasReply) {
+                toast()
+                ->success('Votre réponse a été envoyée avec succès.')
+                ->pushOnNextPage();
 
-            ConcernNotifications::sendNotification($invoice, 'UPDATED');
-            
-            if($invoice->status == 'PENDING') {
-                $this->redirectRoute('payment.create', [
-                    'payment_invoice_token' => $invoice->payment_invoice_token
-                ]);
-            }else {
-                $user = Auth::user();
-                $authUserName = Str::slug($user->first_name . '-' . $user->last_name);
-                $this->redirectRoute('my_space.appointment.show', [
-                    'appointment_id' => $appointment->id,
-                    'user_name' => $authUserName
-                ]);
+                ConcernNotifications::sendNotificationFromAdmin($invoice, 'REPLY', $user, $hasReply);
+
+                return $this->dispatch('refreshPage');
             }
+
+            toast()
+                ->success('La consultation a été mise à jour avec succès.')
+                ->pushOnNextPage();
+
+            ConcernNotifications::sendNotificationFromAdmin($invoice, 'UPDATED', $user);
+            
+            return $this->dispatch('refreshPage');
             
         }
 

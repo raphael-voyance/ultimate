@@ -58,7 +58,11 @@
                                 </p>
                             @break
 
-                            @case('APPROVED')
+                            @case('REPLY')
+                                <p>Répondue le : {{ \Carbon\Carbon::parse($appointment->request_response_date)->translatedFormat('l d F Y') }}</p>
+                            @break
+
+                            @case('CONFIRMED')
                                 <p>Validée
                                     @if($appointment->appointment_type != 'writing')
                                     <span class="text-slate-300 text-xs italic">(En attente de confirmation par Raphaël)</span>
@@ -68,7 +72,7 @@
                                 </p>
                             @break
 
-                            @case('CONFIRMED')
+                            @case('APPROVED')
                                 <p>Confirmée</p>
                             @break
 
@@ -80,18 +84,21 @@
                     </div>
                         
                     @if($appointment->appointment_type != 'writing')
-                    <p>Votre rendez-vous aura lieu le :</p>
-                    <p> {{ $appointment_informations->time_slot_day_for_human }} à
-                     {{ $appointment_informations->time_slot_for_human }} </p>
+                        <p>Votre rendez-vous aura lieu le :</p>
+                        <p> {{ $appointment_informations->time_slot_day_for_human }} à
+                        {{ $appointment_informations->time_slot_for_human }} </p>
                     @else
-                        @if($appointment->invoice->status == 'PAID' || $appointment->invoice->status == 'FREE')
-                        <p>Date de réponse estimée :</p>
-                        <p class="mb-2">{{ \Carbon\Carbon::parse($appointment->updated_at)->add('3days')->translatedFormat('l d F Y') }}</p>
+                        @if(($appointment->invoice->status == 'PAID' || $appointment->invoice->status == 'FREE') && $appointment->status != 'REPLY')
+                            <p>Date de réponse estimée :</p>
+                            <p class="mb-2">{{ \Carbon\Carbon::parse($appointment->updated_at)->add('3days')->translatedFormat('l d F Y') }}</p>
                         @endif
-                    <p>Rappel de votre question par email :</p>
-                    <p class="p-4">" {!! nl2br(e($appointment->appointment_message)) !!} "</p>
+                        <p>Rappel de votre question par email :</p>
+                        <p class="p-4">" {!! nl2br(e($appointment->appointment_message)) !!} "</p>
+                        @if(isset($appointment->request_reply))
+                            <p>Réponse de Raphaël :</p>
+                            <p class="p-4">" {!! nl2br(e($appointment->request_reply)) !!} "</p>
+                        @endif
                     @endif
-                        
                 </div>
             </div>
             {{-- Fin 1ère colonne --}}
@@ -126,31 +133,35 @@
         <footer class="text-center text-xl mt-6">
             <h2 class="mb-6">Actions sur votre demande :</h2>
 
-            @if($appointment->status == 'CANCELLED' || $appointment->status == 'PASSED')
+            @if($appointment->status == 'REFUNDED' || $appointment->status == 'PASSED')
 
                 <a href="{{ route('invoice.view', ['payment_invoice_token' => $appointment->invoice->payment_invoice_token]) }}" class="btn btn-primary hover:text-black active::text-black focus:text-black">
                     Accéder à ma facture
                 </a>
 
-            @elseif ($appointment->status == 'PENDING' || $appointment->status == 'APPROVED' || $appointment->status == 'CONFIRMED')
+            @elseif ($appointment->status == 'PENDING' || $appointment->status == 'APPROVED' || $appointment->status == 'CONFIRMED' || $appointment->status == 'REPLY')
 
                 <form method="POST" action="#">
                     @csrf
-                    <input type="hidden" id="appoitment_delete_route" value="{{ route('my_space.appointment.delete', ['payment_invoice_token' => $appointment->invoice->payment_invoice_token])}}" />
+                    <input type="hidden" id="appointment_delete_route" value="{{ route('my_space.appointment.delete', ['payment_invoice_token' => $appointment->invoice->payment_invoice_token])}}" />
                     <div class="flex flex-row flex-wrap gap-4 justify-center">
-
-                        @livewire('modal-edit-appointment', ['appointment' => $appointment])
-
-                        <button type="button" id="cancel_request" class="btn btn-error">
-                            Annuler ma demande
-                        </button>
-                    
-                        <a href="{{ route('invoice.view', ['payment_invoice_token' => $appointment->invoice->payment_invoice_token]) }}" class="btn btn-primary hover:text-black active::text-black focus:text-black">
+ 
+                        @if(($appointment->appointment_type != 'writing' || $appointment->status != 'REPLY') && $appointment->status != 'PASSED')
+                            @livewire('modal-edit-appointment', ['appointment' => $appointment])
+                        @endif
+                        
+                        <a href="{{ route('invoice.view', ['payment_invoice_token' => $appointment->invoice->payment_invoice_token]) }}" class="btn btn-info hover:text-black active::text-black focus:text-black">
                                 Accéder à ma facture
                         </a>
                     </div>
                 </form>
 
+            @endif
+
+            @if($appointment->status == 'PENDING' || $appointment->status == 'APPROVED' || $appointment->status == 'CONFIRMED')
+                <button type="button" id="cancel_request" class="btn btn-error">
+                    Annuler ma demande
+                </button>
             @endif
 
         </footer>

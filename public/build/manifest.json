@@ -3,9 +3,9 @@
     "file": "assets/_commonjsHelpers-Cpj98o6Y.js",
     "name": "_commonjsHelpers"
   },
-  "_alert-!~{00v}~.js": {
+  "_alert-!~{00x}~.js": {
     "file": "assets/alert-2FVlMrq4.css",
-    "src": "_alert-!~{00v}~.js"
+    "src": "_alert-!~{00x}~.js"
   },
   "_alert-C7YwuTJn.js": {
     "file": "assets/alert-C7YwuTJn.js",
@@ -54,7 +54,7 @@
     "isEntry": true
   },
   "resources/js/add/appointment.js": {
-    "file": "assets/appointment-Zd5Vh1eC.js",
+    "file": "assets/appointment-DTT65J5V.js",
     "name": "appointment",
     "src": "resources/js/add/appointment.js",
     "isEntry": true,
@@ -194,6 +194,19 @@
       "assets/bg-draw-AHr4U7ih.webp"
     ]
   },
+  "resources/js/add/universe/appointment.js": {
+    "file": "assets/appointment-Dg5iQDFT.js",
+    "name": "appointment",
+    "src": "resources/js/add/universe/appointment.js",
+    "isEntry": true,
+    "imports": [
+      "_axios-CCb-kr4I.js",
+      "_alert-C7YwuTJn.js"
+    ],
+    "css": [
+      "assets/alert-2FVlMrq4.css"
+    ]
+  },
   "resources/js/add/universe/backups.js": {
     "file": "assets/backups-yiAlSR1w.js",
     "name": "backups",
@@ -258,6 +271,19 @@
     "file": "assets/files-DGNvQnXm.js",
     "name": "files",
     "src": "resources/js/add/universe/files.js",
+    "isEntry": true,
+    "imports": [
+      "_axios-CCb-kr4I.js",
+      "_alert-C7YwuTJn.js"
+    ],
+    "css": [
+      "assets/alert-2FVlMrq4.css"
+    ]
+  },
+  "resources/js/add/universe/invoice.js": {
+    "file": "assets/invoice-BjGgcaGn.js",
+    "name": "invoice",
+    "src": "resources/js/add/universe/invoice.js",
     "isEntry": true,
     "imports": [
       "_axios-CCb-kr4I.js",

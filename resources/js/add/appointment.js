@@ -3,7 +3,7 @@ import { createAlert } from "../Alert/alert.js";
 
 window.addEventListener('load', () => {
     const cancelBtn = document.getElementById("cancel_request");
-    const cancelRoute = document.getElementById("appoitment_delete_route").value;
+    const cancelRoute = document.getElementById("appointment_delete_route").value;
 
     const editBtn = document.getElementById("edit_request");
 

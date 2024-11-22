@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
@@ -106,6 +107,57 @@ class Appointment extends Model
                         $invoice->status = 'CANCELLED';
                         $invoice->save();
                         ConcernNotifications::sendNotification($invoice, 'CANCELLED');
+                    }
+                }
+
+            }
+        }
+    }
+
+    public static function updatePassedAppointmentsForUser()
+    {
+        // Get current date and time
+        $now = Carbon::now();
+
+        // Retrieve appointments with statuses other than CANCELLED or PASSED
+        $appointments = self::whereNotIn('status', ['CANCELLED', 'PASSED'])
+            ->where('user_id', Auth::id())
+            ->with(['timeSlotDay', 'timeSlot', 'invoice'])
+            ->get();
+
+        foreach ($appointments as $appointment) {
+            $invoice = $appointment->invoice;
+            // dd($invoice);
+            // Check if the appointment type is 'writing'
+            if ($appointment->appointment_type === 'writing') {
+                $updatedAtThreshold = Carbon::parse($appointment->updated_at)->addDays(3);
+
+                // dump('w', $updatedAtThreshold);
+
+                // Check if the updated_at date is more than 3 days ago
+                if ($updatedAtThreshold->lessThan($now)) {
+                    $appointment->update(['status' => 'PASSED']);
+                    if ($invoice->status == 'PENDING') {
+                        $invoice->status = 'CANCELLED';
+                        $invoice->save();
+                        ConcernNotifications::sendNotification($invoice, 'PASSED');
+                    }
+                }
+
+            } elseif ($appointment->timeSlotDay && $appointment->timeSlot) {
+                // Combine the date from timeSlotDay and time from timeSlot
+                $appointmentDateTime = Carbon::parse($appointment->timeSlotDay->day)
+                    ->setTimeFromTimeString($appointment->timeSlot->end_time); // Assuming end_time is the cutoff time
+
+                    // dd('tp', $appointmentDateTime);
+
+                // Check if the appointment is in the past
+                if ($appointmentDateTime->lessThan($now)) {
+                    $appointment->update(['status' => 'PASSED']);
+                    if ($invoice->status == 'PENDING') {
+                        $invoice->status = 'CANCELLED';
+                        $invoice->save();
+                        ConcernNotifications::sendNotification($invoice, 'PASSED');
                     }
                 }
 

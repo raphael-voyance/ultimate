@@ -109,7 +109,8 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     // APPOINTMENTS ROUTES
     Route::prefix('appointments')->as('appointments.')->group(function() {
         Route::get('/{id}', [AppointmentsController::class, 'show'])->name('show');
-        
+        Route::delete('/delete/{payment_invoice_token}', [AppointmentsController::class, 'delete'])->name('delete');
+        Route::get('/approved/{id}', [AppointmentsController::class, 'approved'])->name('approved');
         // Route::get('/create', [UserController::class, 'createUser'])->name('create');
         // Route::post('/store', [UserController::class, 'storeUser'])->name('store');
         // Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('update');
@@ -119,7 +120,9 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
     // INVOICES ROUTES
     Route::prefix('invoices')->as('invoices.')->group(function() {
         Route::get('/{id}', [InvoicesController::class, 'show'])->name('show');
-        
+        Route::delete('/delete/{payment_invoice_token}', [InvoicesController::class, 'delete'])->name('delete');
+        Route::get('/refund/{id}', [InvoicesController::class, 'refundInvoice'])->name('refund');
+        Route::get('/free/{id}', [InvoicesController::class, 'freeInvoice'])->name('free');
         // Route::get('/create', [UserController::class, 'createUser'])->name('create');
         // Route::post('/store', [UserController::class, 'storeUser'])->name('store');
         // Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('update');

@@ -1,7 +1,7 @@
 <x-app-layout>
 
     @section('js')
-        @vite(['resources/js/add/appointment.js'])
+        @vite(['resources/js/add/universe/appointment.js'])
     @endsection
 
     <x-slot name="header">
@@ -53,6 +53,10 @@
                             @case('CANCELLED')
                                 <p>Annulée</p>
                             @break
+
+                            @case('REPLY')
+                                <p>Répondue le : {{ \Carbon\Carbon::parse($appointment->request_response_date)->translatedFormat('l d F Y') }}</p>
+                            @break
                         
                             @case('PENDING')
                                 <p>En attente
@@ -60,7 +64,7 @@
                                 </p>
                             @break
 
-                            @case('APPROVED')
+                            @case('CONFIRMED')
                                 <p>Validée
                                     @if($appointment->appointment_type != 'writing')
                                     <span class="text-slate-300 text-xs italic">(En attente de confirmation)</span>
@@ -70,7 +74,7 @@
                                 </p>
                             @break
 
-                            @case('CONFIRMED')
+                            @case('APPROVED')
                                 <p>Confirmée</p>
                             @break
 
@@ -86,12 +90,16 @@
                     <p> {{ $appointment_informations->time_slot_day_for_human }} à
                      {{ $appointment_informations->time_slot_for_human }} </p>
                     @else
-                        @if($appointment->invoice->status == 'PAID' || $appointment->invoice->status == 'FREE')
+                        @if(($appointment->invoice->status == 'PAID' || $appointment->invoice->status == 'FREE') && $appointment->status != 'REPLY')
                         <p>Réponse attendue le :</p>
                         <p class="mb-2">{{ \Carbon\Carbon::parse($appointment->updated_at)->add('3days')->translatedFormat('l d F Y') }}</p>
                         @endif
                     <p>Question :</p>
                     <p class="p-4">" {!! nl2br(e($appointment->appointment_message)) !!} "</p>
+                        @if(isset($appointment->request_reply))
+                                <p>Réponse :</p>
+                                <p class="p-4">" {!! nl2br(e($appointment->request_reply)) !!} "</p>
+                        @endif
                     @endif
                         
                 </div>
@@ -121,22 +129,33 @@
         <footer class="text-center text-xl mt-6">
             <h2 class="mb-6">Actions sur la demande :</h2>
 
+            @if($appointment->invoice->status != 'CANCELLED')
             <form method="POST" action="#">
                 @csrf
-                <input type="hidden" id="appoitment_delete_route" value="{{ route('my_space.appointment.delete', ['payment_invoice_token' => $appointment->invoice->payment_invoice_token])}}" />
+                <input type="hidden" id="appointment_delete_route" value="{{ route('admin.appointments.delete', ['payment_invoice_token' => $appointment->invoice->payment_invoice_token])}}" />
                 <div class="flex flex-row flex-wrap gap-4 justify-center">
 
-                    @livewire('admin.modal-edit-appointment', ['appointment' => $appointment, 'name' => $user->fullName()])
-
+                    @if(($appointment->appointment_type != 'writing' || $appointment->status != 'REPLY') && $appointment->status != 'PASSED')
+                        @livewire('admin.modal-edit-appointment', ['appointment' => $appointment, 'name' => $user->fullName()])
+                    
                     <button type="button" id="cancel_request" class="btn btn-error">
                         Annuler la demande
                     </button>
+                    @endif
+                    
+                    @if ($appointment->invoice->status == 'PAID' && $appointment->appointment_type != 'writing')
+                        <input type="hidden" id="approved_route" value="{{ route('admin.appointments.approved', $appointment->id) }}" />
+                        <button type="button" id="confirm_request" class="btn btn-success">
+                            Confirmer le rendez-vous
+                        </button>
+                    @endif
                 
-                    <a href="{{ route('admin.invoices.show', $appointment->invoice->id) }}" class="btn btn-primary hover:text-black active::text-black focus:text-black">
+                    <a href="{{ route('admin.invoices.show', $appointment->invoice->id) }}" class="btn btn-info hover:text-black active:text-black focus:text-black">
                             Accéder à la facture
                     </a>
                 </div>
             </form>
+            @endif
 
         </footer>
     </div>

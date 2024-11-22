@@ -13,14 +13,14 @@
             {{-- Fin Loader --}}
 
             <div class="mb-4">
-                <p class="mb-2">Pour modifier le mode de consultation de votre séance, sélectionnez-le ci-après :</p>
+                <p class="mb-2">Pour modifier le mode de consultation de la séance, sélectionnez-le ci-après :</p>
                 <select wire:model.lazy="appointmentType" class="input input-bordered block w-full" id="appointmentType">
                     <option value="tchat" @if($appointmentType == 'tchat') selected @endif>Par tchat</option>
                     <option value="phone" @if($appointmentType == 'phone') selected @endif>Par téléphone</option>
                 </select>
             </div>
             <div>
-                <p class="mb-2">Pour modifier le moment de votre rendez-vous, sélectionnez un jour et une heure ci-après :</p>
+                <p class="mb-2">Pour modifier le moment du rendez-vous, sélectionnez un jour et une heure ci-après :</p>
                 <div>
                     @foreach ($timeSlotDays as $timeSlotDay)
                         <div class="group day bg-base-300 mb-4 py-4 px-6 hover:shadow-lg hover:ring-2 hover:ring-neutral-900/25 transition-all">
@@ -77,11 +77,11 @@
 
             <div>
                 <p class="mb-2 p-2 text-sm">{!! nl2br(e($appointment->appointment_message)) !!}</p>
-                <textarea wire:model.lazy="replyWritingQuestion" placeholder="Réponse..." class="textarea resize-none textarea-bordered block w-full" id="replyWritingQuestion" rows="5"></textarea>
+                <textarea wire:model.live.debounce.1000ms="replyWritingQuestion" placeholder="Réponse..." class="textarea resize-none textarea-bordered block w-full" id="replyWritingQuestion" rows="5"></textarea>
             </div>
             <x-slot:actions>
                 <button class="btn btn-secondary btn-sm h-12 mr-auto md:h-8 mt-4" @click.prevent="$wire.ModalEditAppointment = false">Annuler</button>
-                @if (!isset($f))
+                @if (!empty($replyWritingQuestion))
                     <x-ui.primary-button class="btn-sm h-12 md:h-8 mt-4" wire:click.prevent="updateAppointment()">Envoyer la réponse</x-ui.primary-button>
                 @endif
             </x-slot:actions>

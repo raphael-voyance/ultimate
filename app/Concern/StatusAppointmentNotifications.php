@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use App\Notifications\AppointmentNotification;
+use App\Notifications\AppointmentNotificationAdmin;
 
 class StatusAppointmentNotifications
 {
@@ -29,6 +30,9 @@ class StatusAppointmentNotifications
                 case 'CANCELLED':
                     $message = 'Votre demande de consultation par email a été annulée avec succès.';
                     break;
+                case 'PASSED':
+                    $message = 'Votre consultation est passée.';
+                    break;
                 case 'UPDATED':
                     $message = 'Votre demande de consultation par email a été modifiée avec succès.';
                     break;
@@ -36,7 +40,7 @@ class StatusAppointmentNotifications
                     $message = 'Le paiement de votre consultation par email s\'est déroulé avec succès.';
                     break;
                 case 'REFUNDED':
-                    $message = 'Le remboursement de votre consultation par tchat a été envoyé avec succès.';
+                    $message = 'Le remboursement de votre consultation par email a été envoyé avec succès.';
                     break;
                 default:
                     $message = 'Votre rendez-vous a été mis à jour.';
@@ -49,6 +53,9 @@ class StatusAppointmentNotifications
                     break;
                 case 'CANCELLED':
                     $message = 'Votre demande de rendez-vous par téléphone a été annulée avec succès.';
+                    break;
+                case 'PASSED':
+                    $message = 'Votre consultation est passée.';
                     break;
                 case 'UPDATED':	
                     $message = 'Votre demande de rendez-vous par téléphone a été modifiée avec succès.';
@@ -70,6 +77,9 @@ class StatusAppointmentNotifications
                     break;
                 case 'CANCELLED':
                     $message = 'Votre demande de rendez-vous par tchat a été annulée avec succès.';
+                    break;
+                case 'PASSED':
+                    $message = 'Votre consultation est passée.';
                     break;
                 case 'UPDATED':
                     $message = 'Votre demande de rendez-vous par tchat a été modifiée avec succès.';
@@ -100,6 +110,8 @@ class StatusAppointmentNotifications
                 break;
             case 'CONFIRMED':
             case 'FREE':
+            case 'APPROVED':
+            case 'PASSED':
                 $userLastName = Auth::user()->last_name;
                 $userFirstName = Auth::user()->first_name;
                 $userName = Str::slug($userFirstName . '-' . $userLastName);
@@ -110,5 +122,91 @@ class StatusAppointmentNotifications
                 return redirect()->route('invoice.view', ['payment_invoice_token' => $invoice_token]);
                 break;
         }
+    }
+
+    public static function sendNotificationFromAdmin($invoice, $status, $user, $reply = null)
+    {
+        $UserAdmin = new UserAdmin();
+        $admin = $UserAdmin->getUserAdmin();
+
+        $invoiceInformations = json_decode($invoice->invoice_informations, true);
+        $message = '';
+
+        if($invoiceInformations['type'] == "writing") {
+            switch ($status) {
+                case 'CANCELLED':
+                    $message = 'Votre demande de consultation par email a été annulée par Raphaël.';
+                    break;
+                case 'UPDATED':
+                    $message = 'Votre demande de consultation par email a été modifiée par Raphaël.';
+                    break;
+                case 'PAID':
+                    $message = 'Le paiement de votre consultation par téléphone a bien été enregistré.';
+                    break;
+                case 'REFUNDED':
+                    $message = 'Raphaël a initié le remboursement de votre consultation par écrit, il apparaîtra sous quelques jours sur votre moyen de paiement.';
+                    break;
+                case 'FREE':
+                    $message = 'Raphaël a modifié votre consultation par écrit en statut "gratuit".';
+                    break;
+                case 'REPLY':
+                    $message = 'La réponse à votre question vous a été envoyée, elle est dès à présent disponible dans votre espace personnel.';
+                    break;
+                default:
+                    $message = 'Votre rendez-vous a été mis à jour.';
+                    break;
+            }
+        } else if($invoiceInformations['type'] == "phone") {
+            switch ($status) {
+                case 'APPROVED':
+                    $message = 'Votre demande de rendez-vous par téléphone a été approuvée par Raphaël.';
+                    break;
+                case 'CANCELLED':
+                    $message = 'Votre demande de rendez-vous par téléphone a été annulée par Raphaël.';
+                    break;
+                case 'UPDATED':	
+                    $message = 'Votre demande de rendez-vous par téléphone a été modifiée par Raphaël.';
+                    break;
+                case 'PAID':
+                    $message = 'Le paiement de votre consultation par téléphone a bien été enregistré.';
+                    break;
+                case 'REFUNDED':
+                    $message = 'Raphaël a initié le remboursement de votre consultation par téléphone, il apparaîtra sous quelques jours sur votre moyen de paiement.';
+                    break;
+                case 'FREE':
+                    $message = 'Raphaël a modifié votre consultation par téléphone en statut "gratuit".';
+                    break;
+                default:
+                    $message = 'Votre rendez-vous a été mis à jour.';
+                    break;
+            }
+        } else if($invoiceInformations['type'] == "tchat") {
+            switch ($status) {
+                case 'APPROVED':
+                    $message = 'Votre demande de rendez-vous par tchat a été approuvée par Raphaël.';
+                    break;
+                case 'CANCELLED':
+                    $message = 'Votre demande de rendez-vous par tchat a été annulée par Raphaël.';
+                    break;
+                case 'UPDATED':
+                    $message = 'Votre demande de rendez-vous par tchat a été modifiée par Raphaël.';
+                    break;
+                case 'PAID':
+                    $message = 'Le paiement de votre consultation par tchat a bien été enregistré.';
+                    break;
+                case 'FREE':
+                    $message = 'Raphaël a modifié votre consultation par tchat en statut "gratuit".';
+                    break;
+                case 'REFUNDED':
+                    $message = 'Raphaël a initié le remboursement de votre consultation par tchat, il apparaîtra sous quelques jours sur votre moyen de paiement.';
+                    break;
+                default:
+                    $message = 'Votre rendez-vous a été mis à jour.';
+                    break;
+            }
+        }
+        // $message, $details, $status, $invoice_token
+        return $user->notify(new AppointmentNotificationAdmin($message, $invoiceInformations, $status, $invoice->payment_invoice_token));
+
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AppointmentNotification extends Notification
+class AppointmentNotificationAdmin extends Notification
 {
     use Queueable;
 
@@ -46,33 +46,27 @@ class AppointmentNotification extends Notification
         if($this->details['type'] === 'phone' || $this->details['type'] === 'tchat') {
             if ($this->status === 'CANCELLED') {
                 return (new MailMessage)
-                ->subject('Votre rendez-vous a été annulé')
+                ->subject('Votre rendez-vous a été annulé par Raphaël')
                 ->line($this->message)
                 ->action('Retourner sur le site', url(route('home')))
                 ->line('Merci pour votre confiance !');
             }elseif ($this->status === 'REFUNDED') {
                 return (new MailMessage)
-                ->subject('Un remboursement est en cours pour votre rendez-vous')
+                ->subject('Un remboursement a été initié par Raphaël, il apparaitra sur votre moyen de paiement prochainement.')
                 ->line($this->message)
                 ->action('Retourner sur le site', url(route('home')))
                 ->line('Merci pour votre confiance !');
-            }elseif ($this->status === 'PASSED') {
+            }elseif ($this->status === 'FREE') {
                 return (new MailMessage)
-                ->subject('Votre consultation est passée')
+                ->subject('Votre consultation gratuite a été enregistrée avec succès')
                 ->line($this->message)
-                ->action('Retourner sur le site', url(route('home')))
-                ->line('Merci pour votre confiance !');
-            }elseif ($this->status === 'PAID') {
-                return (new MailMessage)
-                ->subject('Votre paiement pour votre consultation a été effectué avec succès')
-                ->line($this->message)
-                ->line('Il aura lieu le ' . $this->details['time_slot_day_for_human'] . ' à ' . $this->details['time_slot_for_human'])
+                ->line('Elle aura lieu le ' . $this->details['time_slot_day_for_human'] . ' à ' . $this->details['time_slot_for_human'])
                 ->line($this->details['type'] == 'phone' ? 'Par téléphone' : 'Par tchat')
                 ->action('Voir le RDV', url(route('my_space.appointment.view', $this->token)))
                 ->line('Merci pour votre confiance !');
-            }elseif ($this->status === 'CONFIRMED') {
+            }elseif ($this->status === 'APPROVED') {
                 return (new MailMessage)
-                ->subject('Votre demande de rendez-vous a bien été enregistrée')
+                ->subject('Votre demande de rendez-vous a été approuvée par Raphaël')
                 ->line($this->message)
                 ->line('Il aura lieu le ' . $this->details['time_slot_day_for_human'] . ' à ' . $this->details['time_slot_for_human'])
                 ->line($this->details['type'] == 'phone' ? 'Par téléphone' : 'Par tchat')
@@ -80,7 +74,7 @@ class AppointmentNotification extends Notification
                 ->line('Merci pour votre confiance !');
             }elseif ($this->status === 'UPDATED') {
                 return (new MailMessage)
-                ->subject('Votre demande de rendez-vous a bien été modifiée')
+                ->subject('Votre demande de rendez-vous a été modifiée par Raphaël')
                 ->line($this->message)
                 ->line('Il aura lieu le ' . $this->details['time_slot_day_for_human'] . ' à ' . $this->details['time_slot_for_human'])
                 ->line($this->details['type'] == 'phone' ? 'Par téléphone' : 'Par tchat')
@@ -90,19 +84,13 @@ class AppointmentNotification extends Notification
         }elseif ($this->details['type'] === 'writing') {
             if ($this->status === 'CANCELLED') {
                 return (new MailMessage)
-                ->subject('Votre rendez-vous a été annulé')
+                ->subject('Votre question par email a été annulée')
                 ->line($this->message)
                 ->action('Retourner sur le site', url(route('home')))
                 ->line('Merci pour votre confiance !');
             }elseif ($this->status === 'REFUNDED') {
                 return (new MailMessage)
                 ->subject('Un remboursement est en cours pour votre demande de consultation par écrit')
-                ->line($this->message)
-                ->action('Retourner sur le site', url(route('home')))
-                ->line('Merci pour votre confiance !');
-            }elseif ($this->status === 'PASSED') {
-                return (new MailMessage)
-                ->subject('Votre consultation est passée')
                 ->line($this->message)
                 ->action('Retourner sur le site', url(route('home')))
                 ->line('Merci pour votre confiance !');
@@ -113,9 +101,9 @@ class AppointmentNotification extends Notification
                 ->line('Je vous répondrai dans les trois jours à venir.')
                 ->action('Voir votre demande', url(route('my_space.appointment.view', $this->token)))
                 ->line('Merci pour votre confiance !');
-            }elseif ($this->status === 'CONFIRMED') {
+            }elseif ($this->status === 'APPROVED') {
                 return (new MailMessage)
-                ->subject('Votre demande consultation par écrit a bien été enregistrée')
+                ->subject('Votre demande consultation par écrit a été approuvée par Raphaël')
                 ->line($this->message)
                 ->line('Je vous répondrai dans les trois jours suivant la réception de votre paiement.')
                 ->action('Voir votre demande', url(route('my_space.appointment.view', $this->token)))
@@ -126,6 +114,12 @@ class AppointmentNotification extends Notification
                 ->line($this->message)
                 ->line('Je vous répondrai dans les plus brefs délais.')
                 ->action('Voir votre demande', url(route('my_space.appointment.view', $this->token)))
+                ->line('Merci pour votre confiance !');
+            }elseif ($this->status === 'REPLY') {
+                return (new MailMessage)
+                ->subject('La réponse à votre consultation par écrit est disponible')
+                ->line($this->message)
+                ->action('Accéder à la réponse', url(route('my_space.appointment.view', $this->token)))
                 ->line('Merci pour votre confiance !');
             }
         }
