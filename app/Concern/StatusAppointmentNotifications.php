@@ -205,8 +205,10 @@ class StatusAppointmentNotifications
                     break;
             }
         }
+        $userFullName = $user->fullName();
+        $appointmentId = $invoice->appointment->id;
         // $message, $details, $status, $invoice_token
-        return $user->notify(new AppointmentNotificationAdmin($message, $invoiceInformations, $status, $invoice->payment_invoice_token));
+        return $user->notify(new AppointmentNotificationAdmin($message, $invoiceInformations, $status, $invoice->payment_invoice_token, $userFullName, $appointmentId));
 
     }
 }

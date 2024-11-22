@@ -3,7 +3,6 @@ import { createAlert } from "../Alert/alert.js";
 
 window.addEventListener('load', () => {
     const cancelBtn = document.getElementById("cancel_request");
-    const cancelRoute = document.getElementById("payment_delete_route").value;
 
     const downloadBtn = document.getElementById("download_invoice");
 
@@ -17,6 +16,7 @@ window.addEventListener('load', () => {
     }
 
     if(cancelBtn) {
+        const cancelRoute = document.getElementById("payment_delete_route").value;
         cancelBtn.addEventListener('click', function(e) {
             e.preventDefault();
             createAlert('Vous êtes sur le point d\'annuler votre demande, êtes-vous sûr(e) ?', 'default', function(confirmation) {

@@ -15,16 +15,20 @@ class AppointmentNotificationAdmin extends Notification
     private $message;
     private $status;
     private $token;
+    private $userFullName;
+    private $appointmentId;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($message, $details, $status, $token)
+    public function __construct($message, $details, $status, $token, $userFullName = null, $appointmentId = null)
     {
         $this->message = $message;
         $this->status = $status;
         $this->details = $details;
         $this->token = $token;
+        $this->userFullName = $userFullName;
+        $this->appointmentId = $appointmentId;
     }
 
     /**
@@ -119,7 +123,7 @@ class AppointmentNotificationAdmin extends Notification
                 return (new MailMessage)
                 ->subject('La réponse à votre consultation par écrit est disponible')
                 ->line($this->message)
-                ->action('Accéder à la réponse', url(route('my_space.appointment.view', $this->token)))
+                ->action('Accéder à la réponse', url(route('my_space.appointment.show', ['user_name' => $this->userFullName, 'appointment_id' => $this->appointmentId])))
                 ->line('Merci pour votre confiance !');
             }
         }
