@@ -48,32 +48,13 @@
         <h2 class="mb-4">Gestion des consultations</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-            @if($pastsAppointments->count() > 0)
-            <x-ui.card title="Dernières consultations">
-                <ul>
-                    @foreach ($pastsAppointments as $appointment)
-                        @if($appointment['type'] == 'writing')
-                            <li><i class="fa-thin fa-pen-nib mr-2"></i> répondue le <x-ui.link label="{{ $appointment['request_response_date'] }}" href="#" /> par <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
-                        @elseif($appointment['type'] == 'tchat')
-                            <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="#" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
-                        @elseif($appointment['type'] == 'phone')
-                            <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="#" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /> </li>
-                        @endif
-                    @endforeach
-                </ul>
-    
-                <x-slot:actions>
-                    <x-ui.link label="Toutes les consultations passées" href="{{ route('home') }}" />
-                </x-slot:actions>
-            </x-ui.card>
-            @endif
             @if($futursAppointments->count() > 0)
             <x-ui.card title="Consultations à venir">
                 <ul>
                     @foreach ($futursAppointments as $appointment)
                         @if($appointment['type'] == 'writing')
                         {{-- {{dd($appointment)}} --}}
-                            <li><i class="fa-thin fa-pen-nib mr-2"></i> demandée le <x-ui.link label="{{ $appointment['day'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> par <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
+                            <li><i class="fa-thin fa-pen-nib mr-2"></i>{{ $appointment['status'] == 'CONFIRMED' ? 'confirmée le' : 'envoyée le' }} <x-ui.link label="{{ $appointment['day'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> par <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
                         @elseif($appointment['type'] == 'tchat')
                             <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
                         @elseif($appointment['type'] == 'phone')
@@ -85,6 +66,56 @@
                     <x-ui.link label="Toutes les consultations à venir" href="{{ route('home') }}" />
                 </x-slot:actions>
             </x-ui.card>
+            @endif
+
+            @if($pastsAppointments->count() > 0)
+            <x-ui.card title="Dernières consultations">
+                <ul>
+                    @foreach ($pastsAppointments as $appointment)
+                        @if($appointment['type'] == 'tchat')
+                            <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
+                        @elseif($appointment['type'] == 'phone')
+                            <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /> </li>
+                        @endif
+                    @endforeach
+                </ul>
+    
+                <x-slot:actions>
+                    <x-ui.link label="Toutes les consultations passées" href="{{ route('home') }}" />
+                </x-slot:actions>
+            </x-ui.card>
+            @endif
+
+            {{-- Dernières consultations par écrit --}}
+            @if (count($writtingAppointmentsReply) > 0 || count($writtingAppointmentsPast) > 0)
+                <x-ui.card title="Dernière(s) consultation(s) par écrit">
+                    
+                    @if (count($writtingAppointmentsReply) > 0)
+                    <ul>
+                        @foreach ($writtingAppointmentsReply as $appointment)
+                            <li><i class="fa-thin fa-envelope"></i> 
+                                répondue le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> pour <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" />
+                            </li>
+                        @endforeach
+                    </ul>
+                    @endif
+
+                    @if(count($writtingAppointmentsPast) > 0)
+                    <h4 class="text-white/65 italic mt-4 mb-2 text-lg leading-none">Consultation(s) écrite(s) sans réponse</h4>
+                    <ul>
+                        @foreach ($writtingAppointmentsPast as $appointment)
+                            <li><i class="fa-thin fa-envelope"></i> 
+                                du <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> pour <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" />
+                            </li>
+                        @endforeach
+                    </ul>
+                    @endif
+
+                    <x-slot:actions>
+                        <x-ui.link label="Toutes les consultations passées" href="{{ route('my_space.appointments.index', ['order' => 'asc']) }}" />
+                    </x-slot:actions>
+                    
+                </x-ui.card>
             @endif
 
             <x-ui.card title="Gestion du temps">

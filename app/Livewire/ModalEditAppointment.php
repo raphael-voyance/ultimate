@@ -218,6 +218,7 @@ class ModalEditAppointment extends Component
             ->pushOnNextPage();
 
             ConcernNotifications::sendNotification($invoice, 'UPDATED');
+            ConcernNotifications::sendNotificationToAdmin($invoice, 'UPDATED');
             
             if($invoice->status == 'PENDING') {
                 $this->redirectRoute('payment.create', [

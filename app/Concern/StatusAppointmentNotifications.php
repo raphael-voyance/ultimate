@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use App\Notifications\AppointmentNotification;
 use App\Notifications\AppointmentNotificationAdmin;
+use App\Notifications\AppointmentNotificationToAdmin;
 
 class StatusAppointmentNotifications
 {
@@ -210,5 +211,82 @@ class StatusAppointmentNotifications
         // $message, $details, $status, $invoice_token
         return $user->notify(new AppointmentNotificationAdmin($message, $invoiceInformations, $status, $invoice->payment_invoice_token, $userFullName, $appointmentId));
 
+    }
+
+    public static function sendNotificationToAdmin($invoice, $status, $user = null) {
+        $UserAdmin = new UserAdmin();
+        $admin = $UserAdmin->getUserAdmin();
+
+        $invoiceInformations = json_decode($invoice->invoice_informations, true);
+        $message = '';
+
+        if($invoiceInformations['type'] == "writing") {
+            switch ($status) {
+                case 'CONFIRMED':
+                    $message = 'Une demande de consultation par email a été effectuée par un utilisateur.';
+                    break;
+                case 'CANCELLED':
+                    $message = 'Une demande de consultation par email a été annulée par un utilisateur.';
+                    break;
+                case 'UPDATED':
+                    $message = 'Une demande de consultation par email a été modifiée par un utilisateur.';
+                    break;
+                case 'PAID':
+                    $message = 'Vous venez de recevoir un paiement pour une consultation par email.';
+                    break;
+                case 'REFUNDED':
+                    $message = 'Un remboursement pour une consultation par email a été initié.';
+                    break;
+                default:
+                    $message = 'Votre rendez-vous a été mis à jour.';
+                    break;
+            }
+        } else if($invoiceInformations['type'] == "phone") {
+            switch ($status) {
+                case 'CONFIRMED':
+                    $message = 'Une demande de consultation par téléphone a été effectuée par un utilisateur.';
+                    break;
+                case 'CANCELLED':
+                    $message = 'Une demande de rendez-vous par téléphone a été annulée par un utilisateur.';
+                    break;
+                case 'UPDATED':	
+                    $message = 'Une demande de rendez-vous par téléphone a été modifiée par un utilisateur.';
+                    break;
+                case 'PAID':
+                    $message = 'Vous venez de recevoir un paiement pour une consultation par téléphone.';
+                    break;
+                case 'REFUNDED':
+                    $message = 'Un remboursement pour une consultation par téléphone a été initié.';
+                    break;
+                default:
+                    $message = 'Votre rendez-vous a été mis à jour.';
+                    break;
+            }
+        } else if($invoiceInformations['type'] == "tchat") {
+            switch ($status) {
+                case 'CONFIRMED':
+                    $message = 'Une demande de consultation par email a été effectuée par un utilisateur.';
+                    break;
+                case 'CANCELLED':
+                    $message = 'Une demande de rendez-vous par tchat a été annulée par un utilisateur.';
+                    break;
+                case 'UPDATED':
+                    $message = 'Une demande de rendez-vous par tchat a été modifiée par un utilisateur.';
+                    break;
+                case 'PAID':
+                    $message = 'Vous venez de recevoir un paiement pour une consultation par tchat.';
+                    break;
+                case 'REFUNDED':
+                    $message = 'Un remboursement pour une consultation par tchat a été initié.';
+                    break;
+                default:
+                    $message = 'Votre rendez-vous a été mis à jour.';
+                    break;
+            }
+        }
+
+        $appointmentId = $invoice->appointment->id;
+        // $message, $details, $status, $invoice_token
+        return $admin->notify(new AppointmentNotificationToAdmin($message, $invoiceInformations, $status, $appointmentId));
     }
 }

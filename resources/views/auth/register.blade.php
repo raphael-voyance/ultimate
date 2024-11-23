@@ -15,26 +15,28 @@
             <x-ui.form.input id="last_name" class="block w-full focus:ring-primary-focus" type="text" name="last_name" :value="old('last_name')" required autofocus autocomplete="family-name" label="Votre nom" placeholder="Votre nom" icon="o-user" />
             <x-ui.form.input-error :messages="$errors->get('last_name')" class="mt-2" />
         </div>
-
+        
         <!-- Gender -->
         <div class="mt-4">
-            <label class="pt-0 label label-text font-semibold block">Votre genre :</label>
-            <div class="form-control">
-                <label for="gender-m" class="label cursor-pointer">
-                  <span class="label-text">Homme</span>
-                  <input type="radio" id="gender-m" name="sexe" value="M" class="radio radio-primary checked:hover:bg-primary checked:focus:bg-primary" checked="checked" />
+            <label class="label font-semibold block mb-2">Votre genre :</label>
+            <div class="flex items-center gap-4">
+                <!-- Option Homme -->
+                <label for="gender-m" class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" id="gender-m" name="sexe" value="M" class="radio radio-primary checked:hover:bg-primary checked:focus:bg-primary" checked="checked" />
+                    <span class="label-text">Homme</span>
                 </label>
-                <label for="gender-f" class="label cursor-pointer">
-                    <span class="label-text">Femme</span>
+                <!-- Option Femme -->
+                <label for="gender-f" class="flex items-center gap-2 cursor-pointer">
                     <input type="radio" id="gender-f" name="sexe" value="F" class="radio radio-primary checked:hover:bg-primary checked:focus:bg-primary" />
-                  </label>
-                  <label for="gender-nb" class="label cursor-pointer">
-                    <span class="label-text">Non-binaire</span>
+                    <span class="label-text">Femme</span>
+                </label>
+                <!-- Option Non-Binaire -->
+                <label for="gender-nb" class="flex items-center gap-2 cursor-pointer">
                     <input type="radio" id="gender-nb" name="sexe" value="NB" class="radio radio-primary checked:hover:bg-primary checked:focus:bg-primary" />
-                  </label>
-              </div>
-
-            <x-ui.form.input-error :messages="$errors->get('sexe')" class="mt-2" />
+                    <span class="label-text">Non-binaire</span>
+                </label>
+            </div>
+            <x-ui.form.input-error :messages="$errors->get('sexe')" class="mt-2 text-red-500" />
         </div>
 
         <!-- Email Address -->

@@ -466,6 +466,8 @@ class AppointmentModal extends Component
             if($invoice) {
                 ConcernNotifications::sendNotification($invoice, 'CONFIRMED');
                 
+                ConcernNotifications::sendNotificationToAdmin($invoice, 'CONFIRMED');
+                
                 $this->resetModal();
 
                 $this->redirectRoute('payment.create', [

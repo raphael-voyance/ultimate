@@ -6,9 +6,10 @@
         </h2>
     </x-slot>
 
+    {{-- Relatif à l'utilisateur --}}
     <div class="mb-8 py-4 px-6 bg-base-300">
+        <h2 class="mb-4">Vos informations</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
             {{-- Informations personnelles --}}
             <x-ui.card title="Informations personnelles">
                 <ul>
@@ -18,9 +19,6 @@
                     @if(Auth::user()->getPhone())
                     <li>Numéro de téléphone : {{ Auth::user()->getPhone() }}</li>
                     @endif
-                    @if(Auth::user()->birthday())
-                    <li>Date de naissance : {{ Auth::user()->birthday() }}</li>
-                    @endif
                 </ul>
 
                 <x-slot:actions>
@@ -28,7 +26,13 @@
                 </x-slot:actions>
 
             </x-ui.card>
+        </div>
+    </div>
 
+    {{-- Relatif aux consultations --}}
+    <div class="mb-8 py-4 px-6 bg-base-300">
+        <h2 class="mb-4">Gestion des consultations</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             {{-- Consultations à venir --}}
             <x-ui.card title="Vos consultations à venir">
                 @if (count($futursAppointments) >= 1)
@@ -41,7 +45,7 @@
                         'fa-thin fa-pen-nib' => $appointment['type'] == 'writing'])></i> 
 
                         @if($appointment['type'] == 'writing')
-                            demandée le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par écrit
+                            {{ $appointment['status'] == 'CONFIRMED' ? 'confirmée le' : 'envoyée le' }} <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par écrit
                         @elseif ($appointment['type'] == 'tchat')
                             le <x-ui.link label="{{ $appointment['date'] }} à {{ $appointment['time'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par tchat
                         @else
@@ -67,12 +71,9 @@
                         <li><i @class([
                             'fa-thin mr-2',
                             'fa-phone' => $appointment['type'] == 'phone',
-                            'fa-sharp fa-comments' => $appointment['type'] == 'tchat',
-                            'fa-thin fa-pen-nib' => $appointment['type'] == 'writing'])></i> 
+                            'fa-sharp fa-comments' => $appointment['type'] == 'tchat'])></i> 
 
-                            @if($appointment['type'] == 'writing')
-                                demandée le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par écrit
-                            @elseif ($appointment['type'] == 'tchat')
+                            @if($appointment['type'] == 'tchat')
                                 le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par tchat
                             @else
                                 le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par téléphone
@@ -88,10 +89,41 @@
                 <p class="text-white/65 italic">Aucune consultation n'est enregistrée sur votre profil.</p>
                 @endif
             </x-ui.card>
-            
-            {{-- Facturation --}}
+
+            {{-- Dernières consultations par écrit --}}
+            @if (count($writtingAppointmentsReply) > 0 || count($writtingAppointmentsPast) > 0)
+            <x-ui.card title="Dernière(s) consultation(s) par écrit">
+                
+                @if (count($writtingAppointmentsReply) > 0)
+                <ul>
+                    @foreach ($writtingAppointmentsReply as $appointment)
+                        <li><i class="fa-thin fa-envelope"></i> 
+                            répondue le <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" />
+                        </li>
+                    @endforeach
+                </ul>
+                @endif
+
+                @if(count($writtingAppointmentsPast) > 0)
+                <h4 class="text-white/65 italic mt-4 mb-2 text-lg leading-none">Consultation(s) écrite(s) sans réponse</h4>
+                <ul>
+                    @foreach ($writtingAppointmentsPast as $appointment)
+                        <li><i class="fa-thin fa-envelope"></i> 
+                            du <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" />
+                        </li>
+                    @endforeach
+                </ul>
+                @endif
+
+                <x-slot:actions>
+                    <x-ui.link label="Toutes les consultations passées" href="{{ route('my_space.appointments.index', ['order' => 'asc']) }}" />
+                </x-slot:actions>
+                
+            </x-ui.card>
+            @endif
+
             @if($invoices->count() >= 1)
-            <x-ui.card title="Paiements & facturations">
+            <x-ui.card title="Dernièr(s) paiement(s)">
                 <ul>
                     @foreach ($invoices as $invoice)
                     <li class="flex flex-row justify-between gap-2">
@@ -128,7 +160,13 @@
                 </x-slot:actions>
             </x-ui.card>
             @endif
+        </div>
+    </div>
 
+    {{-- Relatif aux prévisions --}}
+    <div class="mb-8 py-4 px-6 bg-base-300">
+        <h2 class="mb-4">Outils prévisionnels</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             {{-- Prévisions --}}
             <x-ui.card title="Prévisions">
             
@@ -136,7 +174,7 @@
                     @if(!$numerology)
                     <li>Pour calculer votre chemin de vie merci de renseigner votre date de naissance depuis la page des prévisions. Pour cela cliquer sur "En découvrir plus".</li>
                     @else
-                    <li>Votre date de naissance : {{ $numerology->birthdate }}</li>
+                    <li>Date de naissance : {{ Auth::user()->birthday() }}</li>
                     <li>Votre chemin de vie : {{ $numerology->lifePath }}</li>
                     <li>Votre année personnelle : {{ $numerology->annualPath }}</li>
                     @endif
@@ -167,7 +205,12 @@
                     <x-ui.link label="Faire un tirage de Tarot" href="{{ route('tarot.index') }}" />
                 </x-slot:actions>
             </x-ui.card>
-    
+        </div>
+    </div>
+
+    {{-- Relatif aux articles et au partage --}}
+    <div class="mb-8 py-4 px-6 bg-base-300">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             {{-- Articles enregistrés --}}
             <x-ui.card title="Articles enregistrés">
                 I am using slots here.
@@ -175,7 +218,6 @@
                     <x-ui.link label="Voir tous les articles" href="{{ route('home') }}" />
                 </x-slot:actions>
             </x-ui.card>
-
         </div>
     </div>
 

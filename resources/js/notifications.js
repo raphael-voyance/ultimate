@@ -39,7 +39,7 @@ document.addEventListener('alpine:init', () => {
                     element.addEventListener('transitionend', () => {
                         this.notifications = this.notifications.filter(n => n.id !== notification.id);
                     });
-                    Toast.success("Notification marquée comme lue !");
+                    Toast.success("Notification marquée comme lue");
                     this.count--;
                     console.log(this.count);
                 })

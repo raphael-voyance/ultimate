@@ -70,7 +70,7 @@ class Appointment extends Model
         $now = Carbon::now();
 
         // Retrieve appointments with statuses other than CANCELLED or PASSED
-        $appointments = self::whereNotIn('status', ['CANCELLED', 'PASSED'])
+        $appointments = self::whereNotIn('status', ['CANCELLED', 'PASSED', 'REPLY'])
             ->with(['timeSlotDay', 'timeSlot', 'invoice'])
             ->get();
 
@@ -80,6 +80,7 @@ class Appointment extends Model
             // Check if the appointment type is 'writing'
             if ($appointment->appointment_type === 'writing') {
                 $updatedAtThreshold = Carbon::parse($appointment->updated_at)->addDays(3);
+                // dd($appointment, 'now', $now, $updatedAtThreshold);
 
                 // dump('w', $updatedAtThreshold);
 
@@ -90,6 +91,7 @@ class Appointment extends Model
                         $invoice->status = 'CANCELLED';
                         $invoice->save();
                         ConcernNotifications::sendNotification($invoice, 'CANCELLED');
+                        ConcernNotifications::sendNotificationToAdmin($invoice, 'CANCELLED');
                     }
                 }
 
@@ -107,6 +109,7 @@ class Appointment extends Model
                         $invoice->status = 'CANCELLED';
                         $invoice->save();
                         ConcernNotifications::sendNotification($invoice, 'CANCELLED');
+                        ConcernNotifications::sendNotificationToAdmin($invoice, 'CANCELLED');
                     }
                 }
 
@@ -129,7 +132,7 @@ class Appointment extends Model
             $invoice = $appointment->invoice;
             // dd($invoice);
             // Check if the appointment type is 'writing'
-            if ($appointment->appointment_type === 'writing') {
+            if ($appointment->appointment_type === 'writing' && $appointment->status != 'REPLY') {
                 $updatedAtThreshold = Carbon::parse($appointment->updated_at)->addDays(3);
 
                 // dump('w', $updatedAtThreshold);
@@ -141,6 +144,7 @@ class Appointment extends Model
                         $invoice->status = 'CANCELLED';
                         $invoice->save();
                         ConcernNotifications::sendNotification($invoice, 'PASSED');
+                        ConcernNotifications::sendNotificationToAdmin($invoice, 'PASSED');
                     }
                 }
 
@@ -158,6 +162,7 @@ class Appointment extends Model
                         $invoice->status = 'CANCELLED';
                         $invoice->save();
                         ConcernNotifications::sendNotification($invoice, 'PASSED');
+                        ConcernNotifications::sendNotificationToAdmin($invoice, 'PASSED');
                     }
                 }
 

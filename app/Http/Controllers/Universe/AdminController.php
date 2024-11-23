@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Universe;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Invoice;
 use Illuminate\View\View;
@@ -22,6 +23,9 @@ class AdminController extends Controller
         // }
 
         // GET APPOINTMENTS
+        $pastsAppointments = Appointment::where('invoice_id', '!=', null)
+            ->where('appointment_type', '!=', 'writing')
+            ->where('status', 'PASSED')->take(5)->get();
         $pastsAppointmentsModel = Appointment::where('invoice_id', '!=', null)
             ->where('status', 'PASSED')->take(5)->get();
         $pastsAppointments = collect();
@@ -44,7 +48,8 @@ class AdminController extends Controller
         $pastsAppointments = $pastsAppointments->sortBy('dateTime');
 
         $futursAppointmentsModel = Appointment::where('invoice_id', '!=', null)
-            ->where('status', '!=', 'PASSED')->take(5)->get();
+        ->where('status', '!=', 'PASSED')
+        ->where('status', '!=', 'REPLY')->take(5)->get();
         $futursAppointments = collect();
         foreach ($futursAppointmentsModel as $appointment) {
             // dd($appointment->user_id);
@@ -60,10 +65,50 @@ class AdminController extends Controller
                 'time' => $appointment->formatted_time,
                 'type' => $appointment->appointment_type,
                 'user_id' => $customer->id,
+                'status' => $appointment->status,
                 'user_name' => $customer->fullName(),
             ]);
         }
         $futursAppointments = $futursAppointments->sortBy('dateTime');
+
+        $writtingAppointmentsReplyModel = Appointment::where('invoice_id', '!=', null)
+            ->where('status', 'REPLY')->take(3)->get();
+        $writtingAppointmentsReply = collect();
+        foreach ($writtingAppointmentsReplyModel as $appointment) {
+            $customer = User::where('id', $appointment->user_id)->firstOrFail();
+
+            $date = Carbon::create($appointment->request_response_date)->translatedFormat('l j F Y');
+
+            $writtingAppointmentsReply->push([
+                'id' => $appointment->id,
+                'dateTime' => $appointment->formatted_date_time,
+                'user_id' => $customer->id,
+                'user_name' => $customer->fullName(),
+                'date' => $appointment->request_response_date ? $date : null,
+            ]);
+        }
+
+        $writtingAppointmentsPastModel = Appointment::where('invoice_id', '!=', null)
+        ->where('appointment_type', 'writing')
+        ->where('status', 'PASSED')
+        ->whereHas('invoice', function ($query) {
+            $query->where('status', '!=', 'REFUNDED');
+        })->take(2)->get();
+    
+        $writtingAppointmentsPast = collect();
+        foreach ($writtingAppointmentsPastModel as $appointment) {
+            $customer = User::where('id', $appointment->user_id)->firstOrFail();
+
+            $date = Carbon::create($appointment->updated_at)->translatedFormat('l j F Y');
+
+            $writtingAppointmentsPast->push([
+                'id' => $appointment->id,
+                'dateTime' => $appointment->formatted_date_time,
+                'user_id' => $customer->id,
+                'user_name' => $customer->fullName(),
+                'date' => $appointment->updated_at ? $date : null,
+            ]);
+        }
 
         // GET INVOICES
         $invoices = Invoice::take(5)->orderBy('created_at', 'desc')->get();
@@ -72,6 +117,8 @@ class AdminController extends Controller
             'users' => $users,
             'futursAppointments' => $futursAppointments,
             'pastsAppointments' => $pastsAppointments,
+            'writtingAppointmentsReply' => $writtingAppointmentsReply,
+            'writtingAppointmentsPast' => $writtingAppointmentsPast,
             'invoices' => $invoices,
         ]);
     }

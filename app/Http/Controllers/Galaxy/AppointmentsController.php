@@ -119,6 +119,7 @@ class AppointmentsController extends Controller
                     'payment_intent' => $invoice->payment_intent,
                 ]);
                 ConcernNotifications::sendNotification($invoice, 'REFUNDED');
+                ConcernNotifications::sendNotificationToAdmin($invoice, 'CANCELLED');
                 // Ajout d'un message de confirmation pour le remboursement
                 toast()->success('Le remboursement de votre consultation a été effectué avec succès.')->pushOnNextPage();
             } catch (\Exception $e) {
@@ -154,6 +155,7 @@ class AppointmentsController extends Controller
         $invoice->save();
 
         ConcernNotifications::sendNotification($invoice, 'CANCELLED');
+        ConcernNotifications::sendNotificationToAdmin($invoice, 'CANCELLED');
 
         toast()->success('Votre demande de consultation a été annulée avec succés.')->pushOnNextPage();
     
