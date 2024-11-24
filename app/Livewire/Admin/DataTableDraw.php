@@ -16,6 +16,14 @@ class DataTableDraw extends Component
         $this->cards = TarotCard::all();
         $this->draws = DrawCard::all();
 
+        $this->headers = [
+            ['key' => 'id', 'label' => '#'],
+            ['key' => 'name', 'label' => 'Tirage'],
+            ['key' => 'interpretations', 'label' => 'Interprétation complète'],
+            ['key' => 'active', 'label' => 'En ligne ?'],
+            ['key' => 'actions', 'label' => 'Actions'],
+        ];
+
         foreach ($this->draws as $draw) {
             $interpretations = [];
             //$slugWithUnderscores = str_replace('-', '_', $draw->slug);

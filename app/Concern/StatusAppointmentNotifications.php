@@ -265,7 +265,7 @@ class StatusAppointmentNotifications
         } else if($invoiceInformations['type'] == "tchat") {
             switch ($status) {
                 case 'CONFIRMED':
-                    $message = 'Une demande de consultation par email a été effectuée par un utilisateur.';
+                    $message = 'Une demande de consultation par tchat a été effectuée par un utilisateur.';
                     break;
                 case 'CANCELLED':
                     $message = 'Une demande de rendez-vous par tchat a été annulée par un utilisateur.';
