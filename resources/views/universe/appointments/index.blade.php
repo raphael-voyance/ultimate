@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight">
             Rendez-vous
@@ -36,4 +36,4 @@
         
     </article>
 
-</x-app-layout>
+</x-admin-layout>

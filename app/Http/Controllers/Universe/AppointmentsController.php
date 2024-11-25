@@ -36,9 +36,8 @@ class AppointmentsController extends Controller
         ]);
     }
 
-    public function create(): View {
-        dd('create');
-        return view('universe.appointments.show');
+    public function create() {
+        return view('universe.appointments.create');
     }
 
     public function delete(Request $request) {

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
 
     @section('js')
         @vite(['resources/js/add/universe/appointment.js'])
@@ -32,11 +32,6 @@
                         <p>Gratuite</p>
                     </div>
 
-                    <div class="mb-2">
-                        <p>Timeslot du RDV si non par écrit</p>
-                        <p>Question si par écrit</p>
-                    </div>
-
                 </div>
 
             </div>
@@ -45,7 +40,7 @@
             {{-- Début 2ème colonne --}}
             <div>
                 <div class="py-6 px-4 mb-4 rounded bg-base-300/75">
-                    <div>
+                    <div class="mb-2">
                         <h3 class="mb-2">Avec : </h3>
                         <select class="select select-bordered select-primary w-full" id="user_id" name="user_id">
                             <option value="1">User 1</option>
@@ -54,8 +49,13 @@
                         </select>
                     </div>
 
-                    <div>
-                        <h3 class="mb-2">Créer un utilisateur </h3>
+                    <div class="mb-2">
+                        <h3>Créer un utilisateur </h3>
+                    </div>
+
+                    <div class="mb-2">
+                        <p>Timeslot du RDV si non par écrit</p>
+                        <p>Question si par écrit</p>
                     </div>
                     
 
@@ -66,7 +66,6 @@
         </div>
 
         <footer class="text-center text-xl mt-6">
-            <h2 class="mb-6">Actions sur la demande :</h2>
 
             <button class="btn btn-primary mr-4">Enregistrer</button>
 
@@ -76,4 +75,4 @@
 
 
 
-</x-app-layout>
+</x-admin-layout>

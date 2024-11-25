@@ -9,7 +9,7 @@
 
         <div class="absolute left-0 w-full" x-cloak x-show="open"
             x-on:click.away="open = false; $wire.resetQuery()">
-            <x-input placeholder="Votre recherche..." icon="o-user" wire:model='query' wire:keydown.prevent.enter='searchQuery()' />
+            <x-ui.form.input placeholder="Votre recherche..." icon="o-user" wire:model='query' wire:keydown.prevent.enter='searchQuery()' />
             @if($searchResults && count($searchResults) > 0  && $searchResults[0] != 'No result')
             <ul>
                 {{ dd($searchResults) }}

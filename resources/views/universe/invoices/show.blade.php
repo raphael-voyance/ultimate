@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
 
     @section('js')
         @vite(['resources/js/add/universe/invoice.js'])
@@ -196,4 +196,4 @@
 
 
 
-</x-app-layout>
+</x-admin-layout>

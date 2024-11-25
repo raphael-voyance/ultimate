@@ -142,7 +142,7 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
 
     // APPOINTMENTS ROUTES
     Route::prefix('appointments')->as('appointments.')->group(function() {
-        Route::get('/{id}', [AppointmentsController::class, 'show'])->name('show');
+        Route::get('/show/{id}', [AppointmentsController::class, 'show'])->name('show');
         Route::delete('/delete/{payment_invoice_token}', [AppointmentsController::class, 'delete'])->name('delete');
         Route::get('/approved/{id}', [AppointmentsController::class, 'approved'])->name('approved');
         Route::get('/create', [AppointmentsController::class, 'create'])->name('create');
