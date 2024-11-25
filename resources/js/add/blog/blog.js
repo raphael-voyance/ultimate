@@ -88,6 +88,26 @@ window.addEventListener('load', () => {
                 const quoteCaptionElements = document.querySelectorAll('.cdx-quote__caption');
                 const imageCaptionElements = document.querySelectorAll('.image-tool__caption');
                 let bodyLinks = document.querySelectorAll('.ce-paragraph a');
+                let imgs = document.querySelectorAll('.image-tool__image-picture');
+
+                if(imgs.length > 0) {
+                    if(window.innerWidth >= 768) {
+                        imgs.forEach((img) => {
+                            if(img.height > 350) {
+                                img.addEventListener('click', () => {console.log(img.height)});
+                                img.parentElement.style.overflowY = 'auto';
+                                img.style.transform = 'translateY(-35%)';
+                            }
+                        });
+                    }else if(window.innerWidth < 768) {
+                        imgs.forEach((img) => {
+                            if(img.height < 350) {
+                                img.parentElement.style.height = img.height + 'px';
+                                console.log(img.parentElement);
+                            }
+                        });
+                    }
+                }
 
                 if (quoteCaptionElements.length > 0) {
                     // Masque l'auteur d'une citation si il n'est pas renseigné
@@ -118,4 +138,5 @@ window.addEventListener('load', () => {
     
         });
     }
+
 });

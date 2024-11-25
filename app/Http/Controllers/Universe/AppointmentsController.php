@@ -36,6 +36,11 @@ class AppointmentsController extends Controller
         ]);
     }
 
+    public function create(): View {
+        dd('create');
+        return view('universe.appointments.show');
+    }
+
     public function delete(Request $request) {
         // Invoice
         $invoice_token = $request->payment_invoice_token;

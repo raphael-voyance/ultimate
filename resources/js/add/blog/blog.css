@@ -164,11 +164,6 @@
     height: 350px;
     position: relative;
   }
-
-  .image-tool__image:hover {
-    overflow-y: auto!important;
-  }
-  
   .image-tool__image-picture {
     width: 100%; /* La largeur de l'image */
     height: auto; /* Garde les proportions */
@@ -177,24 +172,22 @@
     left: 0;
     transition: transform 0.3s ease-out;
     will-change: transform; /* Optimisation du rendu */
+    border-radius: 8px;
   }
-  
-  @media (min-width: 768px) {
-    .image-tool__image-picture {
-        transform: translateY(-35%);
-      }
-  }
-
-
 .image-tool__image-picture, .image-tool__caption {
     max-width: 100%;
-    /* width: 450px; */
-    margin: 25px auto auto;
+    margin: auto auto;
 }
 .image-tool__caption {
     margin-top: auto;
     margin-bottom: 25px;
 }
+
+/* @media (min-width: 768px) {
+    .image-tool__image-picture {
+        transform: translateY(-35%);
+      }
+  } */
 
 /* FIN POST CONTENT EDITOR VIEW */
 

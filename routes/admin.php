@@ -145,10 +145,9 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
         Route::get('/{id}', [AppointmentsController::class, 'show'])->name('show');
         Route::delete('/delete/{payment_invoice_token}', [AppointmentsController::class, 'delete'])->name('delete');
         Route::get('/approved/{id}', [AppointmentsController::class, 'approved'])->name('approved');
-        // Route::get('/create', [UserController::class, 'createUser'])->name('create');
+        Route::get('/create', [AppointmentsController::class, 'create'])->name('create');
         // Route::post('/store', [UserController::class, 'storeUser'])->name('store');
         // Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('update');
-        // Route::delete('/destroy/{id}', [UserController::class, 'destroyUser'])->name('destroy');
     });
 
     // INVOICES ROUTES
