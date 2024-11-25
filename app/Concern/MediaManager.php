@@ -23,8 +23,6 @@ class MediaManager
         $fileName = $name ?: $file->getClientOriginalName();
         $path = $file->storeAs($uploadPath ?: 'media', $fileName, $selectedDisk);
 
-        // dd($path);
-
         // Créer une entrée en base de données
         $media = new Media([
             'name' => $fileName,

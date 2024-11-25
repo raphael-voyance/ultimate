@@ -51,14 +51,21 @@
                     </div>
                 </section>
             @else
-                <div class="thumbnail">
+
+            <section class="grid grid-cols-2 gap-2 p-8 card bg-base-300 shadow-xl mb-8">
+                <div class="thumbnail p-3 card bg-base-100 shadow-xl-">
                     @if(Str::contains(basename($post->image), 'pending'))
                         <!-- Affichage spécifique si le nom de l'image contient "pending" -->
-                        <img src="{{ asset('site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="Thumbnail : {{ $post->title }}" />
+                        <img src="{{ asset('site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" class="rounded-md" alt="Thumbnail : {{ $post->title }}" />
                     @else
-                        <img src="{{ asset($post->image) }}" alt="Thumbnail : {{ $post->title }}" />
+                        <img src="{{ asset($post->image) }}" class="rounded-md" alt="Thumbnail : {{ $post->title }}" />
                     @endif
                 </div>
+
+                <div class="informations p-3 card bg-base-100 shadow-xl">
+                    INFORMATIONS
+                </div>
+            </section>
 
                 <div data-post-id="{{ $post->id }}" class="the-post" id="editor-view"></div>
             @endif
