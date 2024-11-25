@@ -25,10 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
-
-        ini_set('post_max_size', '12M');
-        ini_set('upload_max_filesize', '10M');
-
         Gate::define('admin', [AuthorizationRoles::class, 'admin']);
         Gate::define('consultant', [AuthorizationRoles::class, 'consultant']);
         Gate::policy(Invoice::class, InvoicePolicy::class);

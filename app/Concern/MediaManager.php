@@ -2,8 +2,9 @@
 
 namespace App\Concern;
 
-use Illuminate\Support\Facades\Storage;
 use App\Models\Media;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class MediaManager
 {
@@ -21,6 +22,8 @@ class MediaManager
         // Définir un nom unique si aucun n'est fourni
         $fileName = $name ?: $file->getClientOriginalName();
         $path = $file->storeAs($uploadPath ?: 'media', $fileName, $selectedDisk);
+
+        // dd($path);
 
         // Créer une entrée en base de données
         $media = new Media([
@@ -45,6 +48,7 @@ class MediaManager
 
         return $media;
     }
+
 
     public function delete(Media $media): bool
     {

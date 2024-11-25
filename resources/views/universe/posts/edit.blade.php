@@ -52,7 +52,7 @@
         </header>
 
         <section>
-            <form action="{{ route('admin.blog.post.update', $post->id) }}" method="POST" autocomplete="off" x-data="postForm()" x-init="$watch('title', value => slugify())">
+            <form action="{{ route('admin.blog.post.update', $post->id) }}" method="POST" autocomplete="off" enctype="multipart/form-data" x-data="postForm()" x-init="$watch('title', value => slugify())">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
                     <!-- Post Title -->
@@ -114,9 +114,6 @@
                                 @if(Str::contains(basename($post->image), 'pending'))
                                     <!-- Affichage spécifique si le nom de l'image contient "pending" -->
                                     <img id="thumbnail-preview" src="{{ asset('site-images/' . config('siteconfig.pending', 'pending.jpg')) }}" alt="{{ asset($post->title) }}" />
-                                @elseif($post->status == 'PRIVATE')
-                                <img id="thumbnail-preview" src="{{ route('image.private', ['postSlug' => $post->slug, 'filename' => basename($post->image)]) }}" alt="{{ $post->title }}">
-                                    {{-- <img id="thumbnail-preview" src="{{ route('image.private', ['filename' => basename(str_replace('/storage/', '', $post->image)), 'postSlug' => $post->slug]) }}" alt="{{ $post->title }}"> --}}
                                 @else
                                     <img id="thumbnail-preview" src="{{ asset($post->image) }}" alt="{{ $post->title }}" />
                                     {{-- <img id="thumbnail-preview" src="{{ route('image.post.thumbnail', ['filename' => basename($post->image)]) }}" alt="Thumbnail" /> --}}
@@ -124,7 +121,7 @@
                             </div>
                         </div>
 
-                          <input name="thumbnail" id="thumbnail" type="file" class="file-input w-full max-w-xs" />
+                          <input name="thumbnail" id="thumbnail" type="file" class="file-input w-full max-w-xs" accept="image/*" />
                     </div>
                     
                 </div>

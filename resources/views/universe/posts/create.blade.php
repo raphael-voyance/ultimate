@@ -29,7 +29,7 @@
         </header>
 
         <section>
-            <form action="#" autocomplete="off" x-data="{
+            <form action="#" autocomplete="off" enctype="multipart/form-data" x-data="{
                 title: '',
                 slug: '',
 
@@ -105,7 +105,7 @@
                             </div>
                           </div>
 
-                        <input name="thumbnail" id="thumbnail" type="file" class="file-input w-full max-w-xs" />
+                        <input name="thumbnail" id="thumbnail" type="file" class="file-input w-full max-w-xs" accept="image/*" />
                     </div>
                 </div>
 

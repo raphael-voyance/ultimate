@@ -72,10 +72,13 @@ class BlogController extends Controller
             'publishedAt' => 'nullable|string',
         ]);
 
-        if ($request->filled('thumbnail') && $request->thumbnail != 'undefined') {
+        if($request->hasFile('thumbnail')) {
             $request->validate([
-                'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'thumbnail' => 'image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             ]);
+
+            $file = $request['thumbnail'];
+            $name = $validated['slug'] . '-' . $file->getClientOriginalName();
         }
 
         $post = new Post();
@@ -86,14 +89,21 @@ class BlogController extends Controller
         $post->status = Str::upper($validated['status']);
         $post->published_at = $validated['publishedAt'] === 'now' ? Carbon::now() : Carbon::createFromFormat('d/m/Y', $validated['publishedAt']);
 
+        // dd($request->hasFile('thumbnail'));
+
         if ($request->hasFile('thumbnail')) {
             $disk = $post->status == 'PRIVATE' ? 'private' : 'public';
-            $uploadPath = "media/{$post->slug}/thumbnails";
-            $thumbnail = $this->mediaManager->upload($request->file('thumbnail'), null, $post, $disk, $uploadPath);
+
+            $uploadPath = $disk == "private" ? "media/posts/private/{$post->slug}/thumbnails" : "media/posts/public/{$post->slug}/thumbnails";
+
+            $thumbnail = $this->mediaManager->upload($request->file('thumbnail'), null, $post, 'public', $uploadPath);
+
+            // dd($thumbnail);
 
             $post->image = $this->mediaManager->getUrl($thumbnail, $post->slug);
-            
-            //dd($post->image);
+
+            // dd($post->image);
+
         } else {
             $post->image = asset('/site-images/pending.jpg');
         }
@@ -140,6 +150,8 @@ class BlogController extends Controller
         // Récupère l'article à mettre à jour
         $post = Post::where('id', $id)->firstOrFail();
 
+        // dd($request->thumbnail);
+
         // Valide les données de la requête
         $validated = $request->validate([
             'title' => [
@@ -160,9 +172,9 @@ class BlogController extends Controller
             'publishedAt' => 'nullable|string',
         ]);
 
-        if ($request->filled('thumbnail') && $request->thumbnail != 'undefined') {
+        if($request->hasFile('thumbnail')) {
             $request->validate([
-                'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'thumbnail' => 'image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             ]);
         }
 
@@ -179,63 +191,72 @@ class BlogController extends Controller
         } else {
             $post->published_at = Carbon::createFromFormat('d/m/Y', $validated['publishedAt']);
         }
-
+        
         // Gérer la suppression de l'image précédente si elle a été remplacée
         if ($request->hasFile('thumbnail')) {
             // Supprime l'ancienne image si elle existe et n'est pas l'image par défaut
             if ($post->image && !str_contains($post->image, 'pending.jpg')) {
+
                 $cleanedPath = str_replace('/storage/', '', parse_url($post->image, PHP_URL_PATH));
                 $oldMedia = Media::where('file_name', $cleanedPath)
                                 ->where('model_type', Post::class)
                                 ->where('model_id', $post->id)
                                 ->first();
 
-                // dd(['oldMedia' => $oldMedia, 
-                //     'basename(parse_url($post->image, PHP_URL_PATH)' => parse_url($post->image, PHP_URL_PATH),
-                // ]);
-
                 if ($oldMedia) {
-                    $this->mediaManager->delete($oldMedia);
+                    try {
+                        $this->mediaManager->delete($oldMedia);
+                    } catch (\Exception $e) {
+                        // Gestion des erreurs
+                        throw new \Exception("Erreur lors de la suppression de l'ancienne image : " . $e->getMessage());
+                    }
                 }
             }
 
             // Téléchargement de la nouvelle image selon la visibilité
             $disk = $post->status == 'PRIVATE' ? 'private' : 'public';
-            
-            $thumbnail = $this->mediaManager->upload($request->file('thumbnail'), null, $post, $disk, "media/$post->slug/thumbnails");
+
+            $uploadPath = $disk == "private" ? "media/posts/private/{$post->slug}/thumbnails" : "media/posts/public/{$post->slug}/thumbnails";
+
+            $thumbnail = $this->mediaManager->upload($request->file('thumbnail'), null, $post, 'public', $uploadPath);
+
             $post->image = $this->mediaManager->getUrl($thumbnail, $post->slug);
         } else {
-            
             // Si aucune nouvelle image n'est téléchargée, déplacez l'image existante si la visibilité change
-            if ($post->image && !str_contains($post->image, 'pending.jpg')) {
+            if (($request->thumbnail == "undefined") && !str_contains($post->image, 'pending.jpg')) {
 
-                // Si l'article est privé
                 if ($post->status == 'PRIVATE') {
+                    // Chemin relatif actuel
                     $filePath = str_replace('/storage/', '', parse_url($post->image, PHP_URL_PATH));
-            
+                
+                    // Nouveau chemin pour les fichiers privés
+                    $privatePath = "posts/private/{$post->slug}/thumbnails/" . basename($filePath);
+                
                     if (Storage::disk('public')->exists($filePath)) {
-                        // Déplacer de public à privé
-                        Storage::disk('private')->put($filePath, Storage::disk('public')->get($filePath));
-                        Storage::disk('public')->delete($filePath);
-            
+                        // Déplacer l'image vers le répertoire privé
+                        Storage::disk('public')->move($filePath, $privatePath);
+                
                         // Mise à jour du chemin de l'image
-                        $post->image = url("/storage/private/{$filePath}");
+                        $post->image = asset("storage/{$privatePath}");
                     }
-            
-                // Si l'article devient public
                 } elseif ($post->status != 'PRIVATE') {
-                    $filePath = str_replace('/storage/private/', '', parse_url($post->image, PHP_URL_PATH));
-            
-                    if (Storage::disk('private')->exists($filePath)) {
-                        // Déplacer de privé à public
-                        Storage::disk('public')->put($filePath, Storage::disk('private')->get($filePath));
-                        Storage::disk('private')->delete($filePath);
-            
+                    // Chemin relatif actuel
+                    $filePath = str_replace('/storage/', '', parse_url($post->image, PHP_URL_PATH));
+                
+                    // Nouveau chemin pour les fichiers publics
+                    $publicPath = "posts/public/{$post->slug}/thumbnails/" . basename($filePath);
+                
+                    if (Storage::disk('public')->exists($filePath)) {
+                        // Déplacer l'image vers le répertoire public
+                        Storage::disk('public')->move($filePath, $publicPath);
+                
                         // Mise à jour du chemin de l'image
-                        $post->image = asset('storage/' . $filePath);
+                        $post->image = asset("storage/{$publicPath}");
                     }
                 }
+                
             }
+            
         }
 
         //dd($post);
