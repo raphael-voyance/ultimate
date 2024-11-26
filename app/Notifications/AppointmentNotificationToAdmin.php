@@ -66,6 +66,11 @@ class AppointmentNotificationToAdmin extends Notification
                 ->line('Il aura lieu le ' . $this->details['time_slot_day_for_human'] . ' à ' . $this->details['time_slot_for_human'])
                 ->line($this->details['type'] == 'phone' ? 'Par téléphone' : 'Par tchat')
                 ->action('Voir le RDV', url(route('admin.appointments.show', $this->appointmentId)));
+            }elseif ($this->status === 'PAID') {
+                return (new MailMessage)
+                ->subject('Un paiement pour une consultation a été effectué')
+                ->line($this->message)
+                ->action('Voir la demande', url(route('admin.appointments.show', $this->appointmentId)));
             }
         }elseif ($this->details['type'] === 'writing') {
             if ($this->status === 'CANCELLED') {

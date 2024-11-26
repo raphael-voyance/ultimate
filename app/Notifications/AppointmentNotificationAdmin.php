@@ -84,6 +84,13 @@ class AppointmentNotificationAdmin extends Notification
                 ->line($this->details['type'] == 'phone' ? 'Par téléphone' : 'Par tchat')
                 ->action('Voir le RDV', url(route('my_space.appointment.view', $this->token)))
                 ->line('Merci pour votre confiance !');
+            }elseif ($this->status === 'PAID') {
+                return (new MailMessage)
+                ->subject('Le paiement pour votre consultation' . $this->details['type'] == 'phone' ? 'par téléphone' : 'par tchat' . 'a été effectué avec succès')
+                ->line($this->message)
+                ->line('Raphaël vous enverra une confirmation par email dans les plus brefs délais.')
+                ->action('Voir votre demande', url(route('my_space.appointment.view', $this->token)))
+                ->line('Merci pour votre confiance !');
             }
         }elseif ($this->details['type'] === 'writing') {
             if ($this->status === 'CANCELLED') {
