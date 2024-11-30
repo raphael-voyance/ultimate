@@ -84,7 +84,11 @@
                     </div>
                         
                     @if($appointment->appointment_type != 'writing')
+                        @if(!$appointmentPassed)
                         <p>Votre rendez-vous aura lieu le :</p>
+                        @else
+                        <p>Votre rendez-vous a eu lieu le :</p>
+                        @endif
                         <p> {{ $appointment_informations->time_slot_day_for_human }} à
                         {{ $appointment_informations->time_slot_for_human }} </p>
                     @else

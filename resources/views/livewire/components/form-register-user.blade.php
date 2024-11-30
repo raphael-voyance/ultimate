@@ -93,6 +93,29 @@
                     <x-ui.form.input-error :messages="$errors->get('last_name')" class="mt-2" />
                 </div>
 
+                <!-- Gender -->
+                <div class="mt-4">
+                    <label class="label font-semibold block mb-2">Votre genre :</label>
+                    <div class="flex items-center gap-4">
+                        <!-- Option Homme -->
+                        <label for="gender-m" class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" id="gender-m" wire:model="sexe" name="sexe" value="M" class="radio radio-primary checked:hover:bg-primary checked:focus:bg-primary" checked="checked" />
+                            <span class="label-text">Homme</span>
+                        </label>
+                        <!-- Option Femme -->
+                        <label for="gender-f" class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" id="gender-f" name="sexe" wire:model="sexe" name="sexe" value="F" class="radio radio-primary checked:hover:bg-primary checked:focus:bg-primary" />
+                            <span class="label-text">Femme</span>
+                        </label>
+                        <!-- Option Non-Binaire -->
+                        <label for="gender-nb" class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" id="gender-nb" name="sexe" wire:model="sexe" name="sexe" value="NB" class="radio radio-primary checked:hover:bg-primary checked:focus:bg-primary" />
+                            <span class="label-text">Non-binaire</span>
+                        </label>
+                    </div>
+                    <x-ui.form.input-error :messages="$errors->get('sexe')" class="mt-2 text-red-500" />
+                </div>
+
                 <!-- Email Address -->
                 <div class="mt-4">
                     <x-ui.form.input wire:model="email"

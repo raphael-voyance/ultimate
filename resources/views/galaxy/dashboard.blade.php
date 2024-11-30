@@ -45,7 +45,7 @@
                         'fa-thin fa-pen-nib' => $appointment['type'] == 'writing'])></i> 
 
                         @if($appointment['type'] == 'writing')
-                            {{ $appointment['status'] == 'CONFIRMED' ? 'confirmée le' : 'envoyée le' }} <x-ui.link label="{{ $appointment['date'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par écrit
+                        {{ $appointment['status'] == 'CONFIRMED' ? 'réponse estimée le' : 'envoyée le' }} <x-ui.link label="{{ $appointment['status'] == 'CONFIRMED' ? \Carbon\Carbon::parse($appointment['date'])->add('3days')->translatedFormat('l d F Y') : $appointment['dateForHuman'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par écrit
                         @elseif ($appointment['type'] == 'tchat')
                             le <x-ui.link label="{{ $appointment['date'] }} à {{ $appointment['time'] }}" href="{{ route('my_space.appointment.show', ['appointment_id' => $appointment['id'], 'user_name' => $appointment['authUserName']]) }}" /> par tchat
                         @else

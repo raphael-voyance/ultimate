@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Universe;
 
 use App\Models\User;
 use App\Models\Invoice;
+use App\Models\Product;
 use App\Models\TimeSlot;
 use Illuminate\View\View;
 use App\Models\Appointment;
@@ -12,6 +13,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use App\Concern\Invoice as InvoiceController;
 use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
+
+use function PHPSTORM_META\map;
 
 class AppointmentsController extends Controller
 {
@@ -25,6 +28,7 @@ class AppointmentsController extends Controller
         $appointment = Appointment::where('id', $request->id)->firstOrFail();
         $appointment_informations = json_decode($appointment->invoice()->firstOrFail()->invoice_informations);
         $user = User::where('id', $appointment->user_id)->firstOrFail();
+        $appointmentPassed = $appointment->status == 'PASSED' ? true : false;
 
         $this->IC = new InvoiceController($appointment->user_id);
 
@@ -33,11 +37,31 @@ class AppointmentsController extends Controller
             'user' => $user,
             'appointment' => $appointment,
             'appointment_informations' => $appointment_informations,
+            'appointmentPassed' => $appointmentPassed,
         ]);
     }
 
     public function create() {
-        return view('universe.appointments.create');
+
+        // Get all services
+        $services = Product::where('type', 'SERVICE_PRODUCT')
+        ->where('available', true)
+        ->get()
+        ->map(function ($service) {
+            $service->amount = $service->price / 100 . '.00 €';
+            return $service;
+        });
+
+        $users = User::whereHas('roles', function($query) {
+            $query->where('slug', 'consultant');
+        })
+        ->orderBy('first_name', 'asc')
+        ->get();
+
+        return view('universe.appointments.create', [
+            'services' => $services,
+            'users' => $users,
+        ]);
     }
 
     public function delete(Request $request) {

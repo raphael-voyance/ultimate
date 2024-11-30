@@ -84,11 +84,16 @@
                                 
                         @endswitch
                     </div>
-                        
+
                     @if($appointment->appointment_type != 'writing')
-                    <p>Le rendez-vous doit avoir lieu le :</p>
+                    @if(!$appointmentPassed)
+                        <p>Le rendez-vous aura lieu le :</p>
+                    @else
+                        <p>Le rendez-vous a eu lieu le :</p>
+                    @endif
                     <p> {{ $appointment_informations->time_slot_day_for_human }} à
                      {{ $appointment_informations->time_slot_for_human }} </p>
+
                     @else
                         @if(($appointment->invoice->status == 'PAID' || $appointment->invoice->status == 'FREE') && $appointment->status != 'REPLY')
                         <p>Réponse attendue le :</p>
@@ -143,7 +148,7 @@
                     </button>
                     @endif
                     
-                    @if ($appointment->invoice->status == 'PAID' && $appointment->appointment_type != 'writing')
+                    @if ($appointment->invoice->status == 'PAID' && $appointment->appointment_type != 'writing' && $appointment->status != 'APPROVED')
                         <input type="hidden" id="approved_route" value="{{ route('admin.appointments.approved', $appointment->id) }}" />
                         <button type="button" id="confirm_request" class="btn btn-success">
                             Confirmer le rendez-vous

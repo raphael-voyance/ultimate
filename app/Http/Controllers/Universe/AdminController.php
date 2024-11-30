@@ -61,7 +61,8 @@ class AdminController extends Controller
             $futursAppointments->push([
                 'id' => $appointment->id,
                 'dateTime' => $appointment->formatted_date_time,
-                'day' => $appointment->formatted_day,
+                'dateForHuman' => $appointment->formatted_day,
+                'day' => $appointment->updated_at,
                 'time' => $appointment->formatted_time,
                 'type' => $appointment->appointment_type,
                 'user_id' => $customer->id,

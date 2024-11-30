@@ -77,6 +77,7 @@ class AppointmentsController extends Controller
 
         $appointment = Appointment::where('id', $appointmentId)->with('invoice', 'timeSlotDay', 'timeSlot')->firstOrFail();
         $appointment_informations = json_decode($appointment->invoice()->firstOrFail()->invoice_informations);
+        $appointmentPassed = $appointment->status == 'PASSED' ? true : false;
 
         if($appointment->user_id != $userId) {
             abort(403);
@@ -99,6 +100,7 @@ class AppointmentsController extends Controller
         return view("galaxy.appointments.show", [
             'appointment' => $appointment,
             'appointment_informations' => $appointment_informations,
+            'appointmentPassed' => $appointmentPassed,
             'user' => $user,
             'ic' => $this->IC,
         ]);

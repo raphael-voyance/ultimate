@@ -17,6 +17,7 @@ class FormRegisterUser extends Component
     public $password;
     public $remember;
     public $first_name;
+    public $sexe;
     public $last_name;
     public $password_confirmation;
 
@@ -45,6 +46,7 @@ class FormRegisterUser extends Component
     public function registerUser()
     {
         $validatedData = $this->validate([
+            'sexe' => ['required', 'string', 'in:M,F,NB'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
@@ -66,10 +68,10 @@ class FormRegisterUser extends Component
             'password' => Hash::make($validatedData['password'],),
         ]);
 
-        $avatar = "https://via.placeholder.com/480x480.png/00bb99";
         $user->roles()->attach(2);
         $user->profile()->create([
-            'avatar' => $avatar
+            'avatar' => $this->createAvatar($validatedData['sexe']),
+            'sexe' => $validatedData['sexe'],
         ]);
 
         event(new Registered($user));
@@ -77,6 +79,16 @@ class FormRegisterUser extends Component
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    private function createAvatar($sexe): string {
+        if($sexe === 'M') {
+            return asset('/site-images/profile/man-profile-img.jpg');
+        }elseif($sexe === 'F') {
+            return asset('/site-images/profile/female-profile-img.jpg');
+        } else {
+            return asset('/site-images/profile/non-binary-profile-img.jpg');
+        }
     }
 
     public function render()

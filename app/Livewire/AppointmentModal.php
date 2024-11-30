@@ -322,63 +322,63 @@ class AppointmentModal extends Component
         $this->deleteAppointmentInSession();
     }
 
-    //Login User
-    public function userLogin()
-    {
+    // //Login User
+    // public function userLogin()
+    // {
 
-        $credentials = $this->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+    //     $credentials = $this->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required',
+    //     ]);
 
-        if (Auth::attempt($credentials, $this->remember)) {
-            session()->regenerate();
-            $this->saveAppointmentInSession();
-            return redirect('/');
-        }
+    //     if (Auth::attempt($credentials, $this->remember)) {
+    //         session()->regenerate();
+    //         $this->saveAppointmentInSession();
+    //         return redirect('/');
+    //     }
 
-        //dd(session('status'));
-        session()->flash('error', 'Vos informations de connexion ne correspondent pas. Merci de réessayer.');
-        return back()->onlyInput('email');
-    }
+    //     //dd(session('status'));
+    //     session()->flash('error', 'Vos informations de connexion ne correspondent pas. Merci de réessayer.');
+    //     return back()->onlyInput('email');
+    // }
 
-    //Register User
-    public function registerUser()
-    {
-        $validatedData = $this->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
-            'password' => [
-                'required', Password::min(8)
-                    ->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised(3)
-            ],
-            'password_confirmation' => 'same:password',
-        ]);
+    // //Register User
+    // public function registerUser()
+    // {
+    //     $validatedData = $this->validate([
+    //         'first_name' => ['required', 'string', 'max:255'],
+    //         'last_name' => ['required', 'string', 'max:255'],
+    //         'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+    //         'password' => [
+    //             'required', Password::min(8)
+    //                 ->letters()
+    //                 ->mixedCase()
+    //                 ->numbers()
+    //                 ->symbols()
+    //                 ->uncompromised(3)
+    //         ],
+    //         'password_confirmation' => 'same:password',
+    //     ]);
 
-        $user = User::create([
-            'first_name' => $validatedData['first_name'],
-            'last_name' => $validatedData['last_name'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password'],),
-        ]);
+    //     $user = User::create([
+    //         'first_name' => $validatedData['first_name'],
+    //         'last_name' => $validatedData['last_name'],
+    //         'email' => $validatedData['email'],
+    //         'password' => Hash::make($validatedData['password'],),
+    //     ]);
 
-        $avatar = "https://via.placeholder.com/480x480.png/00bb99";
-        $user->roles()->attach(2);
-        $user->profile()->create([
-            'avatar' => $avatar
-        ]);
+    //     $avatar = "https://via.placeholder.com/480x480.png/00bb99";
+    //     $user->roles()->attach(2);
+    //     $user->profile()->create([
+    //         'avatar' => $avatar
+    //     ]);
 
-        event(new Registered($user));
+    //     event(new Registered($user));
 
-        Auth::login($user);
+    //     Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
-    }
+    //     return redirect(RouteServiceProvider::HOME);
+    // }
 
     // Steps && Appointment
 

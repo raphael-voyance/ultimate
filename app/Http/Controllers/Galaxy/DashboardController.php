@@ -20,52 +20,6 @@ class DashboardController extends Controller
             $user->load('appointments.timeSlotDay', 'appointments.timeSlot');
         }
 
-        // Récupération des rendez-vous passés et futurs
-        // $pastsAppointmentsModel = $user->appointments()
-        //     ->where(function ($query) use ($now) {
-        //         // dd($query);
-        //         // Cas avec timeSlotDay
-        //         $query->whereHas('timeSlotDay', function ($query) use ($now) {
-        //             $query->where('day', '<', $now);
-        //         })
-        //             // Cas sans timeSlotDay (demande par email)
-        //             ->orWhere(function ($subQuery) use ($now) {
-        //                 $subQuery->whereNull('time_slot_id')
-        //                     ->where(function ($q) use ($now) {
-        //                         $q->whereNull('request_reply')
-        //                             ->whereDate('created_at', '<', $now)
-        //                             ->orWhereNotNull('request_reply')
-        //                             ->whereDate('updated_at', '<', $now);
-        //                     });
-        //             });
-        //     })
-        //     ->with(['timeSlotDay', 'timeSlot'])
-        //     ->get();
-
-        // $futursAppointmentsModel = $user->appointments()
-        //     ->where('invoice_id', '!=', null)
-        //     ->where(function ($query) use ($now) {
-        //         // Cas avec timeSlotDay
-        //         $query->whereHas('timeSlotDay', function ($query) use ($now) {
-        //             $query->where('day', '>=', $now);
-        //         })
-        //             // Cas sans timeSlotDay (demande par email)
-        //             ->orWhere(function ($subQuery) use ($now) {
-        //                 $subQuery->whereNull('time_slot_id')
-        //                     ->where(function ($q) use ($now) {
-        //                         $q->whereNull('request_reply')
-        //                             ->whereDate('created_at', '>=', $now)
-        //                             ->orWhereNotNull('request_reply')
-        //                             ->whereDate('updated_at', '>=', $now);
-        //                     });
-        //             });
-        //     })
-        //     ->with(['timeSlotDay', 'timeSlot'])
-        //     ->get();
-
-        // dump('$pastsAppointmentsModel : ', $pastsAppointmentsModel);
-        // dump('$futursAppointmentsModel : ', $futursAppointmentsModel);
-
         $pastsAppointments = $user->appointments()
             ->where('invoice_id', '!=', null)
             ->where('appointment_type', '!=', 'writing')
@@ -125,12 +79,13 @@ class DashboardController extends Controller
                 ];
             } else {
                 // Email-based appointment (no timeSlotDay)
-                $date = $this->transformDate($appointment->updated_at);
+                $dateForHuman = $this->transformDate($appointment->updated_at);
 
                 return [
                     'id' => $appointment->id,
                     'authUserName' => Str::slug($user->first_name . '-' . $user->last_name),
-                    'date' => $date,
+                    'dateForHuman' => $dateForHuman,
+                    'date' => $appointment->updated_at,
                     'time' => 'N/A', // No specific time for email requests
                     'type' => $appointment->appointment_type,
                     'status' => $appointment->status,
@@ -161,72 +116,6 @@ class DashboardController extends Controller
                 'date' => $date
             ];
         });
-
-            // dd($pastsAppointments, $futursAppointments);
-
-        // foreach ($pastsAppointmentsModel as $a) {
-        //     $pastsAppointments[] = $a->toArray();
-        // }
-        // foreach ($futursAppointmentsModel as $a) {
-        //     $futursAppointments[] = $a->toArray();
-        // }
-
-        // dump('$pastsAppointments before : ', $pastsAppointments);
-        // dump('$futursAppointments before : ', $futursAppointments);
-
-        // foreach ($pastsAppointments as $i => $appointment) {
-        //     if (isset($appointment['time_slot_day'])) {
-        //         // Cas où le rendez-vous a un timeSlotDay (rendez-vous classique)
-        //         $pastsAppointments[$i] = [
-        //             'id' => $appointment['id'],
-        //             'authUserName' => Str::slug($user->first_name . '-' . $user->last_name),
-        //             'date' => $this->transformDate($appointment['time_slot_day']['day']),
-        //             'time' => $this->transformTime($appointment['time_slot']['start_time']),
-        //             'type' => $appointment['appointment_type'],
-        //         ];
-        //     } else {
-        //         // Cas où le rendez-vous est une question par email (pas de timeSlotDay)
-        //         $date = isset($appointment['request_reply']) ? $this->transformDate($appointment['updated_at']) : $this->transformDate($appointment['created_at']);
-        
-        //         $pastsAppointments[$i] = [
-        //             'id' => $appointment['id'],
-        //             'authUserName' => Str::slug($user->first_name . '-' . $user->last_name),
-        //             'date' => $date,
-        //             'time' => 'N/A', // Pas d'heure spécifique pour les demandes par email
-        //             'type' => $appointment['appointment_type'],
-        //         ];
-        //     }
-        // }
-
-        // foreach ($futursAppointments as $i => $appointment) {
-        //     if (isset($appointment['time_slot_day'])) {
-        //         // Cas où le rendez-vous a un timeSlotDay (rendez-vous classique)
-        //         $futursAppointments[$i] = [
-        //             'id' => $appointment['id'],
-        //             'authUserName' => Str::slug($user->first_name . '-' . $user->last_name),
-        //             'date' => $this->transformDate($appointment['time_slot_day']['day']),
-        //             'time' => $this->transformTime($appointment['time_slot']['start_time']),
-        //             'type' => $appointment['appointment_type'],
-        //         ];
-        //     } else {
-        //         // Cas où le rendez-vous est une question par email (pas de timeSlotDay)
-        //         $date = isset($appointment['request_reply']) ? $this->transformDate($appointment['updated_at']) : $this->transformDate($appointment['created_at']);
-        
-        //         $futursAppointments[$i] = [
-        //             'id' => $appointment['id'],
-        //             'authUserName' => Str::slug($user->first_name . '-' . $user->last_name),
-        //             'date' => $date,
-        //             'time' => 'N/A', // Pas d'heure spécifique pour les demandes par email
-        //             'type' => $appointment['appointment_type'],
-        //         ];
-        //     }
-        // }
-        
-
-
-
-        // dump('$pastsAppointments after : ', $pastsAppointments);
-        // dump('$futursAppointments after : ', $futursAppointments);
 
 
         $invoices = $user->invoices()->latest()->limit(5)->get();
