@@ -56,9 +56,9 @@
                         {{-- {{dd($appointment)}} --}}
                             <li><i class="fa-thin fa-pen-nib mr-2"></i>{{ $appointment['status'] == 'CONFIRMED' ? 'réponse attendue le' : 'envoyée le' }} <x-ui.link label="{{ $appointment['status'] == 'CONFIRMED' ? \Carbon\Carbon::parse($appointment['day'])->add('3days')->translatedFormat('l d F Y') : $appointment['dateForHuman'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> par <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
                         @elseif($appointment['type'] == 'tchat')
-                            <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
+                            <li><i class="fa-sharp fa-thin fa-comments mr-2"></i> le <x-ui.link label="{{ $appointment['dateForHuman'] }} à {{ $appointment['time'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
                         @elseif($appointment['type'] == 'phone')
-                            <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="{{ $appointment['day'] }} à {{ $appointment['time'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
+                            <li><i class="fa-thin fa-phone mr-2"></i> le <x-ui.link label="{{ $appointment['dateForHuman'] }} à {{ $appointment['time'] }}" href="{{ route('admin.appointments.show', $appointment['id']) }}" /> avec <x-ui.link label="{{ $appointment['user_name'] }}" href="{{ route('admin.users.show', $appointment['user_id']) }}" /></li>
                         @endif
                     @endforeach
                 </ul>

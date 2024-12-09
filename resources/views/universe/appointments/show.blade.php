@@ -99,12 +99,20 @@
                         <p>Réponse attendue le :</p>
                         <p class="mb-2">{{ \Carbon\Carbon::parse($appointment->updated_at)->add('3days')->translatedFormat('l d F Y') }}</p>
                         @endif
-                    <p>Question :</p>
-                    <p class="p-4">" {!! nl2br(e($appointment->appointment_message)) !!} "</p>
-                        @if(isset($appointment->request_reply))
+
+                        @if($appointment->appointment_message != '')
+                        <p>Question :</p>
+                        <p class="p-4">
+                            " {!! nl2br(e($appointment->appointment_message)) !!} "
+                        </p>
+                            @if(isset($appointment->request_reply))
                                 <p>Réponse :</p>
                                 <p class="p-4">" {!! nl2br(e($appointment->request_reply)) !!} "</p>
+                            @endif
+                        @else
+                        <p class="italic">Aucune question n'a été renseignée par le consultant.</p>
                         @endif
+
                     @endif
                         
                 </div>

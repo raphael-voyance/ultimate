@@ -8,9 +8,9 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PublicController;
 use App\Concern\StatusAppointmentNotifications;
 use App\Http\Controllers\Galaxy\ProfileController;
+use App\Http\Controllers\Galaxy\DashboardController;
 use App\Http\Controllers\Galaxy\PrevisionsController;
 use App\Http\Controllers\Galaxy\AppointmentsController;
-use App\Http\Controllers\Galaxy\DashboardController;
 use App\Http\Controllers\Galaxy\NotificationsController;
 
 /*
@@ -78,6 +78,8 @@ Route::prefix('tarot')->as('tarot.')->group(function() {
     Route::get('/tirages', [PrevisionsController::class, 'drawCardsIndex'])->name('draw-cards-index');
     Route::post('/save-draw-cards', [PrevisionsController::class, 'saveDraw'])->name('save-draw-cards');
 });
+
+// Route::get('/test', [DashboardController::class, 'index'])->name('test');
 
 Route::middleware(['auth', 'verified'])->prefix('mon-espace')->as('my_space.')->group(function() {
     //Dashboard

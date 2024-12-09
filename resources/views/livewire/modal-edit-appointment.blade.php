@@ -79,13 +79,14 @@
 
             <div>
                 <p class="mb-2">Vous pouvez modifier ou compléter votre question ci-après :</p>
-                <textarea wire:model.lazy="writingQuestion" class="textarea resize-none textarea-bordered block w-full" id="writingQuestion" rows="5">{{ $appointment->appointment_message }}</textarea>
+                <textarea placeholder="Votre question..." wire:model="writingQuestion" class="textarea resize-none textarea-bordered block w-full" id="writingQuestion" rows="5">{{ $appointment->appointment_message }}</textarea>
+                @error('writingQuestion') 
+                    <x-ui.form.input-error :messages="$message" class="mt-2" />
+                @enderror
             </div>
             <x-slot:actions>
                 <button class="btn btn-secondary btn-sm h-12 mr-auto md:h-8 mt-4" @click.prevent="$wire.ModalEditAppointment = false">Annuler</button>
-                @if (!empty($writingQuestion))
-                    <x-ui.primary-button class="btn-sm h-12 md:h-8 mt-4" wire:click.prevent="updateAppointment()">Enregistrer votre question</x-ui.primary-button>
-                @endif
+                <x-ui.primary-button class="btn-sm h-12 md:h-8 mt-4" wire:click.prevent="updateAppointment()">Enregistrer votre question</x-ui.primary-button>
             </x-slot:actions>
         </x-ui.dialog>
     @endif

@@ -62,7 +62,7 @@ class AppointmentNotificationAdmin extends Notification
                 ->line('Merci pour votre confiance !');
             }elseif ($this->status === 'FREE') {
                 return (new MailMessage)
-                ->subject('Votre consultation gratuite a été enregistrée avec succès')
+                ->subject('Raphaël a bien enregistré votre demande de consultation gratuite')
                 ->line($this->message)
                 ->line('Elle aura lieu le ' . $this->details['time_slot_day_for_human'] . ' à ' . $this->details['time_slot_for_human'])
                 ->line($this->details['type'] == 'phone' ? 'Par téléphone' : 'Par tchat')
@@ -91,6 +91,12 @@ class AppointmentNotificationAdmin extends Notification
                 ->line('Raphaël vous enverra une confirmation par email dans les plus brefs délais.')
                 ->action('Voir votre demande', url(route('my_space.appointment.view', $this->token)))
                 ->line('Merci pour votre confiance !');
+            }elseif ($this->status === 'CREATED') {
+                return (new MailMessage)
+                ->subject('Raphaël a bien enregistré votre demande de rendez-vous')
+                ->line($this->message)
+                ->action('Voir votre demande', url(route('my_space.appointment.view', $this->token)))
+                ->line('Merci pour votre confiance !');
             }
         }elseif ($this->details['type'] === 'writing') {
             if ($this->status === 'CANCELLED') {
@@ -104,6 +110,13 @@ class AppointmentNotificationAdmin extends Notification
                 ->subject('Un remboursement est en cours pour votre demande de consultation par écrit')
                 ->line($this->message)
                 ->action('Retourner sur le site', url(route('home')))
+                ->line('Merci pour votre confiance !');
+            }elseif ($this->status === 'FREE') {
+                return (new MailMessage)
+                ->subject('Raphaël a bien enregistré votre demande de consultation gratuite par écrit')
+                ->line($this->message)
+                ->line('Je vous répondrai dans un délai de trois jours.')
+                ->action('Voir votre demande', url(route('my_space.appointment.view', $this->token)))
                 ->line('Merci pour votre confiance !');
             }elseif ($this->status === 'PAID') {
                 return (new MailMessage)
@@ -131,6 +144,12 @@ class AppointmentNotificationAdmin extends Notification
                 ->subject('La réponse à votre consultation par écrit est disponible')
                 ->line($this->message)
                 ->action('Accéder à la réponse', url(route('my_space.appointment.show', ['user_name' => $this->userFullName, 'appointment_id' => $this->appointmentId])))
+                ->line('Merci pour votre confiance !');
+            }elseif ($this->status === 'CREATED') {
+                return (new MailMessage)
+                ->subject('Votre demande de consultation par email a été enregistrée avec succès')
+                ->line($this->message)
+                ->action('Voir votre demande', url(route('my_space.appointment.view', $this->token)))
                 ->line('Merci pour votre confiance !');
             }
         }

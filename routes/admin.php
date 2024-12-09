@@ -11,6 +11,7 @@ use App\Http\Controllers\Universe\ImageController;
 use App\Http\Controllers\Universe\TarotController;
 use App\Http\Controllers\Universe\BackupsController;
 use App\Http\Controllers\Universe\InvoicesController;
+use App\Http\Controllers\Universe\UniverseController;
 use App\Http\Controllers\Universe\MessagingController;
 use App\Http\Controllers\Universe\TimeSlotsController;
 use App\Http\Controllers\Universe\NumerologyController;
@@ -146,6 +147,7 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'can:admin'])->group(f
         Route::delete('/delete/{payment_invoice_token}', [AppointmentsController::class, 'delete'])->name('delete');
         Route::get('/approved/{id}', [AppointmentsController::class, 'approved'])->name('approved');
         Route::get('/create', [AppointmentsController::class, 'create'])->name('create');
+        Route::post('/store', [AppointmentsController::class, 'store'])->name('store');
         // Route::post('/store', [UserController::class, 'storeUser'])->name('store');
         // Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('update');
     });

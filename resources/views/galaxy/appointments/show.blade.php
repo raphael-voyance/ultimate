@@ -96,8 +96,17 @@
                             <p>Date de réponse estimée :</p>
                             <p class="mb-2">{{ \Carbon\Carbon::parse($appointment->updated_at)->add('3days')->translatedFormat('l d F Y') }}</p>
                         @endif
+
+                        @if($appointment->appointment_message != '')
                         <p>Rappel de votre question par email :</p>
-                        <p class="p-4">" {!! nl2br(e($appointment->appointment_message)) !!} "</p>
+                        <p class="p-4">
+                            
+                            " {!! nl2br(e($appointment->appointment_message)) !!} "
+                        </p>
+                        @else
+                        <p class="italic">Merci de renseigner votre question en cliquant sur le bouton "Modifier votre question"</p>
+                        @endif
+                            
                         @if(isset($appointment->request_reply))
                             <p>Réponse de Raphaël :</p>
                             <p class="p-4">" {!! nl2br(e($appointment->request_reply)) !!} "</p>

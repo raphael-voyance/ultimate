@@ -113,7 +113,7 @@
                             <span class="label-text">Non-binaire</span>
                         </label>
                     </div>
-                    <x-ui.form.input-error :messages="$errors->get('sexe')" class="mt-2 text-red-500" />
+                    <x-ui.form.input-error :messages="$errors->get('sexe')" class="mt-2" />
                 </div>
 
                 <!-- Email Address -->

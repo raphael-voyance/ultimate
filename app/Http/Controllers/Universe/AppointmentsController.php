@@ -8,13 +8,14 @@ use App\Models\Product;
 use App\Models\TimeSlot;
 use Illuminate\View\View;
 use App\Models\Appointment;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use function PHPSTORM_META\map;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
+
 use App\Concern\Invoice as InvoiceController;
 use App\Concern\StatusAppointmentNotifications as ConcernNotifications;
-
-use function PHPSTORM_META\map;
 
 class AppointmentsController extends Controller
 {
@@ -64,6 +65,83 @@ class AppointmentsController extends Controller
         ]);
     }
 
+    public function store(Request $request) {
+        $validated = $request->validate([
+            'time_slot_day' => 'nullable|integer',
+            'time_slot' => 'nullable|integer',
+            'time_slot_for_human' => 'nullable|string',
+            'time_slot_day_for_human' => 'nullable|string',
+            'type' => 'required|string',
+            'invoice_status' => 'required',
+            'user_id' => 'required|integer',
+        ]);
+
+        $user_id = $request->user_id;
+        $user = User::where('id', $user_id)->firstOrFail();
+        //1 - Créer un token unique Invoice
+        $create_invoice = $this->IC = new InvoiceController($request->user_id);
+        $invoice_token = $create_invoice->get_token();
+
+        //2 - Créer une invoice en bdd avec les valeurs : 
+        //== total_price payment_invoice_token appointment_id ref user_id
+            $appointmentInformations = [
+                "type" => $request->type,
+                "time_slot_day" => $request->time_slot_day,
+                "time_slot" => $request->time_slot,
+                "time_slot_day_for_human" => $request->time_slot_day_for_human,
+                "time_slot_for_human" => $request->time_slot_for_human,
+                "writing_consultation"  => [
+                    'question' => ''
+                ],
+            ];
+
+        $total_price = function() use ($request) {
+
+            if(Str::lower($request->invoice_status) == 'free') {
+                return 0;
+            }
+
+            $service = Product::where('slug', $request->type)->firstOrFail();
+            return $service->price;
+        };
+
+        $invoice = Invoice::create([
+            'total_price' => $total_price(),
+            'payment_invoice_token' => $invoice_token,
+            'status' => $request->invoice_status,
+            'invoice_informations' => json_encode($appointmentInformations),
+            'user_id' => $user_id,
+            'ref' => $create_invoice->get_ref(),
+        ]);
+
+        $invoice->products()->attach(Product::where('slug', $request->type)->first()->id);
+
+        $appointment = Appointment::create([
+            'user_id' => $user_id,
+            'time_slot_day_id' => $request->time_slot_day, 
+            'time_slot_id' => $request->time_slot,
+            'invoice_id' => $invoice->id,
+            "status" => $request->type == 'writing' ? 'PENDING' : 'APPROVED',
+            'appointment_message' => null,
+            'appointment_type' => $request->type,
+        ]);
+
+        // Mettre à jour l'invoice avec l'appointment_id
+        $invoice->appointment_id = $appointment->id;
+        $invoice->save();
+
+        $timeSlot = TimeSlot::where('id', $request->time_slot)->firstOrFail();
+        
+        $timeSlot->time_slot_days()->updateExistingPivot($request->time_slot_day, ['available' => false]);
+
+        toast()->success('La demande de consultation a été enregistrée avec succès.')->pushOnNextPage();
+
+        ConcernNotifications::sendNotificationFromAdmin($invoice, 'CREATED', $user);
+
+        return response()->json(['redirect' => route('admin.appointments.show', ['id' => $appointment->id])]);
+
+    }
+
     public function delete(Request $request) {
         // Invoice
         $invoice_token = $request->payment_invoice_token;
@@ -79,13 +157,13 @@ class AppointmentsController extends Controller
                 \Stripe\Refund::create([
                     'payment_intent' => $invoice->payment_intent,
                 ]);
-                ConcernNotifications::sendNotification($invoice, 'REFUNDED', $user);
+                
+                ConcernNotifications::sendNotificationFromAdmin($invoice, 'REFUNDED', $user);
                 // Ajout d'un message de confirmation pour le remboursement
                 toast()->success('Le remboursement de la consultation a été effectué avec succès.')->pushOnNextPage();
             } catch (\Exception $e) {
                 // Gestion d'erreur en cas de problème avec Stripe
                 report($e);
-                dd($e);
                 toast()->warning('Une erreur est survenue lors du remboursement. Veuillez réessayer plus tard.')->pushOnNextPage();
                 return response()->json(['status' => 'error', 'message' => 'Refund failed.'], 500);
             }
@@ -118,7 +196,7 @@ class AppointmentsController extends Controller
 
         toast()->success('La demande de consultation a été annulée avec succés.')->pushOnNextPage();
     
-        $redirectRoute = route('my_space.index');
+        $redirectRoute = route('admin.index');
         return response()->json(['status' => 'success', 'redirectRoute' => $redirectRoute]);
     }
 

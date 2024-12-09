@@ -153,6 +153,9 @@ class StatusAppointmentNotifications
                 case 'REPLY':
                     $message = 'La réponse à votre question vous a été envoyée, elle est dès à présent disponible dans votre espace personnel.';
                     break;
+                case 'CREATED':
+                    $message = 'Raphaël a créé une consultation par email pour vous. Rendez-vous sur votre espace personnel pour lui envoyer votre question.';
+                    break;
                 default:
                     $message = 'Votre rendez-vous a été mis à jour.';
                     break;
@@ -177,6 +180,9 @@ class StatusAppointmentNotifications
                 case 'FREE':
                     $message = 'Raphaël a modifié votre consultation par téléphone en statut "gratuit".';
                     break;
+                case 'CREATED':
+                    $message = 'Raphaël a créé un rendez-vous par téléphone avec vous. Pour le consulter, allez sur votre espace personnel.';
+                    break;
                 default:
                     $message = 'Votre rendez-vous a été mis à jour.';
                     break;
@@ -200,6 +206,9 @@ class StatusAppointmentNotifications
                     break;
                 case 'REFUNDED':
                     $message = 'Raphaël a initié le remboursement de votre consultation par tchat, il apparaîtra sous quelques jours sur votre moyen de paiement.';
+                    break;
+                case 'CREATED':
+                    $message = 'Raphaël a créé un rendez-vous par tchat avec vous. Pour le consulter, allez sur votre espace personnel.';
                     break;
                 default:
                     $message = 'Votre rendez-vous a été mis à jour.';

@@ -143,26 +143,39 @@ class ModalEditAppointment extends Component
     }
 
     //Update Appointment
-    public function updateAppointment(): void {
+    public function updateAppointment() {
 
+        $is_updated = false;
 
         $appointment = $this->appointment;
         $invoice = $appointment->invoice()->firstOrFail();
 
-        //dd($invoice->products);
+        if ($appointment->appointment_type == 'writing') {
 
-        if($appointment->appointment_type == 'writing') {
-            //Mettre à jour la question
-            $appointment->appointment_message = $this->writingQuestion;
-            $appointment->save();
+            $validated = $this->validate([
+                'writingQuestion' => 'required|string'
+            ], [
+                'writingQuestion.required' => 'La question est obligatoire.',
+                'writingQuestion.string' => 'La question doit être une chaîne de caractères.'
+            ]);
 
-            //Mettre à jour la invoice
-            $invoiceInformations = json_decode($invoice->invoice_informations);
-            $invoiceInformations->writing_consultation->question = $this->writingQuestion;
+            
 
-            $invoice->invoice_informations = json_encode($invoiceInformations);
-            $invoice->save();
-
+            if (!empty($this->writingQuestion)) {
+                $appointment->appointment_message = $this->writingQuestion;
+                $appointment->save();
+        
+                $invoiceInformations = json_decode($invoice->invoice_informations);
+                $invoiceInformations->writing_consultation->question = $this->writingQuestion;
+        
+                $invoice->invoice_informations = json_encode($invoiceInformations);
+                $invoice->save();
+        
+                $is_updated = true;
+            } else {
+                // Gérez le cas où `writingQuestion` est vide
+                throw new \Exception("La question d'écriture ne peut pas être vide.");
+            }
         }else {
             if(!$this->timeSlotIsSelected) {
 
@@ -179,6 +192,8 @@ class ModalEditAppointment extends Component
     
                 $invoice->products()->detach();
                 $invoice->products()->attach(Product::where('slug', $this->appointmentType)->first()->id);
+
+                $is_updated = true;
     
             }elseif($this->timeSlotIsSelected) {
                 $lastTimeSlot = TimeSlot::where('id', $appointment->time_slot_id)->firstOrFail();
@@ -207,27 +222,29 @@ class ModalEditAppointment extends Component
     
                 $invoice->products()->detach();
                 $invoice->products()->attach(Product::where('slug', $this->appointmentType)->first()->id);
+
+                $is_updated = true;
             }
         }
 
         
 
-        if($appointment && $invoice) {
+        if($is_updated) {
             toast()
             ->success('Votre consultation a été mise à jour avec succès.')
             ->pushOnNextPage();
 
             ConcernNotifications::sendNotification($invoice, 'UPDATED');
             ConcernNotifications::sendNotificationToAdmin($invoice, 'UPDATED');
-            
+            // dd($invoice->status);
             if($invoice->status == 'PENDING') {
-                $this->redirectRoute('payment.create', [
+                return $this->redirectRoute('payment.create', [
                     'payment_invoice_token' => $invoice->payment_invoice_token
                 ]);
             }else {
                 $user = Auth::user();
                 $authUserName = Str::slug($user->first_name . '-' . $user->last_name);
-                $this->redirectRoute('my_space.appointment.show', [
+                return $this->redirectRoute('my_space.appointment.show', [
                     'appointment_id' => $appointment->id,
                     'user_name' => $authUserName
                 ]);
